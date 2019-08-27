@@ -1,0 +1,89 @@
+:root {
+    --default-background-color: rgba(0, 0, 0, 0.575); 
+    --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
+    --default-card-radius:4px;
+    --default-card-margin: 0.6rem;
+    --default-card-padding: 1.5rem;
+    --default-card-color: white;
+}
+body {
+    background: url(https://images.unsplash.com/photo-1528298846924-5119985beb1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjI0MX0&auto=format&fit=crop&w=1267&q=80)no-repeat center center fixed;
+    background-size: cover;
+    background-color: rgb(24, 24, 24);
+    background-attachment: fixed;
+    
+}
+card {
+    background: rgba(0, 0, 0, 0.575);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    color: white !important;
+}
+card.popup buttonlist button {
+    color:white;
+}
+card.usercard .user a {
+    color: white;
+}
+musicmodule musicplayer {
+    background: rgb(14, 14, 14);
+}
+musicmodule musicplayer controls playbutton i {
+    color: rgb(219, 219, 219);
+}
+input[type="text"].flatweb {
+    background: rgb(14, 14, 14);
+    color: white;
+}
+input[type="text"].flatweb::-webkit-input-placeholder {
+    color: rgb(170, 170, 170);
+}
+card.popup box {
+    background: rgba(0, 0, 0, 0.55);
+}
+span.titlew,h2,h4,span.subtitlew {
+    text-shadow: 0 0 12px rgb(0, 0, 0);
+}
+span.subtitlew {
+    font-weight: 300;
+}
+nav {
+    transition: all 500ms ease !important; 
+}
+nav.fixed.style_nobox {
+    box-shadow: 0px 5px 14px 0px rgba(0, 0, 0, 0.69);
+    background: rgba(10, 10, 10, 0.9);
+}
+nav.style_nobox ul li {
+    
+    text-shadow: 0 0 12px rgb(0, 0, 0);
+    color:white;
+}
+nav.fixed.style_nobox {
+    background: rgba(0, 0, 0, 0.575);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    
+}
+nav.fixed.style_nobox ul li {
+    font-size: 1.3rem;
+
+}
+button {
+    background: rgba(0, 0, 0, 0.575);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    color:white !important;
+    overflow: hidden;
+}
+button:disabled {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgb(143, 143, 143) !important;
+}
+button:not(:disabled):hover {
+    background: rgba(0, 0, 0, 0.34) !important;
+}
+span.note {
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+}
