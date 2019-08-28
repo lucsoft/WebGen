@@ -2,6 +2,7 @@ console.log("Loaded %cWebGen%cGitHub", 'font-size: 2rem', 'font-size: 2rem;paddi
 
 var web = {};
 web.style = {};
+web.oncommand = (ge) => { console.log("Event: onCommand = " + ge); };
 web.style.load = (theme) => {
     return new Promise(function (resolve, reject) {
         var link = document.createElement('link');
