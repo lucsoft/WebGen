@@ -9,8 +9,13 @@ web.style.load = (theme) => {
         link.setAttribute("type", "text/css");
         link.onload = function () { resolve(); }
         link.setAttribute("href", `https://api.lucsoft.de/webgen/css/${theme.toLowerCase()}.css`);
-        document.getElementsByTagName("body")[0].appendChild(link);
+        document.getElementsByTagName("head")[0].appendChild(link);
     });
+};
+web.style.require = (name) => {
+    if (!web.config.loadedCSS.includes(name)) {
+        web.style.load(name);
+    }
 };
 web.style.loadComplex = (url) => {
     return new Promise(function (resolve, reject) {
@@ -19,7 +24,7 @@ web.style.loadComplex = (url) => {
         link.setAttribute("type", "text/css");
         link.onload = function () { resolve(); }
         link.setAttribute("href", url);
-        document.getElementsByTagName("body")[0].appendChild(link);
+        document.getElementsByTagName("head")[0].appendChild(link);
     });
 };
 web.script = {};
@@ -43,32 +48,36 @@ web.script.load = (url) => {
         script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script);
     });
-
-
 }
-web.script.loadModule = async (id) => {
-    console.log("Loaded Module: " + id);
-    await web.script.load(`https://api.lucsoft.de/webgen/module/${id}.js`);
-};
 web.config = {};
 web.config.defaultBackground = "";
-web.config.defaultCSS = ["master", "unit"];
+web.config.loadedCSS = ["master", "unit"];
 web.config.layouts = ["page"];
-
+web.ready = () => { };
 web.enable = async () => {
     if (web.config.defaultBackground != "") {
-        web.config.defaultCSS.push(web.config.defaultBackground);
+        web.config.loadedCSS.push(web.config.defaultBackground);
     }
     await web.script.load("https://api.lucsoft.de/webgen/js/jquery.js");
-    await web.script.load("https://api.lucsoft.de/webgen/js/elements.js");
-    web.script.loadModule("unit");
+    await web.script.load(`https://api.lucsoft.de/webgen/module/unit.js`);
+    await web.script.load("https://api.lucsoft.de/webgen/js/qunit.js");
+    await web.script.load(`https://api.lucsoft.de/webgen/module/elements.js`);
+    await web.script.load(`https://api.lucsoft.de/webgen/module/functions.js`);
     await web.style.loadComplex("https://fonts.googleapis.com/css?family=Material+Icons+Round|Material+Icons|Roboto:200,300,100");
-    web.config.defaultCSS.forEach(async e => {
+    web.config.loadedCSS.forEach(async e => {
         await web.style.load(e);
     });
     web.config.layouts.forEach(e => {
         web.elements.layout(e);
     });
-    console.log("Loaded CSS: " + web.config.defaultCSS);
-    console.log("Loaded JS: jquery,elements,unit");
+    console.log("Loaded CSS: " + web.config.loadedCSS + ",Google Fonts");
+    console.log("Loaded JS: jquery,unit");
+
+    unit.assert("Check Webservice").equal((response) => {
+        getData("https://lucsoft.de/ping", (e) => {
+            response(e, "lucsoft.de is up", "lucsoft.de is down");
+        })
+    });
+    unit.assert(`Is 1 == "1"`).equal(1, "1");
+    web.ready();
 };
