@@ -2,7 +2,7 @@
 
 WebGen Framework loads everything it needs
 
-like for a bigTile it requires elements.css
+like for a bigTitle it requires elements.css
 
 ## Index.html
 ```html
@@ -26,6 +26,10 @@ like for a bigTile it requires elements.css
 web.config.defaultBackground = "blur";
 web.enable();
 web.ready = async () => {
-    web.elements.add().bigTitle({ title: "Hello World", subtitle: "Welcome to WebGen Framework", subtitleposx: "0" });
+    web.elements.add().bigTitle({
+        title: "Hello World", 
+        subtitle: "Welcome to WebGen Framework", 
+        subtitleposx: "0"
+    });
 }
 ```
