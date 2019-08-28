@@ -1,2 +1,2 @@
-# WebGen
-WebGen = WebGen + GitHub + FlatWeb
+# WebGen Framework
+WebGen Framework = WebGen + GitHub + FlatWeb
