@@ -39,11 +39,13 @@ web.elements.elements.bigTitle = (addto, settings) => {
     if (settings.spaceing_top != null) {
         $(`#${web.elements.elements.COUNT}`).css("margin-top", settings.spaceing_top);
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.note = (addto, settings) => {
     web.style.require("elements");
     web.elements.elements.COUNT++;
     $(addto).append('<span id="' + web.elements.elements.COUNT + '" class="note ' + settings.type + '" style="display: block;">' + settings.text + '</span>');
+    return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.player = (addto, settings) => {
     web.style.require("elements");
@@ -82,6 +84,7 @@ web.elements.elements.player = (addto, settings) => {
             $(this).trigger("enterKey");
         }
     });
+    return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.cards = (addto, settings) => {
     web.style.require("cards");
@@ -119,6 +122,7 @@ web.elements.elements.cards = (addto, settings) => {
             }
         }
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.imageList = (addto, settings) => {
     web.style.require("cards");
@@ -135,6 +139,7 @@ web.elements.elements.imageList = (addto, settings) => {
 
     elementscount++;
     $(`#${elementscountid}`).append(`<card id="${elementscount}"class="imgbox disablehover"><img src="https://images.pexels.com/photos/1411590/pexels-photo-1411590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"><span class="title">Searching for Devs!<span class="subtitle">We have many stuff to do and We need YOU!<br><br>Join US over Discord!</span></span></card>`);
+    return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.title = (addto, settings) => {
     web.style.require("elements");
@@ -148,6 +153,7 @@ web.elements.elements.title = (addto, settings) => {
     } else {
         $(addto).append(`<h2 id="${elementscount}">${settings.title}</h2>`);
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
 web.elements.elements.search = (addto, settings) => {
     web.style.require("elements");
@@ -341,6 +347,7 @@ web.elements.elements.buttons = (addto, settings) => {
         }
 
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
 web.elements.elements.loginWindow = (addto, settings) => {
     web.style.require("elements");
@@ -373,6 +380,7 @@ web.elements.elements.loginWindow = (addto, settings) => {
             }
         }
     };
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
 web.elements.elements.window = (addto, settings) => {
     web.style.require("elements");
@@ -393,6 +401,7 @@ web.elements.elements.window = (addto, settings) => {
             $('#' + elementscount).find("buttonlist").find("button")[g].onclick = () => element.onclick({ hide: () => $('#' + ele).addClass("hide"), show: () => $('#' + ele).removeClass("hide") });
         }
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
 web.elements.elements.imgList = (addto, settings) => {
     web.style.require("elements");
@@ -424,6 +433,7 @@ web.elements.elements.imgList = (addto, settings) => {
 
         }
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
 web.elements.elements.appList = (addto, settings) => {
     web.style.require("elements");
@@ -449,8 +459,28 @@ web.elements.elements.appList = (addto, settings) => {
         elementscount++;
         $(`#${elementscountid}`).append(`<card id="${elementscount}"class="iconcard"><img onerror="$(this).get(0).src += '#test'" src="${app.img}"><div><span class="title">${app.title}</span><span class="subtitle">${app.subtitle}</span>${app["button"] != undefined ? `<button ${app["disabled"] == true ? "disabled" : ""} onclick="${app.onclick}">${app.button}</button>` : ""}</div></card>`);
     }
+    return { id: web.elements.elements.COUNT, settings: settings };
 }
+web.elements.clear = (addto = "#page") => {
+    $(addto).html("");
+};
+web.elements.spaceing = (space, id = web.elements.elements.COUNT) => {
+    if (space == 1) {
+        $(`#${id}`).addClass("spaceNoNav");
+        $(`#${id}`).removeClass("spaceHalf");
+        $(`#${id}`).removeClass("nospace");
+    } else if (space == 2) {
+        $(`#${id}`).removeClass("spaceNoNav");
+        $(`#${id}`).addClass("spaceHalf");
+        $(`#${id}`).removeClass("nospace");
 
+    } else if (space == 0) {
+        $(`#${id}`).removeClass("spaceNoNav");
+        $(`#${id}`).removeClass("spaceHalf");
+        $(`#${id}`).addClass("nospace");
+
+    }
+}
 web.elements.add = (addto = "#page") => {
     return {
         /**
