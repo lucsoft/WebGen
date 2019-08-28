@@ -997,13 +997,13 @@ list.two button {
 }
 list.two button.one, input,select {
     display: block;
-    background: rgba(255, 255, 255, 0.39);
+    background: var(--default-background-color);
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: 300;
     width: -webkit-fill-available;
     width: fill-available;
-    
+    color: var(--default-card-color);
     font-family: "Roboto";
     padding: 1rem;
     margin: 0.5rem;

@@ -166,3 +166,13 @@ span.eventicon {
     display: inline-flex;
     z-index: -1;
 }
+#fixedWindow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8rem 0;
+    backdrop-filter: blur(1rem);
+    overflow: auto;
+}

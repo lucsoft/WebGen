@@ -93,12 +93,12 @@
 #qunit #qunit-tests li:last-child {
     margin-bottom: 0.3rem;
 }
-#qunit #qunit-tests li.fail::after, #qunit #qunit-tests li.pass::after {
-    content: 'failed';
+#qunit #qunit-tests li::after {
+    content: 'penndig';
     position: absolute;
     right: .8rem;
     top: 0.6rem;
-    background: #c54637;
+    background: #929292;
     color: white;
     font-weight: 600;
     text-transform: uppercase;
@@ -107,6 +107,11 @@
     width: 4rem;
     text-align: center;
     border-radius: 10rem;
+}
+#qunit #qunit-tests li.fail::after {
+    content: 'failed';
+    background: #c54637;
+    color: white;
 }
 #qunit #qunit-tests li.pass::after {
     content: 'passed';
@@ -118,7 +123,7 @@
     margin-right: 5.5rem;
     margin-top: 0.5rem;
 }
-#qunit #qunit-tests li.pass .test-name {
+#qunit #qunit-tests li:not(.fail) .test-name {
     margin-top: 0.5rem;
     display: inline-block;
     font-weight: 500;

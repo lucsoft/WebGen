@@ -16,6 +16,16 @@ web.func.json = async (url) => {
         })
     });
 };
+web.func.get = async (url) => {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: url,
+            complete: (e, g) => {
+                resolve(e.responseText);
+            }
+        })
+    });
+};
 web.func.wait = async (time) => {
     return new Promise(function (resolve, reject) {
         setTimeout(resolve, time);

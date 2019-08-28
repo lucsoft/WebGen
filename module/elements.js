@@ -4,6 +4,47 @@ web.elements.on = (type, func) => {
     web.elements.onList.push({ func: func, type: type })
 };
 web.elements.onList = [];
+web.elements.newItem = (left, right, style = "") => {
+    return `<item>${left}<span style="${style}" class="right">${right}</span></item>`;
+}
+web.elements.tag = {};
+web.elements.tag.add = (id, name) => {
+    $("#" + id).offsetParent().find("ul").append("<li onclick=\"$(this).remove()\">" + name + "</li>");
+};
+
+web.elements.tag.get = (id) => {
+    var array = [];
+    $("#" + id).offsetParent().find("ul").find("li").each((y, x) => array.push(x.innerHTML));
+    return array;
+};
+web.elements.tag.enable = (id) => {
+    $('#' + id).keyup(function (e) {
+        if (e.keyCode == 13) {
+            if ($("#" + id).val() == "") return;
+
+            $("#" + id).offsetParent().find("ul").append("<li onclick=\"$(this).remove()\">" + $('#' + id).val() + "</li>");
+            $('#' + id).val("");
+
+        } else if (e.keyCode == 8) {
+            if ($("#" + id).val() != "") return;
+
+            $("#" + id).offsetParent().find("ul").find("li").last().remove();
+        }
+    });
+}
+web.elements.tag.write = (id = "input_tag") => {
+    document.write(`<div class="tags"><ul></ul><input type="text" id="${id}" class="newtag" placeholder="New Tag"></input></div>`);
+};
+web.elements.tag.new = (id = "input_tag") => {
+    return `<div class="tags"><ul></ul><input type="text" id="${id}" class="newtag" placeholder="New Tag"></input></div>`;
+};
+
+web.elements.writeText = (text = "") => {
+    document.write(`<span class="text">${text}</span>`);
+}
+web.elements.text = (text = "") => {
+    return `<span class="text">${text}</span>`;
+}
 web.elements.addDefaultParticles = async () => {
     $('body').append(`<div id="particles-js"><canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas></div>`);
     await web.script.load(`https://api.lucsoft.de/webgen/js/particles`);
@@ -112,11 +153,9 @@ web.elements.elements.cards = (addto, settings) => {
         for (let index2 = 0; index2 < settings.cards.length; index2++) {
             const card = settings.cards[index2];
             if (card["subtitle"] != undefined) {
-                elementscount++;
                 $(`#${elementscountid}`).append(`<card id="${card.id}"class="lline ${settings["tilt"] == true ? "js-tilt" : ""} subtitle disablehover ${settings.effect ? index2 == 0 ? "left" : index2 == (settings.cards.length - 1) ? "right" : "" : ""}"><span class="title">${card.title}</span><span class="subtitle">${card.subtitle}</span></card>`);
 
             } else {
-                elementscount++;
                 $(`#${elementscountid}`).append(`<card id="${card.id}" class="lline ${settings["tilt"] == true ? "js-tilt" : ""} disablehover ${settings.effect ? index2 == 0 ? "left" : index2 == (settings.cards.length - 1) ? "right" : "" : ""}"><span class="title">${card.title}</span></card>`);
 
             }
@@ -128,17 +167,12 @@ web.elements.elements.imageList = (addto, settings) => {
     web.style.require("cards");
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
-    elementscount++;
     $(addto).append(`<cardlist id="${elementscount}" class=""></cardlist>`);
     $(`#${elementscount}`).addClass("max-width");
     var elementscountid = elementscount;
-    elementscount++;
-    $(`#${elementscountid}`).append(`<card id="${elementscount}"class="imgbox invisible disablehover"></card>`);
-
-    $(`#${elementscountid}`).append(`<card id="${elementscount}"class="imgbox disablehover"><img src="https://images.pexels.com/photos/1072851/pexels-photo-1072851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"><span class="title">Big Project: HomeSYS - Smart Home Combined<span class="subtitle">We want to create a place for every IoT Device!<br><br>Join us over Discord and Develop with us or check our GitHub repository!</span></span></card>`);
-
-    elementscount++;
-    $(`#${elementscountid}`).append(`<card id="${elementscount}"class="imgbox disablehover"><img src="https://images.pexels.com/photos/1411590/pexels-photo-1411590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"><span class="title">Searching for Devs!<span class="subtitle">We have many stuff to do and We need YOU!<br><br>Join US over Discord!</span></span></card>`);
+    $(`#${elementscountid}`).append(`<card class="imgbox invisible disablehover"></card>`);
+    $(`#${elementscountid}`).append(`<card class="imgbox disablehover"><img src="https://images.pexels.com/photos/1072851/pexels-photo-1072851.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"><span class="title">Big Project: HomeSYS - Smart Home Combined<span class="subtitle">We want to create a place for every IoT Device!<br><br>Join us over Discord and Develop with us or check our GitHub repository!</span></span></card>`);
+    $(`#${elementscountid}`).append(`<card class="imgbox disablehover"><img src="https://images.pexels.com/photos/1411590/pexels-photo-1411590.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"><span class="title">Searching for Devs!<span class="subtitle">We have many stuff to do and We need YOU!<br><br>Join US over Discord!</span></span></card>`);
     return { id: web.elements.elements.COUNT, settings: settings };
 };
 web.elements.elements.title = (addto, settings) => {
@@ -255,7 +289,7 @@ web.elements.elements.search = (addto, settings) => {
     if (settings.drawOnLoad == true) {
         waitFor(80, settings.drawList);
     }
-    callback({ id: elementscount, settings: settings, input: $("#" + ecofbox).find("input") });
+    //callback({ id: elementscount, settings: settings, input: $("#" + ecofbox).find("input") });
     return { id: elementscount, settings: settings };
 }
 web.elements.elements.uploader = (addto, settings) => {
@@ -318,7 +352,7 @@ web.elements.elements.buttons = (addto, settings) => {
     web.style.require("elements");
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
-    elementscount++;
+
     if (settings["nocenter"] == true) {
         $(addto).append(`<div id="${elementscount}">`);
     } else {
@@ -392,13 +426,13 @@ web.elements.elements.window = (addto, settings) => {
     } else {
         $(addto).append(`<cardlist id="${elementscount}" style="max-width:${settings.max_width}" class="max-width grid_columns_1"><card id="3" class="popup disablehover"><span class="popup-title">${settings.text.title}</span>${settings.content}</card></cardlist>`);
     }
+    console.log(elementscount);
     if (settings.buttons != null) {
-        var ele = elementscount;
         $('#' + elementscount).find("card").append("<buttonlist></buttonlist>");
         for (let g = 0; g < settings.buttons.length; g++) {
             const element = settings.buttons[g];
             $('#' + elementscount).find("buttonlist").append("<button id=\"" + g + "\"class=\"" + element.color + "\">" + element.text + "</button>");
-            $('#' + elementscount).find("buttonlist").find("button")[g].onclick = () => element.onclick({ hide: () => $('#' + ele).addClass("hide"), show: () => $('#' + ele).removeClass("hide") });
+            $('#' + elementscount).find("buttonlist").find("button")[g].onclick = () => element.onclick({ hide: () => $('#' + elementscount).addClass("hide"), show: () => $('#' + elementscount).removeClass("hide") });
         }
     }
     return { id: web.elements.elements.COUNT, settings: settings };
@@ -408,7 +442,6 @@ web.elements.elements.imgList = (addto, settings) => {
     web.style.require("cards");
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
-    elementscount++;
     $(addto).append(`<cardlist id="${elementscount}" class=""></cardlist>`);
     if (settings.max_width) {
         $(`#${elementscount}`).addClass("max-width");
@@ -440,7 +473,6 @@ web.elements.elements.appList = (addto, settings) => {
     web.style.require("cards");
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
-    elementscount++;
     $(addto).append(`<cardlist id="${elementscount}" class="iconlist"></cardlist>`);
     if (settings.max_width) {
         $(`#${elementscount}`).addClass("max-width");
@@ -456,7 +488,6 @@ web.elements.elements.appList = (addto, settings) => {
     var elementscountid = elementscount;
     for (let index2 = 0; index2 < settings.app.length; index2++) {
         const app = settings.app[index2];
-        elementscount++;
         $(`#${elementscountid}`).append(`<card id="${elementscount}"class="iconcard"><img onerror="$(this).get(0).src += '#test'" src="${app.img}"><div><span class="title">${app.title}</span><span class="subtitle">${app.subtitle}</span>${app["button"] != undefined ? `<button ${app["disabled"] == true ? "disabled" : ""} onclick="${app.onclick}">${app.button}</button>` : ""}</div></card>`);
     }
     return { id: web.elements.elements.COUNT, settings: settings };
