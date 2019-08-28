@@ -528,11 +528,11 @@ span.titleg {
     font-size: 1.2rem;
 }
 span.titlew.spaceNoNav{
-    transition: all 250ms ease;
+    transition: margin-top 250ms ease;
     margin-top: 10rem;
 }
 .iconlist.spaceNoNav {
-    transition: all 250ms ease;
+    transition: margin-top 250ms ease;
     margin-top: 14rem;
 }
 .iconlist.spaceNoNav.blob img {

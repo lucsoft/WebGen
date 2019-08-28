@@ -158,7 +158,7 @@ web.elements.elements.title = (addto, settings) => {
 web.elements.elements.search = (addto, settings) => {
     web.style.require("elements");
     web.style.require("cards");
-    b.elements.elements.COUNT++;
+    web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
     var ecofbox = elementscount;
     $(addto).append(`<cardlist id="${elementscount}" class="max-width grid_columns_1"><card id="3" class="search disablehover"><i class="material-icons">close</i><input type="text" name="" id="" placeholder="${settings.searchtext}"><ul id="searchlist"></ul></card></cardlist>`);
