@@ -176,3 +176,6 @@ span.eventicon {
     backdrop-filter: blur(1rem);
     overflow: auto;
 }
+img.pixelated {
+    image-rendering: pixelated;
+}

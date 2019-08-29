@@ -993,8 +993,6 @@ list.two {
     display: block;
     margin-top: 0.5rem;
 }
-list.two button {
-}
 list.two button.one, input,select {
     display: block;
     background: var(--default-background-color);
@@ -1324,4 +1322,61 @@ list.one item.centered {
     100% {
       opacity: 0;
     }
+}
+.icons {
+    display: flex;
+    justify-content: space-around;
+}
+.iconE img {
+    width: 6rem;
+    display: block;
+}
+.iconE span {
+    background: #fdfdfd;
+    color: black;
+    padding: 0.5rem;
+    margin-top: 0.6rem;
+    border-radius: .2rem;
+    display: block;
+}
+.iconE span.uploaded:before {
+    content: "cloud_done";
+    font-family: "Material Icons Round";
+    font-size: 1.2rem;
+    display: inline-block;
+    float: left;
+    margin-left: 0.3rem;
+    margin-right: 0.4rem;
+}
+.tags {
+    background: var(--default-background-color);
+    overflow: hidden;
+    display: flex;
+    margin-right: 0.4rem;
+    margin-left: -0.5rem;
+    border-radius: .3rem;
+    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33);
+}
+.tags ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+.tags ul li {
+    display: unset;
+    background: #fdfdfd;
+    color: black;
+    padding: 0.3rem 0.7rem;
+    margin: 0.1rem;
+    transform: translate(57px, 0px);
+    border-radius: 0.1rem;
+    position: relative;
+    top: 0.8rem;
+    left: 0.2rem;
+}
+.tags .newtag {
+    margin: 0;
+    display: inline-block;
+    background: transparent;
 }
