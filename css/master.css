@@ -9,7 +9,6 @@
     --default-transition-time: 150ms;
     --default-fulllandingpageimg: url(https://images.pexels.com/photos/316093/pexels-photo-316093.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
 }
-
 article#fulllanding {
     margin-top: -5.1rem;
     padding-top: 5rem;
