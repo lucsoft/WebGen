@@ -48,7 +48,6 @@ body {
 }
 html {
     scroll-behavior: smooth;
-    
 }
 .hide {
     display: none !important;
