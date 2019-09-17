@@ -298,7 +298,7 @@ web.elements.elements.uploader = (addto, settings) => {
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
     if (settings.dontCreateLayout != true) {
-        addLayout("fixedWindow");
+        web.elements.layout("fixedWindow");
         $("#fixedWindow").addClass("upload");
     } else {
         $("#fixedWindow").addClass("maxed");
@@ -311,10 +311,10 @@ web.elements.elements.uploader = (addto, settings) => {
             </span>
             ${settings.form == undefined ? "" : settings.form}
             <ul></ul>
-            <input type="file" name="file" id="file">
+            <input type="file" name="file" id="file" ${settings.type == "multiple" ? "multiple" : ""}>
             <button type="submit" class="hide" id="uploaderUpload">forceupload</button>
         </form>`);
-    $("input#file").change(function () {
+    $("input#file").change(async function () {
         var ele = document.getElementById($(this).attr('id'));
         result = ele.files;
         for (var x = 0; x < result.length; x++) {
@@ -324,24 +324,40 @@ web.elements.elements.uploader = (addto, settings) => {
             uploadname = result[0].name.replace(".png", "");
             $("form.uploader").attr("action", settings.getUrl(uploadname));
         }
-        var data = new FormData($("form.uploader")[0]);
+        $("input#file").hide();
+        for (let wdfgr = 0; wdfgr < $("input#file")[0].files.length; wdfgr++) {
+            const element = $("input#file")[0].files[wdfgr];
 
-        $.ajax({
-            url: settings.getUploadUrl(uploadname),
-            type: 'post',
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            cache: false,
-            data: data,
-            beforeSend: () => {
-                $("form.uploader").find("ul").append(`<li id="uploader_${uploadname}"><img src="${settings.getUrl(uploadname)}"><span>${uploadname}</span><div class="progressS"><span style="width: 0%" class="progress"></span></li>`);
-            },
-            success: function () {
-                $("form.uploader").find("#uploader_" + uploadname).find(".progress").css("width", "100%");
-                settings.on("success", { uploader: $("#fixedWindow"), name: uploadname });
-            }
-        });
+            var data = new FormData();
+            data.append("file", element);
+            data.append("extension", element.type);
+            data.append("qualifier", "default");
+
+            var uploadname = element.name.split(".")[0];
+            var id = await settings.on("before", { name: uploadname });
+            $.ajax({
+                url: settings.getUploadUrl(uploadname, id),
+                type: 'post',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                data: data,
+                beforeSend: () => {
+                    $("form.uploader").find("ul").append(`<li id="uploader_${id}_default"><img src="${settings.getUrl(uploadname, id)}"><span>${uploadname}</span><div class="progressS"><span style="width: 0%" class="progress"></span></li>`);
+                },
+                success: function () {
+                    $("form.uploader").find("#uploader_" + id + "_default").find(".progress").css("width", "100%");
+                    settings.on("success", { uploader: $("#fixedWindow"), name: uploadname, element: $("form.uploader").find("#uploader_" + id + "_default"), id: id });
+                },
+                error: function (e) {
+                    console.log(e);
+
+                }
+            });
+        }
+
+        settings.on("done", { uploader: $("#fixedWindow") });
     });
     $("form.uploader").submit(function (evt) {
         evt.preventDefault();
@@ -401,13 +417,13 @@ web.elements.elements.loginWindow = (addto, settings) => {
             database.apiurl = $('#login_url').val() + "/lib/";
         }
         if (settings.text.email == null) {
-            if (settings.noSHA256) {
+            if (settings.noSHA256 || database.type == "websocket") {
                 database.login("admin", $("#login_password")[0].value, () => { settings.onError() }, () => { settings.afterlogin($("#login_password")[0].value); });
             } else {
                 database.login("admin", SHA256($("#login_password")[0].value), () => { settings.onError() }, () => { settings.afterlogin($("#login_password")[0].value); });
             }
         } else {
-            if (settings.noSHA256) {
+            if (settings.noSHA256 || database.type == "websocket") {
                 database.login($("#login_email")[0].value, $("#login_password")[0].value, () => { settings.onError() }, () => { settings.afterlogin(); });
             } else {
                 database.login($("#login_email")[0].value, SHA256($("#login_password")[0].value), () => { settings.onError() }, () => { settings.afterlogin(); });

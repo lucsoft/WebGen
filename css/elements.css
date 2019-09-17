@@ -527,11 +527,11 @@ span.titleg {
     margin-bottom: 0.6rem;
     font-size: 1.2rem;
 }
-span.titlew.spaceNoNav{
+span.titlew.spaceNoNav,cardlist.spaceHalf{
     transition: margin-top 250ms ease;
     margin-top: 10rem;
 }
-.iconlist.spaceNoNav {
+.iconlist.spaceNoNav,cardlist.spaceHalf {
     transition: margin-top 250ms ease;
     margin-top: 14rem;
 }
@@ -542,7 +542,7 @@ span.titlew.spaceNoNav{
     animation: blobout 500ms ease;
 }
 
-span.titlew.spaceHalf ,.iconlist.spaceHalf{
+span.titlew.spaceHalf ,.iconlist.spaceHalf,cardlist.spaceHalf{
     transition: all 250ms ease;
     margin-top: 4rem;
 }
@@ -1330,6 +1330,9 @@ list.one item.centered {
 .iconE img {
     width: 6rem;
     display: block;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: relative;
 }
 .iconE span {
     background: #fdfdfd;

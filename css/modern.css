@@ -1,0 +1,55 @@
+.profile {
+    position: fixed;
+    top: 0;
+    margin: 1rem;
+    right: 0;
+    width: 16rem;
+    background: var(--default-background-color);
+    color: var(--default-card-color);
+    border-radius: var(--default-card-radius);
+    overflow: hidden;
+    transition: all 500ms ease;
+}
+.profile li:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+.profile span.head span.title {
+    display: inline-block;
+    padding: 1.2rem 1.3rem;
+    float: left;
+    padding-bottom: 0;
+    margin-right: -13rem;
+}
+.profile img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+    padding: .5rem;
+    float: right;
+}
+.profile span.head {
+    display: block;
+    height: 3.4rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+    overflow: hidden;
+}
+.profile ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.profile li {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.profile.hidden ul {
+    display: none;
+}
+.profile.hidden span.head span.title {
+    display: none;
+}
+.profile.hidden {
+    width: 3.5rem;
+    background: none;
+    transition: all 500ms ease;
+}

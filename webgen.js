@@ -53,7 +53,7 @@ web.script.load = (url) => {
 }
 web.config = {};
 web.config.defaultBackground = "";
-web.config.loadedCSS = ["master", "cards", "elements", "search", "unit"];
+web.config.loadedCSS = ["master", "cards", "elements", "search", "unit", "nav", "modern"];
 web.config.layouts = ["page"];
 web.ready = () => { };
 web.enable = async () => {

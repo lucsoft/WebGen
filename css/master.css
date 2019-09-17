@@ -177,3 +177,84 @@ span.eventicon {
 img.pixelated {
     image-rendering: pixelated;
 }
+.uploader {
+    background: var(--default-background-color);
+    max-width: 59rem;
+    width: -webkit-fill-available;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 0);
+    height: 25rem;
+    overflow: hidden;
+}
+.uploader .title {
+    background: var(--default-background-color);
+    width: -webkit-fill-available;
+    position: absolute;
+    padding: 1.2rem;
+    z-index: 3;
+}
+.uploader button.two {
+    background: #1aab1a;
+    padding: 0.6rem 2.3rem;
+    float: right;
+    margin: 0.6rem;
+    z-index: 4;
+    position: relative;
+}
+.uploader input#file {
+    background: none;
+    box-shadow: none;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    border-radius: 0;
+    margin: 0;
+    z-index: 1;
+}
+.uploader ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-top: 3.59rem;
+    height: 21.5rem;
+    overflow-y: auto;
+}
+.uploader li {
+    background: rgba(0, 0, 0, 0.32);
+    padding: 1rem;
+    position: relative;
+}
+.uploader img {
+    width: 3.38rem;
+    image-rendering: pixelated;
+    margin: -0.6rem -.4rem;
+    margin-right: .6rem;
+}
+.uploader ul li span {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    display: inline-block;
+    margin: -1rem 1rem;
+    transform: translate(0, -8px);
+}
+.progressS {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.07);
+    width: 10rem;
+    border-radius: 1rem;
+    right: 2rem;
+    top: 2rem;
+    height: 0.6rem;
+    overflow: hidden;
+}
+.progressS span.progress {
+    background: #ffffffe0;
+    height: 2rem;
+    margin: 0;
+    transform: none;
+    transition: width 250ms linear;
+}
