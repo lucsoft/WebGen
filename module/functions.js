@@ -3,6 +3,9 @@ web.func.randomBackground = [];
 web.func.addBackground = (url) => {
     web.func.randomBackground.push(url);
 };
+web.func.setLandingImage = (url) => {
+    $("head").append("<style>:root{--default-fulllandingpageimg: url(" + url + ")}</style>");
+}
 web.func.setBackground = () => {
     $("body").css("background", `rgb(24,24,24) url("${web.func.randomBackground[Math.floor(Math.random() * web.func.randomBackground.length)]}") no-repeat fixed 50% 50% / cover padding-box border-box`);
 }

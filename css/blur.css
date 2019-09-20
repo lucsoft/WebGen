@@ -79,10 +79,10 @@ button {
 }
 button:disabled {
     background: rgba(0, 0, 0, 0.1);
-    color: rgb(143, 143, 143) !important;
+    color: rgb(143, 143, 143);
 }
 button:not(:disabled):hover {
-    background: rgba(0, 0, 0, 0.34) !important;
+    background: rgba(0, 0, 0, 0.34);
 }
 span.note {
     backdrop-filter: blur(1.5rem);
@@ -108,4 +108,24 @@ card.popup buttonlist button {
 }
 card.popup buttonlist button:hover {
     background: transparent !important;
+}
+@supports not (backdrop-filter:blur(5rem)) {
+    :root {
+        --default-background-color: rgb(21, 21, 21); 
+    }
+    button.one {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    card {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    .profile {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    #fixedWindow {
+        background: rgba(0,0,0,0.5);
+    }
+    input[type="text"], input[type="password"], input[type="number"], input[type="email"] {
+        background: rgb(21, 21, 21);
+    }
 }

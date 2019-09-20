@@ -13,6 +13,7 @@ progressbar::after {
     content: '';
     background: white;
     height: -webkit-fill-available;
+    height: -moz-available;
     width: var(--progress);
     display: block;
     transition: width 50ms ease;
@@ -107,6 +108,7 @@ audioPlayer .overlay .title {
     overflow: hidden;
     text-overflow: ellipsis;
     width: -webkit-fill-available;
+    width: -moz-available;
 }
 audioPlayer.noImg .overlay .title {
     margin-left: 1rem !important;
@@ -345,6 +347,7 @@ switch:after {
     width: 1.85rem;
     position: absolute;
     height: -webkit-fill-available; 
+    height: -moz-available;
     padding: .5rem .9rem;
     border-radius: .2rem;
     transition: all 350ms ease;
@@ -407,6 +410,13 @@ button.two {
     padding-left: 4rem;
     padding-right: 4rem;
 }
+button.three {
+    padding: 1rem 3rem;
+    margin-top: .1rem !important;
+    margin-right: 0.5rem !important;
+    display: inline-block;
+    backdrop-filter: none;
+}
 center button:active {
     transform: translate(0,0);
     box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0), 0px 5px 16px 0px rgba(0, 0, 0, 0.5) inset;
@@ -423,6 +433,7 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
     display: block;
     width: fill-available;
     width: -webkit-fill-available;
+    width: -moz-available;
     border-radius: 0.2rem;
     border: none;
     margin-top: 0.5rem;
@@ -1001,6 +1012,7 @@ list.two button.one, input,select {
     font-weight: 300;
     width: -webkit-fill-available;
     width: fill-available;
+    width: -moz-available;
     color: var(--default-card-color);
     font-family: "Roboto";
     padding: 1rem;
@@ -1028,7 +1040,6 @@ select.small {
     font-size: 1.1rem;
     padding: 0.7rem;
     margin-left: -0.5rem;
-    width: 14rem;
 }
 select.small:hover {
     transform: none;
@@ -1036,6 +1047,7 @@ select.small:hover {
 }
 list.two input {
     width: -webkit-fill-available;
+    width: -moz-available;
     margin-left: 0.5rem;
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -1323,10 +1335,17 @@ list.one item.centered {
       opacity: 0;
     }
 }
+
 .icons {
+    padding: 1rem 0 1.1rem;
+    border-radius: 0.2rem;
     display: flex;
     justify-content: space-around;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+
 }
+
 .iconE img {
     width: 6rem;
     display: block;
@@ -1365,6 +1384,9 @@ list.one item.centered {
     padding: 0;
     margin: 0;
     float: left;
+}
+span.text h1 {
+    font-weight: 300;
 }
 .tags ul li {
     display: unset;

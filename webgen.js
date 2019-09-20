@@ -5,11 +5,23 @@ web.style = {};
 web.oncommand = (ge) => { console.log("Event: onCommand = " + ge); };
 web.style.load = (theme, sub = ".css", url = "https://api.lucsoft.de/webgen/css/") => {
     return new Promise(function (resolve, reject) {
+        if (theme == "gray") {
+            document.getElementsByTagName("theme")[0].innerHTML = "";
+            $("body").css("background", "");
+            return;
+        }
         var link = document.createElement('link');
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
         link.onload = function () { resolve(); }
         link.setAttribute("href", `${url}${theme.toLowerCase()}${sub}`);
+
+        if (theme == "blur" || theme == "white" || theme == "dark") {
+            document.getElementsByTagName(theme == "blur" || theme == "white" || theme == "dark" ? "theme" : "csslinks")[0].innerHTML = "";
+            if (theme != "blur") {
+                $("body").css("background", "");
+            }
+        }
         document.getElementsByTagName(theme == "blur" || theme == "white" || theme == "dark" ? "theme" : "csslinks")[0].appendChild(link);
     });
 };

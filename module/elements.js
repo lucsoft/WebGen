@@ -144,6 +144,9 @@ web.elements.elements.cards = (addto, settings) => {
     }
     if (settings.max_width || settings.max_width == undefined) {
         $(`#${elementscount}`).addClass("max-width");
+        if (typeof settings.max_width == "string") {
+            $(`#${elementscount}`).css("max-width", settings.max_width);
+        }
     }
     if (settings["grid_columns"] != undefined) {
         $(`#${elementscount}`).addClass(`grid_columns_${settings.grid_columns}`);
@@ -180,7 +183,6 @@ web.elements.elements.title = (addto, settings) => {
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
     if (settings["subtitle"] != undefined || settings.length >= 1) {
-        $(addto).append(`<br>`);
         $(addto).append(`<h2 id="${elementscount}">${settings.title}</h2>`);
         $(addto).append(`<h4>${settings.subtitle}</h4>`);
         $(addto).append(`<br>`);
@@ -195,7 +197,7 @@ web.elements.elements.search = (addto, settings) => {
     web.elements.elements.COUNT++;
     var elementscount = web.elements.elements.COUNT;
     var ecofbox = elementscount;
-    $(addto).append(`<cardlist id="${elementscount}" class="max-width grid_columns_1"><card id="3" class="search disablehover"><i class="material-icons">close</i><input type="text" name="" id="" placeholder="${settings.searchtext}"><ul id="searchlist"></ul></card></cardlist>`);
+    $(addto).append(`<cardlist id="${elementscount}" class="max-width grid_columns_1" style="${typeof settings.max_width == "string" ? "max-width: " + settings.max_width + ";" : ""}"><card id="3" class="search disablehover"><i class="material-icons">close</i><input type="text" name="" id="" placeholder="${settings.searchtext}"><ul id="searchlist"></ul></card></cardlist>`);
     var list = [];
     $(`#${ecofbox}`).find("i")[0].onclick = () => {
         settings.onclose();
@@ -243,7 +245,7 @@ web.elements.elements.search = (addto, settings) => {
                 if (e.tags != undefined) {
                     e.tags.forEach(e => tags += '<span class="tag">' + e + '</span>');
                 }
-                $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null || e.icon == "" ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.text != undefined ? e.text : ""}${tags}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
+                $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null || e.icon == "" ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.category != null ? '<span class="tag category">' + e.category + '</span>' : ""}${e.text != undefined ? e.text : ""}${tags}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
                 if (settings.removeable == true) {
                     $(`#w${ecofbox + "w" + e.id}`)[0].onclick = () => {
                         settings.remove({ id: "w" + ecofbox + "w" + e.id, element: e, settings: settings });
@@ -266,15 +268,16 @@ web.elements.elements.search = (addto, settings) => {
 
         settings.onsearch($("#" + ecofbox).find("input")[0].value);
     };
-    settings.drawList = () => {
-        settings.list = settings.index.filter(e => e.name.toLowerCase().includes($("#" + ecofbox).find("input")[0].value.toLowerCase()));
+    settings.drawList = (input = $("#" + ecofbox).find("input")[0].value.toLowerCase()) => {
+        settings.list = settings.index.filter(e => e.name.toLowerCase().includes(input));
+
         $(`#${ecofbox}`).find("ul").html("");
         settings.list.forEach(e => {
             var tags = "";
             if (e.tags != undefined) {
                 e.tags.forEach(e => tags += '<span class="tag">' + e + '</span>');
             }
-            $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.text != undefined ? e.text : ""}${tags}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
+            $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.category != null ? '<span class="tag category">' + e.category + '</span>' : ""}${e.text != undefined ? e.text : ""}${tags}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
             if (settings.removeable == true) {
                 $(`#w${ecofbox + "w" + e.id}`)[0].onclick = () => {
                     settings.remove({ id: "w" + ecofbox + "w" + e.id, element: e, settings: settings });
@@ -307,7 +310,7 @@ web.elements.elements.uploader = (addto, settings) => {
         <form class="uploader" method="post" action="" enctype="multipart/form-data">
             <span class="info">
                 <span class="title">${settings.title}</span>
-                <button type="button" focus onclick="$('#fixedWindow').remove()" class="two">${settings.closebutton == null ? "Done" : settings.closebutton}</button>
+                ${settings.disableButton == true ? "" : `<button type="button" focus onclick="$('#fixedWindow').remove()" class="two">${settings.closebutton == null ? "Done" : settings.closebutton}</button>`}
             </span>
             ${settings.form == undefined ? "" : settings.form}
             <ul></ul>
@@ -351,8 +354,27 @@ web.elements.elements.uploader = (addto, settings) => {
                     settings.on("success", { uploader: $("#fixedWindow"), name: uploadname, element: $("form.uploader").find("#uploader_" + id + "_default"), id: id });
                 },
                 error: function (e) {
-                    console.log(e);
+                    $.ajax({
+                        url: settings.getUploadUrl(uploadname, id),
+                        type: 'put',
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        data: data,
+                        beforeSend: () => {
+                        },
+                        success: function () {
+                            $("form.uploader").find("#uploader_" + id + "_default").find(".progress").css("width", "100%");
+                            settings.on("success", { uploader: $("#fixedWindow"), name: uploadname, element: $("form.uploader").find("#uploader_" + id + "_default"), id: id });
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            $("form.uploader").find("#uploader_" + id + "_default").find(".progress").css("width", "100%");
+                            $("form.uploader").find("#uploader_" + id + "_default").find(".progress").css("background", "#e43f3f");
 
+                        }
+                    });
                 }
             });
         }
@@ -442,7 +464,6 @@ web.elements.elements.window = (addto, settings) => {
     } else {
         $(addto).append(`<cardlist id="${elementscount}" style="max-width:${settings.max_width}" class="max-width grid_columns_1"><card id="3" class="popup disablehover"><span class="popup-title">${settings.text.title}</span>${settings.content}</card></cardlist>`);
     }
-    console.log(elementscount);
     if (settings.buttons != null) {
         $('#' + elementscount).find("card").append("<buttonlist></buttonlist>");
         for (let g = 0; g < settings.buttons.length; g++) {
@@ -534,6 +555,11 @@ web.elements.add = (addto = "#page") => {
          * Currently no notes
          */
         bigTitle: (settings) => web.elements.elements.bigTitle(addto, settings),
+
+        /**
+         * Currently no notes
+         */
+        css: (name, value) => $(addto).css(name, value),
 
         /**
          * Currently no notes

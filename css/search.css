@@ -1,6 +1,7 @@
 #searchlist li left img {
     width: 2rem;
     image-rendering: pixelated;
+    image-rendering: crisp-edges;
     margin: -1rem 1rem;
     margin-left: -.5rem;
     transform: translate(-1px, -4px);
@@ -33,12 +34,14 @@ card.search {
 card.search input {
     margin: 0;
     width: -webkit-fill-available;
+    width: -moz-available;
     border-radius: 0;
     position: inherit;
     font-size: 1.8rem;
     padding: 1rem;
     box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.301);
     padding-left: 1.5rem;
+    padding-right: 4.2rem;
     cursor: text;
 }
 card.search i {
@@ -102,4 +105,19 @@ card.search ul li.gray:hover {
 }
 card.search ul li:first-child {
     padding-top: 1.5rem;
+}
+
+span.tag.category::before {
+    content: 'local_offer';
+    font-family: "Material Icons Round";
+    padding-right: 0.2rem;
+    padding-top: 0;
+    display: inline-block;
+    height: 0.1rem;
+    position: relative;
+    line-height: 0;
+    transform: translate(0, 0.2rem);
+}
+span.tag.category {
+    background: rgba(159, 159, 159, 0.41);
 }

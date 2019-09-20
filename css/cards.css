@@ -586,6 +586,18 @@ card.popup list.style2 item i {
     margin-right: 1rem;
     transform: translate(-0.2rem, 5px);
 }
+card.popup list.style2 item .right i {
+    color: white;
+    opacity: 0;
+    margin-right: -2.2rem;
+    font-size: 2.2rem;
+    transform: translate(.2rem, 11px);
+    transition: all 250ms ease;
+}
+card.popup list.style2 item:hover .right i {
+    margin-right: 1rem;
+    opacity: 1;
+}
 card.popup list.style2 item i.fliped {
     transform: translate(-0.2rem, 5px) rotate(180deg);
 }
@@ -733,8 +745,7 @@ button:focus {
     outline: none;
 }
 card.popup buttonlist button.red {
-    color: rgb(189, 31, 31);
-    font-weight: 300;
+    color: rgb(189, 31, 31) !important;
 }
 card.popup buttonlist button {
     border: none;
