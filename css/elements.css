@@ -1404,4 +1404,18 @@ span.text h1 {
     margin: 0;
     display: inline-block;
     background: transparent;
+    box-shadow: none;
+}
+div#tag_ava {
+    padding-top: 1.2rem;
+    margin-left: -0.5rem;
+    display: block;
+    position: relative;
+    width: 32rem;
+}
+#tag_ava span.tag {
+    margin-bottom: 0.6rem;
+    background: white;
+    color: black;
+    display: inline-block;
 }

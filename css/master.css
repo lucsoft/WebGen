@@ -251,6 +251,9 @@ img.pixelated {
     image-rendering: pixelated;
     margin: -0.6rem -.4rem;
     margin-right: .6rem;
+    min-height: 3.4rem;
+    min-width: 1rem;
+    display: inline-block;
 }
 .uploader ul li span {
     font-size: 1.5rem;
