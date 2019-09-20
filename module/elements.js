@@ -247,13 +247,18 @@ web.elements.elements.search = (addto, settings) => {
                 if (e.tags != undefined) {
                     e.tags.forEach(e => tags += '<span class="tag">' + e + '</span>');
                 }
-                $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null || e.icon == "" ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.category != null ? '<span class="tag category">' + e.category + '</span>' : ""}${e.text != undefined ? e.text : ""}${tags}${settings.downloadable == true ? `<i id="d${ecofbox + "d" + e.id}" class="material-icons-round">play_for_work</i>` : ""}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
+                $(`#${ecofbox}`).find("ul").append(`<li onclick="web.oncommand('${ecofbox + "#" + e.id}')"><left>${(e.icon != null || e.icon == "" ? `<img onerror="$(this).get(0).src += '#test'" src="${e.icon}">` : "") + e.name}</left><right>${e.category != null ? '<span class="tag category">' + e.category + '</span>' : ""}${e.text != undefined ? e.text : ""}${tags}${settings.downloadable == true ? `<i id="d${ecofbox + "d" + e.id}" class="material-icons-round">get_app</i>` : ""}${(settings.editable == true) ? `<i id="e${ecofbox + "e" + e.id}" class="material-icons-round">edit</i>` : ""}${(settings.removeable == true) ? `<i id="w${ecofbox + "w" + e.id}" class="material-icons-round">delete</i>` : ""}</right></li>`);
                 if (settings.removeable == true) {
                     $(`#w${ecofbox + "w" + e.id}`)[0].onclick = () => {
                         settings.remove({ id: "w" + ecofbox + "w" + e.id, element: e, settings: settings });
                     };
                     $(`#e${ecofbox + "e" + e.id}`)[0].onclick = () => {
                         settings.edit({ id: "e" + ecofbox + "e" + e.id, element: e, settings: settings });
+                    };
+                }
+                if (settings.downloadable == true) {
+                    $(`#d${ecofbox + "d" + e.id}`)[0].onclick = () => {
+                        settings.download({ id: "d" + ecofbox + "d" + e.id, element: e, settings: settings });
                     };
                 }
             });
