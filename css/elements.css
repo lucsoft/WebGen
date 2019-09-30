@@ -518,6 +518,13 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
 .note.error::after {
     content: '❌';
 }
+.note.warn::after {
+    content: '⚠️';
+    margin-top: -.7rem;
+}
+.note.developer::after {
+    content: "👨‍💻";
+}
 span.titlew {
     font-size: 5rem;
     font-weight: 200;

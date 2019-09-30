@@ -20,8 +20,10 @@ database.login = (email, password, error2, callback) => {
             } else if (response.login == false) {
                 error2();
             } else if (response.login == true) {
-                database.account = { client: response.client };
+                database.account = { client: response.client, email: email };
                 database.function.getUser();
+            } else if (response["type"] == "sync") {
+                database.message(response, database.socket);
             } else if (response["client"]["id"] == database.account.client.id) {
                 database.profile = response;
                 callback();
@@ -33,12 +35,24 @@ database.login = (email, password, error2, callback) => {
     };
 };
 database.function = {};
+database.message = (e, socket) => { console.log(e) };
 database.function.getUser = (user = "@me") => {
     database.socket.send(JSON.stringify({
         "action": "account",
         "target": {
             "user": user,
             "data": "all"
+        },
+        "auth": database.account.client
+    }))
+}
+database.function.setvDevice = (address, state) => {
+    database.socket.send(JSON.stringify({
+        "action": "trigger",
+        "type": "vdevices",
+        "data": {
+            "address": address,
+            "state": state
         },
         "auth": database.account.client
     }))
