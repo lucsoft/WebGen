@@ -1,0 +1,25 @@
+{
+  "name": "@lucsoft/webgen",
+  "version": "1.0.1",
+  "description": "WebGen now on NPM",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucsoft-DevTeam/WebGen.git"
+  },
+  "keywords": [
+    "webgen",
+    "lucsoft"
+  ],
+  "author": "lucsoft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucsoft-DevTeam/WebGen/issues"
+  },
+  "homepage": "https://github.com/lucsoft-DevTeam/WebGen"
+}
