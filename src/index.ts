@@ -41,6 +41,7 @@ export class WebGen {
     enable() {
         this.func = new Functions();
         this.ele = new Elements();
+        console.log("Loaded %cWebGen%cNPM", 'font-size: 2rem', 'font-size: 1.7rem;padding-left: 0.4rem;color:rgb(200,0,0)');
         this.ready();
     }
 }

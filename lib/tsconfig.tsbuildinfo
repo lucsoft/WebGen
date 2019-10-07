@@ -212,26 +212,26 @@
       ]
     },
     "exportedModulesMap": {
+      "../src/classes/elementsresponse.ts": [
+        "../src/classes/webgenelements.ts",
+        "../src/classes/elementmodify.ts"
+      ],
+      "../src/classes/webgenelements.ts": [
+        "../src/classes/elementsresponse.ts"
+      ],
+      "../src/classes/elements.ts": [
+        "../src/classes/elementmodify.ts",
+        "../src/classes/webgenelements.ts"
+      ],
+      "../src/classes/style.ts": [
+        "../src/classes/supportedthemes.ts"
+      ],
       "../src/index.ts": [
         "../src/classes/style.ts",
         "../src/classes/functions.ts",
         "../src/classes/elements.ts",
         "../src/classes/supportedthemes.ts",
         "../src/classes/profiledata.ts"
-      ],
-      "../src/classes/elements.ts": [
-        "../src/classes/elementmodify.ts",
-        "../src/classes/webgenelements.ts"
-      ],
-      "../src/classes/webgenelements.ts": [
-        "../src/classes/elementsresponse.ts"
-      ],
-      "../src/classes/elementsresponse.ts": [
-        "../src/classes/webgenelements.ts",
-        "../src/classes/elementmodify.ts"
-      ],
-      "../src/classes/style.ts": [
-        "../src/classes/supportedthemes.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -273,11 +273,11 @@
       "../src/classes/functions.ts",
       "../src/classes/elementmodify.ts",
       "../src/classes/elementsresponse.ts",
+      "../src/classes/webgenelements.ts",
+      "../src/classes/elements.ts",
       "../src/classes/supportedthemes.ts",
       "../src/classes/style.ts",
       "../src/classes/profiledata.ts",
-      "../src/classes/webgenelements.ts",
-      "../src/classes/elements.ts",
       "../src/index.ts"
     ]
   },
