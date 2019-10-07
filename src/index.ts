@@ -483,9 +483,6 @@ export class WebGen {
         this.ele = new Elements();
         this.ready();
     }
-    setDatabase() {
-
-    }
     constructor() {
 
     }
