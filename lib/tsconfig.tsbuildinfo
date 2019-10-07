@@ -141,9 +141,41 @@
         "version": "2e29c91abb0c3a575ff79670fa315b6c09ac7a57a7b42aa509fa17f0a224968f",
         "signature": "2e29c91abb0c3a575ff79670fa315b6c09ac7a57a7b42aa509fa17f0a224968f"
       },
+      "../src/classes/functions.ts": {
+        "version": "438ae07b8049afad379837cda95a75afebdd08f88df5cbe58cedf0f3e09c93ec",
+        "signature": "dfc9af3c169d709fad68c254525812f62274499159da1db1e534a77c9fa9a2e2"
+      },
+      "../src/classes/elementmodify.ts": {
+        "version": "82cc788328412d6dcb6e4a142a0f4e96664b9a6390bd565bf7f54a61d7ce7ee2",
+        "signature": "8cf25e236b73e598f7cba0f371dd9302574481a341df9656bc98f2a86b8839b8"
+      },
+      "../src/classes/elementsresponse.ts": {
+        "version": "5ab62871b21d09a22369d5970e25a833cd5827e262a4db217c77b3e531c4705e",
+        "signature": "0b053c27bc3fe68d8c6083fa8b03dcf34bb63fb41e3dd6e6359541d9d4d58606"
+      },
+      "../src/classes/webgenelements.ts": {
+        "version": "e8b1bc93ef6e627c12a9e212eba6b51dd0dd93d6e9fd5f945ebe15cda2f31bdc",
+        "signature": "e48b4b77f321aab75225b62236ef30ff96bd9cfafa7cabff7f0ece9a3b2c5776"
+      },
+      "../src/classes/elements.ts": {
+        "version": "7d5d27199e57d41fa45a4b46513895b789ff664f6ad72d94c375876ecd811546",
+        "signature": "2c0a290bfc0d5c9b970c2f295c340852f3553f5717600cfbfb333da0599acabb"
+      },
+      "../src/classes/supportedthemes.ts": {
+        "version": "5e32fb275a585e89880d84ec14efabd1bfe2b44f2741d5e5489ba4ac6ab3dcde",
+        "signature": "d55429c9d3b98862e99bbdd059d288c5e5f2fe19459c5c699282a3135de40127"
+      },
+      "../src/classes/style.ts": {
+        "version": "f26d58d523130c9a5ab7ca736d30c5329bfb84409ffcb98161ff132afea795af",
+        "signature": "098eabff7427baaf8da55460265289fd8cce38c0bc06b163d46a8e30b11eb299"
+      },
+      "../src/classes/profiledata.ts": {
+        "version": "5995e4a95676b9ee55c6ac361d559ac77d8b62c6ce9308dcd469ef5b88be509f",
+        "signature": "5bbba414e12f520b7e60c1ad9a045446c1f689dd1aa7886ca2ce7b7a49fceb78"
+      },
       "../src/index.ts": {
-        "version": "bbd71150e0bf7b4bc02579835e30eea1a1fe733178ebe4ea7c736841acb5eafa",
-        "signature": "62013731d04f6aab5b27cfc1a0436c2480a164b17004b2295b072c39ffcf4e5a"
+        "version": "16bfac20b1ce93dc9a082a763c694f569d85b48c00a124841c8f7d892648b48d",
+        "signature": "a5c155ae9496fc3821d8fad8ccccedc661d3d28b29d2a979a5f45ae9dbf01dff"
       }
     },
     "options": {
@@ -155,8 +187,53 @@
       "outDir": "./",
       "configFilePath": "../tsconfig.json"
     },
-    "referencedMap": {},
-    "exportedModulesMap": {},
+    "referencedMap": {
+      "../src/classes/elementsresponse.ts": [
+        "../src/classes/elementmodify.ts",
+        "../src/classes/webgenelements.ts"
+      ],
+      "../src/classes/webgenelements.ts": [
+        "../src/classes/elementsresponse.ts",
+        "../src/classes/elementmodify.ts"
+      ],
+      "../src/classes/elements.ts": [
+        "../src/classes/elementmodify.ts",
+        "../src/classes/webgenelements.ts"
+      ],
+      "../src/classes/style.ts": [
+        "../src/classes/supportedthemes.ts"
+      ],
+      "../src/index.ts": [
+        "../src/classes/functions.ts",
+        "../src/classes/elements.ts",
+        "../src/classes/supportedthemes.ts",
+        "../src/classes/style.ts",
+        "../src/classes/profiledata.ts"
+      ]
+    },
+    "exportedModulesMap": {
+      "../src/index.ts": [
+        "../src/classes/style.ts",
+        "../src/classes/functions.ts",
+        "../src/classes/elements.ts",
+        "../src/classes/supportedthemes.ts",
+        "../src/classes/profiledata.ts"
+      ],
+      "../src/classes/elements.ts": [
+        "../src/classes/elementmodify.ts",
+        "../src/classes/webgenelements.ts"
+      ],
+      "../src/classes/webgenelements.ts": [
+        "../src/classes/elementsresponse.ts"
+      ],
+      "../src/classes/elementsresponse.ts": [
+        "../src/classes/webgenelements.ts",
+        "../src/classes/elementmodify.ts"
+      ],
+      "../src/classes/style.ts": [
+        "../src/classes/supportedthemes.ts"
+      ]
+    },
     "semanticDiagnosticsPerFile": [
       "c:/users/lucas.jank/appdata/roaming/npm/node_modules/typescript/lib/lib.es5.d.ts",
       "c:/users/lucas.jank/appdata/roaming/npm/node_modules/typescript/lib/lib.es2015.d.ts",
@@ -193,6 +270,14 @@
       "c:/users/lucas.jank/appdata/roaming/npm/node_modules/typescript/lib/lib.es2019.string.d.ts",
       "c:/users/lucas.jank/appdata/roaming/npm/node_modules/typescript/lib/lib.es2019.symbol.d.ts",
       "c:/users/lucas.jank/appdata/roaming/npm/node_modules/typescript/lib/lib.es2019.full.d.ts",
+      "../src/classes/functions.ts",
+      "../src/classes/elementmodify.ts",
+      "../src/classes/elementsresponse.ts",
+      "../src/classes/supportedthemes.ts",
+      "../src/classes/style.ts",
+      "../src/classes/profiledata.ts",
+      "../src/classes/webgenelements.ts",
+      "../src/classes/elements.ts",
       "../src/index.ts"
     ]
   },
