@@ -1,13 +1,16 @@
 {
   "name": "@lucsoft/webgen",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "WebGen now on NPM",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "bin/index.js",
+  "types": "bin/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lucsoft-DevTeam/WebGen.git"
@@ -21,5 +24,11 @@
   "bugs": {
     "url": "https://github.com/lucsoft-DevTeam/WebGen/issues"
   },
-  "homepage": "https://github.com/lucsoft-DevTeam/WebGen"
+  "homepage": "https://github.com/lucsoft-DevTeam/WebGen",
+  "devDependencies": {
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  }
 }

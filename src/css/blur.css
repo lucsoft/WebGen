@@ -1,0 +1,148 @@
+:root {
+    --default-background-color: rgba(0, 0, 0, 0.575); 
+    --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
+    --default-card-radius:4px;
+    --default-card-margin: 0.6rem;
+    --default-card-padding: 1.5rem;
+    --default-card-color: white;
+    --default-backdrop: blur(1.5rem);
+}
+body {
+    background: url(https://images.unsplash.com/photo-1528298846924-5119985beb1b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjI0MX0&auto=format&fit=crop&w=1267&q=80)no-repeat center center fixed;
+    background-size: cover;
+    background-color: rgb(24, 24, 24);
+    background-attachment: fixed;
+    
+}
+card {
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    color: white !important;
+}
+card.popup buttonlist button {
+    color:white;
+}
+card.usercard .user a {
+    color: white;
+}
+musicmodule musicplayer {
+    background: rgb(14, 14, 14);
+}
+musicmodule musicplayer controls playbutton i {
+    color: rgb(219, 219, 219);
+}
+input[type="text"].flatweb {
+    background: rgb(14, 14, 14);
+    color: white;
+}
+input[type="text"].flatweb::-webkit-input-placeholder {
+    color: rgb(170, 170, 170);
+}
+card.popup box {
+    background: rgba(0, 0, 0, 0.55);
+}
+span.titlew,h2,h4,span.subtitlew {
+    text-shadow: 0 0 12px rgb(0, 0, 0);
+}
+span.subtitlew {
+    font-weight: 300;
+}
+nav {
+    transition: all 500ms ease !important; 
+}
+nav.fixed.style_nobox {
+    box-shadow: 0px 5px 14px 0px rgba(0, 0, 0, 0.69);
+    background: rgba(10, 10, 10, 0.9);
+}
+nav.style_nobox ul li {
+    
+    text-shadow: 0 0 12px rgb(0, 0, 0);
+    color:white;
+}
+nav.fixed.style_nobox {
+    background: rgba(0, 0, 0, 0.575);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    
+}
+nav.fixed.style_nobox ul li {
+    font-size: 1.3rem;
+
+}
+button {
+    background: rgba(0, 0, 0, 0.575);
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+    color:white !important;
+    overflow: hidden;
+}
+button:disabled {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgb(143, 143, 143);
+}
+button:not(:disabled):hover {
+    background: rgba(0, 0, 0, 0.34);
+}
+span.note {
+    backdrop-filter: blur(1.5rem);
+    -webkit-backdrop-filter: blur(1.5rem);
+}
+card.search ul {
+    background: none;
+}
+card.search ul li right {
+    color: white;
+}
+card.search ul li {
+    border-bottom: 1px solid rgba(214, 214, 214, 0.11);
+}
+card.search ul li:hover {
+    background: rgba(231, 231, 231, 0.09);
+}
+card.search input {
+    background: rgba(0,0,0,0.1);
+}
+card.popup buttonlist button {
+    backdrop-filter: none;
+}
+card.popup buttonlist button:hover {
+    background: transparent !important;
+}
+@supports not (backdrop-filter:blur(5rem)) {
+    :root {
+        --default-background-color: rgb(21, 21, 21); 
+    }
+    button.one {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    card {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    .profile {
+        background: rgba(0, 0, 0, 0.93);
+    }
+    #fixedWindow {
+        background: rgba(0,0,0,0.5);
+    }
+    input[type="text"], input[type="password"], input[type="number"], input[type="email"] {
+        background: rgb(21, 21, 21);
+    }
+}
+card.login input[type="button"] {
+    background: rgba(0,0,0,0.6);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.342) inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
