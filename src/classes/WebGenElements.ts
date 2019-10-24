@@ -1,5 +1,6 @@
 import { ElementResponse } from "./ElementsResponse";
 import { ElementModifyer } from "./ElementModify";
+import { Style, availableStyles } from "./Style";
 
 class Tiny {
     cardProgress(id: string) {
@@ -21,10 +22,12 @@ class Tiny {
 *       Add imgList
 */
 export class WebGenElements {
-    ele: HTMLElement;
+    private ele: HTMLElement;
     tiny: Tiny = new Tiny();
-    constructor(element: HTMLElement) {
+    style: Style;
+    constructor(element: HTMLElement, style: Style) {
         this.ele = element;
+        this.style = style;
     }
     private getID() {
         return Math.round(Math.random() * 100000000 + 10000000).toString()
@@ -35,23 +38,29 @@ export class WebGenElements {
         i.innerHTML = name;
         return i;
     }
-    style(style: string) {
+    setStyle(style: string) {
         this.ele.setAttribute("style", style);
     }
 
 
-    bigTitle(settings: { img: string | undefined, title: string, subtitle: string | "", spaceingTop: string | undefined }) {
+    bigTitle(
+        settings: {
+            img?: string | undefined,
+            title: string,
+            subtitle?: string | "",
+            spaceingTop?: string | undefined
+        }) {
         var element = document.createElement("span");
         element.id = this.getID();
         if (settings.img != undefined) {
             element.classList.add("titlew", "withimg");
-            element.innerHTML = `<img src="${settings.img}", stype="margin-bottom:3.2rem"><br>${settings.title}${settings.subtitle != "" ? `<span class="subtitlew">${settings.subtitle}</span>` : ``}`;
+            element.innerHTML = `<img src="${settings.img}", stype="margin-bottom:3.2rem"><br>${settings.title}${settings.subtitle ? `<span class="subtitlew">${settings.subtitle}</span>` : ``}`;
         } else {
             element.classList.add("titlew");
             if (settings.title.indexOf("y") != -1 || settings.title.indexOf("j") != -1 || settings.title.indexOf("q") != -1 || settings.title.indexOf("p") != -1) {
-                element.innerHTML = `${settings.title}<span class="subtitlew" style="margin-top: 0.5rem;">${settings.subtitle}</span>`;
+                element.innerHTML = `${settings.title}${settings.subtitle ? `<span class="subtitlew" style="margin-top: 0.5rem;">${settings.subtitle}</span>` : ''}`;
             } else {
-                element.innerHTML = `${settings.title}<span class="subtitlew">${settings.subtitle}</span>`;
+                element.innerHTML = `${settings.title}${settings.subtitle ? `<span class="subtitlew">${settings.subtitle}</span>` : ''}`;
             }
         }
         if (settings.spaceingTop != undefined) {
@@ -138,8 +147,11 @@ export class WebGenElements {
         return new ElementResponse(this, element);
     }
 
-    title(settings: { title: string, subtitle: string | false }) {
-        if (settings.subtitle != false) {
+    title(settings: {
+        title: string,
+        subtitle?: string
+    }) {
+        if (settings.subtitle) {
             var element = document.createElement("h2");
             element.id = this.getID();
             element.innerHTML = settings.title;
@@ -210,9 +222,9 @@ export class WebGenElements {
                 tags.forEach(e => {
 
                     if (e.startsWith("#")) {
-                        list = list.filter(x => x.tags.includes(e.slice(1)));
+                        list = list.filter(x => x.tags.indexOf(e.slice(1)) != -1);
                     } else if (e.startsWith("!")) {
-                        list = list.filter(x => !x.tags.includes(e.slice(1)));
+                        list = list.filter(x => x.tags.indexOf(e.slice(1)) == -1);
                     }
                     if (list.length == 0) {
                         return;
@@ -337,22 +349,38 @@ export class WebGenElements {
         return new ElementResponse(this, element);
     }
 
-    window(settings: { maxWidth: false | string | "default", title: string | false, buttons: { color: string, text: string, onclick: string }[] | false, content: string | HTMLElement }) {
+    window(settings: {
+        maxWidth?: string | "default",
+        title?: string,
+        buttons?: {
+            color: string,
+            text: string,
+            onclick: string
+        }[],
+        content: string | HTMLElement
+    }) {
+        this.style.require(availableStyles.cards);
+
         var element = document.createElement("cardslist");
         element.id = this.getID();
         element.classList.add("grid_columns_1");
-        if (settings.maxWidth != false) {
+        element.classList.add("window");
+        if (settings.maxWidth) {
             element.classList.add("max_width");
         }
-        if (settings.maxWidth != "default") {
+        if (settings.maxWidth != "default" && settings.maxWidth) {
             element.setAttribute("style", `max-width:${settings.maxWidth}`);
         }
         var card = document.createElement("card");
-        if (settings.title != false) {
-            card.append(`<span class="popup-title">${settings.title}</span>`)
+        if (settings.title) {
+            var spantitle = document.createElement("span");
+            spantitle.classList.add('popup-title');
+            spantitle.innerHTML = settings.title;
+            card.append(spantitle);
         }
+        card.classList.add("popup");
         card.append(settings.content);
-        if (settings.buttons != false) {
+        if (settings.buttons) {
             var buttonlist = document.createElement("buttonlist");
             card.append();
             settings.buttons.forEach(x => {
@@ -364,34 +392,4 @@ export class WebGenElements {
         this.ele.append(element);
         return new ElementResponse(this, element);
     }
-}
-class Elements {
-    layout(id: string, remove: true | false = false) {
-        if (remove) {
-            var ele = document.getElementById(id);
-            if (ele != undefined) {
-                ele.remove();
-            }
-        } else {
-            var child = document.createElement("article")
-            child.id = id;
-            document.getElementsByTagName("body")[0].appendChild(child);
-            return { element: new ElementModifyer(child) };
-        }
-    }
-    add(addto: { type: "id" | "firstTag", name: string } = { type: "id", name: "page" }, ) {
-        if (addto.type == "id") {
-            var ele = document.getElementById(addto.name);
-            if (ele != undefined) {
-                return new WebGenElements(ele);
-            }
-            throw "Element not found";
-        } else if (addto.type == "firstTag") {
-            var eleG = document.getElementsByTagName(addto.name)[0];
-            if (eleG != undefined) {
-                return new WebGenElements(<HTMLElement>eleG);
-            }
-        }
-    }
-
 }

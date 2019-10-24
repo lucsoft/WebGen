@@ -8,6 +8,7 @@ class Script {
     constructor() {
 
     }
+
     load(url: string) {
         var script = document.createElement("script")
         script.type = "text/javascript";
@@ -33,15 +34,15 @@ export class WebGen {
     style: Style = new Style();
     script: Script = new Script();
     config: Config = new Config();
-    func!: Functions
-    ready: Function = () => { };
-    ele!: Elements
+    functions: Functions = new Functions();
+    elements: Elements = new Elements(this.style);
+
     supported: typeof SupportedThemes = SupportedThemes;
     database: typeof databaseType = databaseType;
+    ready: Function = () => { };
     enable() {
-        this.func = new Functions();
-        this.ele = new Elements();
         console.log("Loaded %cWebGen%cNPM", 'font-size: 2rem', 'font-size: 1.7rem;padding-left: 0.4rem;color:rgb(200,0,0)');
+        this.style.loadDefaults();
         this.ready();
     }
 }
@@ -59,7 +60,7 @@ export class DataConnect {
     login(password: string, email: string) {
         return new Promise((done) => {
             if (this.type == databaseType.lsREST) {
-                this.gen.func.request({
+                this.gen.functions.request({
                     methode: "GET",
                     data: "",
                     error: () => console.log,

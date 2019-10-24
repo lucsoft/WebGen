@@ -1,4 +1,12 @@
 export class Functions {
+    getBody(): HTMLElement {
+        const body = document.querySelector('body');
+        if (body) {
+            return body;
+        } else {
+            throw "Didnt find Body";
+        }
+    }
     private urlParams: URLSearchParams = new URLSearchParams(window.location.search);
     encrypt(str: string) {
         var arr1 = [];

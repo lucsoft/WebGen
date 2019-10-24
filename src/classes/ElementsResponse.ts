@@ -2,12 +2,12 @@ import { ElementModifyer } from "./ElementModify";
 import { WebGenElements } from "./WebGenElements";
 
 export class ElementResponse {
-    e: WebGenElements;
-    id: string;
-    mod: ElementModifyer;
+    next: WebGenElements;
+    getId: string;
+    modify: ElementModifyer;
     constructor(elements: WebGenElements, element: HTMLElement) {
-        this.e = elements;
-        this.id = element.id;
-        this.mod = new ElementModifyer(element);
+        this.next = elements;
+        this.getId = element.id;
+        this.modify = new ElementModifyer(element);
     }
 }

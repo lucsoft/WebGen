@@ -4,6 +4,13 @@ import { SupportedThemes } from "../classes/SupportedThemes";
 var web: WebGen = new WebGen();
 
 web.ready = () => {
-    web.style.setTheme(SupportedThemes.dark);
+    web.elements.add(web.functions.getBody()).bigTitle({
+        title: "water"
+    }).next.window({
+        title: 'miau',
+        content: 'lol'
+    });
+
+    web.style.setTheme(SupportedThemes.blur);
 };
-web.enable();
+document.addEventListener("DOMContentLoaded", () => web.enable());
