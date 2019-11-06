@@ -2,8 +2,8 @@
   "name": "@lucsoft/webgen",
   "version": "1.0.6",
   "description": "WebGen now on NPM",
-  "main": "bin/index.js",
-  "types": "bin/index.d.ts",
+  "main": "bin/webgen.js",
+  "types": "bin/webgen.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"

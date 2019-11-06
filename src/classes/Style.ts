@@ -11,35 +11,15 @@ export class Style {
         var theme = document.createElement("theme");
         document.getElementsByTagName("head")[0].append(csslinks)
         document.getElementsByTagName("head")[0].append(theme);
+        this.loadDefaults();
     }
-    setTheme(theme: SupportedThemes) {
-        switch (theme) {
-            case SupportedThemes.dark:
-                console.log('test');
-                this.load('../css/dark.css');
-                break;
-            case SupportedThemes.white:
-                console.log('white');
-                this.load('../css/white.css');
-                break;
-            case SupportedThemes.blur:
-                console.log('blur');
-                this.load('../css/blur.css');
-                break;
 
-            default:
-                break;
-        }
-    }
-    require(style: availableStyles) {
-        if (this.loadedCSS.indexOf(style) == -1) {
-            this.load(style);
-        }
-    }
+
     loadDefaults() {
-        const defaults = ["../css/master.css", "../css/elements.css"];
+        const defaults = ["../css/master.css", "../css/elements.css", "../css/cards.css"];
         defaults.forEach((element) => {
             this.load(element);
+            console.log(element);
         })
     }
     load(url: string) {

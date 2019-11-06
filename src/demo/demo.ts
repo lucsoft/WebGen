@@ -1,5 +1,5 @@
 import "babel-polyfill";
-import { WebGen } from "../index";
+import { WebGen } from "../webgen";
 import { SupportedThemes } from "../classes/SupportedThemes";
 var web: WebGen = new WebGen();
 
@@ -10,7 +10,5 @@ web.ready = () => {
         title: 'miau',
         content: 'lol'
     });
-
-    web.style.setTheme(SupportedThemes.blur);
 };
-document.addEventListener("DOMContentLoaded", () => web.enable());
+document.addEventListener("DOMContentLoaded", () => web.enable(SupportedThemes.blur));

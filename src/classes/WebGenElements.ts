@@ -7,7 +7,10 @@ class Tiny {
         return `<span class="cardprogress"><span class="pro" id="${id}"></span></span`;
     }
     format(text: string) {
-        return `<span class="text">${text}</span>`;
+        const formt = document.createElement("span");
+        formt.classList.add('text');
+        formt.innerHTML = text;
+        return formt;
     }
     enableDrag(id: string) {
         var drag = false;
@@ -125,7 +128,7 @@ export class WebGenElements {
     }
 
     cards(settings: { small: boolean, hidden: boolean, columns: "auto" | "1" | "2" | "3" | "4" | "5", maxWidth: false | string | "default", cards: { title: string, id: string, subtitle: string | false }[] }) {
-        var element = document.createElement("cardslist");
+        var element = document.createElement("cardlist");
         element.id = this.getID();
         if (settings.small) {
             element.classList.add("small");
@@ -300,7 +303,7 @@ export class WebGenElements {
     }
 
     login(settings: { text: string, url: false | string, email: false | string, button: string, login: (password: HTMLInputElement, email: HTMLInputElement, url: HTMLInputElement, master: HTMLElement) => any }) {
-        var element = document.createElement("cardslist");
+        var element = document.createElement("cardlist");
         element.id = this.getID();
 
         var card = document.createElement("card");
@@ -350,7 +353,7 @@ export class WebGenElements {
     }
 
     window(settings: {
-        maxWidth?: string | "default",
+        maxWidth?: number | "default" | "disabled",
         title?: string,
         buttons?: {
             color: string,
@@ -358,18 +361,15 @@ export class WebGenElements {
             onclick: string
         }[],
         content: string | HTMLElement
-    }) {
-        this.style.require(availableStyles.cards);
-
-        var element = document.createElement("cardslist");
+    } = { content: '', maxWidth: 'default' }) {
+        var element = document.createElement("cardlist");
         element.id = this.getID();
         element.classList.add("grid_columns_1");
-        element.classList.add("window");
-        if (settings.maxWidth) {
-            element.classList.add("max_width");
+        if (settings.maxWidth != "disabled") {
+            element.classList.add("max-width");
         }
-        if (settings.maxWidth != "default" && settings.maxWidth) {
-            element.setAttribute("style", `max-width:${settings.maxWidth}`);
+        if (settings.maxWidth != "default" && settings.maxWidth != "disabled" && settings.maxWidth) {
+            element.setAttribute("style", `max-width:${settings.maxWidth}rem`);
         }
         var card = document.createElement("card");
         if (settings.title) {
@@ -379,7 +379,11 @@ export class WebGenElements {
             card.append(spantitle);
         }
         card.classList.add("popup");
-        card.append(settings.content);
+        if (typeof settings.content == "string") {
+            card.append(this.tiny.format(settings.content));
+        } else {
+            card.append(settings.content);
+        }
         if (settings.buttons) {
             var buttonlist = document.createElement("buttonlist");
             card.append();

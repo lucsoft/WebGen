@@ -40,9 +40,8 @@ export class WebGen {
     supported: typeof SupportedThemes = SupportedThemes;
     database: typeof databaseType = databaseType;
     ready: Function = () => { };
-    enable() {
+    enable(theme: SupportedThemes) {
         console.log("Loaded %cWebGen%cNPM", 'font-size: 2rem', 'font-size: 1.7rem;padding-left: 0.4rem;color:rgb(200,0,0)');
-        this.style.loadDefaults();
         this.ready();
     }
 }
