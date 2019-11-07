@@ -6,6 +6,6 @@ npm i
 
 npm i -g parcel
 
-parcel index.html ./src/css/*.*
+parcel index.html
 
-http://localhost:1234/index.html
+http://localhost:1234

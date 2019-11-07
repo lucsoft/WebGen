@@ -26,9 +26,11 @@
   },
   "homepage": "https://github.com/lucsoft-DevTeam/WebGen",
   "devDependencies": {
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "lit-element": "^2.2.1",
+    "typescript-lit-html-plugin": "^0.9.0"
   }
 }
