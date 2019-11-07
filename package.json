@@ -1,36 +1,36 @@
 {
-  "name": "@lucsoft/webgen",
-  "version": "1.0.6",
-  "description": "WebGen now on NPM",
-  "main": "bin/webgen.js",
-  "types": "bin/webgen.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
-  },
-  "browserslist": [
-    "last 1 chrome versions"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lucsoft-DevTeam/WebGen.git"
-  },
-  "keywords": [
-    "webgen",
-    "lucsoft"
-  ],
-  "author": "lucsoft",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lucsoft-DevTeam/WebGen/issues"
-  },
-  "homepage": "https://github.com/lucsoft-DevTeam/WebGen",
-  "devDependencies": {
-    "typescript": "^3.7.2"
-  },
-  "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "lit-element": "^2.2.1",
-    "typescript-lit-html-plugin": "^0.9.0"
-  }
+    "name": "@lucsoft/webgen",
+    "version": "1.1.0",
+    "description": "WebGen now on NPM",
+    "main": "bin/webgen.js",
+    "types": "bin/webgen.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
+    },
+    "browserslist": [
+        "last 1 chrome versions"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lucsoft-DevTeam/WebGen.git"
+    },
+    "keywords": [
+        "webgen",
+        "lucsoft"
+    ],
+    "author": "lucsoft",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/lucsoft-DevTeam/WebGen/issues"
+    },
+    "homepage": "https://github.com/lucsoft-DevTeam/WebGen",
+    "devDependencies": {
+        "typescript": "^3.7.2"
+    },
+    "dependencies": {
+        "babel-polyfill": "^6.26.0",
+        "lit-element": "^2.2.1",
+        "typescript-lit-html-plugin": "^0.9.0"
+    }
 }

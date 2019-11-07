@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "incremental": true,
-    "target": "es6",
-    "module": "commonjs",
-    "strict": true,
-    "declaration": true,
-    "outDir": "bin"
-  },
-  "include": [
-    "src/**/*",
-    "declarations.d.ts"
-  ]
+    "compilerOptions": {
+        "incremental": true,
+        "target": "esnext",
+        "module": "commonjs",
+        "strict": true,
+        "declaration": true,
+        "outDir": "bin"
+    },
+    "include": [
+        "src/**/*",
+        "declarations.d.ts"
+    ]
 }
