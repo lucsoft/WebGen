@@ -266,10 +266,10 @@ export class WebGenElements
         var ul: HTMLUListElement = document.createElement("ul")
         input.placeholder = settings.placeholder || "Search...";
         var icon = this.getMaterialIcon("close");
-        icon.onclick = () =>
-        {
-            settings.onclose ? settings.onclose() : undefined;
-        };
+
+        icon.onclick = () => settings.onclose;
+
+
         var list: SearchEntry[] = [];
         input.onkeyup = (d: KeyboardEvent) =>
         {
@@ -310,10 +310,10 @@ export class WebGenElements
 
                     if (e.startsWith("#"))
                     {
-                        list = list.filter(x => x.tags?.indexOf(e.slice(1)) != -1);
+                        list = list.filter(x => x.tags ? x.tags.indexOf(e.slice(1)) != -1 : false);
                     } else if (e.startsWith("!"))
                     {
-                        list = list.filter(x => x.tags?.indexOf(e.slice(1)) == -1);
+                        list = list.filter(x => x.tags ? x.tags.indexOf(e.slice(1)) == -1 : false);
                     }
                     if (list.length == 0)
                     {
@@ -339,23 +339,24 @@ export class WebGenElements
                 var li = document.createElement("li");
                 li.onclick = () =>
                 {
-                    settings.actions?.click ? settings.actions.click(x.id) : undefined;
+                    if (settings.actions)
+                        settings.actions.click ? settings.actions.click(x.id) : undefined;
                 };
-                li.innerHTML = `<left>${(x.icon) ? `<img onerror="if(!this.src.endsWith('#test#test')) {this.src += '#test';} else {this.remove()} " src="${x.icon}">` : ""}${x.name}</left><right>${x.category ? `<span class="tag category">${x.category}</span>` : ""}${x.text != undefined ? x.text : ""}${tags}${settings.allowed?.donwload == true ? `<i id="download${x.id}" class="material-icons-round">get_app</i>` : ""}${(settings.allowed?.edit == true) ? `<i id="edit${x.id}" class="material-icons-round">edit</i>` : ""}${(settings.allowed?.remove == true) ? `<i id="remove${x.id}" class="material-icons-round">delete</i>` : ""}</right>`;
+                li.innerHTML = `<left>${(x.icon) ? `<img onerror="if(!this.src.endsWith('#test#test')) {this.src += '#test';} else {this.remove()} " src="${x.icon}">` : ""}${x.name}</left><right>${x.category ? `<span class="tag category">${x.category}</span>` : ""}${x.text != undefined ? x.text : ""}${tags}${settings.allowed && settings.allowed.donwload == true ? `<i id="download${x.id}" class="material-icons-round">get_app</i>` : ""}${(settings.allowed && settings.allowed.edit == true) ? `<i id="edit${x.id}" class="material-icons-round">edit</i>` : ""}${(settings.allowed && settings.allowed.remove == true) ? `<i id="remove${x.id}" class="material-icons-round">delete</i>` : ""}</right>`;
                 var downloadE = document.getElementById("download" + x.id);
                 var editE = document.getElementById("edit" + x.id);
                 var removeE = document.getElementById("edit" + x.id);
                 if (downloadE != undefined)
                 {
-                    downloadE.onclick = () => settings.actions?.download;
+                    downloadE.onclick = () => settings.actions ? settings.actions.download : undefined;
                 }
                 if (editE != undefined)
                 {
-                    editE.onclick = () => settings.actions?.edit;
+                    editE.onclick = () => settings.actions ? settings.actions.edit : undefined;
                 }
                 if (removeE != undefined)
                 {
-                    removeE.onclick = () => settings.actions?.remove;
+                    removeE.onclick = () => settings.actions ? settings.actions.remove : undefined;
                 }
                 ul.appendChild(li);
             });

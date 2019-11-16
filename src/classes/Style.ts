@@ -13,35 +13,39 @@ import { SupportedThemes } from './SupportedThemes';
 
 export class Style
 {
+    private head = document.querySelector('head');
     constructor()
     {
         var roboto = document.createElement('link');
         roboto.rel = "stylesheet";
         roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300|Material+Icons|Material+Icons+Round";
-        document.querySelector('head')?.append(roboto);
+        this.head = document.querySelector('head');
+        if (this.head)
+            this.head.append(roboto);
     }
     loadTheme(theme: SupportedThemes)
     {
+        if (!this.head) return;
         switch (theme)
         {
             case SupportedThemes.blur:
                 var themeStyle = document.createElement('style');
                 themeStyle.innerHTML = blur.cssText.replace('%base64Image%', `'${base64Image}'`);
                 themeStyle.id = 'blurStyle';
-                document.querySelector('head')?.appendChild(themeStyle);
+                this.head.appendChild(themeStyle);
                 break;
 
             case SupportedThemes.dark:
                 var themeStyle = document.createElement('style');
                 themeStyle.innerHTML = dark.cssText;
                 themeStyle.id = 'darkStyle';
-                document.querySelector('head')?.appendChild(themeStyle);
+                this.head.appendChild(themeStyle);
                 break;
             case SupportedThemes.white:
                 var themeStyle = document.createElement('style');
                 themeStyle.innerHTML = white.cssText;
                 themeStyle.id = 'whiteStyle';
-                document.querySelector('head')?.appendChild(themeStyle);
+                this.head.appendChild(themeStyle);
                 break;
             default:
                 break;
