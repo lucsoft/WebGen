@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 
-import { SupportedThemes } from '../classes/SupportedThemes';
-import { WebGen } from '../webgen';
+import { DataConnect, ProtocolDC, SupportedThemes, WebGen } from '../webgen';
 
 var web: WebGen = new WebGen();
 
@@ -130,5 +129,9 @@ web.ready = () =>
             }
         ]
     });
+
+    var data = new DataConnect(ProtocolDC.lsWS, web);
+    data.url = "wss://eu01.hmsys.de";
+    data.login("", "");
 };
 document.addEventListener("DOMContentLoaded", () => web.enable(SupportedThemes.blur));
