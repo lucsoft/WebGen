@@ -1,44 +1,58 @@
-import { ElementModifyer } from "./ElementModify";
-import { WebGenElements } from "./WebGenElements";
-import { Style } from "./Style";
+import { ElementModifyer } from './ElementModify';
+import { Style } from './Style';
+import { WebGenElements } from './WebGenElements';
 
-export class Elements {
+export class Elements
+{
     style: Style;
-    constructor(style: Style) {
+    constructor(style: Style)
+    {
         this.style = style;
     }
-    layout(id: string, remove: true | false = false) {
-        if (remove) {
+    layout(id: string, remove: true | false = false)
+    {
+        if (remove)
+        {
             var ele = document.getElementById(id);
-            if (ele != undefined) {
+            if (ele != undefined)
+            {
                 ele.remove();
             }
-        } else {
+        } else
+        {
             var child = document.createElement("article")
             child.id = id;
-            document.getElementsByTagName("body")[0].appendChild(child);
+            document.getElementsByTagName("body")[ 0 ].appendChild(child);
             return { element: new ElementModifyer(child) };
         }
     }
-    clear(addto: { type: "id" | "firstTag", name: string } = { type: "id", name: "page" }) {
-        if (addto.type == "id") {
+    clear(addto: { type: "id" | "firstTag", name: string } = { type: "id", name: "page" })
+    {
+        if (addto.type == "id")
+        {
             var ele = document.getElementById(addto.name);
-            if (ele != undefined) {
+            if (ele != undefined)
+            {
                 ele.innerHTML = "";
             }
-        } else if (addto.type == "firstTag") {
-            var eleG = document.getElementsByTagName(addto.name)[0];
-            if (eleG != undefined) {
+        } else if (addto.type == "firstTag")
+        {
+            var eleG = document.getElementsByTagName(addto.name)[ 0 ];
+            if (eleG != undefined)
+            {
                 eleG.innerHTML = "";
             }
         }
     }
-    add(ele: HTMLElement) {
-        if (ele.nodeName == "ARTICLE") {
+    add(ele: HTMLElement)
+    {
+        if (ele.nodeName != "ARTICLE")
+        {
             var article = document.createElement("article");
             ele.append(article);
             return new WebGenElements(article, this.style);
-        } else {
+        } else
+        {
             return new WebGenElements(ele, this.style);
         }
     }
