@@ -7,7 +7,7 @@ var web: WebGen = new WebGen();
 
 web.ready = () =>
 {
-    web.elements.add(web.functions.getBody()).bigTitle({
+    const webE = web.elements.add(web.functions.getBody()).bigTitle({
         title: "Big Title"
     }).next.bigTitle({
         title: "Big Title",
@@ -43,7 +43,7 @@ web.ready = () =>
         ]
     }).next.window({
         title: 'miau',
-        content: 'lol',
+        content: [ web.elements.add(document.body).tiny.cardProgress("test"), "hello world" ],
         maxWidth: "35rem"
     }).next.login({
         login: () => { },
@@ -84,6 +84,49 @@ web.ready = () =>
             }, {
                 id: "2",
                 name: "was"
+            }
+        ]
+    }).next.cardButtons({
+        maxWidth: "35rem",
+        list: [
+            {
+                title: "Virtual Lamp",
+                value: "On",
+                active: true,
+                toggleElement: (toggle, title, state, element) =>
+                {
+                    if (state.innerText == "On")
+                        toggle('Off');
+                    else
+                        toggle('On');
+
+                }
+            },
+            {
+                title: "Virtual Outlet",
+                value: "Off",
+                active: false,
+                toggleElement: (toggle, title, state, element) =>
+                {
+                    if (state.innerText == "On")
+                        toggle('Off');
+                    else
+                        toggle('On');
+
+                }
+            },
+            {
+                title: "Virtual Door",
+                value: "Locked",
+                active: false,
+                toggleElement: (toggle, title, state, element) =>
+                {
+                    if (state.innerText == "Lock")
+                        toggle('Locked');
+                    else
+                        toggle('Lock');
+
+                }
             }
         ]
     });

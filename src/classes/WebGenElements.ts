@@ -2,11 +2,23 @@ import { ElementModifyer } from './ElementModify';
 import { ElementResponse } from './ElementsResponse';
 import { Style } from './Style';
 
+function hasTouch()
+{
+    return 'ontouchstart' in document.documentElement
+        || navigator.maxTouchPoints > 0
+        || navigator.msMaxTouchPoints > 0;
+}
 class Tiny
 {
     cardProgress(id: string)
     {
-        return `<span class="cardprogress"><span class="pro" id="${id}"></span></span`;
+        const cardprogress = document.createElement("span");
+        const pro = document.createElement("span");
+        pro.classList.add("pro")
+        pro.id = id;
+        cardprogress.classList.add("cardprogress");
+        cardprogress.append(pro);
+        return cardprogress;
     }
     format(text: string)
     {
@@ -178,7 +190,84 @@ export class WebGenElements
         return new ElementResponse(this, element);
     }
 
-    cards(settings: { small: boolean, hidden: boolean, columns: "auto" | "1" | "2" | "3" | "4" | "5", maxWidth: false | string | "default", cards: { title: string, id: string, subtitle: string | false }[] })
+
+    cardButtons(settings: {
+        small?: boolean,
+        columns?: "auto" | "1" | "2" | "3" | "4" | "5",
+        maxWidth?: string | "defaut",
+        list: {
+            title: string,
+            value: string,
+            active: boolean,
+            toggleElement?: (toggleState: (state: string) => void, state: HTMLSpanElement, title: HTMLSpanElement, element: HTMLElement) => void
+        }[]
+    })
+    {
+        var element = document.createElement("cardlist");
+        element.id = this.getID();
+        if (settings.small)
+        {
+            element.classList.add("small");
+        }
+        if (settings.maxWidth != undefined)
+        {
+            element.classList.add("max-width");
+        }
+        if (settings.maxWidth != "default")
+        {
+            element.setAttribute("style", "max-width:" + settings.maxWidth);
+        }
+        element.classList.add("grid_columns_" + settings.columns || "auto");
+        settings.list.forEach((e) =>
+        {
+            var card = document.createElement("card");
+            card.classList.add("cardButton");
+            if (e.active)
+            {
+                card.classList.add('active');
+            }
+
+            card.innerHTML = `<span class="title">${e.title}</span><span class="value">${e.value}</span>`;
+            if (e.toggleElement)
+            {
+
+                var title = card.querySelector('.title');
+                var value = card.querySelector('.value');
+                if (hasTouch())
+                    card.classList.add('disablehover');
+
+                card.onclick = () =>
+                {
+                    if (!hasTouch())
+                    {
+                        card.style.animation = "clicked 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
+                        setTimeout(() => { card.style.animation = ""; }, 500);
+                    }
+                    if (e.toggleElement)
+                        e.toggleElement((text) =>
+                        {
+                            if (value)
+                                (value as HTMLSpanElement).innerText = text;
+                            card.classList.toggle('active');
+                            if (hasTouch())
+                            {
+                                card.style.animation = "clickedM 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
+                                setTimeout(() => { card.style.animation = ""; }, 500);
+                            }
+                        }, title as HTMLSpanElement, value as HTMLSpanElement, card);
+                }
+            }
+            else
+            {
+                card.onclick = () => card.classList.toggle('active');
+            }
+            element.append(card);
+        });
+        this.ele.append(element);
+        return new ElementResponse(this, element);
+    }
+
+    cards(settings: { small: boolean, hidden: boolean, columns: "auto" | "1" | "2" | "3" | "4" | "5", maxWidth?: string | "default", cards: { title: string, id: string, subtitle: string | false }[] })
     {
         var element = document.createElement("cardlist");
         element.id = this.getID();
@@ -190,7 +279,7 @@ export class WebGenElements
         {
             element.classList.add("hidden");
         }
-        if (settings.maxWidth != false)
+        if (settings.maxWidth != undefined)
         {
             element.classList.add("max-width");
         }
@@ -201,7 +290,7 @@ export class WebGenElements
         element.classList.add("grid_columns_" + settings.columns);
         settings.cards.forEach((e) =>
         {
-            element.innerHTML += `<card id="${e.id}"> class="lline disablehover ${e.subtitle != false ? "subtitle" : ""}<span class="title">${e.title}</span>${e.subtitle != false ? `<span class="subtitle">${e.subtitle}</span>` : ""}</card>"`;
+            element.innerHTML += `<card id="${e.id}" class="lline disablehover ${e.subtitle != false ? "subtitle" : ""}><span class="title">${e.title}</span>${e.subtitle != false ? `<span class="subtitle">${e.subtitle}</span>` : ""}</card>"`;
         });
         this.ele.append(element);
         return new ElementResponse(this, element);
@@ -481,7 +570,7 @@ export class WebGenElements
             text: string,
             onclick: string
         }[],
-        content: string | HTMLElement
+        content: string | HTMLElement | (HTMLElement | string)[]
     } = { content: '', maxWidth: 'default' })
     {
         var element = document.createElement("cardlist");
@@ -507,9 +596,18 @@ export class WebGenElements
         if (typeof settings.content == "string")
         {
             card.append(this.tiny.format(settings.content));
-        } else
+        } else if (settings.content instanceof HTMLElement)
         {
             card.append(settings.content);
+        } else
+        {
+            settings.content.forEach(x =>
+            {
+                if (typeof x == "string")
+                    card.append(this.tiny.format(x));
+                else
+                    card.append(x);
+            });
         }
         if (settings.buttons)
         {

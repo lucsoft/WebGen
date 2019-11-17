@@ -43,7 +43,7 @@ cardlist.console card.popup span.text {
     }
     100% {
         opacity: 1;
-        
+
         transform: scale(1);
     }
 }
@@ -76,7 +76,7 @@ cardlist.console card.popup span.text {
 cardlist.window.close {
     animation: 900ms plobout ease;
     opacity: 0;
-    filter: grayscale(1);   
+    filter: grayscale(1);
 }
 cardlist.window {
     margin: 0.5rem;
@@ -105,7 +105,7 @@ cardlist.window card.popup {
 }
 cardlist.window card.popup .text {
     padding: 1.5rem;
-    
+
 }
 cardlist.window .title {
     display: grid;
@@ -126,7 +126,7 @@ cardlist.window .title button {
     z-index: 2;
 }
 cardlist.window .title .name {
-    
+
     color: black;
     padding-top: 0.2rem;
     font-weight: 400;
@@ -155,7 +155,7 @@ cardlist.window card {
     animation: none;
     margin: 0;
     border-radius: 0;
-    box-shadow: none;    
+    box-shadow: none;
 }
 cardlist.window card .text {
     font-weight: 300 !important;
@@ -163,7 +163,7 @@ cardlist.window card .text {
     font-size: 1.5rem !important;
 }
 cardlist.noanimation card {
-    animation: none !important; 
+    animation: none !important;
 }
 cardlist.grid_columns_auto {
     grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
@@ -206,7 +206,7 @@ card {
     padding-bottom: 1rem;
     user-select: none;
     transition: background var(--default-transition-time) ease,color var(--default-transition-time) ease;
-    
+
 }
 card.imgbox:not(.disablehover)::after {
     content: '';
@@ -221,13 +221,13 @@ card.imgbox:not(.disablehover)::after {
     transition: box-shadow 200ms ease;
 }
 card.iconcard {
-    display: grid;   
+    display: grid;
     grid-template-columns: 4rem calc(100% - 4rem);
     padding: 1rem;
     transition: all 300ms ease, margin-bottom 0ms ease;
 }
 card.iconcard:hover {
-    
+
     z-index: 1000;
     margin-bottom: -3.15rem;
     box-shadow: 0px 28px 45px 4px rgba(0, 0, 0, 0.55);
@@ -267,14 +267,14 @@ card.iconcard div button {
 card.iconcard div button:disabled {
     color: rgba(0, 0, 0, 0.623);
     box-shadow: none;
-} 
+}
 card.iconcard div button:not(:disabled):active {
     transform: translate(0, .1rem);
     box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0),inset 0px 7px 13px -2px rgba(0, 0, 0, 0.54);
 }
 card.imgbox {
     padding: 0;
-    
+
 }
 card.imgbox img{
     margin: -1.5rem;
@@ -312,14 +312,14 @@ card.imgbox.disablehover .subtitle{
 }
 card.imgbox.disablehover .title{
     text-shadow: 0 0 16px black, 0 0 16px black, 0 0 16px black;
-} 
+}
 card.imgbox:hover::after {
     box-shadow: 0px -211px 121px -49px rgba(0, 0, 0, 0.92) inset;
 
 }
 card.imgbox:not(.disablehover):hover .title {
     margin-bottom: 0.5em;
-    
+
 }
 card.imgbox:hover .subtitle {
     color: white;
@@ -352,7 +352,7 @@ card.iconbox .title {
     opacity: 0;
     position: absolute;
     transition: all 50ms ease;
-    
+
 }
 card.iconbox:not(.nohover):hover {
     position: relative;
@@ -361,7 +361,7 @@ card.iconbox:not(.nohover):hover {
     padding-bottom: 1.8rem;
     margin-bottom: -0.8rem;
     transition: all 250ms ease;
-    
+
     z-index: 5;
 }
 card.iconbox:not(.nohover):hover .title {
@@ -440,7 +440,7 @@ cardlist.small card.lline:not(.subtitle) {
     padding-top: 2rem;
 }
 card.lline.subtitle span.title {
-    margin-top: 0.5rem;                                
+    margin-top: 0.5rem;
 }
 card.lline span.subtitle {
     font-size: 0.9rem;
@@ -452,12 +452,12 @@ card.lline span.subtitle {
     bottom: 1.2rem;
     position: absolute;
     text-transform: uppercase;
-    
+
 }
 cardlist.small card.lline span.subtitle {
     bottom: 0.9rem;
     font-size: 0.85rem;
-} 
+}
 card.hide {
     display: none;
 }
@@ -478,8 +478,8 @@ card.invisible {
     #########  ##     ##  #########  ##     ## #########
     ##         ##     ##  ##         ##     ## ##
     ##         ##     ##  ##         ##     ## ##
-    ##         #########  ##         ######### ## 
-    
+    ##         #########  ##         ######### ##
+
 */
 
 @keyframes hidelol {
@@ -512,7 +512,7 @@ card.invisible {
 }
 
 card.popup,card.animation {
-    height: fit-content;    
+    height: fit-content;
     animation: hidelol 0.3s ease;
 }
 card.noanimation.popup {
@@ -557,7 +557,7 @@ notify {
 }
 card.popup splitView.one  sidebar item:hover {
     background: rgba(0, 0, 0, 0.1);
-} 
+}
 
 card.popup list.style2 item {
     margin-left: 1rem;
@@ -621,10 +621,10 @@ card.popup list item:first-child {
 }
 card.popup list item .right {
     float: right;
-} 
+}
 card.popup list item i.material-icons {
     font-size: 0.7rem;
-    padding-left: 0.7rem; 
+    padding-left: 0.7rem;
     padding-right: 0.3rem;
     transform: scale(2.1);
     color: rgb(199, 198, 204);
@@ -653,7 +653,7 @@ card.popup list item span.time {
 card.popup box {
     background: rgb(36, 36, 36);
     padding: 1rem;
-    
+
     line-height: 1.25;
     color: gainsboro;
     display: block;
@@ -665,10 +665,10 @@ card.popup box blue {
     color: rgb(93, 150, 255);
 }
 card.popup box orange {
-    color: rgb(228, 176, 141);   
+    color: rgb(228, 176, 141);
 }
 card.popup box green {
-    color: rgb(101, 146, 64);   
+    color: rgb(101, 146, 64);
     font-weight: bold;
 }
 
@@ -705,7 +705,7 @@ card.usercard .user a {
     padding-left: 0.6rem;
     font-size: 1.2rem;
     text-decoration: none;
-} 
+}
 card.usercard .text {
     margin-top: 4rem;
 }
@@ -734,12 +734,12 @@ card.popup buttonlist {
     margin: -1rem;
     margin-top: 1.5rem;
     padding: 0;
-    
+
     border-top: 1px solid rgba(0, 0, 0, 0.11);
     display: flex;
     justify-content: flex-end;
     user-select: none;
-    
+
 }
 button:focus {
     outline: none;
@@ -758,7 +758,7 @@ card.popup buttonlist button {
     padding-right: 1.5rem;
     transition: all 190ms ease;
     background: none;
-    
+
     cursor: pointer;
 }
 card.popup buttonlist button:hover {
@@ -768,7 +768,7 @@ card.popup buttonlist button:hover {
         ## LOGIN
 */
 card.login input[type="email"], card.login input[type="password"], card.login input[type="url"] {
-    
+
     font-size: 1.5rem;
     font-weight: 300;
     width: -moz-available;
@@ -811,8 +811,62 @@ card .cardprogress .pro {
     display: block;
     height: -webkit-fill-available;
     border-radius: 0 1rem 1rem 0;
-    transition: width 2s cubic-bezier(0.26, -0.26, 0, 1.01);
 }
+card.cardButton {
+    padding: 1rem 1rem 0.6rem;
+    text-align: left;
+    transition: transform 250ms cubic-bezier(0.55, 0.14, 0.96, 0.2);
+}
+
+card.cardButton.active {
+    background: #000000de;
+}
+
+card.cardButton .title {
+    font-size: 1.4rem;
+    font-weight: 200;
+    display: block;
+    margin-bottom: 1.3rem;
+}
+
+card.cardButton .value {
+    font-weight: 500;
+    font-size: .9rem;
+    display: block;
+    color: #ffffff8f;
+    bottom: 0.5rem;
+    position: absolute;
+}
+card.cardButton:not(.disablehover):hover {
+    transform: scale(1.3);
+    z-index: 1000;
+    position: relative;
+    transition: transform 500ms cubic-bezier(0.75, -0.65, 0.17, 1.6);
+}
+
+@keyframes clicked {
+    0% {
+        transform: scale(1.3) perspective(45px) rotateX(0deg);
+}
+    50% {
+        transform: scale(1.22) perspective(45px) rotateX(-2deg);
+}
+    100% {
+        transform: scale(1.3) perspective(45px) rotateX(0deg);
+}
+}
+@keyframes clickedM {
+    0% {
+        transform: scale(1) perspective(45px) rotateX(0deg);
+}
+    50% {
+        transform: scale(.9) perspective(40px) rotateX(-1.5deg);
+}
+    100% {
+        transform: scale(1) perspective(45px) rotateX(0deg);
+}
+}
+
 
 @media (max-width: 950px) {
     card.lline span.title {
@@ -840,7 +894,7 @@ card .cardprogress .pro {
         padding-left: 1.1rem;
         padding-right: 1.1rem;
     }
-    
+
     card.lline {
         padding: 1.15rem;
         font-size: .7rem;
