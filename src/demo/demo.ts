@@ -92,6 +92,7 @@ web.ready = () =>
                 title: "Virtual Lamp",
                 value: "On",
                 active: true,
+                id: "vdLa01",
                 toggleElement: (toggle, title, state, element) =>
                 {
                     if (state.innerText == "On")
@@ -105,6 +106,7 @@ web.ready = () =>
                 title: "Virtual Outlet",
                 value: "Off",
                 active: false,
+                id: "vdOu01",
                 toggleElement: (toggle, title, state, element) =>
                 {
                     if (state.innerText == "On")
@@ -118,6 +120,7 @@ web.ready = () =>
                 title: "Virtual Door",
                 value: "Locked",
                 active: false,
+                id: "vdDo01",
                 toggleElement: (toggle, title, state, element) =>
                 {
                     if (state.innerText == "Lock")

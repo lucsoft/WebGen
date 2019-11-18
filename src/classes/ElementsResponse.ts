@@ -1,11 +1,13 @@
-import { ElementModifyer } from "./ElementModify";
-import { WebGenElements } from "./WebGenElements";
+import { ElementModifyer } from './ElementModify';
+import { WebGenElements } from './WebGenElements';
 
-export class ElementResponse {
+export class ElementResponse
+{
     next: WebGenElements;
     getId: string;
     modify: ElementModifyer;
-    constructor(elements: WebGenElements, element: HTMLElement) {
+    constructor(elements: WebGenElements, element: HTMLElement)
+    {
         this.next = elements;
         this.getId = element.id;
         this.modify = new ElementModifyer(element);

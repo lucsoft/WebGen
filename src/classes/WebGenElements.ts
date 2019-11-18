@@ -199,7 +199,8 @@ export class WebGenElements
             title: string,
             value: string,
             active: boolean,
-            toggleElement?: (toggleState: (state: string) => void, state: HTMLSpanElement, title: HTMLSpanElement, element: HTMLElement) => void
+            id: string,
+            toggleElement?: (toggleState: (state: string) => void, state: HTMLSpanElement, title: HTMLSpanElement, element: HTMLElement, id: string) => void
         }[]
     })
     {
@@ -226,7 +227,7 @@ export class WebGenElements
             {
                 card.classList.add('active');
             }
-
+            card.id = e.id;
             card.innerHTML = `<span class="title">${e.title}</span><span class="value">${e.value}</span>`;
             if (e.toggleElement)
             {
@@ -254,7 +255,7 @@ export class WebGenElements
                                 card.style.animation = "clickedM 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
                                 setTimeout(() => { card.style.animation = ""; }, 500);
                             }
-                        }, title as HTMLSpanElement, value as HTMLSpanElement, card);
+                        }, title as HTMLSpanElement, value as HTMLSpanElement, card, e.id);
                 }
             }
             else
@@ -290,7 +291,7 @@ export class WebGenElements
         element.classList.add("grid_columns_" + settings.columns);
         settings.cards.forEach((e) =>
         {
-            element.innerHTML += `<card id="${e.id}" class="lline disablehover ${e.subtitle != false ? "subtitle" : ""}><span class="title">${e.title}</span>${e.subtitle != false ? `<span class="subtitle">${e.subtitle}</span>` : ""}</card>"`;
+            element.innerHTML += `<card id="${e.id}" class="lline disablehover ${e.subtitle != false ? "subtitle" : ""}"><span class="title">${e.title}</span>${e.subtitle != false ? `<span class="subtitle">${e.subtitle}</span>` : ""}</card>`;
         });
         this.ele.append(element);
         return new ElementResponse(this, element);

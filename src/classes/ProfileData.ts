@@ -8,6 +8,7 @@ export class User
     createDate?: string;
     homes?: number[];
     type?: "developer" | "user" | "tester";
+    callMe?: string;
     permissions: (string)[] = [];
 }
 export class EmailPasswordAuth

@@ -78,6 +78,8 @@ export class DataConnect
                     this.profile.user.type = repo.client.type;
                     this.profile.user.permissions = repo.client.permissions;
                     this.profile.user.id = repo.client.id;
+                    this.profile.user.username = repo.client.username;
+                    this.profile.user.callMe = repo.client.username;
                     this.profile.modules = repo.modules;
                     this.onLogin();
                 } else if (repo.type == "sync")
@@ -89,7 +91,8 @@ export class DataConnect
                 console.error(error);
             }
         }
-        this.ws.onclose = this.onLogout();
+        this.ws.onclose = () => this.onLogout();
+        this.ws.onerror = () => this.onLogout();
     }
     onLogin: Function = () => { console.log('DataConnect', 'login') };
     onLogout: Function = () => { console.log('DataConnect', 'logout') };
