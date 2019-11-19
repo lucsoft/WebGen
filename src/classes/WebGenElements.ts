@@ -29,7 +29,7 @@ class Tiny
     }
     enableDrag(id: string)
     {
-        var drag = false;
+        let drag = false;
         throw "NICHT DA";
     }
 }
@@ -74,7 +74,7 @@ export class WebGenElements
     }
     private getMaterialIcon(name: string)
     {
-        var i = document.createElement("i");
+        let i = document.createElement("i");
         i.classList.add("material-icons");
         i.innerHTML = name;
         return i;
@@ -93,7 +93,7 @@ export class WebGenElements
             spaceingTop?: string | undefined
         })
     {
-        var element = document.createElement("span");
+        let element = document.createElement("span");
         element.id = this.getID();
         if (settings.img != undefined)
         {
@@ -120,7 +120,7 @@ export class WebGenElements
 
     note(settings: { type: "home" | "fire" | "error" | "warn" | "developer", text: string, maxWidth?: string })
     {
-        var element = document.createElement("span");
+        let element = document.createElement("span");
         element.id = this.getID();
         element.classList.add("note", settings.type);
         element.setAttribute("style", "display:block");
@@ -136,7 +136,7 @@ export class WebGenElements
     {
         console.error("player currently now working");
 
-        var element = document.createElement("audioPlayer");
+        let element = document.createElement("audioPlayer");
         return new ElementResponse(this, element);
 
         if (settings.small == true)
@@ -146,7 +146,7 @@ export class WebGenElements
         element.id = this.getID();
         element.innerHTML = `<div class="overlay"><img src=""><input class="search" placeholder="Search a Song"></input><div class="controler"><i onmouseup="this.classList.remove('clicked')" onmousedown="this.classList.add('clicked')" class="material-icons-round">fast_rewind</i><i onmouseup="this.classList.remove('clicked')" onmousedown="this.classList.add('clicked')" class="material-icons-round">pause</i><i onmouseup="this.classList.remove('clicked')" onmousedown="this.classList.add('clicked')" class="material-icons-round">fast_forward</i></div><span class="title" id="playertitle"><span class="subtitle"></span></span><span class="playing">PLaying on Spotify</span><span class="notplaying">Nothing PLaying</span><span class="progress"></span></div><img src="${settings.img}">`;
         this.ele.appendChild(element);
-        var buttons: HTMLCollection = this.ele.children[ 0 ].children[ 2 ].children;
+        let buttons: HTMLCollection = this.ele.children[ 0 ].children[ 2 ].children;
         buttons[ 0 ].addEventListener("click", () =>
         {
             if (buttons[ 1 ].innerHTML == "play_arrow")
@@ -175,10 +175,10 @@ export class WebGenElements
             }
             settings.onInput("next", "");
         });
-        var elmnt = <HTMLInputElement>this.ele.children[ 0 ];
-        var elmnt2 = <HTMLInputElement>elmnt.children[ 1 ];
+        let elmnt = <HTMLInputElement>this.ele.children[ 0 ];
+        let elmnt2 = <HTMLInputElement>elmnt.children[ 1 ];
 
-        var search: HTMLInputElement = elmnt2;
+        let search: HTMLInputElement = elmnt2;
         search.addEventListener("keyup", (ev: KeyboardEvent) =>
         {
             if (ev.key == "Enter")
@@ -204,7 +204,7 @@ export class WebGenElements
         }[]
     })
     {
-        var element = document.createElement("cardlist");
+        let element = document.createElement("cardlist");
         element.id = this.getID();
         if (settings.small)
         {
@@ -221,7 +221,7 @@ export class WebGenElements
         element.classList.add("grid_columns_" + settings.columns || "auto");
         settings.list.forEach((e) =>
         {
-            var card = document.createElement("card");
+            let card = document.createElement("card");
             card.classList.add("cardButton");
             if (e.active)
             {
@@ -232,8 +232,8 @@ export class WebGenElements
             if (e.toggleElement)
             {
 
-                var title = card.querySelector('.title');
-                var value = card.querySelector('.value');
+                let title = card.querySelector('.title');
+                let value = card.querySelector('.value');
                 if (hasTouch())
                     card.classList.add('disablehover');
 
@@ -270,7 +270,7 @@ export class WebGenElements
 
     cards(settings: { small: boolean, hidden: boolean, columns: "auto" | "1" | "2" | "3" | "4" | "5", maxWidth?: string | "default", cards: { title: string, id: string, subtitle: string | false }[] })
     {
-        var element = document.createElement("cardlist");
+        let element = document.createElement("cardlist");
         element.id = this.getID();
         if (settings.small)
         {
@@ -296,7 +296,24 @@ export class WebGenElements
         this.ele.append(element);
         return new ElementResponse(this, element);
     }
+    pageTitle(settings: {
+        text: string,
+        maxWidth?: string | "default"
+    })
+    {
+        let element = document.createElement('span');
+        element.id = this.getID();
+        element.classList.add('pagetitle');
+        if (settings.maxWidth)
+            element.classList.add('maxWidth');
 
+        if (settings.maxWidth && settings.maxWidth != "default")
+            element.style.maxWidth = settings.maxWidth;
+
+        element.innerHTML = settings.text;
+        this.ele.append(element);
+        return new ElementResponse(this, element);
+    }
     title(settings: {
         title: string,
         subtitle?: string
@@ -304,19 +321,19 @@ export class WebGenElements
     {
         if (settings.subtitle)
         {
-            var element = document.createElement("h2");
+            let element = document.createElement("h2");
             element.id = this.getID();
             element.innerHTML = settings.title;
             this.ele.append(element);
-            var element2 = document.createElement("h4");
+            let element2 = document.createElement("h4");
             element2.innerHTML = settings.subtitle;
             this.ele.append(element2);
-            var element3 = document.createElement("br");
+            let element3 = document.createElement("br");
             this.ele.append(element3);
             return new ElementResponse(this, element);
         } else
         {
-            var element = document.createElement("h2");
+            let element = document.createElement("h2");
             element.id = this.getID();
             element.innerHTML = settings.title;
             this.ele.append(element);
@@ -338,9 +355,9 @@ export class WebGenElements
         index: SearchEntry[]
     })
     {
-        var element = document.createElement("cardlist");
+        let element = document.createElement("cardlist");
         element.id = this.getID();
-        var lastsearch = "";
+        let lastsearch = "";
         element.classList.add("grid_columns_1");
         if (settings.maxWidth != undefined)
         {
@@ -350,24 +367,24 @@ export class WebGenElements
         {
             element.style.maxWidth = settings.maxWidth;
         }
-        var card = document.createElement("card");
+        let card = document.createElement("card");
         card.classList.add("search", "disablehover");
-        var input: HTMLInputElement = document.createElement("input");
-        var ul: HTMLUListElement = document.createElement("ul")
+        let input: HTMLInputElement = document.createElement("input");
+        let ul: HTMLUListElement = document.createElement("ul")
         input.placeholder = settings.placeholder || "Search...";
-        var icon = this.getMaterialIcon("close");
+        let icon = this.getMaterialIcon("close");
 
         icon.onclick = () => settings.onclose;
 
 
-        var list: SearchEntry[] = [];
+        let list: SearchEntry[] = [];
         input.onkeyup = (d: KeyboardEvent) =>
         {
             if (d.key == "Enter")
             {
                 if (ul.children.item.length == 1)
                 {
-                    var element = <HTMLButtonElement>ul.children[ 0 ];
+                    let element = <HTMLButtonElement>ul.children[ 0 ];
                     if (element == null)
                     {
                         return;
@@ -380,9 +397,9 @@ export class WebGenElements
             lastsearch = input.value;
             if (settings.type == "smart" && settings.index)
             {
-                var smart = input.value.split(` `);
-                var tags: string[] = [];
-                var name = "";
+                let smart = input.value.split(` `);
+                let tags: string[] = [];
+                let name = "";
                 smart.forEach(e =>
                 {
                     if (e.startsWith("#") || e.startsWith("!"))
@@ -421,21 +438,21 @@ export class WebGenElements
             ul.innerHTML = "";
             list.forEach(x =>
             {
-                var tags = "";
+                let tags = "";
                 if (x.tags != undefined)
                 {
                     x.tags.filter(x => tags += `<span class="tag">${x}</span>`)
                 }
-                var li = document.createElement("li");
+                let li = document.createElement("li");
                 li.onclick = () =>
                 {
                     if (settings.actions)
                         settings.actions.click ? settings.actions.click(x.id) : undefined;
                 };
                 li.innerHTML = `<left>${(x.icon) ? `<img onerror="if(!this.src.endsWith('#test#test')) {this.src += '#test';} else {this.remove()} " src="${x.icon}">` : ""}${x.name}</left><right>${x.category ? `<span class="tag category">${x.category}</span>` : ""}${x.text != undefined ? x.text : ""}${tags}${settings.allowed && settings.allowed.donwload == true ? `<i id="download${x.id}" class="material-icons-round">get_app</i>` : ""}${(settings.allowed && settings.allowed.edit == true) ? `<i id="edit${x.id}" class="material-icons-round">edit</i>` : ""}${(settings.allowed && settings.allowed.remove == true) ? `<i id="remove${x.id}" class="material-icons-round">delete</i>` : ""}</right>`;
-                var downloadE = document.getElementById("download" + x.id);
-                var editE = document.getElementById("edit" + x.id);
-                var removeE = document.getElementById("edit" + x.id);
+                let downloadE = document.getElementById("download" + x.id);
+                let editE = document.getElementById("edit" + x.id);
+                let removeE = document.getElementById("edit" + x.id);
                 if (downloadE != undefined)
                 {
                     downloadE.onclick = () => settings.actions ? settings.actions.download : undefined;
@@ -461,11 +478,11 @@ export class WebGenElements
 
     buttons(settings: { big: boolean, list: { text: string, onclick: (e: HTMLButtonElement) => any }[] })
     {
-        var element = document.createElement("center");
+        let element = document.createElement("center");
         element.id = this.getID();
         settings.list.forEach(x =>
         {
-            var button = document.createElement("button");
+            let button = document.createElement("button");
             if (settings.big)
             {
                 button.classList.add("one")
@@ -480,9 +497,9 @@ export class WebGenElements
         });
         if (settings.big)
         {
-            var br_mh = document.createElement("br");
+            let br_mh = document.createElement("br");
             br_mh.classList.add("mobilehide");
-            var br = document.createElement("br");
+            let br = document.createElement("br");
             this.ele.append(br_mh);
             this.ele.append(br_mh);
             this.ele.append(br_mh);
@@ -503,24 +520,24 @@ export class WebGenElements
         login: (password: HTMLInputElement, email: HTMLInputElement, url: HTMLInputElement, master: HTMLElement) => any
     })
     {
-        var element = document.createElement("cardlist");
+        let element = document.createElement("cardlist");
         element.classList.add('grid_columns_1', 'max-width');
         element.style.maxWidth = settings.maxWidth || "35rem";
         element.id = this.getID();
 
-        var card = document.createElement("card");
+        let card = document.createElement("card");
 
 
         card.classList.add('popup');
         card.classList.add('login');
-        var form = document.createElement("form");
-        var span = document.createElement("span");
-        span.classList.add("popup-title");
-        span.innerHTML = settings.text || "Login";
-        card.append(span);
-        var url: HTMLInputElement = document.createElement("input");
-        var email: HTMLInputElement = document.createElement("input");
-        var password: HTMLInputElement = document.createElement("input");
+        let form = document.createElement("form");
+        let span1 = document.createElement("span");
+        span1.classList.add("popup-title");
+        span1.innerHTML = settings.text || "Login";
+        card.append(span1);
+        let url: HTMLInputElement = document.createElement("input");
+        let email: HTMLInputElement = document.createElement("input");
+        let password: HTMLInputElement = document.createElement("input");
         if (settings.url != undefined)
         {
             url.type = "url";
@@ -540,9 +557,9 @@ export class WebGenElements
             password.placeholder = settings.password;
             form.append(password);
         }
-        var span = document.createElement("span");
+        let span = document.createElement("span");
         span.classList.add("errormsg");
-        var button = document.createElement("input");
+        let button = document.createElement("input");
         button.type = "button";
         button.value = settings.button || "Login";
         form.append(button);
@@ -574,7 +591,7 @@ export class WebGenElements
         content: string | HTMLElement | (HTMLElement | string)[]
     } = { content: '', maxWidth: 'default' })
     {
-        var element = document.createElement("cardlist");
+        let element = document.createElement("cardlist");
         element.id = this.getID();
         element.classList.add("grid_columns_1");
         if (settings.maxWidth != "disabled")
@@ -585,10 +602,10 @@ export class WebGenElements
         {
             element.style.maxWidth = settings.maxWidth;
         }
-        var card = document.createElement("card");
+        let card = document.createElement("card");
         if (settings.title)
         {
-            var spantitle = document.createElement("span");
+            let spantitle = document.createElement("span");
             spantitle.classList.add('popup-title');
             spantitle.innerHTML = settings.title;
             card.append(spantitle);
@@ -612,7 +629,7 @@ export class WebGenElements
         }
         if (settings.buttons)
         {
-            var buttonlist = document.createElement("buttonlist");
+            let buttonlist = document.createElement("buttonlist");
             card.append();
             settings.buttons.forEach(x =>
             {

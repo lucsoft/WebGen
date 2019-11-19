@@ -476,7 +476,7 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
 .note {
     left: 50%;
     position: relative;
-    transform: translate(-51%);
+    transform: translate(-50%);
     background: var(--default-background-color);
     margin: var(--default-card-margin);
     padding: var(--default-card-padding);
@@ -484,7 +484,6 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
     box-shadow: var(--default-shadow);
     color: var(--default-card-color);
     max-width: var(--default-max-width);
-    font-weight: 500;
     font-size: 1.4rem;
     letter-spacing: 0.05rem;
 }
@@ -535,6 +534,20 @@ span.titlew {
     position: relative;
     text-align: center;
     text-shadow: 0 0 11px rgb(0, 0, 0);
+}
+span.pagetitle {
+    font-size: 3.4rem;
+    font-weight: 800;
+    margin: 1.6rem 0.6rem -0.2rem 0.5rem;
+    font-family: "Roboto";
+    display: block;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.18);
+}
+span.pagetitle.maxWidth {
+    max-width: 45rem;
+    left: 50%;
+    position: relative;
+    transform: translate(-50%);
 }
 span.titleg {
     display: block;

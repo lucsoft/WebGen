@@ -5,7 +5,7 @@ export const blur = css`
         --default-background-color: rgba(0, 0, 0, 0.575);
         --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
         --default-card-radius:4px;
-        --default-card-margin: 0.6rem;
+        --default-card-margin: 0.6rem 0;
         --default-card-padding: 1.5rem;
         --default-card-color: white;
         --default-backdrop: blur(1.5rem);
@@ -156,7 +156,7 @@ export const dark = css`
         --default-background-color: rgb(17, 17, 17);
         --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
         --default-card-radius:4px;
-        --default-card-margin: 0.6rem;
+        --default-card-margin: 0.6rem 0;
         --default-card-padding: 1.5rem;
         --default-card-color: white;
     }

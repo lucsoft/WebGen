@@ -40,6 +40,9 @@ web.ready = () =>
                 onclick: () => { console.log('yaay') }
             }
         ]
+    }).next.pageTitle({
+        text: "Hello World!",
+        maxWidth: "35rem"
     }).next.window({
         title: 'miau',
         content: [ web.elements.add(document.body).tiny.cardProgress("test"), "hello world" ],
