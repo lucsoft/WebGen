@@ -197,10 +197,10 @@ export class WebGenElements
         maxWidth?: string | "defaut",
         list: {
             title: string,
-            value: string,
-            active: boolean,
+            value?: string,
+            active?: boolean,
             id: string,
-            toggleElement?: (toggleState: (state: string) => void, state: HTMLSpanElement, title: HTMLSpanElement, element: HTMLElement, id: string) => void
+            onClick?: (toggleState: (state: string) => void, currentState: boolean, title: HTMLSpanElement, element: HTMLElement, id: string) => void
         }[]
     })
     {
@@ -228,8 +228,9 @@ export class WebGenElements
                 card.classList.add('active');
             }
             card.id = e.id;
-            card.innerHTML = `<span class="title">${e.title}</span><span class="value">${e.value}</span>`;
-            if (e.toggleElement)
+            var state = e.active || false;
+            card.innerHTML = `<span class="title">${e.title}</span>${e.value != undefined ? `<span class="value">${e.value}</span>` : ''}`;
+            if (e.onClick)
             {
 
                 let title = card.querySelector('.title');
@@ -244,18 +245,19 @@ export class WebGenElements
                         card.style.animation = "clicked 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
                         setTimeout(() => { card.style.animation = ""; }, 500);
                     }
-                    if (e.toggleElement)
-                        e.toggleElement((text) =>
+                    if (e.onClick)
+                        e.onClick((text) =>
                         {
                             if (value)
                                 (value as HTMLSpanElement).innerText = text;
                             card.classList.toggle('active');
+                            state = !state;
                             if (hasTouch())
                             {
                                 card.style.animation = "clickedM 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
                                 setTimeout(() => { card.style.animation = ""; }, 500);
                             }
-                        }, title as HTMLSpanElement, value as HTMLSpanElement, card, e.id);
+                        }, state, title as HTMLSpanElement, card, e.id);
                 }
             }
             else
@@ -296,6 +298,75 @@ export class WebGenElements
         this.ele.append(element);
         return new ElementResponse(this, element);
     }
+
+    /**
+     * What theme? just use modern
+     */
+    splitView(settings: {
+        theme: "list" | "modern" | "one" | "auto";
+        left: (ElementResponse | HTMLElement)[],
+        right: (ElementResponse | HTMLElement)[],
+        nomargin?: boolean,
+        defaultContentPadding?: boolean,
+        sidebarIsList?: boolean,
+        maxWidth?: string | "default"
+    })
+    {
+        let element = document.createElement('splitView');
+        element.classList.add(settings.theme == "modern" ? 'm' : settings.theme);
+        if (settings.maxWidth)
+        {
+            element.classList.add('maxWidth');
+        }
+        if (settings.maxWidth && settings.maxWidth != "default")
+        {
+            element.style.maxWidth = settings.maxWidth;
+        }
+        if (settings.nomargin)
+        {
+            element.classList.add('nomargin');
+        }
+        let sidebar = document.createElement('sidebar')
+        if (settings.theme == "one")
+        {
+            sidebar.classList.add('d');
+        }
+        if (settings.sidebarIsList)
+        {
+            sidebar.classList.add('list');
+        }
+        let content = document.createElement('content');
+        if (settings.defaultContentPadding)
+        {
+            content.style.padding = "1rem";
+        }
+        settings.left.forEach((x) =>
+        {
+            if (x instanceof ElementResponse)
+                sidebar.append(x.modify.element)
+            else
+                sidebar.append(x)
+        });
+        settings.right.forEach((x) =>
+        {
+            if (x instanceof ElementResponse)
+                content.append(x.modify.element)
+            else
+                content.append(x)
+        });
+        element.append(sidebar);
+        element.append(content);
+        this.ele.append(element);
+        return new ElementResponse(this, element);
+    }
+
+    customElement(settings: {
+        element: HTMLElement
+    })
+    {
+        return new ElementResponse(this, settings.element);
+    }
+
     pageTitle(settings: {
         text: string,
         maxWidth?: string | "default"

@@ -815,7 +815,12 @@ card .cardprogress .pro {
 card.cardButton {
     padding: .7rem 1rem 0.6rem 1rem;
     text-align: left;
-    transition: transform 250ms cubic-bezier(0.55, 0.14, 0.96, 0.2);
+    transition: all 250ms ease;
+}
+
+card.cardButton:hover {
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.55), 0px 5px 16px 0px rgba(0, 0, 0, 0) inset;
+    transform: translate(0,-5px) scale(1.05);
 }
 
 card.cardButton.active {
@@ -826,7 +831,8 @@ card.cardButton .title {
     font-size: 1.4rem;
     font-weight: 200;
     display: block;
-    margin-bottom: 1.3rem;
+    margin-bottom: 0.1rem;
+    overflow-wrap: break-word;
 }
 
 card.cardButton .value {
@@ -834,26 +840,32 @@ card.cardButton .value {
     font-size: .9rem;
     display: block;
     color: #ffffff8f;
-    bottom: 0.5rem;
-    position: absolute;
 }
-card.cardButton:not(.disablehover):hover {
-    transform: scale(1.3);
+card.cardButton.big {
     z-index: 1000;
-    position: relative;
-    transition: transform 500ms cubic-bezier(0.75, -0.65, 0.17, 1.6);
+    padding: 1.6rem 1.3rem 1.3rem 1.6rem;
+    margin: -0.3rem 0 -0.2rem 0rem;
+    transition: all 1s ease;
 }
-
+card.cardButton .moreInfo {
+    display: none;
+    padding: 0.4rem 0 0 0;
+}
+card.cardButton.big .moreInfo {
+    display: block;
+}
 @keyframes clicked {
     0% {
-        transform: scale(1.3) perspective(45px) rotateX(0deg);
-}
+        transform: translate(0,-5px) scale(1.05) perspective(45px) rotateX(0deg);
+    }
+
     50% {
-        transform: scale(1.22) perspective(45px) rotateX(-2deg);
-}
+        transform: translate(0,+2px) scale(0.9) perspective(45px) rotateX(-2deg);
+    }
+
     100% {
-        transform: scale(1.3) perspective(45px) rotateX(0deg);
-}
+        transform: translate(0,-5px) scale(1) perspective(45px) rotateX(0deg);
+    }
 }
 @keyframes clickedM {
     0% {
@@ -941,6 +953,12 @@ card.cardButton:not(.disablehover):hover {
     }
     card.subtitle {
         padding-bottom: 1.6rem;
+    }
+    card {
+        margin: 0.2rem 0.2rem;
+    }
+    span.note {
+        margin: 0.2rem 0.5rem 0.2rem 0rem;
     }
 }
 @media (max-width: 520px) {

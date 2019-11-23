@@ -479,6 +479,7 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
     transform: translate(-50%);
     background: var(--default-background-color);
     margin: var(--default-card-margin);
+    margin-right: 1.2rem;
     padding: var(--default-card-padding);
     border-radius: var(--default-card-radius);
     box-shadow: var(--default-shadow);
@@ -950,12 +951,7 @@ splitView.m {
     margin: 0;
     padding: 0;
     grid-template-columns: 1fr 1fr;
-}
-splitView.m content {
-    margin-left: -.5rem;
-}
-splitView.m sidebar {
-    margin-right: -0.7rem;
+    display: grid;
 }
 splitView.auto {
     grid-template-columns: max-content auto;
@@ -1180,12 +1176,6 @@ list.one item.centered {
     }
     splitView.m {
         grid-template-columns: 1fr;
-    }
-    splitView.m sidebar,splitView.m content {
-        margin: 0 -.5rem;
-    }
-    .note {
-        max-width: 41rem;
     }
 }
 

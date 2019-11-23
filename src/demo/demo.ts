@@ -92,13 +92,12 @@ web.ready = () =>
         maxWidth: "35rem",
         list: [
             {
-                title: "Virtual Lamp",
-                value: "On",
+                title: "Virtual Lampad dasdasdasdasd",
                 active: true,
                 id: "vdLa01",
-                toggleElement: (toggle, title, state, element) =>
+                onClick: (toggle, currentState, title, element) =>
                 {
-                    if (state.innerText == "On")
+                    if (currentState)
                         toggle('Off');
                     else
                         toggle('On');
@@ -107,12 +106,10 @@ web.ready = () =>
             },
             {
                 title: "Virtual Outlet",
-                value: "Off",
-                active: false,
                 id: "vdOu01",
-                toggleElement: (toggle, title, state, element) =>
+                onClick: (toggle, currentState, title, element) =>
                 {
-                    if (state.innerText == "On")
+                    if (currentState)
                         toggle('Off');
                     else
                         toggle('On');
@@ -121,10 +118,9 @@ web.ready = () =>
             },
             {
                 title: "Virtual Door",
-                value: "Locked",
                 active: false,
                 id: "vdDo01",
-                toggleElement: (toggle, title, state, element) =>
+                onClick: (toggle, title, state, element) =>
                 {
                     if (state.innerText == "Lock")
                         toggle('Locked');
@@ -133,6 +129,29 @@ web.ready = () =>
 
                 }
             }
+        ]
+    }).next.splitView({
+        right: [
+            web.elements.add(web.functions.getBody()).note({
+                text: "Splited Views",
+                type: "fire"
+            })
+        ],
+        maxWidth: "35rem",
+        theme: "modern",
+        left: [
+            web.elements.add(web.functions.getBody()).cards({
+                small: true,
+                columns: "1",
+                hidden: false,
+                cards: [
+                    {
+                        id: "lol",
+                        subtitle: "was",
+                        title: "test"
+                    }
+                ]
+            })
         ]
     });
 
