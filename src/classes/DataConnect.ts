@@ -89,6 +89,7 @@ export class DataConnect
                     this.profile.auth = repo.client;
                     this.profile.user.email = repo.client.email;
                     this.updateCurrentUser();
+
                 } else if (repo[ "client" ] && repo[ "client" ][ "id" ] == this.profile.auth.id)
                 {
                     this.profile.user.icon = repo.client.icon;
