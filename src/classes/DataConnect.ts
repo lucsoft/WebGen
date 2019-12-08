@@ -81,9 +81,11 @@ export class DataConnect
                             password: par.id
                         }));
                     }
+
                 } else if (repo.login == false)
                 {
                     this.logout();
+
                 } else if (repo.login == true)
                 {
                     this.profile.auth = repo.client;
