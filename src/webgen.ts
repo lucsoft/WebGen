@@ -5,7 +5,7 @@ import { SupportedThemes } from './classes/SupportedThemes';
 
 export { DataConnect, ProtocolDC } from './classes/DataConnect';
 export { SupportedThemes } from './classes/SupportedThemes';
-
+export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './classes/ProfileData';
 class Script
 {
     load(url: string)

@@ -1,5 +1,5 @@
 import { WebGen } from '../webgen';
-import { IDTokenAuth, ProfileData } from './ProfileData';
+import { EmailPasswordAuth, IDTokenAuth, ProfileData } from './ProfileData';
 
 export enum ProtocolDC
 {
@@ -19,6 +19,11 @@ export class DataConnect
     {
         this.type = type;
         this.gen = gen;
+    }
+
+    relogin(auth: IDTokenAuth)
+    {
+        this.initWebSocket(auth);
     }
 
     login(password: string, email: string)
@@ -42,11 +47,14 @@ export class DataConnect
                 });
             } else if (this.type == ProtocolDC.lsWS)
             {
-                this.initWebSocket(password, email);
+                this.initWebSocket({
+                    password,
+                    email
+                });
             }
         });
     }
-    private initWebSocket(password: string, email: string)
+    private initWebSocket(par: EmailPasswordAuth | IDTokenAuth)
     {
         this.ws = new WebSocket(this.url);
         this.ws.onmessage = (x) =>
@@ -56,19 +64,30 @@ export class DataConnect
                 const repo = JSON.parse(x.data);
                 if (repo.login == "require authentication")
                 {
-                    this.ws.send(JSON.stringify({
-                        action: "login",
-                        type: "client",
-                        email,
-                        password
-                    }));
+                    if (par instanceof EmailPasswordAuth)
+                    {
+                        this.ws.send(JSON.stringify({
+                            action: "login",
+                            type: "client",
+                            email: par.email,
+                            password: par.password
+                        }));
+                    } else
+                    {
+                        this.ws.send(JSON.stringify({
+                            action: "login",
+                            type: "client",
+                            email: par.token,
+                            password: par.id
+                        }));
+                    }
                 } else if (repo.login == false)
                 {
                     this.logout();
                 } else if (repo.login == true)
                 {
                     this.profile.auth = repo.client;
-                    this.profile.user.email = email;
+                    this.profile.user.email = repo.client.email;
                     this.updateCurrentUser();
                 } else if (repo[ "client" ] && repo[ "client" ][ "id" ] == this.profile.auth.id)
                 {
