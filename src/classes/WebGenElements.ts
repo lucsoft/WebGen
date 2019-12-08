@@ -251,13 +251,13 @@ export class WebGenElements
                             if (value)
                                 (value as HTMLSpanElement).innerText = text;
                             card.classList.toggle('active');
-                            state = !state;
+
                             if (hasTouch())
                             {
                                 card.style.animation = "clickedM 250ms cubic-bezier(0.35, -0.24, 0, 1.29)";
                                 setTimeout(() => { card.style.animation = ""; }, 500);
                             }
-                        }, state, title as HTMLSpanElement, card, e.id);
+                        }, card.classList.contains("active"), title as HTMLSpanElement, card, e.id);
                 }
             }
             else

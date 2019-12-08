@@ -137,7 +137,7 @@ export class DataConnect
             }))
         }
     }
-    triggerCommand(type: string, data: string)
+    triggerCommand(type: string, data: any)
     {
         if (this.type == ProtocolDC.lsWS)
         {
