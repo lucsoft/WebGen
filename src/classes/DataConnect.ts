@@ -77,8 +77,8 @@ export class DataConnect
                         this.ws.send(JSON.stringify({
                             action: "login",
                             type: "client",
-                            email: par.token,
-                            password: par.id
+                            token: par.token,
+                            id: par.id
                         }));
                     }
 
