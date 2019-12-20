@@ -14,6 +14,7 @@ export class DataConnect
     profile: ProfileData = new ProfileData();
     ws!: WebSocket;
     error = () => { };
+    errorMessage = "Login Failed";
     private gen: WebGen;
     constructor(type: ProtocolDC, gen: WebGen)
     {
@@ -121,6 +122,7 @@ export class DataConnect
     onSync: Function = (type: string, data: string) => { console.log('DataConnect', 'sync', type, data) }
     logout()
     {
+        this.changeErrorMessage?.(this.errorMessage);
         this.onLogout();
     }
     updateCurrentUser()
@@ -149,9 +151,11 @@ export class DataConnect
             }))
         }
     }
+    changeErrorMessage?: (message: string) => void;
     async loginWindow(password: HTMLInputElement, email: HTMLInputElement, url: HTMLInputElement, errormsg: HTMLElement)
     {
         this.url = url.value;
         await this.login(password.value, email.value);
+        this.changeErrorMessage = (message: string) => { errormsg.innerHTML = message; }
     }
 }
