@@ -2,30 +2,37 @@ cardlist {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
+
 cardlist card.left {
     transform: perspective(63px) scale(1.05) rotateY(1deg);
 }
+
 cardlist card.right {
     transform: perspective(63px) scale(1.05) rotateY(-1deg);
 }
+
 cardlist.effect {
     padding: 0.9rem;
 }
+
 cardlist.darkscreen {
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     right: 0;
-    height:100%;
-    padding:1.5rem;
-    background: rgba(0,0,0,0.6);
+    height: 100%;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.6);
 }
+
 cardlist.console {
     background: black !important;
 }
+
 cardlist.console div.title {
     background: rgba(230, 230, 230, 1);
 }
+
 cardlist.console card.popup span.text {
     background: black;
     color: green;
@@ -33,6 +40,7 @@ cardlist.console card.popup span.text {
     font-size: 1.2rem !important;
     line-height: normal !important;
 }
+
 @keyframes plobin {
     0% {
         opacity: 0.2;
@@ -43,10 +51,10 @@ cardlist.console card.popup span.text {
     }
     100% {
         opacity: 1;
-
         transform: scale(1);
     }
 }
+
 @keyframes plobout {
     0% {
         opacity: 1;
@@ -55,29 +63,31 @@ cardlist.console card.popup span.text {
         filter: blur(0px);
     }
     10% {
-        transform: scale(0.97) translate(0,0rem);
+        transform: scale(0.97) translate(0, 0rem);
         opacity: 1;
         filter: grayscale(1) blur(0px);
     }
     80% {
-        transform: scale(0.97) translate(0,0rem);
+        transform: scale(0.97) translate(0, 0rem);
         opacity: 1;
         filter: grayscale(1) blur(0px);
     }
     90% {
-        transform: scale(1.02) translate(0,0rem);
+        transform: scale(1.02) translate(0, 0rem);
     }
     100% {
         opacity: 0;
-        transform: scale(0.2) translate(0,-1rem);
+        transform: scale(0.2) translate(0, -1rem);
         filter: grayscale(1) blur(0px);
     }
 }
+
 cardlist.window.close {
     animation: 900ms plobout ease;
     opacity: 0;
     filter: grayscale(1);
 }
+
 cardlist.window {
     margin: 0.5rem;
     background: rgba(230, 230, 230, 1);
@@ -98,24 +108,26 @@ cardlist.window {
     z-index: 10;
     animation: 150ms plobin ease;
 }
+
 cardlist.window card.popup {
     margin-bottom: -2rem;
     height: -webkit-fill-available;
     padding: 0;
 }
+
 cardlist.window card.popup .text {
     padding: 1.5rem;
-
 }
+
 cardlist.window .title {
     display: grid;
     grid-template-columns: 1.3rem 1.3rem 1.3rem auto;
     position: relative;
     width: 100%;
-
     padding-left: 0.1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.11);
 }
+
 cardlist.window .title button {
     box-shadow: 0px 6px 17px -3px rgba(0, 0, 0, 0.29), 0 0 0 0 rgba(0, 0, 0, 0.164) inset;
     margin: 0.4rem;
@@ -125,8 +137,8 @@ cardlist.window .title button {
     transition: all 250ms ease;
     z-index: 2;
 }
-cardlist.window .title .name {
 
+cardlist.window .title .name {
     color: black;
     padding-top: 0.2rem;
     font-weight: 400;
@@ -138,16 +150,17 @@ cardlist.window .title .name {
 cardlist.window .title button.close {
     background: rgb(201, 79, 79);
 }
+
 cardlist.window .title button.minimise {
     background: rgb(223, 207, 64);
 }
+
 cardlist.window .title button.size {
     background: rgb(134, 201, 79);
 }
 
-
 cardlist.window .title button:hover {
-    transform: translate(0,0.05rem);
+    transform: translate(0, 0.05rem);
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.164), inset 0px 6px 17px -3px rgba(0, 0, 0, 0.164);
 }
 
@@ -157,42 +170,53 @@ cardlist.window card {
     border-radius: 0;
     box-shadow: none;
 }
+
 cardlist.window card .text {
     font-weight: 300 !important;
     line-height: 1.25rem !important;
     font-size: 1.5rem !important;
 }
+
 cardlist.noanimation card {
     animation: none !important;
 }
+
 cardlist.grid_columns_auto {
     grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
 }
+
 cardlist.grid_columns_1 {
     grid-template-columns: 1fr;
 }
+
 cardlist.grid_columns_2 {
     grid-template-columns: 1fr 1fr;
 }
+
 cardlist.grid_columns_3 {
-    grid-template-columns: 1fr 1fr 1fr ;
+    grid-template-columns: 1fr 1fr 1fr;
 }
+
 cardlist.grid_columns_4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
 cardlist.grid_columns_5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
+
 cardlist.max-width {
     max-width: 72rem;
     left: 50%;
     position: relative;
     transform: translate(-50%);
 }
+
 card .popup-title i {
     float: right;
     padding: 0.4rem;
 }
+
 card {
     overflow: hidden;
     box-shadow: var(--default-shadow);
@@ -205,9 +229,9 @@ card {
     position: relative;
     padding-bottom: 1rem;
     user-select: none;
-    transition: background var(--default-transition-time) ease,color var(--default-transition-time) ease;
-
+    transition: background var(--default-transition-time) ease, color var(--default-transition-time) ease;
 }
+
 card.imgbox:not(.disablehover)::after {
     content: '';
     top: 0;
@@ -220,30 +244,35 @@ card.imgbox:not(.disablehover)::after {
     box-shadow: 0px -99px 57px -42px black inset;
     transition: box-shadow 200ms ease;
 }
+
 card.iconcard {
     display: grid;
     grid-template-columns: 4rem calc(100% - 4rem);
     padding: 1rem;
     transition: all 300ms ease, margin-bottom 0ms ease;
 }
-card.iconcard:hover {
 
+card.iconcard:hover {
     z-index: 1000;
     margin-bottom: -3.15rem;
     box-shadow: 0px 28px 45px 4px rgba(0, 0, 0, 0.55);
-    transform: translate(0,-5rem) scale(1.1);
+    transform: translate(0, -5rem) scale(1.1);
 }
+
 card.iconcard:hover div button {
     opacity: 1;
     margin-top: 2rem;
 }
+
 card.iconcard img {
     width: 100%;
 }
+
 card.iconcard div {
     text-align: left;
     padding-left: 0.8rem;
 }
+
 card.iconcard div .title {
     white-space: nowrap;
     overflow: hidden;
@@ -251,12 +280,14 @@ card.iconcard div .title {
     font-size: 2.2rem;
     display: block;
 }
+
 card.iconcard div .subtitle {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
 }
+
 card.iconcard div button {
     float: right;
     opacity: 0;
@@ -264,27 +295,32 @@ card.iconcard div button {
     padding: 0.4rem 1.2rem;
     transition: box-shadow 100ms ease !important;
 }
+
 card.iconcard div button:disabled {
     color: rgba(0, 0, 0, 0.623);
     box-shadow: none;
 }
+
 card.iconcard div button:not(:disabled):active {
     transform: translate(0, .1rem);
-    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0),inset 0px 7px 13px -2px rgba(0, 0, 0, 0.54);
+    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0), inset 0px 7px 13px -2px rgba(0, 0, 0, 0.54);
 }
+
 card.imgbox {
     padding: 0;
-
 }
-card.imgbox img{
+
+card.imgbox img {
     margin: -1.5rem;
     width: 100%;
     filter: blur(0rem);
     transition: filter 500ms ease;
 }
+
 card.imgbox:not(.disablehover):hover img {
     filter: blur(0.2rem);
 }
+
 card.imgbox .title {
     text-align: left;
     left: 0.6em;
@@ -292,12 +328,13 @@ card.imgbox .title {
     position: absolute;
     display: block;
     bottom: 0rem;
-    color:white !important;
+    color: white !important;
     margin-bottom: 0.5rem;
     font-size: 1.6rem;
     letter-spacing: 0.1rem;
-    transition: margin-bottom 200ms ease,font-size 200ms ease;
+    transition: margin-bottom 200ms ease, font-size 200ms ease;
 }
+
 card.imgbox .subtitle {
     display: block;
     letter-spacing: normal;
@@ -307,28 +344,33 @@ card.imgbox .subtitle {
     opacity: 0;
     transition: color 200ms ease;
 }
-card.imgbox.disablehover .subtitle{
+
+card.imgbox.disablehover .subtitle {
     display: none;
 }
-card.imgbox.disablehover .title{
+
+card.imgbox.disablehover .title {
     text-shadow: 0 0 16px black, 0 0 16px black, 0 0 16px black;
 }
+
 card.imgbox:hover::after {
     box-shadow: 0px -211px 121px -49px rgba(0, 0, 0, 0.92) inset;
-
 }
+
 card.imgbox:not(.disablehover):hover .title {
     margin-bottom: 0.5em;
-
 }
+
 card.imgbox:hover .subtitle {
     color: white;
     opacity: 1;
     position: unset;
 }
+
 .iconlist {
     padding: 0;
 }
+
 card.iconbox {
     background: none;
     margin: 1rem;
@@ -338,10 +380,12 @@ card.iconbox {
     transition: all 250ms ease;
     z-index: 1;
 }
+
 card.iconbox .subtitle {
     display: block;
     font-size: 0.8rem;
 }
+
 card.iconbox .title {
     display: block;
     bottom: 0.4rem;
@@ -352,8 +396,8 @@ card.iconbox .title {
     opacity: 0;
     position: absolute;
     transition: all 50ms ease;
-
 }
+
 card.iconbox:not(.nohover):hover {
     position: relative;
     box-shadow: 0px 7px 28px 0px rgba(0, 0, 0, 0.51);
@@ -361,17 +405,19 @@ card.iconbox:not(.nohover):hover {
     padding-bottom: 1.8rem;
     margin-bottom: -0.8rem;
     transition: all 250ms ease;
-
     z-index: 5;
 }
+
 card.iconbox:not(.nohover):hover .title {
     opacity: 1;
     z-index: 2;
     transition: all 250ms ease;
 }
+
 card.iconbox:not(.nohover):hover img {
     transform: scale(0.9);
 }
+
 card.iconbox:not(.nohover)::after {
     content: '';
     top: 0;
@@ -381,43 +427,52 @@ card.iconbox:not(.nohover)::after {
     position: absolute;
     display: block;
     z-index: 1;
-    box-shadow: 0px 0px 0px 0px rgb(0,0,0,0) inset;
+    box-shadow: 0px 0px 0px 0px rgb(0, 0, 0, 0) inset;
     transition: box-shadow 200ms ease;
 }
+
 card.iconbox:not(.nohover):hover::after {
-    box-shadow: 0px -195px 127px -14px rgb(0,0,0,0.7) inset;
+    box-shadow: 0px -195px 127px -14px rgb(0, 0, 0, 0.7) inset;
 }
+
 card.iconbox img {
     width: 100%;
     transition: all 250ms ease;
 }
+
 card.lline.img {
     overflow: hidden;
 }
+
 card.lline.white {
     color: white;
 }
+
 card.lline.noshadow {
     text-shadow: none;
     box-shadow: none;
 }
+
 card.lline.disabled {
     opacity: 0.05;
 }
+
 card.lline.hidden {
     display: none;
 }
+
 card.lline.subtitle {
     padding-bottom: 2rem;
 }
-cardlist.small card.lline {
-    transition: transform 300ms ease, color 300ms, background 300ms ease,box-shadow 300ms ease,margin 300ms ease;
-}
 
+cardlist.small card.lline {
+    transition: transform 300ms ease, color 300ms, background 300ms ease, box-shadow 300ms ease, margin 300ms ease;
+}
 
 cardlist.small card.lline:not(.subtitle) {
     padding-top: 1.5rem;
 }
+
 card.lline span.title {
     z-index: 2;
     display: block;
@@ -428,6 +483,7 @@ card.lline span.title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 cardlist.small card.lline span.title {
     font-size: 2rem;
     margin-left: -0.3rem;
@@ -439,9 +495,11 @@ cardlist.small card.lline span.title {
 cardlist.small card.lline:not(.subtitle) {
     padding-top: 2rem;
 }
+
 card.lline.subtitle span.title {
     margin-top: 0.5rem;
 }
+
 card.lline span.subtitle {
     font-size: 0.9rem;
     font-weight: 300;
@@ -452,12 +510,13 @@ card.lline span.subtitle {
     bottom: 1.2rem;
     position: absolute;
     text-transform: uppercase;
-
 }
+
 cardlist.small card.lline span.subtitle {
     bottom: 0.9rem;
     font-size: 0.85rem;
 }
+
 card.hide {
     display: none;
 }
@@ -466,8 +525,6 @@ card.invisible {
     opacity: 0;
     z-index: -1;
 }
-
-
 
 /*
 
@@ -496,6 +553,7 @@ card.invisible {
         transform: scale(1);
     }
 }
+
 @keyframes hidelol2 {
     0% {
         opacity: 0.5;
@@ -511,18 +569,19 @@ card.invisible {
     }
 }
 
-card.popup,card.animation {
+card.popup, card.animation {
     height: fit-content;
     animation: hidelol 0.3s ease;
 }
+
 card.noanimation.popup {
     animation: none;
 }
-card.center.popup,card.animation2 {
+
+card.center.popup, card.animation2 {
     left: 50%;
     transform: translate(-50%) scale(1);
     animation: hidelol2 0.3s ease;
-
 }
 
 card.popup splitView.one sidebar {
@@ -530,19 +589,23 @@ card.popup splitView.one sidebar {
     text-align: left;
     user-select: none;
 }
+
 card.popup splitView.m sidebar {
     border-right: none;
     background: none;
 }
+
 card.popup splitView.one sidebar item {
     display: block;
     padding: 1rem;
     padding-left: 2.5rem;
     margin-left: -2rem;
 }
+
 card.popup splitView.one sidebar.nomargin item {
     margin-left: 0;
 }
+
 notify {
     background: rgb(189, 31, 31);
     color: white;
@@ -555,7 +618,8 @@ notify {
     float: right;
     line-height: 0.5rem;
 }
-card.popup splitView.one  sidebar item:hover {
+
+card.popup splitView.one sidebar item:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -569,6 +633,7 @@ card.popup list.style2 item {
     position: relative;
     min-height: 1.6rem;
 }
+
 card.popup list.style2 item .left {
     display: inline-block;
     font-size: 1.2rem;
@@ -576,16 +641,19 @@ card.popup list.style2 item .left {
     position: absolute;
     transform: translate(0, -50%);
 }
+
 card.popup list.style2 item .left .desc {
     display: block;
     font-size: 0.9rem;
     opacity: 0.6;
 }
+
 card.popup list.style2 item i {
     color: white;
     margin-right: 1rem;
     transform: translate(-0.2rem, 5px);
 }
+
 card.popup list.style2 item .right i {
     color: white;
     opacity: 0;
@@ -594,21 +662,26 @@ card.popup list.style2 item .right i {
     transform: translate(.2rem, 11px);
     transition: all 250ms ease;
 }
+
 card.popup list.style2 item:hover .right i {
     margin-right: 1rem;
     opacity: 1;
 }
+
 card.popup list.style2 item i.fliped {
     transform: translate(-0.2rem, 5px) rotate(180deg);
 }
+
 card.popup list.style2 item button {
     margin: -1rem .1rem;
 }
+
 card.popup list.nomargin {
     margin: -0.5rem;
     margin-left: -1rem;
     display: block;
 }
+
 card.popup list item {
     font-weight: 300;
     user-select: none;
@@ -616,12 +689,15 @@ card.popup list item {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     padding: 1rem;
 }
+
 card.popup list item:first-child {
     border-top: none;
 }
+
 card.popup list item .right {
     float: right;
 }
+
 card.popup list item i.material-icons {
     font-size: 0.7rem;
     padding-left: 0.7rem;
@@ -629,6 +705,7 @@ card.popup list item i.material-icons {
     transform: scale(2.1);
     color: rgb(199, 198, 204);
 }
+
 card.popup list item:hover span.time {
     width: auto;
     padding: 0.2rem 0.4rem;
@@ -639,7 +716,7 @@ card.popup list item:hover span.time {
 }
 
 card.popup list item span.time {
-    background: rgb(0,0,0);
+    background: rgb(0, 0, 0);
     font-size: 0rem;
     /* width: 0rem; */
     opacity: 0;
@@ -650,10 +727,10 @@ card.popup list item span.time {
     margin-left: 0;
     display: inline-block;
 }
+
 card.popup box {
     background: rgb(36, 36, 36);
     padding: 1rem;
-
     line-height: 1.25;
     color: gainsboro;
     display: block;
@@ -661,12 +738,15 @@ card.popup box {
     font-family: monospace;
     border-radius: 0.2rem;
 }
+
 card.popup box blue {
     color: rgb(93, 150, 255);
 }
+
 card.popup box orange {
     color: rgb(228, 176, 141);
 }
+
 card.popup box green {
     color: rgb(101, 146, 64);
     font-weight: bold;
@@ -677,6 +757,7 @@ card.popup b {
     font-weight: 300;
     font-size: 1.5rem;
 }
+
 card.usercard span.card-title {
     display: block;
     padding: 0.5rem;
@@ -690,25 +771,30 @@ card.usercard span.card-title {
     user-select: none;
     font-size: 1.2rem;
 }
+
 card.usercard .user {
     float: left;
     position: relative;
 }
+
 card.usercard .user img {
     border-radius: 100%;
     width: 2rem;
 }
+
 card.usercard .user a {
     color: black;
     position: absolute;
-    top:0.3rem;
+    top: 0.3rem;
     padding-left: 0.6rem;
     font-size: 1.2rem;
     text-decoration: none;
 }
+
 card.usercard .text {
     margin-top: 4rem;
 }
+
 card.popup span.popup-title, card.login span.popup-title {
     display: block;
     padding: 1rem;
@@ -722,8 +808,8 @@ card.popup span.popup-title, card.login span.popup-title {
     user-select: none;
     font-size: 2rem;
 }
-card.popup span.text {
 
+card.popup span.text {
     font-weight: 300;
     font-size: 1.3rem;
     text-align: left;
@@ -734,41 +820,43 @@ card.popup buttonlist {
     margin: -1rem;
     margin-top: 1.5rem;
     padding: 0;
-
     border-top: 1px solid rgba(0, 0, 0, 0.11);
     display: flex;
     justify-content: flex-end;
     user-select: none;
-
 }
+
 button:focus {
     outline: none;
 }
+
 card.popup buttonlist button.red {
     color: rgb(189, 31, 31) !important;
 }
+
 card.popup buttonlist button {
     border: none;
     font-family: 'Roboto';
     font-size: 1.25rem;
     font-weight: 300;
-    padding:1rem;
+    padding: 1rem;
     border-radius: 0rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     transition: all 190ms ease;
     background: none;
-
     cursor: pointer;
 }
+
 card.popup buttonlist button:hover {
     background: rgba(0, 0, 0, 0.05);
 }
+
 /*
         ## LOGIN
 */
-card.login input[type="email"], card.login input[type="password"], card.login input[type="url"] {
 
+card.login input[type="email"], card.login input[type="password"], card.login input[type="url"] {
     font-size: 1.5rem;
     font-weight: 300;
     width: -moz-available;
@@ -784,12 +872,14 @@ card.login input[type="email"], card.login input[type="password"], card.login in
     padding-left: 1.5rem;
     border: none;
 }
+
 card.login input[type="button"] {
     right: 0;
     width: auto;
     float: right;
     padding: 0.9rem 2.5rem;
 }
+
 card.login span.errormsg {
     margin: 1rem;
     display: inline-block;
@@ -798,6 +888,7 @@ card.login span.errormsg {
     font-size: 1.2rem;
     max-width: 11rem;
 }
+
 card .cardprogress {
     height: 0.3rem;
     width: -webkit-fill-available;
@@ -805,6 +896,7 @@ card .cardprogress {
     margin: -1rem -1.5rem;
     margin-bottom: 0.7rem;
 }
+
 card .cardprogress .pro {
     background: white;
     width: 0%;
@@ -812,6 +904,7 @@ card .cardprogress .pro {
     height: -webkit-fill-available;
     border-radius: 0 1rem 1rem 0;
 }
+
 card.cardButton {
     padding: .7rem 1rem 0.6rem 1rem;
     text-align: left;
@@ -820,7 +913,7 @@ card.cardButton {
 
 card.cardButton:hover {
     box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.55), 0px 5px 16px 0px rgba(0, 0, 0, 0) inset;
-    transform: translate(0,-5px) scale(1.05);
+    transform: translate(0, -5px) scale(1.05);
 }
 
 card.cardButton.active {
@@ -829,7 +922,7 @@ card.cardButton.active {
 
 card.cardButton .title {
     font-size: 1.4rem;
-    font-weight: 200;
+    font-weight: 300;
     display: block;
     margin-bottom: 0.1rem;
     overflow-wrap: break-word;
@@ -841,44 +934,46 @@ card.cardButton .value {
     display: block;
     color: #ffffff8f;
 }
+
 card.cardButton.big {
     z-index: 1000;
     padding: 1.6rem 1.3rem 1.3rem 1.6rem;
     margin: -0.3rem 0 -0.2rem 0rem;
     transition: all 1s ease;
 }
+
 card.cardButton .moreInfo {
     display: none;
     padding: 0.4rem 0 0 0;
 }
+
 card.cardButton.big .moreInfo {
     display: block;
 }
+
 @keyframes clicked {
     0% {
-        transform: translate(0,-5px) scale(1.05) perspective(45px) rotateX(0deg);
+        transform: translate(0, -5px) scale(1.05) perspective(45px) rotateX(0deg);
     }
-
     50% {
-        transform: translate(0,+2px) scale(0.9) perspective(45px) rotateX(-2deg);
+        transform: translate(0, +2px) scale(0.9) perspective(45px) rotateX(-2deg);
     }
-
     100% {
-        transform: translate(0,-5px) scale(1) perspective(45px) rotateX(0deg);
+        transform: translate(0, -5px) scale(1) perspective(45px) rotateX(0deg);
     }
 }
+
 @keyframes clickedM {
     0% {
         transform: scale(1) perspective(45px) rotateX(0deg);
-}
+    }
     50% {
         transform: scale(.9) perspective(40px) rotateX(-1.5deg);
-}
+    }
     100% {
         transform: scale(1) perspective(45px) rotateX(0deg);
+    }
 }
-}
-
 
 @media (max-width: 950px) {
     card.lline span.title {
@@ -896,14 +991,12 @@ card.cardButton.big .moreInfo {
     card.popup span.popup-title, card.login span.popup-title {
         font-size: 1.9rem;
     }
-
     card.popup buttonlist button {
         font-size: 1.1rem;
         padding: .9rem;
         padding-left: 1.1rem;
         padding-right: 1.1rem;
     }
-
     card.lline {
         padding: 1.15rem;
         font-size: .7rem;
@@ -928,6 +1021,7 @@ card.cardButton.big .moreInfo {
         transform: translate(-50%);
     }
 }
+
 @media (max-width: 690px) {
     cardlist {
         grid-template-columns: 1fr 1fr !important;
@@ -942,7 +1036,7 @@ card.cardButton.big .moreInfo {
     cardlist.effect {
         padding: 0;
     }
-    cardlist card.left,cardlist card.right {
+    cardlist card.left, cardlist card.right {
         transform: none;
     }
     cardlist.grid_columns_1 {
@@ -961,6 +1055,7 @@ card.cardButton.big .moreInfo {
         margin: 0.2rem 0.5rem 0.2rem 0rem;
     }
 }
+
 @media (max-width: 520px) {
     cardlist {
         grid-template-columns: 1fr !important;
