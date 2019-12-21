@@ -3,6 +3,7 @@ import { Functions } from './classes/Functions';
 import { Style } from './classes/Style';
 import { SupportedThemes } from './classes/SupportedThemes';
 
+export { ElementResponse } from './classes/ElementsResponse';
 export { DataConnect, ProtocolDC } from './classes/DataConnect';
 export { SupportedThemes } from './classes/SupportedThemes';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './classes/ProfileData';

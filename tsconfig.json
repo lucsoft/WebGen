@@ -10,7 +10,6 @@
     "include": [
         "src/**/*",
         "declarations.d.ts",
-        "src/**/*.css",
-        "bin/css/themes.ts"
+        "./src/css/*.css",
     ]
 }

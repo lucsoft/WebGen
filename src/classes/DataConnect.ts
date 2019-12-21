@@ -24,7 +24,7 @@ export class DataConnect
 
     relogin(auth: IDTokenAuth)
     {
-        this.initWebSocket(auth);
+        this.initWebSocket(auth, "relogin");
     }
 
     login(password: string, email: string)
@@ -51,11 +51,11 @@ export class DataConnect
                 this.initWebSocket({
                     password,
                     email
-                });
+                }, "login");
             }
         });
     }
-    private initWebSocket(par: EmailPasswordAuth | IDTokenAuth)
+    private initWebSocket(par: any, type: "login" | "relogin")
     {
         this.ws = new WebSocket(this.url);
         this.ws.onmessage = (x) =>
@@ -65,7 +65,7 @@ export class DataConnect
                 const repo = JSON.parse(x.data);
                 if (repo.login == "require authentication")
                 {
-                    if (par instanceof EmailPasswordAuth)
+                    if (type == "login")
                     {
                         this.ws.send(JSON.stringify({
                             action: "login",
@@ -146,6 +146,18 @@ export class DataConnect
         {
             this.ws.send(JSON.stringify({
                 action: "trigger",
+                type,
+                data,
+                auth: this.profile.auth
+            }))
+        }
+    }
+    queryCommand(type: string, data: any)
+    {
+        if (this.type == ProtocolDC.lsWS)
+        {
+            this.ws.send(JSON.stringify({
+                action: "query",
                 type,
                 data,
                 auth: this.profile.auth

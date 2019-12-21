@@ -1,12 +1,13 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.6.4",
+    "version": "1.6.14",
     "description": "WebGen now on NPM",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc"
+        "build": "tsc",
+        "prepublish": "tsc"
     },
     "browserslist": [
         "last 1 chrome versions"
