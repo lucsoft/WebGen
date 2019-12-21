@@ -122,7 +122,8 @@ export class DataConnect
     onSync: Function = (type: string, data: string) => { console.log('DataConnect', 'sync', type, data) }
     logout()
     {
-        this.changeErrorMessage?.(this.errorMessage);
+        if (this.changeErrorMessage)
+            this.changeErrorMessage(this.errorMessage);
         this.onLogout();
     }
     updateCurrentUser()
