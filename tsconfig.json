@@ -11,5 +11,6 @@
         "src/**/*",
         "declarations.d.ts",
         "./src/css/*.css",
-    ]
+        "src/css/*.css"
+    ],
 }
