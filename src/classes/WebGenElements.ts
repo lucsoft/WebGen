@@ -52,6 +52,15 @@ export class SearchEntry
 
 }
 
+export interface CardButtonList
+{
+    title: string,
+    icon?: string,
+    value?: string,
+    active?: boolean,
+    id: string,
+    onClick?: (toggleState: (state: string, img?: string) => void, currentState: boolean, title: HTMLSpanElement, element: HTMLElement, id: string) => void
+}
 
 /**
 * TODO: Add Uploader
@@ -195,13 +204,7 @@ export class WebGenElements
         small?: boolean,
         columns?: "auto" | "1" | "2" | "3" | "4" | "5",
         maxWidth?: string | "defaut",
-        list: {
-            title: string,
-            value?: string,
-            active?: boolean,
-            id: string,
-            onClick?: (toggleState: (state: string) => void, currentState: boolean, title: HTMLSpanElement, element: HTMLElement, id: string) => void
-        }[]
+        list: CardButtonList[]
     })
     {
         let element = document.createElement("cardlist");
@@ -228,8 +231,7 @@ export class WebGenElements
                 card.classList.add('active');
             }
             card.id = e.id;
-            var state = e.active || false;
-            card.innerHTML = `<span class="title">${e.title}</span>${e.value != undefined ? `<span class="value">${e.value}</span>` : ''}`;
+            card.innerHTML = `${e.icon ? `<img src="${e.icon}">` : ''}<span class="title">${e.title}</span>${e.value != undefined ? `<span class="value">${e.value}</span>` : ''}`;
             if (e.onClick)
             {
 
@@ -246,11 +248,17 @@ export class WebGenElements
                         setTimeout(() => { card.style.animation = ""; }, 500);
                     }
                     if (e.onClick)
-                        e.onClick((text) =>
+                        e.onClick((text, img) =>
                         {
                             if (value)
                                 (value as HTMLSpanElement).innerText = text;
                             card.classList.toggle('active');
+                            if (img)
+                            {
+                                const imgE = card.querySelector('img');
+                                if (imgE)
+                                    imgE.src = img;
+                            }
 
                             if (hasTouch())
                             {

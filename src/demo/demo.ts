@@ -106,6 +106,7 @@ web.ready = () =>
             },
             {
                 title: "Virtual Outlet",
+                value: "subtitles",
                 id: "vdOu01",
                 onClick: (toggle, currentState, title, element) =>
                 {
@@ -117,15 +118,16 @@ web.ready = () =>
                 }
             },
             {
-                title: "Virtual Door",
+                title: "Virtual Lamp",
                 active: false,
+                icon: 'https://hmsys.de/lightOff',
                 id: "vdDo01",
-                onClick: (toggle, title, state, element) =>
+                onClick: (toggle, currentState, title, element) =>
                 {
-                    if (state.innerText == "Lock")
-                        toggle('Locked');
+                    if (currentState)
+                        toggle('Off', 'https://hmsys.de/lightOff');
                     else
-                        toggle('Lock');
+                        toggle('On', 'https://hmsys.de/lightOn');
 
                 }
             }
