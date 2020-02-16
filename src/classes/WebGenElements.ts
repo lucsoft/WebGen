@@ -372,6 +372,7 @@ export class WebGenElements
         element: HTMLElement
     })
     {
+        this.ele.append(settings.element);
         return new ElementResponse(this, settings.element);
     }
 
