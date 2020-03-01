@@ -1,6 +1,6 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "description": "WebGen now on NPM",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
@@ -27,7 +27,7 @@
     },
     "homepage": "https://github.com/lucsoft/WebGen",
     "devDependencies": {
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.5"
     },
     "dependencies": {
         "babel-polyfill": "^6.26.0",

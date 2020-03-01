@@ -666,7 +666,7 @@ export class WebGenElements
         buttons?: {
             color: string,
             text: string,
-            onclick: string
+            onclick: () => void
         }[],
         content: string | HTMLElement | (HTMLElement | string)[]
     } = { content: '', maxWidth: 'default' })
@@ -713,7 +713,11 @@ export class WebGenElements
             card.append();
             settings.buttons.forEach(x =>
             {
-                buttonlist.append(`<button class="${x.color}" onclick="${x.onclick}">${x.text}}</button>`)
+                const button = document.createElement('button');
+                button.onclose = x.onclick;
+                button.classList.add(x.color);
+                button.innerHTML = x.text;
+                buttonlist.append(button)
             });
             card.append(buttonlist);
         }
