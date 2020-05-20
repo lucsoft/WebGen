@@ -1,22 +1,30 @@
-import 'babel-polyfill';
+import { SupportedThemes, WebGen } from '../src/webgen';
 
-import { DataConnect, ProtocolDC, SupportedThemes, WebGen } from '../webgen';
-
-var web: WebGen = new WebGen();
+var web = new WebGen();
 
 web.ready = () =>
 {
-    const webE = web.elements.add(web.functions.getBody()).bigTitle({
+    const {
+        switch: Switch,
+        list: List,
+        multiStateSwitch: MultiStateSwitch,
+    } = web.elements.none().components;
+
+    web.elements.body().title({
+        type: "big",
         title: "Big Title"
-    }).next.bigTitle({
+    }).title({
+        type: "big",
         title: "Big Title",
         subtitle: "Sub Title"
-    }).next.title({
+    }).title({
+        type: "small",
         title: "Title"
-    }).next.title({
+    }).title({
+        type: "small",
         title: "Title",
         subtitle: "Subtitle"
-    }).next.buttons({
+    }).buttons({
         big: true,
         list: [
             {
@@ -28,7 +36,7 @@ web.ready = () =>
                 onclick: () => { console.log('yaay') }
             }
         ]
-    }).next.buttons({
+    }).buttons({
         big: false,
         list: [
             {
@@ -40,31 +48,61 @@ web.ready = () =>
                 onclick: () => { console.log('yaay') }
             }
         ]
-    }).next.pageTitle({
+    }).pageTitle({
         text: "Hello World!",
         maxWidth: "35rem"
-    }).next.window({
+    }).window({
         title: 'miau',
-        content: [ web.elements.add(document.body).tiny.cardProgress("test"), "hello world" ],
+        content: List({},
+            {
+                left: "Example Switch",
+                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
+            },
+            {
+                left: "MultiStateSwitch",
+                right: MultiStateSwitch("small",
+                    { title: "gray", action: () => web.style.handleTheme(SupportedThemes.gray) },
+                    { title: "dark", action: () => web.style.handleTheme(SupportedThemes.dark) },
+                    { title: "white", action: () => web.style.handleTheme(SupportedThemes.white) },
+                    { title: "blur", action: () => web.style.handleTheme(SupportedThemes.blur) },
+                    { title: "auto", action: () => web.style.handleTheme(SupportedThemes.auto) },
+                )
+            }
+        )
+        ,
         maxWidth: "35rem"
-    }).next.login({
+    }).login({
         login: () => { },
         password: "Login"
-    }).next.note({
+    }).note({
         text: "Hello World",
         type: "developer",
-        maxWidth: "31rem"
-    }).next.player({
-        img: "https://t2.genius.com/unsafe/300x0/https%3A%2F%2Fimages.genius.com%2Fe0b0e60b74e0b9efeb7aa1ff71b3fca6.597x597x1.png",
-        onInput: () => { },
-        small: false
-    }).next.search({
-        type: "default",
+        maxWidth: "35rem"
+    }).search({
+        type: "smart",
+        mode: "hideWhenEmpty",
+        notfound: "No Entries",
         maxWidth: "35rem",
+        actions: {
+            remove: (entry) =>
+            {
+                console.log(entry);
+            },
+            edit: (entry) =>
+            {
+                console.log(entry);
+            },
+            download: (entry) =>
+            {
+                console.log(entry);
+            }
+        },
         index: [
             {
                 id: "1",
-                name: "lol"
+                name: "lol",
+                category: "test",
+                tags: [ "wow", "super" ]
             }, {
                 id: "2",
                 name: "was"
@@ -88,14 +126,14 @@ web.ready = () =>
                 name: "was"
             }
         ]
-    }).next.cardButtons({
+    }).cardButtons({
         maxWidth: "35rem",
         list: [
             {
                 title: "Virtual Lampad dasdasdasdasd",
                 active: true,
                 id: "vdLa01",
-                onClick: (toggle, currentState, title, element) =>
+                onClick: (toggle, currentState) =>
                 {
                     if (currentState)
                         toggle('Off');
@@ -108,7 +146,7 @@ web.ready = () =>
                 title: "Virtual Outlet",
                 value: "subtitles",
                 id: "vdOu01",
-                onClick: (toggle, currentState, title, element) =>
+                onClick: (toggle, currentState) =>
                 {
                     if (currentState)
                         toggle('Off');
@@ -122,7 +160,7 @@ web.ready = () =>
                 active: false,
                 icon: 'https://hmsys.de/lightOff',
                 id: "vdDo01",
-                onClick: (toggle, currentState, title, element) =>
+                onClick: (toggle, currentState) =>
                 {
                     if (currentState)
                         toggle('Off', 'https://hmsys.de/lightOff');
@@ -132,9 +170,9 @@ web.ready = () =>
                 }
             }
         ]
-    }).next.splitView({
+    }).splitView({
         right: [
-            web.elements.add(web.functions.getBody()).note({
+            web.elements.none().note({
                 text: "Splited Views",
                 type: "fire"
             })
@@ -142,23 +180,35 @@ web.ready = () =>
         maxWidth: "35rem",
         theme: "modern",
         left: [
-            web.elements.add(web.functions.getBody()).cards({
-                small: true,
+            web.elements.none().cards({
+                style: "small",
                 columns: "1",
                 hidden: false,
                 cards: [
                     {
-                        id: "lol",
                         subtitle: "was",
                         title: "test"
                     }
                 ]
             })
         ]
+    }).cards({
+        style: "modern",
+        columns: "auto",
+        maxWidth: "35rem",
+        cards: [
+            {
+                align: "right",
+                title: "WebGen",
+                subtitle: "Typescript — NPM"
+            },
+            {
+                align: "right",
+                title: "WebGen",
+                subtitle: "Typescript — NPM",
+                description: "WebGen is a UI/Websocket framework to create fast Webtool or Website like this one"
+            }
+        ]
     });
-
-    var data = new DataConnect(ProtocolDC.lsWS, web);
-    data.url = "wss://eu01.hmsys.de";
-    data.login("", "");
 };
-document.addEventListener("DOMContentLoaded", () => web.enable(SupportedThemes.blur));
+document.addEventListener("DOMContentLoaded", () => web.enable(SupportedThemes.auto));

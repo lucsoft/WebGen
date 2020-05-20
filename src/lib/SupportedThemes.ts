@@ -1,7 +1,9 @@
-export enum SupportedThemes {
+export enum SupportedThemes
+{
     notset = "",
     white = "white",
     gray = "gray",
     dark = "dark",
-    blur = "blur"
+    blur = "blur",
+    auto = "auto",
 }

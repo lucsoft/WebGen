@@ -22,7 +22,7 @@ nav.style_window ul li {
     padding: 0.4rem;
     display: inline-block;
     font-size: 0.9rem;
-    
+
 }
 
 nav.style_window ul li.center  {
@@ -34,7 +34,7 @@ nav.style_window ul li.left {
 }
 nav.style_nobox ul {
     transition: box-shadow 0ms ease !important;
-    
+
     max-width: 1000px;
     position: relative;
     left: 50%;
@@ -54,7 +54,7 @@ nav.style_nobox ul li {
     font-size: 1.4rem;
     font-weight: 300;
     transition: color 0ms ease;
-    
+
 }
 nav.style_nobox ul li span {
     padding: 1.7rem;
@@ -76,7 +76,7 @@ nav.fixed.style_nobox ul li {
     padding: 1rem;
     font-size: 1.3rem;
     text-shadow: none;
-    
+
 }
 nav.fixed.style_nobox  {
     background: rgba(0, 0, 0, 0.8);
@@ -94,7 +94,7 @@ nav.style_box {
 }
 nav.style_box ul {
     padding: 0;
-                                                                                            
+
     margin: 0;
     list-style: none;
 }
@@ -113,24 +113,18 @@ nav.style_box ul li {
     float: right;
     cursor: pointer;
     padding: 1.3rem;
-    /*transition: all 0ms ease;
-*/}
+}
 
 nav {
     user-select: none;
-    -webkit-user-select: none;
-    
 }
-nav ul li {
-   /* transition: color 0ms ease; 
-*/}
 nav.fixed {
     top: 0;
     left: 0;
     z-index: 500;
     right: 0;
     position: fixed;
-    
+
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.8);
 }
 nav.fixed.style_nobox {
@@ -153,7 +147,7 @@ nav.style_box ul li.left {
     }
     nav.style_nobox ul li {
         float: none !important;
-        
+
     }
     nav:not(.mobileshow) .mobile_icon {
         display: inline;
@@ -161,14 +155,14 @@ nav.style_box ul li.left {
     nav.fixed:not(.mobileshow) .mobile_icon {
         padding-right: 0.5rem;
     }
-    
+
     nav.style_box.fixed:not(.mobileshow) .mobile_icon {
         padding-right: 1.5rem;
         margin: -.1rem;
     }
     nav.style_box .mobile_icon {
         padding-right: 1.5rem;
-        
+
     }
     nav.style_box ul li.left {
         background: rgb(27, 27, 27);
@@ -201,10 +195,10 @@ nav.style_box ul li.left {
     nav.style_nobox.mobileshow ul li:not(.left) {
          padding-left: 2rem;
          transition: padding-left 0ms ease;
-     } 
+     }
      nav.style_nobox.mobileshow ul li:not(.left):hover {
         padding-left: 3rem;
-    } 
+    }
     nav.style_nobox:not(.mobileshow) ul li:not(.left) {
         display: none;
     }
@@ -213,9 +207,9 @@ nav.style_box ul li.left {
         background: rgba(0, 0, 0, 0.8);
         transition: all 0ms ease;
         position: fixed;
-        
+
     }
-    
+
     nav.style_box:not(.mobileshow) ul li:not(.title) {
         display: none;
     }

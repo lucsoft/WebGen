@@ -18,263 +18,6 @@ progressbar::after {
     display: block;
     transition: width 50ms ease;
 }
-audioPlayer {
-    overflow: hidden;
-    display: block;
-    border-radius: 4px;
-    position: relative;
-    margin: 0.6rem 0.6rem;
-    height: 13.3rem;
-    user-select: none;
-    min-width: 31rem;
-}
-audioPlayer.small {
-    transition: height 250ms ease;
-    height: 6.5rem;
-}
-audioPlayer.small:hover {
-    height: 12.5rem;
-    z-index: 5;
-}
-audioPlayer .overlay {
-    box-shadow: inset 0px -165px 87px -47px #000000f5;
-    display: block;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1;
-    position: absolute;
-    transition: all 250ms ease;
-}
-audioPlayer.small .overlay {
-    box-shadow: inset 0px -119px 114px -47px #000000f5;
-}
-audioPlayer:hover .overlay {
-    box-shadow: inset 0px -188px 137px -75px #000000;
-}
-audioPlayer .overlay .controler {
-    position: absolute;
-    bottom: 0;
-    margin: 0.5rem 5.5rem;
-    margin-right: 0;
-    opacity: 0;
-    transition: all 250ms ease;
-}
-audioPlayer:hover .overlay .controler {
-    opacity: 1;
-    margin: 1rem 10.5rem;
-    margin-right: 0;
-}
-audioPlayer.small .overlay .controler {
-    margin: 0.6rem 5.5rem;
-    margin-right: 0;
-}
-audioPlayer:hover.small .overlay .controler {
-    margin: 1.3rem 10.5rem;
-    margin-right: 0;
-}
-audioPlayer .overlay .controler i {
-    color: white;
-    font-size: 2.4rem;
-    transition: all 100ms ease;
-    cursor: pointer;
-}
-
-audioPlayer .overlay .controler i.middle {
-    font-size: 2.9rem;
-    transform: translate(0, 4px);
-    margin-right: -0.1rem;
-}
-audioPlayer .overlay .controler i.clicked {
-    transform: scale(0.9);
-}
-audioPlayer .overlay .controler i.middle.clicked {
-    transform: translate(0, 4px) scale(0.9);
-}
-audioPlayer .overlay .title {
-    color: white;
-    font-weight: 600;
-    font-family: "Arial";
-    left: 0;
-    position: absolute;
-    margin: 1rem;
-    margin-left: 6.5rem;
-    font-size: 2.9rem;
-    bottom: 0;
-    margin-bottom: 1rem;
-    transition: all 250ms ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: -webkit-fill-available;
-    width: -moz-available;
-}
-audioPlayer.noImg .overlay .title {
-    margin-left: 1rem !important;
-}
-audioPlayer:hover.noImg .overlay .controler{
-    margin-left: 1.1rem;
-}
-audioPlayer.noImg .overlay img {
-    opacity: 0;
-}
-
-audioPlayer .overlay .search {
-    color: white;
-    top: 0;
-    left: 0.2rem;
-    position: absolute;
-    margin: 0.8rem;
-    font-family: Roboto;
-    width: 7rem;
-    background: rgba(0, 0, 0, 0.1);
-    padding: 0.3rem 0.8rem;
-    border-radius: 1000rem;
-    font-size: .8rem;
-    letter-spacing: .03rem;
-    box-shadow: none;
-    opacity: 0;
-    transition: all 200ms ease;
-    transform: translate(0, -1rem);
-}
-audioPlayer .overlay .search::placeholder {
-    color: white;
-}
-audioPlayer .overlay .playing {
-    color: white;
-    top: 0;
-    right: 0.2rem;
-    position: absolute;
-    margin: 0.8rem;
-    background: rgba(0, 0, 0, 0.1);
-    padding: 0.3rem 0.8rem;
-    border-radius: 1000rem;
-    font-size: .8rem;
-    max-width: 17rem;
-    letter-spacing: .03rem;
-    opacity: 0;
-    transition: all 200ms ease;
-    transform: translate(0, -1rem);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: max-content;
-}
-audioPlayer:hover .overlay .playing, audioPlayer:hover .overlay .search {
-    opacity: 1;
-    transform: translate(0, 0rem);
-    transition: all 100ms ease 250ms;
-}
-audioPlayer:hover .overlay .title {
-    margin-bottom: 4rem;
-    margin-left: 10.6rem;
-}
-audioPlayer .overlay .title .subtitle {
-    display: block;
-    font-weight: 100;
-    font-size: 1.2rem;
-    letter-spacing: 0.03rem;
-    padding-left: 0.1rem;
-}
-audioPlayer:hover.small .overlay .title {
-    margin-bottom: 4.8rem;
-    margin-left: 3.6em;
-}
-audioPlayer .overlay .notplaying {
-    color: white;
-    font-size: 2.7rem;
-    left: 50%;
-    top: 50%;
-    font-weight: 600;
-    font-family: "Arial";
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
-    display: none;
-}
-audioPlayer .overlay .progress {
-    background: rgba(255, 255, 255, 0.11);
-    height: 4px;
-    left: -1px;
-    bottom: 0px;
-    position: absolute;
-    border-radius: 5rem;
-    z-index: 2;
-    transition: all 300ms ease, width 2s linear;
-}
-audioPlayer:hover .overlay .progress {
-    background: white;
-}
-audioPlayer .overlay .progress::after {
-    background: rgba(255, 255, 255, 0);
-    width: 50rem;
-    height: 4px;
-    left: -1px;
-    content: ' ';
-    display: block;
-    z-index: 1;
-    position: absolute;
-    transition: all 500ms ease;
-}
-audioPlayer.explicit .overlay .title .subtitle::after {
-    content: "Explicit";
-    font-size: 0.81rem;
-    background: rgba(255, 255, 255, 0.06);
-    padding: .3rem 0.4rem;
-    display: inline-block;
-    margin: -1rem;
-    z-index: 2;
-    border-radius: .2rem;
-    margin-left: 0.5rem;
-    transform: translate(0, -3px);
-}
-audioPlayer:hover .overlay .progress::after {
-    background: rgba(255, 255, 255, 0.15);
-}
-audioPlayer.notplaying .overlay * {
-    display: none;
-}
-audioPlayer.notplaying .overlay .notplaying {
-    display: unset;
-}
-audioPlayer img {
-    filter: blur(15px);
-    width: calc(100% + 6rem);
-    background: black;
-    margin: -3rem;
-    margin-top: -12rem;
-
-}
-audioPlayer:hover img {
-    filter: blur(28px);
-}
-audioPlayer .overlay img {
-    filter: none;
-    width: 4.5rem;
-    bottom: 0;
-    position: absolute;
-    margin: 1rem;
-    transition: all 250ms ease;
-    border-radius: 3px;
-}
-
-audioPlayer:hover .overlay img {
-    width: 8.5rem;
-}
-.toggle {
-    position: relative;
-    display: inline-block;
-    width: 45px;
-    height: 25px;
-}
-
-.toggle input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
 
 .slider {
      position: absolute;
@@ -300,65 +43,41 @@ audioPlayer:hover .overlay img {
     border-radius: 50%;
 }
 
-.toggle:not(.disabled) input:checked + .slider {
-  background-color: #2a99e7;
-}
-.toggle.disabled input:checked + .slider {
-    background: rgba(255, 255, 255, 0.14);
-}
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-  outline:0;
-}
-
-.toggle:not(.disabled) input:checked + .slider:before {
-    transform: translateX(19px);
-    background: white;
-}
-.toggle.toggle.disabled input:checked + .slider:before {
-    transform: translateX(19px);
-    background: #ffffff78;
-}
-
-
-
 switch {
+    text-align: center;
     background: rgba(255, 255, 255, 0.39);
     display: inline-block;
-    height: 2.3rem;
-    padding: .25rem;
-    width: 6rem;
-    border-radius: 0.3rem;
+    padding: .24rem .3rem .2rem;
+    width: 3.3rem;
+    border-radius: 30rem;
     margin-bottom: -.4rem;
     transition: all 250ms ease;
     position: relative;
     cursor: pointer;
     transition: all 150ms ease;
-    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33);
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
     font-size: 1rem;
-    margin-right: 0.5rem;
 }
 
 switch:after {
-    content: 'OFF';
-    color:white;
-    background: black;
+    content: 'I';
+    color: #6f6f6f;
+    background: #00000029;
     display: block;
-    width: 1.85rem;
-    position: absolute;
-    height: -webkit-fill-available;
-    height: -moz-available;
-    padding: .5rem .9rem;
-    border-radius: .2rem;
-    transition: all 350ms ease;
-    transform: translate(0%);
+    width: .6rem;
+    position: relative;
+    padding: .2rem 0.35rem;
+    border-radius: 100rem;
+    transition: all 700ms cubic-bezier(0.96, -0.61, 0.26, 1.63);
+    transform: translate(0%) rotate(-90deg);
+    font-size: .8rem;
 }
 switch.active:after {
-    background: green;
-    content: 'ON ';
-    width: 1.45rem;
-    transition: all 400ms ease;
-    transform: translate(85%);
+    background: #40bf29;
+    content: 'I';
+    color: white;
+    transition: all 700ms cubic-bezier(0.96, -0.61, 0.26, 1.63);
+    transform: translate(150%) rotate(360deg);
 }
 switch.disabled {
     box-shadow: none;
@@ -457,36 +176,12 @@ input[type="text"], input[type="password"], input[type="number"], input[type="em
         transform: translate(0, 5rem);
     }
 }
-.notifybox {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: 1rem;
-    background-color: #2a99e7;
-    font-size: 1.2rem;
-    padding: 1rem 2rem;
-    color: white;
-    border-radius: .2rem;
-    box-shadow: 0 8px 19px 0px rgba(0, 0, 0, 0.62);
-    transform: translate(0, 5rem);
-}
-.notifybox.trigger {
-    animation: flyinout 4000ms ease;
-}
+
 .note {
-    left: 50%;
-    position: relative;
-    transform: translate(-50%);
-    background: var(--default-background-color);
-    margin: var(--default-card-margin);
-    margin-right: 1.2rem;
-    padding: var(--default-card-padding);
-    border-radius: var(--default-card-radius);
-    box-shadow: var(--default-shadow);
-    color: var(--default-card-color);
-    max-width: var(--default-max-width);
+    text-align: start;
     font-size: 1.4rem;
     letter-spacing: 0.05rem;
+    padding: 1.5rem;
 }
 .log {
     background: black;
@@ -736,146 +431,7 @@ switch.disabled::after {
     background: rgb(151, 151, 151) !important;
     animation: none;
 }
-musicmodule  {
-    margin-left: 1rem;
-    display: grid;
-    grid-template-rows: calc(100% - 100px) 100px;
-}
-musicmodule musiclist {
-    display: block;
-    position: relative;
-    padding-left: 1rem;
-}
-musicmodule musiclist item {
-    display: block;
-    text-align: left;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
-}
-musicmodule musiclist item:last-child {
-    border-bottom: none;
-}
-musicmodule musiclist item:first-child {
-    font-weight: 400;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
-}
-musicmodule musiclist item.nowplaying span {
-    font-weight: 400;
-}
-musicmodule musiclist item:not(:first-child):hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-musicmodule musiclist item span.artist {
-    display: inline-block;
-    min-width: 20rem;
-}
-musicmodule musicplayer {
-    display: block;
-    background:rgb(221, 221, 221);
-    padding: 1rem;
-    position: relative;
-    border-radius: 0.3rem;
-}
-musicmodule musicplayer trackinfo {
-    display: block;
-    position: relative;
-    float: left;
-    padding-left: 1rem;
-}
-musicmodule musicplayer controls{
-    display: grid;
-
-    left: 0;
-    top: 0.2rem;
-    padding: 1.5rem;
-    bottom: 0;
-    right: 0;
-    user-select: none;
-    position: absolute;
-}
-musicmodule musicplayer controls playbutton i {
-    font-size: 3rem !important;
-    color: rgb(36, 36, 36);
-    border: 0px solid green;
-    outline: 0;
-    display: inline-block;
-}
-musicmodule musicplayer controls playbutton i.play {
-    transform: scale(1.3);
-}
-musicmodule musicplayer controls playbutton i:first-child {
-    transform: scale(0.5);
-}
-musicmodule musicplayer controls playbutton i:last-child {
-    transform: scale(0.5);
-}
-@keyframes skipnext {
-    0% {
-        transform: translate(0rem) scale(1);
-    }
-    70% {
-        transform: translate(0.2rem) scale(0.8);
-
-    }
-    100% {
-        transform: translate(0rem) scale(1);
-
-    }
-}
-@keyframes skipprevious {
-    0% {
-        transform: translate(0rem) scale(1);
-    }
-    70% {
-        transform: translate(-0.2rem) scale(0.8);
-
-    }
-    100% {
-        transform: translate(0rem) scale(1);
-
-    }
-}
-@keyframes play {
-    0% {
-        transform: scale(1.3);
-    }
-    70% {
-        transform: scale(1);
-
-    }
-    100% {
-        transform: scale(1.3);
-
-    }
-}
-
-musicmodule musicplayer controls playbutton i.skipnext:active {
-    animation: 125ms ease skipnext 1;
-}
-musicmodule musicplayer controls playbutton i.skipprevious:active {
-    animation: 125ms ease skipprevious 1;
-}
-musicmodule musicplayer controls playbutton i.play:active {
-    animation: 125ms ease play 1;
-
-}
-
-musicmodule musicplayer trackinfo span {
-    display: block;
-    text-align: left;
-    padding: 0.2rem;
-}
-musicmodule musicplayer trackinfo span.track {
-    font-size: 1.4rem;
-    margin-top: 0.5rem;
-    margin-bottom: -0.2rem;
-}
-musicmodule musicplayer trackinfo span.artist {
-    font-size: 0.9rem;
-}
 
 @media(max-width: 950px) {
     span.titlew {
@@ -1013,6 +569,110 @@ sidebar.list .item {
     padding: 0.5rem 1rem;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     margin-left: 1rem;
+}
+list.style2 item {
+    margin-left: 1rem;
+    user-select: none;
+    display: flow-root;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    text-align: left;
+    position: relative;
+    min-height: 1.6rem;
+}
+
+list.style2 item .left {
+    display: inline-block;
+    font-size: 1.2rem;
+    top: 50%;
+    position: absolute;
+    transform: translate(0, -50%);
+}
+
+list.style2 item .left .desc {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+list.style2 item i {
+    color: white;
+    margin-right: 1rem;
+    transform: translate(-0.2rem, 5px);
+}
+
+list.style2 item .right i {
+    color: white;
+    opacity: 0;
+    margin-right: -2.2rem;
+    font-size: 2.2rem;
+    transform: translate(.2rem, 11px);
+    transition: all 250ms ease;
+}
+
+list.style2 item:hover .right i {
+    margin-right: 1rem;
+    opacity: 1;
+}
+
+list.style2 item i.fliped {
+    transform: translate(-0.2rem, 5px) rotate(180deg);
+}
+
+list.style2 item button.help {
+    margin: -1rem .1rem;
+}
+
+list.nomargin {
+    margin: -0.5rem;
+    margin-left: -1rem;
+    display: block;
+}
+
+list item {
+    font-weight: 300;
+    user-select: none;
+    display: block;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+}
+
+list item:first-child {
+    border-top: none;
+}
+
+list item .right {
+    float: right;
+}
+
+list item i.material-icons {
+    font-size: 0.7rem;
+    padding-left: 0.7rem;
+    padding-right: 0.3rem;
+    transform: scale(2.1);
+    color: rgb(199, 198, 204);
+}
+
+list item:hover span.time {
+    width: auto;
+    padding: 0.2rem 0.4rem;
+    font-size: 1rem;
+    margin: -0.2rem 0rem;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+list item span.time {
+    background: rgb(0, 0, 0);
+    font-size: 0rem;
+    /* width: 0rem; */
+    opacity: 0;
+    margin: -0.2rem 0rem;
+    border-radius: 0.2rem;
+    padding: 0rem 0rem;
+    transition: all 250ms ease 0.1s;
+    margin-left: 0;
+    display: inline-block;
 }
 list.two {
     display: block;

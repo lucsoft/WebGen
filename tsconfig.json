@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "incremental": true,
-        "target": "esnext",
+        "target": "es2019",
         "module": "commonjs",
         "strict": true,
         "declaration": true,
@@ -9,7 +9,6 @@
     },
     "include": [
         "src/**/*",
-        "declarations.d.ts",
         "./src/css/*.css",
         "src/css/*.css"
     ],

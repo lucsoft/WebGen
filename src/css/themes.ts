@@ -1,6 +1,4 @@
-import { css } from 'lit-element';
-
-export const blur = css`
+export const blur = `
     :root {
         --default-background-color: rgba(0, 0, 0, 0.575);
         --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
@@ -21,7 +19,7 @@ export const blur = css`
         background: rgba(0, 0, 0, 0.68);
         backdrop-filter: blur(1.5rem);
         -webkit-backdrop-filter: blur(1.5rem);
-        color: white !important;
+        color: white;
     }
     card.popup buttonlist button {
         color:white;
@@ -77,7 +75,7 @@ export const blur = css`
         background: rgba(0, 0, 0, 0.575);
         backdrop-filter: blur(1.5rem);
         -webkit-backdrop-filter: blur(1.5rem);
-        color:white !important;
+        color:white;
         overflow: hidden;
     }
     button:disabled {
@@ -112,7 +110,7 @@ export const blur = css`
     card.popup buttonlist button:hover {
         background: transparent !important;
     }
-    @supports not (backdrop-filter:blur(5rem)) {
+    @supports not (backdrop-filter:blur(1rem)) or (-webkit-backdrop-filter:blur(1rem)) {
         :root {
             --default-background-color: rgb(21, 21, 21);
         }
@@ -135,7 +133,9 @@ export const blur = css`
     card.login input[type="button"] {
         background: rgba(0,0,0,0.6);
     }
-
+    card.cardButton.active {
+        background: #000000de;
+    }
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
@@ -150,8 +150,31 @@ export const blur = css`
         box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.342) inset !important;
         transition: background-color 5000s ease-in-out 0s !important;
     }
+
+    .notify span {
+        background: #ffffff17;
+        backdrop-filter: blur(1rem);
+    }
+    switch {
+        background: rgba(0, 0, 0, 0.57);
+    }
+    switch:after {
+        color: #ffffff2e;
+        background: #8c8c8c29;
+    }
+    .tinymenu {
+        background: rgba(0, 0, 0, 0.57);
+    }
+    .tinymenu button {
+        color: #6f6f6f;
+        background: transparent;
+    }
+    .tinymenu button:hover {
+        background: rgb(29, 29, 29);
+        color: white;
+    }
 `;
-export const dark = css`
+export const dark = `
     :root {
         --default-background-color: rgb(17, 17, 17);
         --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
@@ -172,8 +195,8 @@ export const dark = css`
     }
     card {
         background: var(--default-background-color);
-        color: white !important;
-        box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
+        color: white;
+        box-shadow: none;
     }
     card.iconbox:not(.nohover):hover {
         background: var(--default-background-color);
@@ -211,14 +234,18 @@ export const dark = css`
         background: var(--default-background-color);
         color: white;
     }
+    button:hover,button.one, button {
+        box-shadow: none;
+    }
     center button:hover {
         background: var(--default-background-color);
     }
     center button:active {
-        box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0), 0px 5px 16px 0px rgba(0, 0, 0, 0.9) inset;
+        box-shadow:none;
     }
-    input[type="text"], input[type="password"], input[type="number"], input[type="email"],card.login input[type="button"],switch {
-        background: rgb(15, 15, 15) !important;
+    input[type="text"], input[type="password"], input[type="number"], input[type="email"],card.login input[type="button"],switch,card.login input[type="email"], card.login input[type="password"], card.login input[type="url"] {
+        background: rgb(35, 35, 35);
+        box-shadow: none;
         color: white;
     }
     @-webkit-keyframes autofill {
@@ -248,21 +275,47 @@ export const dark = css`
     card.search ul li right {
         color: rgb(156, 156, 156);
     }
-    button {
-        box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.5);
+    card.cardButton.active {
+        background: #232323;
+    }
+    card.modern span.subtitle {
+        color: #717171;
+    }
+
+    .tinymenu, .tinymenu button {
+        background: #232323;
+        color: #6f6f6f;
+    }
+    .tinymenu button:hover {
+        background: rgb(29, 29, 29);
+        color: white;
+    }
+    card.cardButton .value {
+        color: #ffffff8f;
     }
 `;
 
-export const white = css`
+export const white = `
     :root {
-        --default-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.28);
+        --default-shadow: 0px 6px 11px 0px rgba(0, 0, 0, 0.15);;
+        --default-secondary-color: #474747;
+        --default-background-color: rgb(251, 248, 248);
+    }
+    span.tag {
+        background: rgba(107, 107, 107, 0.11);
+        color: #616161;
+    }
+    span.tag.category {
+        color: #2f2f2f;
+        background: rgba(177, 177, 177, 0.41);
     }
     body {
-        background: rgb(223, 222, 222);
+        background: linear-gradient(180deg, #F8F7F7 0%, #DCDCDC 100%);
         color: black;
+        overscroll-behavior: none;
     }
     card.iconbox .title{
-    color: white;
+        color: white;
     }
     card.iconbox:hover::after {
         box-shadow: 0px -281px 81px -241px rgba(0, 0, 0, 0.64) inset;
@@ -284,10 +337,16 @@ export const white = css`
     }
     span.titlew,h2,h4,span.subtitlew {
         text-shadow: 0 0 1.5rem var(--default-textshadow);
-
     }
     card {
+        background: #FBF8F8;
         box-shadow: var(--default-shadow);
+    }
+    card.cardButton.active {
+        background: linear-gradient(180deg, #F8F7F7 30%, #e4e1e1 100%);
+    }
+    card.cardButton .value {
+        color: #0c0c0c8f;
     }
     span.title2 {
         color: rgb(0, 0, 0);
@@ -327,5 +386,14 @@ export const white = css`
     }
     .toggle.disabled input:checked + .slider {
         background: rgba(174, 162, 162, 0.14);
+    }
+    card.search ul {
+        background: hsla(0, 0%, 98%, 1);
+    }
+    card.search ul li {
+        border-bottom: 1px solid rgb(234, 232, 232);
+    }
+    card.search ul li:hover right i {
+        color: #333333;
     }
 `;

@@ -3,28 +3,6 @@ cardlist {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-cardlist card.left {
-    transform: perspective(63px) scale(1.05) rotateY(1deg);
-}
-
-cardlist card.right {
-    transform: perspective(63px) scale(1.05) rotateY(-1deg);
-}
-
-cardlist.effect {
-    padding: 0.9rem;
-}
-
-cardlist.darkscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.6);
-}
-
 cardlist.console {
     background: black !important;
 }
@@ -328,7 +306,7 @@ card.imgbox .title {
     position: absolute;
     display: block;
     bottom: 0rem;
-    color: white !important;
+    color: white;
     margin-bottom: 0.5rem;
     font-size: 1.6rem;
     letter-spacing: 0.1rem;
@@ -516,7 +494,35 @@ cardlist.small card.lline span.subtitle {
     bottom: 0.9rem;
     font-size: 0.85rem;
 }
-
+card.modern {
+    padding: 1.2rem;
+}
+card.modern.left * {
+    text-align: left;
+}
+card.modern.right * {
+    text-align: right;
+}
+card.modern span.subtitle {
+    position: unset;
+    font-weight: bold;
+    color: #474747;
+    font-size: 1.2rem;
+    text-transform: none;
+    display: block;
+}
+card.modern span.description {
+    display: block;
+    margin-top: 0.7rem;
+}
+card.modern span.title {
+    padding: 0;
+    margin: 0;
+    font-weight: 600;
+    font-size: 3.3rem;
+    display: block;
+    margin-bottom: -.7rem;
+}
 card.hide {
     display: none;
 }
@@ -621,111 +627,6 @@ notify {
 
 card.popup splitView.one sidebar item:hover {
     background: rgba(0, 0, 0, 0.1);
-}
-
-card.popup list.style2 item {
-    margin-left: 1rem;
-    user-select: none;
-    display: flow-root;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-    text-align: left;
-    position: relative;
-    min-height: 1.6rem;
-}
-
-card.popup list.style2 item .left {
-    display: inline-block;
-    font-size: 1.2rem;
-    top: 50%;
-    position: absolute;
-    transform: translate(0, -50%);
-}
-
-card.popup list.style2 item .left .desc {
-    display: block;
-    font-size: 0.9rem;
-    opacity: 0.6;
-}
-
-card.popup list.style2 item i {
-    color: white;
-    margin-right: 1rem;
-    transform: translate(-0.2rem, 5px);
-}
-
-card.popup list.style2 item .right i {
-    color: white;
-    opacity: 0;
-    margin-right: -2.2rem;
-    font-size: 2.2rem;
-    transform: translate(.2rem, 11px);
-    transition: all 250ms ease;
-}
-
-card.popup list.style2 item:hover .right i {
-    margin-right: 1rem;
-    opacity: 1;
-}
-
-card.popup list.style2 item i.fliped {
-    transform: translate(-0.2rem, 5px) rotate(180deg);
-}
-
-card.popup list.style2 item button {
-    margin: -1rem .1rem;
-}
-
-card.popup list.nomargin {
-    margin: -0.5rem;
-    margin-left: -1rem;
-    display: block;
-}
-
-card.popup list item {
-    font-weight: 300;
-    user-select: none;
-    display: block;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-}
-
-card.popup list item:first-child {
-    border-top: none;
-}
-
-card.popup list item .right {
-    float: right;
-}
-
-card.popup list item i.material-icons {
-    font-size: 0.7rem;
-    padding-left: 0.7rem;
-    padding-right: 0.3rem;
-    transform: scale(2.1);
-    color: rgb(199, 198, 204);
-}
-
-card.popup list item:hover span.time {
-    width: auto;
-    padding: 0.2rem 0.4rem;
-    font-size: 1rem;
-    margin: -0.2rem 0rem;
-    opacity: 1;
-    margin-left: 1rem;
-}
-
-card.popup list item span.time {
-    background: rgb(0, 0, 0);
-    font-size: 0rem;
-    /* width: 0rem; */
-    opacity: 0;
-    margin: -0.2rem 0rem;
-    border-radius: 0.2rem;
-    padding: 0rem 0rem;
-    transition: all 250ms ease 0.1s;
-    margin-left: 0;
-    display: inline-block;
 }
 
 card.popup box {
@@ -917,7 +818,7 @@ card.cardButton:hover {
 }
 
 card.cardButton.active {
-    background: #000000de;
+    background: #c1c1c1;
 }
 
 card.cardButton img {
@@ -937,7 +838,7 @@ card.cardButton .value {
     font-weight: 500;
     font-size: .9rem;
     display: block;
-    color: #ffffff8f;
+    color: #474747;
 }
 
 card.cardButton.big {

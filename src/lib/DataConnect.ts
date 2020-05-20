@@ -1,5 +1,5 @@
-import { WebGen } from '../webgen';
-import { EmailPasswordAuth, IDTokenAuth, ProfileData } from './ProfileData';
+import { WebFunctions } from './Functions';
+import { IDTokenAuth, ProfileData } from './ProfileData';
 
 export enum ProtocolDC
 {
@@ -15,11 +15,11 @@ export class DataConnect
     ws!: WebSocket;
     error = () => { };
     errorMessage = "Login Failed";
-    private gen: WebGen;
-    constructor(type: ProtocolDC, gen: WebGen)
+    private webfunctions: WebFunctions = new WebFunctions();
+
+    constructor(type: ProtocolDC)
     {
         this.type = type;
-        this.gen = gen;
     }
 
     relogin(auth: IDTokenAuth)
@@ -33,7 +33,7 @@ export class DataConnect
         {
             if (this.type == ProtocolDC.lsREST)
             {
-                this.gen.functions.request({
+                this.webfunctions.request({
                     methode: "GET",
                     data: "",
                     error: () => console.log,

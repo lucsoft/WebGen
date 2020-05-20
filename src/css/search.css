@@ -17,6 +17,7 @@ span.tag {
     border-radius: 0.15rem;
     white-space: nowrap;
     display: inline-block;
+    transform: translate(0, -5px);
 }
 
 card.search {
@@ -53,7 +54,7 @@ card.search ul {
     text-align: left;
     background: rgb(240, 240, 240);
     max-height: 15rem;
-    overflow-y: auto;
+    overflow-y: overlay;
     overflow-x: hidden;
 }
 
@@ -74,12 +75,12 @@ card.search ul li right i {
     top: 0;
     right: 0;
     padding-left: 0;
-    margin: -0.45rem -.4rem 0 0.6rem;
+    margin: -0.22rem -.4rem 0 0.3rem;
     position: relative;
     color: white;
-    font-size: 2.2rem;
-    transition: all 150ms cubic-bezier(0.98, 0.25, 0.7, 1.21);
-    margin-right: -3rem;
+    font-size: 1.7rem;
+    transition: all 350ms ease-out;
+    margin-right: -2rem;
     opacity: 0;
 }
 

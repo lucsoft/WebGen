@@ -71,32 +71,32 @@
     height: 1.7rem;
     border-radius: 0.2rem;
     background: rgb(255, 255, 255);
-    float: right;
-
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
 }
 .tinymenu button {
     margin: 0;
     background: #ffffff;
     backdrop-filter: none;
     border-radius: 0.1rem;
-    color: black !important;
+    color: black;
     box-shadow: none;
     border-right: 1px solid #0000002b;
     transition: all 150ms ease;
 }
 .tinymenu button:last-child {
     border-right: none;
-} 
-.tinymenu button:hover {
-    background: rgba(0, 0, 0, 0.83) !important;
-    color: white !important;
-    
 }
+
+.tinymenu button:hover {
+    background: rgb(201, 201, 201);
+    color: #5d5c5c;
+}
+
 .tinymenu.small {
-    margin: 0;
+
     height: 1.36rem;
     padding: 0.15rem 0.25rem;
-    margin-top: -0.19rem;
+    margin: -0.02rem 0;
 }
 .tinymenu.small button {
     padding: 0.2rem 0.4rem;
@@ -176,20 +176,4 @@ span.scala i {
 span.scala:hover i {
     height: 2rem;
     margin-top: 0.5rem;
-}
-.lostconnection img {
-    margin-left: auto;
-    display: block;
-    margin-right: auto;
-    border-radius: 0.3rem;
-}
-.lostconnection h1 {
-    text-align: center;
-    margin: 0;
-    font-weight: 100;
-    font-size: 9rem;
-}
-#fixedWindow.lostconnection {
-    backdrop-filter: blur(2rem);
-    background: rgba(0,0,0,0.6);
 }
