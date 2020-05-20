@@ -1,11 +1,10 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.7.2",
-    "description": "WebGen now on NPM",
+    "version": "1.8.0",
+    "description": "WebGen 1.8",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack-dev-server",
         "build": "tsc",
         "prepublishOnly": "cp ./src/css/*.css ./bin/css/ && tsc"
@@ -16,7 +15,11 @@
     },
     "keywords": [
         "webgen",
-        "lucsoft"
+        "lucsoft",
+        "typescript",
+        "ui",
+        "gui",
+        "modern"
     ],
     "author": "lucsoft",
     "license": "ISC",
