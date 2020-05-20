@@ -1,11 +1,12 @@
-# WebGen now on NPM
+<img src="https://lucsoft.de/imgs/webgen.png?" width="50%">
 
-No Readme yet
+> my collection of UI Development over the years — made in a nice Framework 
 
-npm i
 
-npm i -g parcel
+Quick Start
 
-parcel index.html
+`
+npm i @lucsoft/webgen
+`
 
-http://localhost:1234
+And now you ready. Look at the Demo in this repo for help (we recommend to use webpack and typescript)
