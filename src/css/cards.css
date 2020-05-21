@@ -198,7 +198,7 @@ card .popup-title i {
 card {
     overflow: hidden;
     box-shadow: var(--default-shadow);
-    border-radius: 4px;
+    border-radius: 8px;
     background: rgb(230, 230, 230);
     padding: 1.5rem;
     color: black;
@@ -495,7 +495,7 @@ cardlist.small card.lline span.subtitle {
     font-size: 0.85rem;
 }
 card.modern {
-    padding: 1.2rem;
+    padding: 1.6rem;
 }
 card.modern.left * {
     text-align: left;
@@ -513,15 +513,23 @@ card.modern span.subtitle {
 }
 card.modern span.description {
     display: block;
-    margin-top: 0.7rem;
+    font-size: 1.25rem;
+    margin-top: 0.8rem;
+    font-weight: 300;
+    text-align: left;
 }
 card.modern span.title {
     padding: 0;
-    margin: 0;
+    margin: -.2rem 0 -.7rem;
     font-weight: 600;
-    font-size: 3.3rem;
+    font-size: 3rem;
     display: block;
-    margin-bottom: -.7rem;
+}
+card.modern img {
+    left: 1.5rem;
+    top: 1.5rem;
+    height: 4.2rem;
+    position: absolute;
 }
 card.hide {
     display: none;

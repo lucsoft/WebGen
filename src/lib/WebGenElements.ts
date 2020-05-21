@@ -323,6 +323,7 @@ export class WebGenElements
                     const icon: any = document.createElement('img');
                     icon.loading = "lazy";
                     icon.src = data.icon
+                    card.append(icon);
                 }
                 card.classList.add('modern');
                 card.classList.add(data.align);
