@@ -26,19 +26,62 @@ class Components
         formt.innerHTML = text;
         return formt;
     }
-    switch(onClick: (active: boolean) => void, onAnimationComplete: (active: boolean) => void = () => { })
+
+    action(element: HTMLElement, type: string, value: unknown)
+    {
+        element.dispatchEvent(new CustomEvent(type, { detail: value }))
+    }
+
+    switch(options: {
+        disabled?: boolean;
+        checked?: boolean;
+        onClick?: (active: boolean) => void;
+        onAnimationComplete?: (active: boolean) => void;
+    })
     {
         const span = document.createElement('span');
+
         const switchE = document.createElement('switch');
         const input = document.createElement('input');
+
         input.classList.add("hide");
         input.type = "checkbox";
+        span.addEventListener("disabled", (action) =>
+        {
+            if ((action as CustomEvent).detail === true)
+            {
+                switchE.classList.add('disabled');
+                input.disabled = true;
+            } else
+            {
+                switchE.classList.remove('disabled');
+                input.disabled = false;
+            }
+        })
+        span.addEventListener("checked", (action) =>
+        {
+            if ((action as CustomEvent).detail === true)
+            {
+                input.checked = true;
+                switchE.classList.add("active");
+            } else
+            {
+                input.checked = false;
+                switchE.classList.remove("active");
+            }
+        })
+
+        span.dispatchEvent(new CustomEvent("disabled", { detail: options.disabled }))
+        span.dispatchEvent(new CustomEvent("checked", { detail: options.checked }))
+
         span.onclick = () =>
         {
+            if (input.disabled)
+                return;
             switchE.classList.toggle("active");
             input.checked = !input.checked;
-            onClick(input.checked);
-            setTimeout(() => onAnimationComplete(input.checked), 500);
+            options.onClick?.(input.checked);
+            setTimeout(() => options.onAnimationComplete?.(input.checked), 500);
         }
         span.append(switchE);
         span.append(input);

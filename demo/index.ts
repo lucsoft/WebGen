@@ -8,6 +8,7 @@ web.ready = () =>
         switch: Switch,
         list: List,
         multiStateSwitch: MultiStateSwitch,
+        action
     } = web.elements.none().components;
 
     web.elements.body().title({
@@ -75,7 +76,12 @@ web.ready = () =>
             },
             {
                 left: "Example Actions",
-                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete..."))
+                right: Switch({
+                    disabled: false,
+                    checked: false,
+                    onClick: () => web.elements.notify("Updating"),
+                    onAnimationComplete: () => action(document.body.querySelector("switch")?.parentElement ?? document.body, "disabled", true)
+                })
             },
             {
                 left: "MultiStateSwitch",

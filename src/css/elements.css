@@ -78,7 +78,6 @@ switch.active:after {
     transform: translate(150%) rotate(360deg);
 }
 switch.disabled {
-    box-shadow: none;
     cursor: not-allowed;
 }
 i {
