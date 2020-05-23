@@ -969,7 +969,7 @@ export class WebGenElements
             settings.buttons.forEach(x =>
             {
                 const button = document.createElement('button');
-                button.onclose = x.onclick;
+                button.onclick = x.onclick;
                 button.classList.add(x.color);
                 button.innerHTML = x.text;
                 buttonlist.append(button)
