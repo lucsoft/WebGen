@@ -5,7 +5,8 @@
         "module": "commonjs",
         "strict": true,
         "declaration": true,
-        "outDir": "bin"
+        "outDir": "bin",
+        "resolveJsonModule": true
     },
     "include": [
         "src/**/*",
