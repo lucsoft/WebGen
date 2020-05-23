@@ -44,7 +44,16 @@ class Components
         span.append(input);
         return span;
     }
-    list(options: { margin?: boolean; style?: "none" | "default" }, ...list: { left: string | HTMLElement; right?: string | HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
+    span(message: string | HTMLElement): HTMLElement
+    {
+        const span = document.createElement('span');
+        if (typeof message == "string")
+            span.innerText = message;
+        else
+            span.append(message);
+        return span;
+    }
+    list(options: { margin?: boolean; style?: "none" | "default" }, ...list: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
     {
         const listE = document.createElement('list');
 
@@ -73,7 +82,10 @@ class Components
                 right.classList.add('right');
 
                 if (iterator.right)
+                {
+                    iterator.right.classList.add('always');
                     right.append(iterator.right)
+                }
 
                 if (iterator.actions)
                     for (const action of iterator.actions)

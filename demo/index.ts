@@ -56,17 +56,18 @@ web.ready = () =>
         content: List({},
             {
                 left: "Example Switch",
-                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
+                actions: [
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "edit", click: () => { } },
+                    { type: "delete", click: () => { } }
 
+                ]
             },
             {
                 left: "Example Actions",
                 right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
                 actions: [
-                    { type: "get_app", click: () => { } },
-                    { type: "get_app", click: () => { } },
-                    { type: "get_app", click: () => { } },
-                    { type: "get_app", click: () => { } },
                     { type: "get_app", click: () => { } },
                     { type: "get_app", click: () => { } },
                     { type: "edit", click: () => { } },
