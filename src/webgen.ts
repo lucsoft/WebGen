@@ -6,7 +6,7 @@ export { DataConnect, ProtocolDC } from './lib/DataConnect';
 export { WebFunctions } from './lib/Functions';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './lib/ProfileData';
 export { SupportedThemes } from './lib/SupportedThemes';
-
+export { WebGenElements } from './lib/WebGenElements';
 
 class Script
 {
