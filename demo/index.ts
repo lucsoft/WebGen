@@ -57,23 +57,25 @@ web.ready = () =>
             {
                 left: "Example Switch",
                 actions: [
-                    { type: "get_app", click: () => { } },
-                    { type: "get_app", click: () => { } },
-                    { type: "edit", click: () => { } },
-                    { type: "delete", click: () => { } }
-
+                    {
+                        type: "get_app", click: () =>
+                        {
+                            web.elements.fixedWindow(true, true).buttons({
+                                big: false,
+                                list: [
+                                    {
+                                        text: "close",
+                                        onclick: () => web.elements.fixedWindow(false)
+                                    }
+                                ]
+                            })
+                        }
+                    },
                 ]
             },
             {
                 left: "Example Actions",
-                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
-                actions: [
-                    { type: "get_app", click: () => { } },
-                    { type: "get_app", click: () => { } },
-                    { type: "edit", click: () => { } },
-                    { type: "delete", click: () => { } }
-
-                ]
+                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete..."))
             },
             {
                 left: "MultiStateSwitch",
@@ -83,12 +85,7 @@ web.ready = () =>
                     { title: "white", action: () => web.style.handleTheme(SupportedThemes.white) },
                     { title: "blur", action: () => web.style.handleTheme(SupportedThemes.blur) },
                     { title: "auto", action: () => web.style.handleTheme(SupportedThemes.auto) },
-                ),
-                actions: [
-                    { type: "get_app", click: () => { } },
-                    { type: "edit", click: () => { } },
-                    { type: "delete", click: () => { } }
-                ]
+                )
             }
         )
         ,

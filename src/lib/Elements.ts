@@ -5,6 +5,7 @@ export class Elements
 {
     style: Style;
     private staticNotify: HTMLElement;
+    private staticFixedWindow: HTMLElement;
     constructor(style: Style)
     {
         this.style = style;
@@ -18,6 +19,18 @@ export class Elements
             notifyNew.classList.add('notify');
             document.body.append(notifyNew);
             this.staticNotify = notifyNew;
+        }
+
+        const fixedWindow: HTMLElement | null = document.querySelector("#fixedWindow");
+        if (fixedWindow)
+            this.staticFixedWindow = fixedWindow;
+        else
+        {
+            const staticFixedWindow = document.createElement("article");
+            staticFixedWindow.id = "fixedWindow";
+            staticFixedWindow.style.display = "none";
+            document.body.append(staticFixedWindow);
+            this.staticFixedWindow = staticFixedWindow;
         }
     }
     /**
@@ -43,6 +56,14 @@ export class Elements
         setTimeout(() => notifcation.remove(), 6010);
         notifcation.innerText = test;
         this.staticNotify.append(notifcation);
+    }
+
+    fixedWindow(show: boolean, clear: boolean = false): WebGenElements
+    {
+        this.staticFixedWindow.style.display = show ? "block" : "none";
+        if (clear)
+            this.staticFixedWindow.innerHTML = "";
+        return new WebGenElements(this.staticFixedWindow, this.style);
     }
     /**
      * Display in DOM as Custom Article

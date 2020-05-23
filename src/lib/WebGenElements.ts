@@ -83,7 +83,8 @@ class Components
 
                 if (iterator.right)
                 {
-                    iterator.right.classList.add('always');
+                    if (iterator.actions && iterator.actions.length > 0)
+                        iterator.right.classList.add('always');
                     right.append(iterator.right)
                 }
 

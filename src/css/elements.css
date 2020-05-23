@@ -600,7 +600,7 @@ list.style2 item i {
 }
 
 list.style2 item .right i {
-    color: white;
+    color: var(--default-card-color);
     opacity: 0;
     margin: 0 -1.7rem 0 0;
     font-size: 1.7rem;

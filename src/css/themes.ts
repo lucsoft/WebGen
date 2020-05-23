@@ -396,4 +396,7 @@ export const white = `
     card.search ul li:hover right i {
         color: #333333;
     }
+    #fixedWindow {
+        background: rgba(239, 238, 238, 0.91);
+    }
 `;
