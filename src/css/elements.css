@@ -604,14 +604,14 @@ list.style2 item i {
 list.style2 item .right i {
     color: white;
     opacity: 0;
-    margin-right: -2.2rem;
-    font-size: 2.2rem;
-    transform: translate(.2rem, 11px);
-    transition: all 250ms ease;
+    margin-right: -1.7rem;
+    font-size: 1.7rem;
+    transform: translate(.2rem, 9px);
+    transition: all 350ms ease-out;
 }
 
 list.style2 item:hover .right i {
-    margin-right: 1rem;
+    margin-right: 0.23rem;
     opacity: 1;
 }
 
@@ -643,6 +643,7 @@ list item:first-child {
 
 list item .right {
     float: right;
+    margin-right: -0.8rem;
 }
 
 list item i.material-icons {

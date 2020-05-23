@@ -57,6 +57,22 @@ web.ready = () =>
             {
                 left: "Example Switch",
                 right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
+
+            },
+            {
+                left: "Example Actions",
+                right: Switch(() => web.elements.notify("Starting Task..."), () => web.elements.notify("Task Complete...")),
+                actions: [
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "get_app", click: () => { } },
+                    { type: "edit", click: () => { } },
+                    { type: "delete", click: () => { } }
+
+                ]
             },
             {
                 left: "MultiStateSwitch",
@@ -66,21 +82,19 @@ web.ready = () =>
                     { title: "white", action: () => web.style.handleTheme(SupportedThemes.white) },
                     { title: "blur", action: () => web.style.handleTheme(SupportedThemes.blur) },
                     { title: "auto", action: () => web.style.handleTheme(SupportedThemes.auto) },
-                )
+                ),
+                actions: [
+                    { type: "get_app", click: () => { } },
+                    { type: "edit", click: () => { } },
+                    { type: "delete", click: () => { } }
+                ]
             }
         )
         ,
         maxWidth: "35rem"
-    }).login({
-        login: () => { },
-        password: "Login"
-    }).note({
-        text: "Hello World",
-        type: "developer",
-        maxWidth: "35rem"
     }).search({
         type: "smart",
-        mode: "hideWhenEmpty",
+        mode: "showBegin",
         notfound: "No Entries",
         maxWidth: "35rem",
         actions: {
@@ -126,6 +140,13 @@ web.ready = () =>
                 name: "was"
             }
         ]
+    }).login({
+        login: () => { },
+        password: "Login"
+    }).note({
+        text: "Hello World",
+        type: "developer",
+        maxWidth: "35rem"
     }).cardButtons({
         maxWidth: "35rem",
         list: [
