@@ -641,6 +641,9 @@ list item .right {
     margin-top: -0.1rem;
     justify-content: flex-end;
 }
+list.noHeigthLimit item .right {
+    height: unset;
+}
 list item:hover .right .always {
     margin-right: 0.8rem;
 }

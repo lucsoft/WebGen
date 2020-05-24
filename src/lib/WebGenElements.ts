@@ -149,7 +149,7 @@ class Components
         input.append(title, ul);
         return input;
     }
-    list(options: { margin?: boolean; style?: "none" | "default" }, ...list: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
+    list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...list: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
     {
         const listE = document.createElement('list');
 
@@ -158,6 +158,9 @@ class Components
 
         if (options.style !== "none")
             listE.classList.add('style2')
+
+        if (options.noHeigthLimit)
+            listE.classList.add('noHeigthLimit')
 
         for (const iterator of list)
         {
