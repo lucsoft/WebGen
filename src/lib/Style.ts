@@ -8,7 +8,6 @@ import '../css/search.css';
 import '../css/sidebar.css';
 import '../css/unit.css';
 
-import { base64Image } from '../css/image';
 import { blur, dark, white } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';
 
@@ -34,6 +33,7 @@ export class Style
     {
         this.hooks.push(action);
     }
+    getImage = (): string | undefined => { return undefined; }
     private current = SupportedThemes.notset;
     handleTheme(theme: SupportedThemes, isAuto: boolean = false)
     {
@@ -50,7 +50,13 @@ export class Style
             case SupportedThemes.blur:
                 if (this.current == theme)
                     return;
-                this.theme.innerHTML = blur.replace('%base64Image%', `'${base64Image}'`);
+                const image = this.getImage();
+                if (image === undefined)
+                {
+                    console.error('Blur requires to set an image use .getImage = () => "url|base64Image"')
+                    return;
+                }
+                this.theme.innerHTML = blur.replace('%base64Image%', `'${image}'`);
                 this.current = theme;
                 this.hooks.forEach(x => x(theme, isAuto));
                 break;
