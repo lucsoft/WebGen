@@ -16,6 +16,7 @@ export class Style
 {
     private head = document.head;
     private theme: HTMLStyleElement;
+    private hooks: ((current: SupportedThemes) => void)[] = [];
     constructor()
     {
         var roboto = document.createElement('link');
@@ -29,7 +30,11 @@ export class Style
         this.head.appendChild(this.theme);
 
     }
-    current = SupportedThemes.notset;
+    hookThemeChange(action: (current: SupportedThemes) => void)
+    {
+        this.hooks.push(action);
+    }
+    private current = SupportedThemes.notset;
     handleTheme(theme: SupportedThemes)
     {
         if (!this.head) return;
@@ -40,12 +45,14 @@ export class Style
                     return;
                 this.theme.innerHTML = "";
                 this.current = theme;
+                this.hooks.forEach(x => x(theme));
                 break;
             case SupportedThemes.blur:
                 if (this.current == theme)
                     return;
                 this.theme.innerHTML = blur.replace('%base64Image%', `'${base64Image}'`);
                 this.current = theme;
+                this.hooks.forEach(x => x(theme));
                 break;
 
             case SupportedThemes.dark:
@@ -53,12 +60,14 @@ export class Style
                     return;
                 this.theme.innerHTML = dark;
                 this.current = theme;
+                this.hooks.forEach(x => x(theme));
                 break;
             case SupportedThemes.white:
                 if (this.current == theme)
                     return;
                 this.theme.innerHTML = white;
                 this.current = theme;
+                this.hooks.forEach(x => x(theme));
                 break;
             case SupportedThemes.auto:
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches)
