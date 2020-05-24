@@ -16,7 +16,7 @@ export class Style
 {
     private head = document.head;
     private theme: HTMLStyleElement;
-    private hooks: ((current: SupportedThemes) => void)[] = [];
+    private hooks: ((current: SupportedThemes, isAuto: boolean) => void)[] = [];
     constructor()
     {
         var roboto = document.createElement('link');
@@ -30,12 +30,12 @@ export class Style
         this.head.appendChild(this.theme);
 
     }
-    hookThemeChange(action: (current: SupportedThemes) => void)
+    hookThemeChange(action: (current: SupportedThemes, isAuto: boolean) => void)
     {
         this.hooks.push(action);
     }
     private current = SupportedThemes.notset;
-    handleTheme(theme: SupportedThemes)
+    handleTheme(theme: SupportedThemes, isAuto: boolean = false)
     {
         if (!this.head) return;
         switch (theme)
@@ -45,14 +45,14 @@ export class Style
                     return;
                 this.theme.innerHTML = "";
                 this.current = theme;
-                this.hooks.forEach(x => x(theme));
+                this.hooks.forEach(x => x(theme, isAuto));
                 break;
             case SupportedThemes.blur:
                 if (this.current == theme)
                     return;
                 this.theme.innerHTML = blur.replace('%base64Image%', `'${base64Image}'`);
                 this.current = theme;
-                this.hooks.forEach(x => x(theme));
+                this.hooks.forEach(x => x(theme, isAuto));
                 break;
 
             case SupportedThemes.dark:
@@ -60,27 +60,27 @@ export class Style
                     return;
                 this.theme.innerHTML = dark;
                 this.current = theme;
-                this.hooks.forEach(x => x(theme));
+                this.hooks.forEach(x => x(theme, isAuto));
                 break;
             case SupportedThemes.white:
                 if (this.current == theme)
                     return;
                 this.theme.innerHTML = white;
                 this.current = theme;
-                this.hooks.forEach(x => x(theme));
+                this.hooks.forEach(x => x(theme, isAuto));
                 break;
             case SupportedThemes.auto:
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-                    this.handleTheme(SupportedThemes.dark);
+                    this.handleTheme(SupportedThemes.dark, true);
                 else
-                    this.handleTheme(SupportedThemes.white);
+                    this.handleTheme(SupportedThemes.white, true);
 
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =>
                 {
                     if (e.matches)
-                        this.handleTheme(SupportedThemes.dark)
+                        this.handleTheme(SupportedThemes.dark, true)
                     else
-                        this.handleTheme(SupportedThemes.white)
+                        this.handleTheme(SupportedThemes.white, true)
                 });
                 break;
             default:

@@ -31,7 +31,11 @@ class Components
     {
         element.dispatchEvent(new CustomEvent(type, { detail: value }))
     }
-
+    /**
+     * # Actions
+     * @checked (boolean)
+     * @disable (boolean)
+     */
     switch(options: {
         disabled?: boolean;
         checked?: boolean;
@@ -95,6 +99,55 @@ class Components
         else
             span.append(message);
         return span;
+    }
+    /**
+     * # Actions
+     * @value (number)
+     * @disable (boolean)
+     */
+    dropdown(options: { default: number; disable?: boolean; small?: boolean; } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement
+    {
+        const input = document.createElement('drop-down');
+        const title = document.createElement('span');
+        title.innerText = entrys[ options.default ].title ?? 'Unkown';
+        const ul = document.createElement('ul');
+        title.onclick = () =>
+        {
+            input.classList.add('open');
+        };
+        if (options.small)
+            input.classList.add('small')
+        input.addEventListener("disabled", (action) =>
+        {
+            if ((action as CustomEvent).detail === true)
+                input.classList.add('disabled');
+            else ((action as CustomEvent).detail === true)
+            input.classList.remove('disabled');
+
+        })
+        input.addEventListener("value", (action) =>
+        {
+            if ((action as CustomEvent).detail !== undefined)
+                title.innerText = entrys[ (action as CustomEvent).detail ].title ?? 'Unkown';
+        })
+
+        input.dispatchEvent(new CustomEvent("disabled", { detail: options.disable }))
+        input.dispatchEvent(new CustomEvent("value", { detail: options.default }))
+
+        entrys.forEach(element =>
+        {
+            const li = document.createElement('li');
+            li.innerText = element.title;
+            li.onclick = () =>
+            {
+                input.classList.remove('open');
+                title.innerText = element.title;
+                element.action();
+            }
+            ul.append(li);
+        });
+        input.append(title, ul);
+        return input;
     }
     list(options: { margin?: boolean; style?: "none" | "default" }, ...list: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
     {

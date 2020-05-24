@@ -126,7 +126,7 @@ export const blur = `
         #fixedWindow {
             background: rgba(0,0,0,0.5);
         }
-        input[type="text"], input[type="password"], input[type="number"], input[type="email"] {
+        input[type="text"], input[type="password"], input[type="number"], input[type="email"], drop-down span {
             background: rgb(21, 21, 21);
         }
     }
@@ -155,15 +155,12 @@ export const blur = `
         background: #ffffff17;
         backdrop-filter: blur(1rem);
     }
-    switch {
+    switch, drop-down, .tinymenu {
         background: rgba(0, 0, 0, 0.57);
     }
     switch:after {
         color: #ffffff2e;
         background: #8c8c8c29;
-    }
-    .tinymenu {
-        background: rgba(0, 0, 0, 0.57);
     }
     .tinymenu button {
         color: #6f6f6f;
@@ -243,7 +240,7 @@ export const dark = `
     center button:active {
         box-shadow:none;
     }
-    input[type="text"], input[type="password"], input[type="number"], input[type="email"],card.login input[type="button"],switch,card.login input[type="email"], card.login input[type="password"], card.login input[type="url"] {
+    input[type="text"], input[type="password"], input[type="number"], input[type="email"],card.login input[type="button"],switch,card.login input[type="email"], card.login input[type="password"], card.login input[type="url"], drop-down span {
         background: rgb(35, 35, 35);
         box-shadow: none;
         color: white;

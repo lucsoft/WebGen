@@ -4,13 +4,24 @@ var web = new WebGen();
 
 web.ready = () =>
 {
+
     const {
         switch: Switch,
         list: List,
         multiStateSwitch: MultiStateSwitch,
-        action
+        action,
+        dropdown
     } = web.elements.none().components;
-
+    const themeArray = Object.values(SupportedThemes).filter(x => x !== SupportedThemes.notset);
+    const themeArrayWithActions = themeArray.map((x) => ({ title: x, action: () => web.style.handleTheme(x) }));
+    const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
+    web.style.hookThemeChange((theme, isAuto) =>
+    {
+        if (isAuto)
+            action(customDropDown, "value", themeArray.length - 1);
+        else
+            action(customDropDown, "value", themeArray.findIndex((x) => x == theme));
+    });
     web.elements.body().title({
         type: "big",
         title: "Big Title"
@@ -73,6 +84,10 @@ web.ready = () =>
                         }
                     },
                 ]
+            },
+            {
+                left: "test",
+                right: customDropDown
             },
             {
                 left: "Example Actions",

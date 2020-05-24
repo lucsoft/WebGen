@@ -1086,3 +1086,76 @@ div#tag_ava {
     color: black;
     display: inline-block;
 }
+
+drop-down {
+    position: relative;
+    margin: 0.5rem;
+    display: inline-block;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.39);
+    border-radius: 0.2rem;
+    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.12);
+}
+drop-down.small {
+    position: relative;
+    display: inline-block;
+    border-radius: 0.2rem;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
+}
+drop-down span {
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-family: "Roboto";
+    transition: all 150ms ease;
+    text-align: center;
+    cursor: pointer;
+    margin: -1.2rem -1rem -1rem;
+    display: block;
+    padding: 1.2rem 1rem 1rem;
+}
+drop-down.small span {
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0.35rem 0.9rem;
+}
+drop-down span:after {
+    content: ' ';
+    border-bottom: 1px solid var(--default-card-color);
+    display: inline-block;
+    border-right: 1px solid var(--default-card-color);
+    height: 10px;
+    width: 10px;
+    transform: rotate(45deg);
+    margin: 0 0.3rem 0.15rem 0.9rem;
+}
+drop-down.small span:after {
+    height: 5px;
+    width: 5px;
+    margin: 0 0 0.15rem 0.5rem;
+}
+drop-down ul {
+    position: absolute;
+    bottom: 0;
+    background: var(--default-background-color);
+    list-style: none;
+    padding: 0.3rem 0;
+    margin: 0;
+    left: 0;
+    display: none;
+    min-width: -webkit-fill-available;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0px 7px 12px #00000040;
+    backdrop-filter: var(--default-backdrop);
+}
+drop-down.open ul {
+    display: block;
+}
+drop-down ul li {
+    padding: 0.6rem 0.9rem;
+}
+drop-down ul li:hover {
+    background: rgb(255, 255, 255,0.39);
+}
