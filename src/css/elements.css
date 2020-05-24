@@ -570,20 +570,17 @@ sidebar.list .item {
 list.style2 item {
     margin-left: 1rem;
     user-select: none;
-    display: flow-root;
+    display: grid;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     padding: 1rem;
     text-align: left;
     position: relative;
+    grid-template-columns: auto max-content;
     min-height: 1.6rem;
 }
 
 list.style2 item .left {
-    display: inline-block;
     font-size: 1.2rem;
-    top: 50%;
-    position: absolute;
-    transform: translate(0, -50%);
 }
 
 list.style2 item .left .desc {
