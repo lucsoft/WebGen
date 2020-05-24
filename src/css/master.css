@@ -175,7 +175,7 @@ span.eventicon {
     padding: 8rem 0;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(0.2rem);
-    z-index: 1000;
+    z-index: 5;
     overflow: auto;
 }
 img.pixelated {

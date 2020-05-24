@@ -633,6 +633,7 @@ notify {
     font-weight: 400;
     float: right;
     line-height: 0.5rem;
+    z-index: 10;
 }
 
 card.popup splitView.one sidebar item:hover {
