@@ -149,7 +149,11 @@ class Components
         input.append(title, ul);
         return input;
     }
-    list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...list: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
+    /**
+     * #Actions
+     *  @value (list)
+     */
+    list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
     {
         const listE = document.createElement('list');
 
@@ -161,46 +165,51 @@ class Components
 
         if (options.noHeigthLimit)
             listE.classList.add('noHeigthLimit')
-
-        for (const iterator of list)
+        listE.addEventListener("value", (action) =>
         {
-            const item = document.createElement('item');
-            if (iterator.click)
-                item.onclick = iterator.click;
-            const left = document.createElement('span');
-            if (typeof iterator.left === "string")
+            for (const iterator of (action as CustomEvent).detail)
             {
-                left.classList.add('left');
-                left.innerText = iterator.left;
-            } else
-                left.append(iterator.left)
-            item.append(left);
-            if (iterator.right !== undefined || (iterator.actions !== undefined && iterator.actions.length !== 0))
-            {
-                const right = document.createElement('span');
-                right.classList.add('right');
-
-                if (iterator.right)
+                const item = document.createElement('item');
+                if (iterator.click)
+                    item.onclick = iterator.click;
+                const left = document.createElement('span');
+                if (typeof iterator.left === "string")
                 {
-                    if (iterator.actions && iterator.actions.length > 0)
-                        iterator.right.classList.add('always');
-                    right.append(iterator.right)
-                }
+                    left.classList.add('left');
+                    left.innerText = iterator.left;
+                } else
+                    left.append(iterator.left)
+                item.append(left);
+                if (iterator.right !== undefined || (iterator.actions !== undefined && iterator.actions.length !== 0))
+                {
+                    const right = document.createElement('span');
+                    right.classList.add('right');
 
-                if (iterator.actions)
-                    for (const action of iterator.actions)
+                    if (iterator.right)
                     {
-                        const act = document.createElement('i');
-                        act.innerText = action.type;
-                        act.classList.add('material-icons-round');
-                        act.onclick = action.click;
-                        right.append(act);
+                        if (iterator.actions && iterator.actions.length > 0)
+                            iterator.right.classList.add('always');
+                        right.append(iterator.right)
                     }
 
-                item.append(right);
+                    if (iterator.actions)
+                        for (const action of iterator.actions)
+                        {
+                            const act = document.createElement('i');
+                            act.innerText = action.type;
+                            act.classList.add('material-icons-round');
+                            act.onclick = action.click;
+                            right.append(act);
+                        }
+
+                    item.append(right);
+                }
+                listE.innerHTML = "";
+                listE.append(item);
             }
-            listE.append(item);
-        }
+        })
+        listE.dispatchEvent(new CustomEvent("value", { detail: listRaw }))
+
         return listE;
     }
     multiStateSwitch(style: "normal" | "small", ...test: { title: string, action: () => void }[])
@@ -551,6 +560,10 @@ export class WebGenElements
         return this;
     }
 
+    /**
+     * # Actions
+     * @value (string)
+     */
     pageTitle(settings: {
         text: string,
         maxWidth?: string | "default"
@@ -564,9 +577,13 @@ export class WebGenElements
 
         if (settings.maxWidth && settings.maxWidth != "default")
             element.style.maxWidth = settings.maxWidth;
-
-        element.innerHTML = settings.text;
+        element.dispatchEvent(new CustomEvent("value", { detail: settings.text }))
+        element.addEventListener("value", (action) =>
+        {
+            element.innerHTML = (action as CustomEvent).detail;
+        })
         this.ele.append(element);
+        this.last = element;
         return this;
     }
     /**

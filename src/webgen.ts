@@ -2,7 +2,6 @@ import { Elements } from './lib/Elements';
 import { Style } from './lib/Style';
 import { SupportedThemes } from './lib/SupportedThemes';
 
-export { defaultImage } from './css/image';
 export { DataConnect, ProtocolDC } from './lib/DataConnect';
 export { WebFunctions } from './lib/Functions';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './lib/ProfileData';
