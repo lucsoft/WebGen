@@ -140,7 +140,7 @@ center button:active {
 *:focus {
     outline: none;
 }
-input[type="text"], input[type="password"], input[type="number"], input[type="email"]  {
+input:not(.ignore-default)[type="text"], input:not(.ignore-default)[type="password"], input:not(.ignore-default)[type="number"], input:not(.ignore-default)[type="email"]  {
     font-size: 1.1rem;
     padding: 0.7rem;
     margin-left: -0.5rem;

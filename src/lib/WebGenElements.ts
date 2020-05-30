@@ -159,7 +159,7 @@ class Components
     input(options: { type?: string, placeholder?: string, value?: string, width?: string })
     {
         const input = document.createElement('input');
-        input.classList.add('tiny-input');
+        input.classList.add('tiny-input', 'ignore-default');
         if (options.type)
             input.type = options.type;
         if (options.width)
@@ -476,13 +476,13 @@ export class WebGenElements
             if (checkIfModernCard(data) && data.subtitle !== undefined)
             {
                 card.classList.add("subtitle")
-                const subtitle = document.createElement('span');
+                const subtitle = document.createElement('h5');
                 subtitle.classList.add('subtitle');
                 subtitle.innerText = data.subtitle;
                 card.append(subtitle);
 
             }
-            const title = document.createElement('span');
+            const title = document.createElement('h1');
             title.classList.add('title');
             title.innerText = data.title;
             card.append(title);
@@ -504,7 +504,6 @@ export class WebGenElements
                     description.innerText = data.description;
                     card.append(description);
                 }
-
             element.append(card);
         }
         this.ele.append(element);

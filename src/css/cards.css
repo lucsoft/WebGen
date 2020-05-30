@@ -453,7 +453,7 @@ cardlist.small card.lline:not(.subtitle) {
     padding-top: 1.5rem;
 }
 
-card.lline span.title {
+card.lline .title {
     z-index: 2;
     display: block;
     font-size: 3rem;
@@ -464,7 +464,7 @@ card.lline span.title {
     text-overflow: ellipsis;
 }
 
-cardlist.small card.lline span.title {
+cardlist.small card.lline .title {
     font-size: 2rem;
     margin-left: -0.3rem;
     margin-right: -0.3rem;
@@ -476,11 +476,11 @@ cardlist.small card.lline:not(.subtitle) {
     padding-top: 2rem;
 }
 
-card.lline.subtitle span.title {
+card.lline.subtitle .title {
     margin-top: 0.5rem;
 }
 
-card.lline span.subtitle {
+card.lline .subtitle {
     font-size: 0.9rem;
     font-weight: 300;
     display: inline-block;
@@ -492,7 +492,7 @@ card.lline span.subtitle {
     text-transform: uppercase;
 }
 
-cardlist.small card.lline span.subtitle {
+cardlist.small card.lline .subtitle {
     bottom: 0.9rem;
     font-size: 0.85rem;
 }
@@ -505,13 +505,14 @@ card.modern.left * {
 card.modern.right * {
     text-align: right;
 }
-card.modern span.subtitle {
+card.modern .subtitle {
     position: unset;
     font-weight: bold;
     color: #474747;
     font-size: 1.2rem;
     text-transform: none;
     display: block;
+    margin: 0;
 }
 card.modern span.description {
     display: block;
@@ -520,7 +521,7 @@ card.modern span.description {
     font-weight: 300;
     text-align: left;
 }
-card.modern span.title {
+card.modern .title {
     padding: 0;
     margin: -.2rem 0 -.7rem;
     font-weight: 600;
@@ -893,13 +894,13 @@ card.cardButton.big .moreInfo {
 }
 
 @media (max-width: 950px) {
-    card.lline span.title {
+    card.lline .title {
         display: block;
         font-size: 2.1rem;
         margin: 0.4rem;
         font-weight: 300;
     }
-    card.popup span.title {
+    card.popup .title {
         margin-top: -1.5rem;
         padding: 0.6rem;
         padding-left: 1rem;
@@ -921,7 +922,7 @@ card.cardButton.big .moreInfo {
     card.lline.subtitle {
         padding-bottom: 1.9rem;
     }
-    card.lline span.subtitle {
+    card.lline .subtitle {
         bottom: 0.7rem;
     }
     cardlist.max-width {
@@ -983,7 +984,7 @@ card.cardButton.big .moreInfo {
     card.mobilehide {
         display: none;
     }
-    card span.subtitle {
+    card .subtitle {
         bottom: 0.6rem;
     }
 }
