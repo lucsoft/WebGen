@@ -111,10 +111,16 @@ class Components
         const title = document.createElement('span');
         title.innerText = entrys[ options.default ].title ?? 'Unkown';
         const ul = document.createElement('ul');
+        ul.tabIndex = 0;
         title.onclick = () =>
         {
             input.classList.add('open');
+            ul.focus();
         };
+        ul.onblur = () =>
+        {
+            input.classList.remove('open');
+        }
         if (options.small)
             input.classList.add('small')
         input.addEventListener("disabled", (action) =>
@@ -183,6 +189,8 @@ class Components
             listE.classList.add('noHeigthLimit')
         listE.addEventListener("value", (action) =>
         {
+
+            listE.innerHTML = "";
             for (const iterator of (action as CustomEvent).detail)
             {
                 const item = document.createElement('item');
@@ -220,7 +228,6 @@ class Components
 
                     item.append(right);
                 }
-                listE.innerHTML = "";
                 listE.append(item);
             }
         })
@@ -593,11 +600,11 @@ export class WebGenElements
 
         if (settings.maxWidth && settings.maxWidth != "default")
             element.style.maxWidth = settings.maxWidth;
-        element.dispatchEvent(new CustomEvent("value", { detail: settings.text }))
         element.addEventListener("value", (action) =>
         {
             element.innerHTML = (action as CustomEvent).detail;
         })
+        element.dispatchEvent(new CustomEvent("value", { detail: settings.text }))
         this.ele.append(element);
         this.last = element;
         return this;
