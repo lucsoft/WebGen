@@ -10,7 +10,8 @@ web.ready = () =>
         list: List,
         multiStateSwitch: MultiStateSwitch,
         action,
-        dropdown
+        dropdown,
+        input
     } = web.elements.none().components;
     const themeArray = Object.values(SupportedThemes).filter(x => x !== SupportedThemes.notset);
     const themeArrayWithActions = themeArray.map((x) => ({ title: x, action: () => web.style.handleTheme(x) }));
@@ -86,7 +87,7 @@ web.ready = () =>
                 ]
             },
             {
-                left: "test",
+                left: input({ placeholder: "Some text", width: "8rem" }),
                 right: customDropDown
             },
             {

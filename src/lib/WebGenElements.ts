@@ -149,6 +149,22 @@ class Components
         input.append(title, ul);
         return input;
     }
+
+    input(options: { type?: string, placeholder?: string, value?: string, width?: string })
+    {
+        const input = document.createElement('input');
+        input.classList.add('tiny-input');
+        if (options.type)
+            input.type = options.type;
+        if (options.width)
+            input.style.width = options.width;
+        if (options.value)
+            input.value = options.value;
+        if (options.placeholder)
+            input.placeholder = options.placeholder;
+        return input;
+    }
+
     /**
      * #Actions
      *  @value (list)

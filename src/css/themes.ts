@@ -155,7 +155,7 @@ export const blur = `
         background: #ffffff17;
         backdrop-filter: blur(1rem);
     }
-    switch, drop-down, .tinymenu {
+    switch, drop-down, .tinymenu,.tiny-input {
         background: rgba(0, 0, 0, 0.57);
     }
     switch:after {
@@ -279,7 +279,7 @@ export const dark = `
         color: #717171;
     }
 
-    .tinymenu, .tinymenu button {
+    .tiny-input,.tinymenu, .tinymenu button {
         background: #232323;
         color: #6f6f6f;
     }
