@@ -1,0 +1,41 @@
+card.rich {
+    display: grid;
+    justify-content: start;
+    grid-row: span 2;
+    grid-column: span 2;
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content auto max-content;
+}
+card.rich .rich-title {
+    margin: var(--gap);
+    font-size: 3rem;
+}
+card.rich buttonlist {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.5rem 1rem;
+}
+card.rich buttonlist button {
+    background: none;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    box-shadow: none;
+    font-family: var(--font);
+    font-weight: 300;
+    letter-spacing: .05rem;
+    padding: .4rem 1rem;
+}
+card.rich buttonlist button.red {
+    color: var(--text-red);
+}
+card.rich .container {
+    align-self: baseline;
+    margin: 0 var(--gap);
+}
+card.rich:not(.buttons) .text {
+    margin-bottom: var(--gap);
+}
+card.rich .container .text {
+    display: block;
+    font-size: var(--text-size);
+}

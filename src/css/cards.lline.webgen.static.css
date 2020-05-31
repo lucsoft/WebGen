@@ -1,0 +1,27 @@
+card.lline .title {
+    font-size: 3rem;
+    margin: 1rem 1rem 1.3rem;
+    font-weight: 300;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+card.lline .subtitle {
+    font-size: 0.9rem;
+    font-weight: 300;
+    display: block;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: -0.9rem 0.6rem 0.6rem;
+    width: 100%;
+}
+card.lline.small .title {
+    font-size: 2.3rem;
+}
+card.lline.small .title {
+    font-size: 2rem;
+}

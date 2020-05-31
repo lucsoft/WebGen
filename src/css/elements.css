@@ -231,7 +231,7 @@ span.titlew {
 span.pagetitle {
     font-size: 3.4rem;
     font-weight: 800;
-    margin: 1.6rem 0.6rem -0.2rem 0.5rem;
+    margin: 1.6rem 0 -0.2rem 0rem;
     font-family: "Roboto";
     display: block;
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.18);

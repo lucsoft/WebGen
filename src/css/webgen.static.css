@@ -1,0 +1,15 @@
+:root {
+    --background-color: #000000e8;
+    --on-background-text: white;
+    --background-card: #e6e6e6;
+    --on-card-text: #353535;
+    --on-card-subtext: #676767;
+    --on-card-background: white;
+    --max-width: 90vw;
+    --border-radius: 0.6rem;
+    --font: 'Roboto';
+    --card-min-width: 12rem;
+    --gap: 1.6rem;
+    --text-red: #bf0000;
+    --text-size: 1.5rem;
+}
