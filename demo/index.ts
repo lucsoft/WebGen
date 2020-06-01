@@ -10,11 +10,7 @@ web.ready = () =>
 {
     web.elements.body().cards({ minColumnWidth: 16 },
         cards.defaultCard({ title: "text" }),
-        cards.defaultCard({ title: "supr" }),
-        cards.defaultCard({ title: "supr" }),
         cards.defaultCard({ title: "supr", subtitle: "supr" }),
-        cards.defaultCard({ title: "text", small: true }),
-        cards.defaultCard({ title: "supr", small: true }),
         cards.defaultCard({ title: "supr", small: true }),
         cards.defaultCard({ title: "supr", subtitle: "supr" }),
         cards.modernCard({
@@ -80,6 +76,19 @@ web.ready = () =>
                     action: () => { }
                 }
             ]
+        }),
+        cards.loginCard({
+            email: {
+                text: "Email"
+            },
+            password: {
+                text: "Password"
+            },
+            errorMessage: 'Falsche Anmeldedaten',
+            makeLogin: () => new Promise((complete) =>
+            {
+                setTimeout(() => complete(false), 5000);
+            })
         })
     )
 }

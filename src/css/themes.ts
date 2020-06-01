@@ -375,9 +375,6 @@ export const white = `
     card.iconbox img {
         filter: drop-shadow(0 0 6px rgba(0,0,0,0.2));
     }
-    .loadingwheel div:after {
-        background: black;
-    }
     card.popup list.style2 item i {
         color: black;
     }

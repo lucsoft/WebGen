@@ -4,7 +4,7 @@
     --background-card: #e6e6e6;
     --on-card-text: #353535;
     --on-card-subtext: #676767;
-    --on-card-background: white;
+    --on-card-background: rgb(238, 238, 238);
     --max-width: 90vw;
     --border-radius: 0.6rem;
     --font: 'Roboto';

@@ -9,6 +9,7 @@ card.rich {
 card.rich .rich-title {
     margin: var(--gap);
     font-size: 3rem;
+    font-weight: 300;
 }
 card.rich buttonlist {
     display: flex;
@@ -40,3 +41,70 @@ card.rich .container .text {
     display: block;
     font-size: var(--text-size);
 }
+card.rich form .loader.loading input {
+    color: transparent;
+}
+card.rich form .loader.loading input:hover {
+    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33) !important;
+    transform: none !important;
+}
+card.rich form .loader {
+    position: relative;
+    width: max-content;
+    display: block;
+    margin: 0;
+    margin-left: auto;
+    margin-bottom: var(--gap);
+}
+card.rich form .loader svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 57px;
+    height: 57px;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    animation: loadAnimation 800ms cubic-bezier(0, 0, 0.2, 1) infinite;
+    display: none;
+}
+card.rich form {
+    margin-top: calc(0rem - var(--gap));
+    position: relative;
+}
+card.rich form .loader.loading svg {
+    display: block;
+}
+card.rich form .loader input {
+    margin: 0;
+}
+card.rich form input.default {
+    font-size: 1.5rem;
+    font-weight: 300;
+    background: var(--on-card-background);
+    font-family: var(--font);
+    padding: 1rem;
+    margin: var(--gap) 0;
+    border-radius: 0.2rem;
+    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.12);
+    transition: transform 150ms ease;
+    text-align: left;
+    padding-left: 1.5rem;
+    border: none;
+}
+card.rich form .loader svg circle {
+    stroke-dashoffset: 58px;
+    stroke-dasharray: 83px;
+    r: 12;
+    stroke-width: 4px;
+}
+card.rich form .content {
+    font-size: 1.2rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+card.rich form .content.failed {
+    opacity: 1;
+}
+@keyframes loadAnimation { to {transform: translate(-50%, -50%)rotate(270deg);}}

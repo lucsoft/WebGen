@@ -325,10 +325,23 @@ span.titlew.withimg img {
     border-radius: 100%;
     min-height: 10rem;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    font-size: 1.5rem;
+    font-family: "Roboto";
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
 input[type="button"]:not(.notdefault) {
     right: 0;
     width: auto;
-    float: right;
     padding: 0.9rem 2.5rem;
     display: block;
     background: rgba(255, 255, 255, 0.39);
@@ -868,119 +881,6 @@ list.one item.centered {
     h4 {
         font-size: 0.9rem;
     }
-}
-.loading {
-    text-align: center;
-    margin: 2rem;
-    margin-bottom: 3rem;
-}
-.loading img {
-    margin: 1rem;
-}
-.loading .text {
-    display: block;
-    color: var(--default-card-color);
-    font-family: "Roboto";
-    font-size: 1.7rem;
-}
-.loadingwheel {
-    display: inline-block;
-    position: relative;
-    width: 64px;
-    height: 64px;
-    transform: scale(1.6) translate(-50%,0);
-    left: 50%;
-    animation: showloadingwheel 500ms ease;
-}
-@keyframes showloadingwheel{
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-.loadingwheel div {
-    transform-origin: 32px 32px;
-    animation: loadingwheel .6s linear infinite;
-}
-
-.loadingwheel div:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: -3px;
-    left: 31px;
-    width: 2px;
-    height: 26px;
-    border-radius: 20%;
-    background: white;
-}
-.loadingwheel.black div::after {
-    background: black;
-}
-.loadingwheel div:nth-child(1) {
-    transform: rotate(0deg);
-    animation-delay: -0.55s;
-}
-.loadingwheel div:nth-child(2) {
-    transform: rotate(30deg);
-    animation-delay: -.5s;
-}
-.loadingwheel div:nth-child(3) {
-    transform: rotate(60deg);
-    animation-delay: -0.45s;
-}
-.loadingwheel div:nth-child(4) {
-    transform: rotate(90deg);
-    animation-delay: -0.4s;
-}
-.loadingwheel div:nth-child(5) {
-    transform: rotate(120deg);
-    animation-delay: -0.35s;
-}
-.loadingwheel div:nth-child(6) {
-    transform: rotate(150deg);
-   animation-delay: -0.3s;
-}
-.loadingwheel div:nth-child(7) {
-    transform: rotate(180deg);
-    animation-delay: -0.25s;
-}
-.loadingwheel div:nth-child(8) {
-    transform: rotate(210deg);
-    animation-delay: -0.2s;
-}
-.loadingwheel div:nth-child(9) {
-    transform: rotate(240deg);
-    animation-delay: -0.15s;
-}
-.loadingwheel div:nth-child(10) {
-    transform: rotate(270deg);
-    animation-delay: -0.1s;
-}
-.loadingwheel div:nth-child(11) {
-    transform: rotate(300deg);
-    animation-delay: -0.05s;
-}
-.loadingwheel div:nth-child(12) {
-    transform: rotate(330deg);
-    animation-delay: 0s;
-}
-.loadingwheel .text {
-    display: block;
-    width: max-content;
-    margin-top: 5.3rem;
-    font-size: 0.98rem;
-    font-weight: 200;
-    left: 50%;
-    position: absolute;
-    letter-spacing: 0.1rem;
-    transform: translate(-50%);
-    animation: blinktext 9s linear infinite;
 }
 @keyframes blinktext {
     0% {
