@@ -57,7 +57,7 @@ export const modernCard = (options: { title: HTMLElement | string, subtitle?: st
         subtitle: options.subtitle,
         icon: options.icon,
         width: options.width,
-        height: options.height
+        height: options.height ? options.height + 1 : undefined
     })
 export const noteCard = (options: { title: HTMLElement | string, icon: string, width?: number, height?: number }): NoteCard =>
     ({
@@ -73,7 +73,7 @@ export const richCard = (options: { title: HTMLElement | string, content: (HTMLE
         title: options.title,
         content: options.content,
         buttons: options.buttons,
-        height: options.height,
+        height: options.height ? options.height + 1 : undefined,
         width: options.width
     })
 export const checkIfModernCard = (card: any): card is ModernCard => card.type === "modern";

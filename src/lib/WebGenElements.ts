@@ -401,11 +401,20 @@ export class WebGenElements
         return this;
     }
 
-    cards(_settings: {
+    cards({ minColumnWidth, maxWidth, gap }: {
+        minColumnWidth?: number,
+        maxWidth?: number,
+        gap?: number,
     }, ...elements: (DefaultCard | ModernCard | RichCard | NoteCard)[])
     {
         let element = document.createElement("cardlist");
         element.id = this.getID();
+        if (minColumnWidth)
+            element.style.setProperty('--card-min-width', minColumnWidth + "rem")
+        if (maxWidth)
+            element.style.setProperty('--max-width', (maxWidth * 10) + "rem")
+        if (gap)
+            element.style.setProperty('--gap', minColumnWidth + "rem")
 
         for (const rawData of elements)
         {
@@ -485,6 +494,7 @@ export class WebGenElements
                 }
                 if (rawData.description)
                 {
+                    card.classList.add("description")
                     const description = document.createElement('span');
                     description.classList.add('description');
                     if (typeof rawData.description === "string")

@@ -5,15 +5,21 @@ card.modern {
     padding: var(--gap) var(--gap) calc((var(--gap) / 3) * 2)  var(--gap);
     gap: 0 calc(var(--gap) / 1.2);
     grid-template-columns: 1fr;
-    grid-column: span 2;
+    grid-column:  span 2;
     grid-row: span 2;
     grid-template-rows: max-content max-content;
+}
+card.modern:not(.description) {
+    padding: var(--gap);
 }
 card.modern.img.left {
     grid-template-columns: 4.3rem calc(100% - 4.3rem - var(--gap));
 }
 card.modern.img.right {
     grid-template-columns: calc(100% - 4.3rem - var(--gap)) 4.3rem;
+}
+card.modern .title-list {
+    overflow: hidden;
 }
 card.modern.left .title-list {
     text-align: right;

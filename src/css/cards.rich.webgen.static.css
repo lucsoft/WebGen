@@ -2,7 +2,7 @@ card.rich {
     display: grid;
     justify-content: start;
     grid-row: span 2;
-    grid-column: span 2;
+    grid-column:  span 2;
     grid-template-columns: 1fr;
     grid-template-rows: max-content auto max-content;
 }
@@ -13,6 +13,7 @@ card.rich .rich-title {
 card.rich buttonlist {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     margin: 0.5rem 1rem;
 }
 card.rich buttonlist button {
