@@ -4,6 +4,7 @@ import '../css/cards.webgen.static.css';
 import '../css/cards.lline.webgen.static.css';
 import '../css/cards.modern.webgen.static.css';
 import '../css/cards.rich.webgen.static.css';
+import '../css/cards.note.webgen.static.css';
 
 import '../css/elements.css';
 import '../css/grouping.css';

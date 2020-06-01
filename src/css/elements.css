@@ -174,12 +174,6 @@ input:not(.ignore-default)[type="text"], input:not(.ignore-default)[type="passwo
     }
 }
 
-.note {
-    text-align: start;
-    font-size: 1.4rem;
-    letter-spacing: 0.05rem;
-    padding: 1.5rem;
-}
 .log {
     background: black;
     color: green;
@@ -192,29 +186,7 @@ input:not(.ignore-default)[type="text"], input:not(.ignore-default)[type="passwo
     font-size: .83rem;
     right: 10rem;
 }
-.note::after {
-    content: '✔️';
-    float: left;
-    font-size: 2rem;
-    margin: -0.5rem -.13em;
-    margin-right: 0.8rem;
-}
-.note.home::after {
-    content: '🏡';
-}
-.note.fire::after {
-    content: '🔥';
-}
-.note.error::after {
-    content: '❌';
-}
-.note.warn::after {
-    content: '⚠️';
-    margin-top: -.7rem;
-}
-.note.developer::after {
-    content: "👨‍💻";
-}
+
 span.titlew {
     font-size: 5rem;
     font-weight: 200;

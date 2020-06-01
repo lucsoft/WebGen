@@ -556,11 +556,19 @@ export class WebGenElements
                 element.append(card);
             } else if (checkIfNoteCard(rawData))
             {
-                card.classList.add('note', rawData.icon);
+                card.classList.add('note');
+                const icon = document.createElement('span');
+                icon.classList.add('icon');
+
+                icon.innerText = rawData.icon;
+                const text = document.createElement('span');
+                text.classList.add('text');
                 if (typeof rawData.title === "string")
-                    card.innerText = rawData.title;
+                    text.innerText = rawData.title;
                 else
-                    card.append(rawData.title);
+                    text.append(rawData.title);
+                card.append(icon, text);
+                element.append(card);
             }
         }
         this.ele.append(element);
