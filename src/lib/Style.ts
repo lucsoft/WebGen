@@ -5,15 +5,12 @@ import '../css/cards.lline.webgen.static.css';
 import '../css/cards.modern.webgen.static.css';
 import '../css/cards.rich.webgen.static.css';
 import '../css/cards.note.webgen.static.css';
+import '../css/search.webgen.static.css';
 
 import '../css/elements.css';
 import '../css/grouping.css';
 import '../css/master.css';
 import '../css/modern.css';
-import '../css/nav.css';
-import '../css/search.css';
-import '../css/sidebar.css';
-// import '../css/unit.css';
 
 import { blur, dark, white } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';

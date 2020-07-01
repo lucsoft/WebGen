@@ -1,6 +1,6 @@
 
 import { Style } from './Style';
-import { DefaultCard, ModernCard, RichCard, NoteCard, checkIfDefaultCard, checkIfModernCard, checkIfRichCard, checkIfNoteCard } from './Cards';
+import { DefaultCard, ModernCard, RichCard, NoteCard, checkIfDefaultCard, checkIfModernCard, checkIfRichCard, checkIfNoteCard, checkIfHeadlessCard, HeadlessCard } from './Cards';
 
 function hasTouch()
 {
@@ -251,24 +251,6 @@ class Components
     }
 }
 
-export class SearchEntry
-{
-
-    constructor(name: string, id: string)
-    {
-        this.name = name;
-        this.id = id;
-    }
-
-    name: string;
-    icon?: string;
-    tags?: string[];
-    category?: string;
-    suffix?: string;
-    id: string;
-
-}
-
 export interface CardButtonList
 {
     title: string,
@@ -285,6 +267,7 @@ export class WebGenElements
     components: Components = new Components();
     style: Style;
     last: HTMLElement;
+
     constructor(element: HTMLElement, style: Style)
     {
         this.ele = element;
@@ -295,13 +278,7 @@ export class WebGenElements
     {
         return Math.round(Math.random() * 100000000 + 10000000).toString()
     }
-    private getMaterialIcon(name: string)
-    {
-        let i = document.createElement("i");
-        i.classList.add("material-icons");
-        i.innerHTML = name;
-        return i;
-    }
+
     setStyle(style: string)
     {
         this.ele.setAttribute("style", style);
@@ -405,7 +382,8 @@ export class WebGenElements
         minColumnWidth?: number,
         maxWidth?: number,
         gap?: number,
-    }, ...elements: (DefaultCard | ModernCard | RichCard | NoteCard)[])
+        title?: string,
+    }, ...elements: (DefaultCard | ModernCard | RichCard | NoteCard | HeadlessCard)[])
     {
         let element = document.createElement("cardlist");
         element.id = this.getID();
@@ -426,7 +404,11 @@ export class WebGenElements
             if (rawData.width && rawData.width > 0)
                 card.style.gridColumn = `span calc(${rawData.width})`;
 
-            if (checkIfDefaultCard(rawData))
+            if (checkIfHeadlessCard(rawData))
+            {
+                card.append(rawData.html)
+                element.append(card);
+            } else if (checkIfDefaultCard(rawData))
             {
                 if (rawData.small)
                     card.classList.add("small");
@@ -659,11 +641,6 @@ export class WebGenElements
         let element = document.createElement('span');
         element.id = this.getID();
         element.classList.add('pagetitle');
-        // if (settings.maxWidth)
-        //     element.classList.add('maxWidth');
-
-        // if (settings.maxWidth && settings.maxWidth != "default")
-        //     element.style.maxWidth = settings.maxWidth;
         element.addEventListener("value", (action) =>
         {
             element.innerHTML = (action as CustomEvent).detail;
@@ -724,249 +701,6 @@ export class WebGenElements
                 this.last = element;
                 return this;
             }
-        return this;
-    }
-
-    search(settings: {
-        type: "smart" | "default",
-        maxWidth?: string | "default",
-        mode?: "showBegin" | "hideBegin" | "hideWhenEmpty"
-        placeholder?: string,
-        notfound?: string,
-        onsearch?: (text: string) => any,
-        actions?: {
-            close?: () => void,
-            click?: (arg: SearchEntry) => void,
-            download?: (arg: SearchEntry) => void,
-            edit?: (arg: SearchEntry) => void,
-            remove?: (arg: SearchEntry) => void
-        },
-        index: SearchEntry[]
-    })
-    {
-        let element = document.createElement("cardlist");
-        element.id = this.getID();
-        let lastsearch = "";
-        element.classList.add("grid_columns_1");
-        // if (settings.maxWidth != undefined)
-        //     element.classList.add("max-width");
-
-        // if (settings.maxWidth != "default" && settings.maxWidth != undefined)
-        //     element.style.maxWidth = settings.maxWidth;
-
-        let card = document.createElement("card");
-        card.classList.add("search", "disablehover");
-        let input: HTMLInputElement = document.createElement("input");
-        let ul: HTMLUListElement = document.createElement("ul")
-        input.placeholder = settings.placeholder || "Search...";
-        if (settings.actions?.close)
-        {
-            let icon = this.getMaterialIcon("close");
-            icon.onclick = settings.actions?.close;
-            card.append(icon);
-        }
-
-        let list: SearchEntry[] = [];
-
-        input.onkeyup = (d: KeyboardEvent) =>
-        {
-            if (d.key == "Enter")
-            {
-                if (ul.children.item.length == 1)
-                {
-                    let element = <HTMLButtonElement>ul.children[ 0 ];
-                    if (element == null)
-                        return;
-
-                    element.click();
-                }
-
-            }
-            if (lastsearch == input.value) return;
-            lastsearch = input.value;
-            if (settings.mode === "hideWhenEmpty" && lastsearch === "")
-            {
-                ul.innerHTML = "";
-                return;
-            }
-            if (settings.type == "smart" && settings.index)
-            {
-                let smart = input.value.split(` `);
-                let tags: string[] = [];
-                let name = "";
-                smart.forEach(e =>
-                {
-                    if (e.startsWith("#") || e.startsWith("!"))
-                        tags.push(e);
-                    else
-                        name += " " + e;
-
-                });
-                name = name.slice(1);
-                list = settings.index;
-                tags.forEach(e =>
-                {
-                    if (e.startsWith("#"))
-                        list = list.filter(x => x.tags ? x.tags.indexOf(e.slice(1)) != -1 : false);
-                    else if (e.startsWith("!"))
-                        list = list.filter(x => x.tags ? x.tags.indexOf(e.slice(1)) == -1 : false);
-                    if (list.length == 0)
-                        return;
-                });
-
-                list = list.filter(x => x.name.toLowerCase().includes(name.toLowerCase()));
-            } else
-                list = settings.index.filter(x => x.name.toLowerCase().includes(input.value.toLowerCase()));
-
-
-            ul.innerHTML = "";
-            list.forEach(x =>
-            {
-                let tags: HTMLElement[] = [];
-                if (x.tags != undefined)
-                {
-                    x.tags.filter((tag) =>
-                    {
-                        const tagE = document.createElement("span");
-                        tagE.classList.add("tag");
-                        tagE.innerText = tag;
-                        tags.push(tagE);
-                    })
-                }
-                let li = document.createElement("li");
-                li.onclick = () => settings.actions?.click?.(x);
-                const left = document.createElement("left");
-                const right = document.createElement("right");
-                if (x.icon)
-                {
-                    const image = document.createElement("img");
-                    image.src = x.icon;
-                    left.append(image);
-                }
-                left.append(x.name);
-                if (x.category)
-                {
-                    const category = document.createElement("span");
-                    category.classList.add("tag", "category");
-                    category.innerText = x.category;
-                    right.append(category);
-                }
-                if (x.suffix)
-                    right.append(x.suffix);
-                right.append(...tags);
-                if (settings.actions?.download)
-                {
-                    const download = document.createElement("i");
-                    download.classList.add("material-icons-round")
-                    download.innerHTML = "get_app";
-                    download.onclick = () => settings.actions?.download?.(x);
-                    right.append(download);
-                }
-                if (settings.actions?.edit)
-                {
-                    const edit = document.createElement("i");
-                    edit.classList.add("material-icons-round")
-                    edit.innerHTML = "edit";
-                    edit.onclick = () => settings.actions?.edit?.(x);
-                    right.append(edit);
-                }
-                if (settings.actions?.remove)
-                {
-                    const remove = document.createElement("i");
-                    remove.classList.add("material-icons-round")
-                    remove.innerHTML = "delete";
-                    remove.onclick = () => settings.actions?.remove?.(x);
-                    right.append(remove);
-                }
-                li.append(left);
-                li.append(right);
-                ul.append(li);
-            });
-            if (ul.childNodes.length == 0 && settings.notfound !== undefined)
-            {
-                let li = document.createElement("li");
-                li.onclick = () => settings?.actions?.click?.({ id: "notfound", name: "notfound" });
-                li.classList.add("gray");
-                li.innerText = settings.notfound;
-                ul.append(li);
-            }
-
-        };
-
-        card.append(input);
-        card.append(ul);
-        element.append(card);
-        this.ele.append(element);
-
-        if (settings.mode === "showBegin")
-        {
-            settings.index.forEach(x =>
-            {
-                let tags: HTMLElement[] = [];
-                if (x.tags != undefined)
-                {
-                    x.tags.filter((tag) =>
-                    {
-                        const tagE = document.createElement("span");
-                        tagE.classList.add("tag");
-                        tagE.innerText = tag;
-                        tags.push(tagE);
-                    })
-                }
-                let li = document.createElement("li");
-                li.onclick = () => settings.actions?.click?.(x);
-                const left = document.createElement("left");
-                const right = document.createElement("right");
-                if (x.icon)
-                {
-                    const image: any = document.createElement("img");
-                    image.src = x.icon;
-                    image.loading = "lazy";
-                    left.append(image);
-                }
-                left.append(x.name);
-                if (x.category)
-                {
-                    const category = document.createElement("span");
-                    category.classList.add("tag", "category");
-                    category.innerText = x.category;
-                    right.append(category);
-                }
-                if (x.suffix)
-                    right.append(x.suffix);
-                right.append(...tags);
-                if (settings.actions?.download)
-                {
-                    const download = document.createElement("i");
-                    download.classList.add("material-icons-round")
-                    download.innerHTML = "get_app";
-                    download.onclick = () => settings.actions?.download?.(x);
-                    right.append(download);
-                }
-                if (settings.actions?.edit)
-                {
-                    const edit = document.createElement("i");
-                    edit.classList.add("material-icons-round")
-                    edit.innerHTML = "edit";
-                    edit.onclick = () => settings.actions?.edit?.(x);
-                    right.append(edit);
-                }
-                if (settings.actions?.remove)
-                {
-                    const remove = document.createElement("i");
-                    remove.classList.add("material-icons-round")
-                    remove.innerHTML = "delete";
-                    remove.onclick = () => settings.actions?.remove?.(x);
-                    right.append(remove);
-                }
-                li.append(left);
-                li.append(right);
-                ul.append(li);
-            });
-
-        }
-
-        this.last = element;
         return this;
     }
 

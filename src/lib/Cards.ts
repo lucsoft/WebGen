@@ -1,3 +1,4 @@
+export { searchCard } from './SearchCard';
 export interface DefaultCard
 {
     width?: number;
@@ -38,6 +39,13 @@ export interface RichCard
     title: HTMLElement | string;
     content: (HTMLElement | string)[] | (HTMLElement | string);
     buttons?: (ButtonActions & { color: "red" | "normal" })[];
+}
+export interface HeadlessCard
+{
+    width?: number;
+    height?: number;
+    type: "less";
+    html: HTMLElement;
 }
 export const defaultCard = (options: { title: HTMLElement | string, subtitle?: string, small?: boolean, width?: number, height?: number; }): DefaultCard =>
     ({
@@ -170,3 +178,4 @@ export const checkIfModernCard = (card: any): card is ModernCard => card.type ==
 export const checkIfDefaultCard = (card: any): card is DefaultCard => card.type === "default";
 export const checkIfRichCard = (card: any): card is RichCard => card.type === "rich";
 export const checkIfNoteCard = (card: any): card is NoteCard => card.type === "note";
+export const checkIfHeadlessCard = (card: any): card is HeadlessCard => card.type === "less";
