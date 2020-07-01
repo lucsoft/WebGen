@@ -3,7 +3,7 @@ card.note {
     padding: var(--gap);
     grid-template-columns: calc(var(--gap) * 2) auto;
     justify-content: unset;
-    font-size: 2.2rem;
+    font-size: 2rem;
     grid-column: span 2;
     gap: var( --gap);
     font-weight: 300;

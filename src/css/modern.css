@@ -5,7 +5,8 @@
     display: inline-flex;
     margin: 0 0.5rem;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
-    background: rgb(255, 255, 255);
+    background: var(--on-card-background);
+    color:  var(--on-card-text);
 }
 .tinymenu {
     display: inline-flex;
@@ -13,18 +14,18 @@
     padding: 0.3rem;
     height: 1.7rem;
     border-radius: 0.2rem;
-    background: rgb(255, 255, 255);
+    background: var(--on-card-background);
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
 }
 .tinymenu button {
     margin: 0;
-    background: #ffffff;
+    background: var(--on-card-background);
     backdrop-filter: none;
     border-radius: 0.1rem;
-    color: black;
+    color: var(--on-card-text);
     box-shadow: none;
     border-right: 1px solid #0000002b;
-    transition: all 150ms ease;
+
 }
 .tinymenu button:last-child {
     border-right: none;

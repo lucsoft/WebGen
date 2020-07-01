@@ -45,14 +45,12 @@ progressbar::after {
 
 switch {
     text-align: center;
-    background: rgba(255, 255, 255, 0.39);
+    background: var(--on-card-background);
     display: inline-block;
     padding: .24rem .3rem .2rem;
     width: 3.3rem;
     border-radius: 30rem;
-    transition: all 250ms ease;
     cursor: pointer;
-    transition: all 150ms ease;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15);
     font-size: 1rem;
 }
@@ -90,23 +88,23 @@ item i {
     transform: translate(0,2rem);
 }
 button {
-    background: rgb(238, 238, 238);
     padding: .4rem;
-    color: black;
+    background: var(--background-card);
+    color: var(--on-card-text);
     padding-left: .7rem;
     padding-right: .7rem;
     border: none;
     font-size: 0.8rem;
     border-radius: .3rem;
-    transition: all 500ms ease, background 150ms ease;
+    transition: transform 500ms ease;
     box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.29);
     margin: 0.2rem;
 }
 center button:hover {
-    background: rgb(236, 236, 236);
+    background: var(--on-card-background);
 
     transform: scale(1.1) translate(0,-5px);
-    transition: all 150ms ease;
+    transition: transform 150ms ease;
 }
 button.one {
     box-shadow: 0px 12px 61px 0px rgba(0, 0, 0, 0.48);
@@ -297,18 +295,9 @@ span.titlew.withimg img {
     border-radius: 100%;
     min-height: 10rem;
 }
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-    font-size: 1.5rem;
-    font-family: "Roboto";
-    transition: background-color 5000s ease-in-out 0s !important;
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px var(--on-card-background) inset !important;
+    -webkit-text-fill-color: var(--on-card-text) !important;
 }
 
 input[type="button"]:not(.notdefault) {
@@ -316,7 +305,8 @@ input[type="button"]:not(.notdefault) {
     width: auto;
     padding: 0.9rem 2.5rem;
     display: block;
-    background: rgba(255, 255, 255, 0.39);
+    background: var(--on-card-background);
+    color: var(--on-card-text);
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: 300;
@@ -325,7 +315,6 @@ input[type="button"]:not(.notdefault) {
     margin-bottom: 1rem;
     border-radius: 0.2rem;
     box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33), 0px 5px 16px 0px rgba(0, 0, 0, 0) inset;
-    transition: all 150ms ease ;
     text-align: left;
     border: none;
 }
@@ -581,7 +570,7 @@ list.style2 item i {
 }
 
 list.style2 item .right i {
-    color: var(--default-card-color);
+    color: var(--on-card-text);
     opacity: 0;
     margin: 0 -1.7rem 0 0;
     font-size: 1.7rem;
@@ -637,7 +626,7 @@ list item i.material-icons {
     padding-left: 0.7rem;
     padding-right: 0.3rem;
     transform: scale(2.1);
-    color: rgb(199, 198, 204);
+    color: var(--on-card-text);
 }
 
 list item:hover span.time {
@@ -681,30 +670,10 @@ list.two button.one, input,select {
     margin-bottom: 1rem;
     border-radius: 0.2rem;
     box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33);
-    transition: all 150ms ease;
+    transition: transform 150ms ease, box-shadow 150ms ease;
     text-align: left;
     padding-left: 1.5rem;
     border: none;
-}
-list.two select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url(https://api.lucsoft.de/themes/FlatWeb/arrow.svg);
-
-    background-position: right;
-    background-size: 2rem;
-    background-position-x: 91%;
-    background-repeat: no-repeat;
-}
-select.small {
-    font-size: 1.1rem;
-    padding: 0.7rem;
-    margin-left: -0.5rem;
-}
-select.small:hover {
-    transform: none;
-    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33);
 }
 list.two input {
     width: -webkit-fill-available;
@@ -964,7 +933,7 @@ drop-down {
     margin: 0.5rem;
     display: inline-block;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.39);
+    background: var(--on-card-background);
     border-radius: 0.2rem;
     box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.12);
 }
@@ -994,9 +963,9 @@ drop-down.small span {
 }
 drop-down span:after {
     content: ' ';
-    border-bottom: 1px solid var(--default-card-color);
+    border-bottom: 1px solid var(--on-card-text);
     display: inline-block;
-    border-right: 1px solid var(--default-card-color);
+    border-right: 1px solid var(--on-card-text);
     height: 10px;
     width: 10px;
     transform: rotate(45deg);

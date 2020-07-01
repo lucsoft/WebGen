@@ -28,7 +28,7 @@ card {
         --card-min-width: 16rem;
     }
     cardlist card {
-        grid-column: span 1 !important;
+        grid-column: span 1;
     }
 }
 @media(max-width: 420px) {

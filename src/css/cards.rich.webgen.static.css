@@ -8,7 +8,7 @@ card.rich {
 }
 card.rich .rich-title {
     margin: var(--gap);
-    font-size: 3rem;
+    font-size: 2.4rem;
     font-weight: 300;
 }
 card.rich buttonlist {
@@ -19,13 +19,14 @@ card.rich buttonlist {
 }
 card.rich buttonlist button {
     background: none;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
     box-shadow: none;
     font-family: var(--font);
+    color: var(--on-card-text);
     font-weight: 300;
     letter-spacing: .05rem;
-    padding: .4rem 1rem;
+    padding: .4rem 0.6rem;
 }
 card.rich buttonlist button.red {
     color: var(--text-red);
@@ -66,6 +67,9 @@ card.rich form .loader svg {
     animation: loadAnimation 800ms cubic-bezier(0, 0, 0.2, 1) infinite;
     display: none;
 }
+card.rich form .loader svg circle {
+    stroke: var(--on-card-text);
+}
 card.rich form {
     margin-top: calc(0rem - var(--gap));
     position: relative;
@@ -75,6 +79,7 @@ card.rich form .loader.loading svg {
 }
 card.rich form .loader input {
     margin: 0;
+
 }
 card.rich form input.default {
     font-size: 1.5rem;
@@ -84,10 +89,11 @@ card.rich form input.default {
     padding: 1rem;
     margin: var(--gap) 0;
     border-radius: 0.2rem;
-    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.12);
-    transition: transform 150ms ease;
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.15));
     text-align: left;
+    color: var(--on-card-text);
     padding-left: 1.5rem;
+    transition: none;
     border: none;
 }
 card.rich form .loader svg circle {
