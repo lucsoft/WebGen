@@ -42,7 +42,7 @@ html {
     overflow: hidden;
 }
 body {
-    background: rgba(0, 0, 0, 0.91);
+    background: var(--background-color);
     font-family: 'Roboto';
     color: white;
     font-family: 'Roboto';
