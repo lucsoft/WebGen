@@ -1,6 +1,7 @@
 .search {
     position: relative;
     width: -webkit-fill-available;
+    width: -moz-available;
     overflow: hidden;
     border-radius: var(--border-radius);
 }

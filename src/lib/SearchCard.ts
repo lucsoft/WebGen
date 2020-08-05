@@ -32,8 +32,7 @@ export function searchCard(settings: {
         remove?: (arg: SearchEntry) => void
     },
     index: SearchEntry[],
-    width?: number,
-    height?: number
+    width?: number
 }): HeadlessCard
 {
     let search = document.createElement("div");
@@ -252,7 +251,6 @@ export function searchCard(settings: {
     return {
         type: "less",
         html: search,
-        width: settings.width,
-        height: settings.height
+        width: settings.width
     };
 }

@@ -54,11 +54,14 @@ export const white = `
         --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
         --default-background-color: rgb(255, 255, 255);
         --background-color: hsla(0, 0%, 90%, 1);
-        --on-background-text: #141414;
+        --on-background-text: white;
         --background-card: hsla(0, 0%, 100%, 1);
         --on-card-text: #2d2d2d;
         --on-card-subtext: #646464;
         --on-card-background: rgb(255, 255, 255);
         --text-red: #f81919;
+    }
+    .titlew, h2 {
+        text-shadow: 0 0 18px rgb(0 0 0 / 61%);
     }
 `;

@@ -97,7 +97,7 @@ button {
     font-size: 0.8rem;
     border-radius: .3rem;
     transition: transform 500ms ease;
-    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.29);
+    box-shadow: 0px 5px 13px 0px rgb(0 0 0 / 18%);
     margin: 0.2rem;
 }
 center button:hover {
@@ -107,7 +107,7 @@ center button:hover {
     transition: transform 150ms ease;
 }
 button.one {
-    box-shadow: 0px 12px 61px 0px rgba(0, 0, 0, 0.48);
+    box-shadow: 0px 9px 26px 0px rgb(0 0 0 / 33%);
     font-size: 1rem;
     margin: 0.4rem;
     padding: 1rem 1.5rem !important;
@@ -196,7 +196,7 @@ span.titlew {
     padding-bottom: 5rem;
     position: relative;
     text-align: center;
-    text-shadow: 0 0 11px rgb(0, 0, 0);
+    text-shadow: 0 0 18px rgb(0 0 0 / 61%);
 }
 span.pagetitle {
     font-size: 3.4rem;
