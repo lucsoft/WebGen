@@ -27,7 +27,7 @@ web.style.hookThemeChange((theme, isAuto) =>
 });
 web.ready = () =>
 {
-    web.elements.body({ maxWidth: "50rem" })
+    const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
         .title({
             type: "big",
             title: "Big Title"
@@ -120,6 +120,11 @@ web.ready = () =>
                             { title: "blur", action: () => web.style.handleTheme(SupportedThemes.blur) },
                             { title: "auto", action: () => web.style.handleTheme(SupportedThemes.auto) },
                         )
+                    },
+                    {
+                        left: "Update CardArray",
+                        right: MultiStateSwitch("small",
+                            { title: "Replace", action: () => action(cardElement, "value", [ cards.noteCard({ icon: "🧠", title: "Hello World!" }) ]) })
                     }
                 )
                 ,
@@ -184,6 +189,6 @@ web.ready = () =>
                     }
                 ]
             })
-        )
+        ).last;
 }
 web.enable(SupportedThemes.auto);

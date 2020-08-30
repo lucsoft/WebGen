@@ -8,6 +8,8 @@ function hasTouch()
         || navigator.maxTouchPoints > 0
         || navigator.msMaxTouchPoints > 0;
 }
+
+export type CardArray = (DefaultCard | ModernCard | RichCard | NoteCard | HeadlessCard)[];
 class Components
 {
     cardProgress(id: string)
@@ -284,23 +286,6 @@ export class WebGenElements
         this.ele.setAttribute("style", style);
     }
 
-    note(settings: { type: "home" | "fire" | "error" | "warn" | "developer", text: string })
-    {
-        const element = document.createElement('cardlist');
-        element.id = this.getID();
-
-        element.classList.add("grid_columns_1");
-
-        let elementCard = document.createElement("card");
-
-        elementCard.classList.add("note", settings.type);
-        elementCard.innerHTML = settings.text;
-        element.append(elementCard);
-        this.ele.appendChild(element);
-        this.last = element;
-        return this;
-    }
-
     cardButtons(settings: {
         small?: boolean,
         columns?: "auto" | "1" | "2" | "3" | "4" | "5",
@@ -372,12 +357,16 @@ export class WebGenElements
         return this;
     }
 
+    /**
+     * # Actions
+     * @value (CardsArray)
+     */
     cards({ minColumnWidth, maxWidth, gap }: {
         minColumnWidth?: number,
         maxWidth?: number,
         gap?: number,
         title?: string,
-    }, ...elements: (DefaultCard | ModernCard | RichCard | NoteCard | HeadlessCard)[])
+    }, ...cardArray: CardArray)
     {
         let element = document.createElement("cardlist");
         element.id = this.getID();
@@ -387,166 +376,174 @@ export class WebGenElements
             element.style.setProperty('--max-width', (maxWidth * 10) + "rem")
         if (gap)
             element.style.setProperty('--gap', minColumnWidth + "rem")
-
-        for (const rawData of elements)
+        element.addEventListener("value", (action) =>
         {
-            const card = document.createElement('card');
-
-            if (rawData.height && rawData.height > 0)
-                card.style.gridRow = `span ${rawData.height}`;
-
-            if (rawData.width && rawData.width > 0)
-                card.style.gridColumn = `span calc(${rawData.width})`;
-
-            if (checkIfHeadlessCard(rawData))
+            element.innerHTML = "";
+            reRenderCards((action as CustomEvent).detail);
+        })
+        const reRenderCards = (elements: CardArray) =>
+        {
+            for (const rawData of elements)
             {
-                card.append(rawData.html)
-                element.append(card);
-            } else if (checkIfDefaultCard(rawData))
-            {
-                if (rawData.small)
-                    card.classList.add("small");
-                card.classList.add("lline")
+                const card = document.createElement('card');
 
-                const title = document.createElement('h1');
-                title.classList.add('title');
-                if (typeof rawData.title === "string")
-                    title.innerText = rawData.title;
-                else
-                    title.append(rawData.title);
-                card.append(title);
-                if (rawData.subtitle)
-                {
-                    card.classList.add("subtitle")
-                    const subtitle = document.createElement('span');
-                    subtitle.classList.add('subtitle');
-                    if (typeof rawData.subtitle === "string")
-                        subtitle.innerText = rawData.subtitle;
-                    else
-                        subtitle.append(rawData.subtitle);
-                    card.append(subtitle);
-                }
+                if (rawData.height && rawData.height > 0)
+                    card.style.gridRow = `span ${rawData.height}`;
 
-                element.append(card);
-            } else if (checkIfModernCard(rawData))
-            {
-                if (rawData.icon && rawData.align == "left")
-                {
-                    card.classList.add('img');
-                    const icon: any = document.createElement('img');
-                    icon.loading = "lazy";
-                    icon.src = rawData.icon;
-                    card.append(icon);
-                }
-                card.classList.add('modern');
-                card.classList.add(rawData.align);
-                const container = document.createElement('div');
-                container.classList.add('title-list')
-                if (rawData.subtitle !== undefined)
-                {
-                    card.classList.add("subtitle")
-                    const subtitle = document.createElement('h5');
-                    subtitle.classList.add('subtitle');
-                    subtitle.innerText = rawData.subtitle;
-                    container.append(subtitle);
-                }
+                if (rawData.width && rawData.width > 0)
+                    card.style.gridColumn = `span calc(${rawData.width})`;
 
-                const title = document.createElement('h1');
-                title.classList.add('title');
-                if (typeof rawData.title === "string")
-                    title.innerText = rawData.title;
-                else
-                    title.append(rawData.title);
-                container.append(title);
-                card.append(container);
+                if (checkIfHeadlessCard(rawData))
+                {
+                    card.append(rawData.html)
+                    element.append(card);
+                } else if (checkIfDefaultCard(rawData))
+                {
+                    if (rawData.small)
+                        card.classList.add("small");
+                    card.classList.add("lline")
 
-                if (rawData.icon && rawData.align == "right")
-                {
-                    card.classList.add('img');
-                    const icon: any = document.createElement('img');
-                    icon.loading = "lazy";
-                    icon.src = rawData.icon;
-                    card.append(icon);
-                }
-                if (rawData.description)
-                {
-                    card.classList.add("description")
-                    const description = document.createElement('span');
-                    description.classList.add('description');
-                    if (typeof rawData.description === "string")
-                        description.innerText = rawData.description;
-                    else
-                        description.append(rawData.description);
-                    card.append(description);
-                }
-                element.append(card);
-            } else if (checkIfRichCard(rawData))
-            {
-                if (rawData.title)
-                {
-                    let spantitle = document.createElement("h1");
-                    spantitle.classList.add('rich-title');
+                    const title = document.createElement('h1');
+                    title.classList.add('title');
                     if (typeof rawData.title === "string")
-                        spantitle.innerText = rawData.title;
+                        title.innerText = rawData.title;
                     else
-                        spantitle.append(rawData.title);
-                    card.append(spantitle);
-                }
-                card.classList.add("rich");
-                const container = document.createElement('div');
-                container.classList.add('container');
-                if (typeof rawData.content == "string")
-                {
-                    container.append(this.components.format(rawData.content));
-                } else if (rawData.content instanceof HTMLElement)
-                {
-                    container.append(rawData.content);
-                } else
-                {
-                    rawData.content.forEach(x =>
+                        title.append(rawData.title);
+                    card.append(title);
+                    if (rawData.subtitle)
                     {
-                        if (typeof x == "string")
-                            container.append(this.components.format(x));
+                        card.classList.add("subtitle")
+                        const subtitle = document.createElement('span');
+                        subtitle.classList.add('subtitle');
+                        if (typeof rawData.subtitle === "string")
+                            subtitle.innerText = rawData.subtitle;
                         else
-                            container.append(x);
-                    });
-                }
-                card.append(container);
-                if (rawData.buttons)
-                {
-                    let buttonlist = document.createElement("buttonlist");
-                    card.classList.add('buttons');
-                    rawData.buttons.forEach(x =>
-                    {
-                        const button = document.createElement('button');
-                        button.onclick = x.action;
-                        button.classList.add(x.color);
-                        if (typeof x.text == "string")
-                            button.innerText = x.text;
-                        else
-                            card.append(x.text);
-                        buttonlist.append(button)
-                    });
-                    card.append(buttonlist);
-                }
-                element.append(card);
-            } else if (checkIfNoteCard(rawData))
-            {
-                card.classList.add('note');
-                const icon = document.createElement('span');
-                icon.classList.add('icon');
+                            subtitle.append(rawData.subtitle);
+                        card.append(subtitle);
+                    }
 
-                icon.innerText = rawData.icon;
-                const text = document.createElement('span');
-                text.classList.add('text');
-                if (typeof rawData.title === "string")
-                    text.innerText = rawData.title;
-                else
-                    text.append(rawData.title);
-                card.append(icon, text);
-                element.append(card);
+                    element.append(card);
+                } else if (checkIfModernCard(rawData))
+                {
+                    if (rawData.icon && rawData.align == "left")
+                    {
+                        card.classList.add('img');
+                        const icon: any = document.createElement('img');
+                        icon.loading = "lazy";
+                        icon.src = rawData.icon;
+                        card.append(icon);
+                    }
+                    card.classList.add('modern');
+                    card.classList.add(rawData.align);
+                    const container = document.createElement('div');
+                    container.classList.add('title-list')
+                    if (rawData.subtitle !== undefined)
+                    {
+                        card.classList.add("subtitle")
+                        const subtitle = document.createElement('h5');
+                        subtitle.classList.add('subtitle');
+                        subtitle.innerText = rawData.subtitle;
+                        container.append(subtitle);
+                    }
+
+                    const title = document.createElement('h1');
+                    title.classList.add('title');
+                    if (typeof rawData.title === "string")
+                        title.innerText = rawData.title;
+                    else
+                        title.append(rawData.title);
+                    container.append(title);
+                    card.append(container);
+
+                    if (rawData.icon && rawData.align == "right")
+                    {
+                        card.classList.add('img');
+                        const icon: any = document.createElement('img');
+                        icon.loading = "lazy";
+                        icon.src = rawData.icon;
+                        card.append(icon);
+                    }
+                    if (rawData.description)
+                    {
+                        card.classList.add("description")
+                        const description = document.createElement('span');
+                        description.classList.add('description');
+                        if (typeof rawData.description === "string")
+                            description.innerText = rawData.description;
+                        else
+                            description.append(rawData.description);
+                        card.append(description);
+                    }
+                    element.append(card);
+                } else if (checkIfRichCard(rawData))
+                {
+                    if (rawData.title)
+                    {
+                        let spantitle = document.createElement("h1");
+                        spantitle.classList.add('rich-title');
+                        if (typeof rawData.title === "string")
+                            spantitle.innerText = rawData.title;
+                        else
+                            spantitle.append(rawData.title);
+                        card.append(spantitle);
+                    }
+                    card.classList.add("rich");
+                    const container = document.createElement('div');
+                    container.classList.add('container');
+                    if (typeof rawData.content == "string")
+                    {
+                        container.append(this.components.format(rawData.content));
+                    } else if (rawData.content instanceof HTMLElement)
+                    {
+                        container.append(rawData.content);
+                    } else
+                    {
+                        rawData.content.forEach(x =>
+                        {
+                            if (typeof x == "string")
+                                container.append(this.components.format(x));
+                            else
+                                container.append(x);
+                        });
+                    }
+                    card.append(container);
+                    if (rawData.buttons)
+                    {
+                        let buttonlist = document.createElement("buttonlist");
+                        card.classList.add('buttons');
+                        rawData.buttons.forEach(x =>
+                        {
+                            const button = document.createElement('button');
+                            button.onclick = x.action;
+                            button.classList.add(x.color);
+                            if (typeof x.text == "string")
+                                button.innerText = x.text;
+                            else
+                                card.append(x.text);
+                            buttonlist.append(button)
+                        });
+                        card.append(buttonlist);
+                    }
+                    element.append(card);
+                } else if (checkIfNoteCard(rawData))
+                {
+                    card.classList.add('note');
+                    const icon = document.createElement('span');
+                    icon.classList.add('icon');
+
+                    icon.innerText = rawData.icon;
+                    const text = document.createElement('span');
+                    text.classList.add('text');
+                    if (typeof rawData.title === "string")
+                        text.innerText = rawData.title;
+                    else
+                        text.append(rawData.title);
+                    card.append(icon, text);
+                    element.append(card);
+                }
             }
-        }
+        };
+        reRenderCards(cardArray);
         this.ele.append(element);
         this.last = element;
         return this;

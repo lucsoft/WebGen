@@ -67,7 +67,7 @@ export const modernCard = (options: { title: HTMLElement | string, subtitle?: st
         width: options.width,
         height: options.height ? options.height + 1 : undefined
     })
-export const noteCard = (options: { title: HTMLElement | string, icon: "✔️" | "🏡" | "🔥" | "❌" | "⚠️" | "👨‍💻", width?: number, height?: number }): NoteCard =>
+export const noteCard = (options: { title: HTMLElement | string, icon: string, width?: number, height?: number }): NoteCard =>
     ({
         type: "note",
         icon: options.icon,
