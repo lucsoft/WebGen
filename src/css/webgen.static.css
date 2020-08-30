@@ -13,3 +13,8 @@
     --text-red: #bf0000;
     --text-size: 1.3rem;
 }
+
+article.maxWidth {
+    display: block;
+    margin: 0 auto;
+}

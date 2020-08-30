@@ -44,10 +44,15 @@ export class Elements
     /**
      * Display in DOM
      */
-    body(): WebGenElements
+    body(options?: { maxWidth?: string }): WebGenElements
     {
         var article = document.createElement("article");
         document.body.append(article);
+        if (options?.maxWidth)
+        {
+            article.classList.add('maxWidth');
+            article.style.maxWidth = options.maxWidth;
+        }
         return new WebGenElements(article, this.style);
     }
     notify(test: string)

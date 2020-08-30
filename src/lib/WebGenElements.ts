@@ -284,7 +284,7 @@ export class WebGenElements
         this.ele.setAttribute("style", style);
     }
 
-    note(settings: { type: "home" | "fire" | "error" | "warn" | "developer", text: string, maxWidth?: string | "default" })
+    note(settings: { type: "home" | "fire" | "error" | "warn" | "developer", text: string })
     {
         const element = document.createElement('cardlist');
         element.id = this.getID();
@@ -304,7 +304,6 @@ export class WebGenElements
     cardButtons(settings: {
         small?: boolean,
         columns?: "auto" | "1" | "2" | "3" | "4" | "5",
-        maxWidth?: string | "defaut",
         list: CardButtonList[]
     })
     {
@@ -314,11 +313,6 @@ export class WebGenElements
         {
             element.classList.add("small");
         }
-        // if (settings.maxWidth != undefined)
-        //     element.classList.add("max-width");
-
-        // if (settings.maxWidth != "default")
-        //     element.setAttribute("style", "max-width:" + settings.maxWidth);
 
         element.classList.add("grid_columns_" + settings.columns || "auto");
         settings.list.forEach((e) =>
@@ -574,13 +568,11 @@ export class WebGenElements
         let element = document.createElement('splitView');
         element.classList.add(settings.theme == undefined || settings.theme == "modern" ? 'm' : settings.theme);
         if (settings.maxWidth)
-        {
             element.classList.add('maxWidth');
-        }
+
         if (settings.maxWidth && settings.maxWidth != "default")
-        {
             element.style.maxWidth = settings.maxWidth;
-        }
+
         if (settings.nomargin)
         {
             element.classList.add('nomargin');
@@ -634,8 +626,7 @@ export class WebGenElements
      * @value (string)
      */
     pageTitle(settings: {
-        text: string,
-        maxWidth?: string | "default"
+        text: string
     })
     {
         let element = document.createElement('span');

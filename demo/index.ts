@@ -27,7 +27,7 @@ web.style.hookThemeChange((theme, isAuto) =>
 });
 web.ready = () =>
 {
-    web.elements.body()
+    web.elements.body({ maxWidth: "50rem" })
         .title({
             type: "big",
             title: "Big Title"
@@ -187,28 +187,3 @@ web.ready = () =>
         )
 }
 web.enable(SupportedThemes.auto);
-//     }).splitView({
-//         right: [
-//             web.elements.none().note({
-//                 text: "Splited Views",
-//                 type: "fire"
-//             })
-//         ],
-//         maxWidth: "35rem",
-//         theme: "modern",
-//         left: [
-//             web.elements.none().cards({
-//                 style: "small",
-//                 columns: "1",
-//                 hidden: false,
-//                 cards: [
-//                     {
-//                         subtitle: "was",
-//                         title: "test"
-//                     }
-//                 ]
-//             })
-//         ]
-//     })
-// };
-// document.addEventListener("DOMContentLoaded", () => web.enable(SupportedThemes.auto));
