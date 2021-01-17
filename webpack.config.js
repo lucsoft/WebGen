@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     entry: {
         app: "./demo/index.ts",
@@ -26,7 +25,6 @@ module.exports = {
         contentBase: "./dist"
     },
     plugins: [
-        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             inject: false,
             template: './index.html',

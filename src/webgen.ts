@@ -13,7 +13,7 @@ class Script
     {
         var script = document.createElement("script")
         script.type = "text/javascript";
-        return new Promise(function (resolve,)
+        return new Promise<void>((resolve) =>
         {
             script.onload = () => resolve();
             script.src = url;

@@ -1,11 +1,11 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.9.4",
-    "description": "WebGen 1.9",
+    "version": "1.10.0",
+    "description": "WebGen 1.10",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
     "scripts": {
-        "start": "webpack-dev-server",
+        "start": "webpack serve",
         "build": "tsc",
         "prepublishOnly": "cp ./src/css/*.css ./bin/css/ && tsc"
     },
@@ -28,15 +28,13 @@
     },
     "homepage": "https://github.com/lucsoft/WebGen",
     "devDependencies": {
-        "clean-webpack-plugin": "^3.0.0",
-        "css-loader": "^4.2.2",
-        "html-webpack-plugin": "^4.4.1",
-        "style-loader": "^1.2.1",
-        "ts-loader": "^8.0.3",
-        "typescript": "^4.0.2",
-        "webpack": "^4.44.1",
-        "webpack-cli": "^3.3.12",
-        "webpack-dev-server": "^3.11.0"
-    },
-    "dependencies": {}
+        "@webpack-cli/serve": "^1.0.1-alpha.5",
+        "css-loader": "^5.0.1",
+        "html-webpack-plugin": "^4.5.1",
+        "style-loader": "^2.0.0",
+        "ts-loader": "^8.0.14",
+        "typescript": "^4.1.3",
+        "webpack": "^5.15.0",
+        "webpack-cli": "^4.3.1"
+    }
 }
