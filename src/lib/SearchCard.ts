@@ -58,11 +58,8 @@ export function searchCard(settings: {
         {
             if (ul.children.item.length == 1)
             {
-                let element = <HTMLButtonElement>ul.children[ 0 ];
-                if (element == null)
-                    return;
-
-                element.click();
+                let element = <HTMLButtonElement | undefined>ul.children[ 0 ];
+                element?.click();
             }
 
         }

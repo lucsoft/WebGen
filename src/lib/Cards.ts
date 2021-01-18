@@ -48,42 +48,42 @@ export interface HeadlessCard
     html: HTMLElement;
 }
 export const defaultCard = (options: { title: HTMLElement | string, subtitle?: string, small?: boolean, width?: number, height?: number; }): DefaultCard =>
-    ({
-        type: "default",
-        title: options.title,
-        small: options.small ?? false,
-        subtitle: options.subtitle,
-        width: options.width,
-        height: options.height
-    })
+({
+    type: "default",
+    title: options.title,
+    small: options.small ?? false,
+    subtitle: options.subtitle,
+    width: options.width,
+    height: options.height
+})
 export const modernCard = (options: { title: HTMLElement | string, subtitle?: string, description?: HTMLElement | string, align?: "right" | "left", icon?: string, width?: number, height?: number; }): ModernCard =>
-    ({
-        type: "modern",
-        title: options.title,
-        align: options.align ?? 'left',
-        description: options.description,
-        subtitle: options.subtitle,
-        icon: options.icon,
-        width: options.width,
-        height: options.height ? options.height + 1 : undefined
-    })
+({
+    type: "modern",
+    title: options.title,
+    align: options.align ?? 'left',
+    description: options.description,
+    subtitle: options.subtitle,
+    icon: options.icon,
+    width: options.width,
+    height: options.height ? options.height + 1 : undefined
+})
 export const noteCard = (options: { title: HTMLElement | string, icon: string, width?: number, height?: number }): NoteCard =>
-    ({
-        type: "note",
-        icon: options.icon,
-        title: options.title,
-        width: options.width,
-        height: options.height
-    })
+({
+    type: "note",
+    icon: options.icon,
+    title: options.title,
+    width: options.width,
+    height: options.height
+})
 export const richCard = (options: { title: HTMLElement | string, content: (HTMLElement | string)[] | (HTMLElement | string), buttons?: (ButtonActions & { color: "red" | "normal" })[], width?: number, height?: number }): RichCard =>
-    ({
-        type: "rich",
-        title: options.title,
-        content: options.content,
-        buttons: options.buttons,
-        height: options.height ? options.height + 1 : undefined,
-        width: options.width
-    })
+({
+    type: "rich",
+    title: options.title,
+    content: options.content,
+    buttons: options.buttons,
+    height: options.height ? options.height + 1 : undefined,
+    width: options.width
+})
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
     titleText?: string

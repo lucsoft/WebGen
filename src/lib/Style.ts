@@ -64,7 +64,6 @@ export class Style
                 this.current = theme;
                 this.hooks.forEach(x => x(theme, isAuto));
                 break;
-
             case SupportedThemes.dark:
                 if (this.current == theme)
                     return;
@@ -80,18 +79,11 @@ export class Style
                 this.hooks.forEach(x => x(theme, isAuto));
                 break;
             case SupportedThemes.auto:
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-                    this.handleTheme(SupportedThemes.dark, true);
-                else
-                    this.handleTheme(SupportedThemes.white, true);
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                this.handleTheme(mediaQuery.matches ? SupportedThemes.dark : SupportedThemes.white, true);
 
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =>
-                {
-                    if (e.matches)
-                        this.handleTheme(SupportedThemes.dark, true)
-                    else
-                        this.handleTheme(SupportedThemes.white, true)
-                });
+                mediaQuery.addEventListener('change', e =>
+                    this.handleTheme(e.matches ? SupportedThemes.dark : SupportedThemes.white, true));
                 break;
             default:
                 break;

@@ -1,6 +1,6 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.10.0",
+    "version": "1.10.1",
     "description": "WebGen 1.10",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
@@ -28,7 +28,7 @@
     },
     "homepage": "https://github.com/lucsoft/WebGen",
     "devDependencies": {
-        "@webpack-cli/serve": "^1.0.1-alpha.5",
+        "@webpack-cli/serve": "^1.2.1",
         "css-loader": "^5.0.1",
         "html-webpack-plugin": "^4.5.1",
         "style-loader": "^2.0.0",

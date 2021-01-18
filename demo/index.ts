@@ -15,7 +15,7 @@ const {
     input
 } = web.elements.none().components;
 const themeArray = Object.values(SupportedThemes).filter(x => x !== SupportedThemes.notset);
-const themeArrayWithActions = themeArray.map((x) => ({ title: x, action: () => web.style.handleTheme(x) }));
+const themeArrayWithActions = themeArray.map((x) => ({ title: x as string, action: () => web.style.handleTheme(x as SupportedThemes) }));
 const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
 web.style.getImage = () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg';
 web.style.hookThemeChange((theme, isAuto) =>
