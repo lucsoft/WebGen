@@ -425,16 +425,19 @@ export class WebGenElements
                     element.append(card);
                 } else if (checkIfModernCard(rawData))
                 {
+                    const icon: any = document.createElement('img');
+
                     if (rawData.icon && rawData.align == "left")
                     {
                         card.classList.add('img');
-                        const icon: any = document.createElement('img');
                         icon.loading = "lazy";
+                        icon.alt = rawData.title;
                         icon.width = 68;
                         icon.height = 68;
                         icon.src = rawData.icon;
-                        card.append(icon);
                     }
+                    if (rawData.icon && rawData.align == "left")
+                        card.append(icon)
                     card.classList.add('modern');
                     card.classList.add(rawData.align);
                     const container = document.createElement('div');
@@ -458,15 +461,8 @@ export class WebGenElements
                     card.append(container);
 
                     if (rawData.icon && rawData.align == "right")
-                    {
-                        card.classList.add('img');
-                        const icon: any = document.createElement('img');
-                        icon.loading = "lazy";
-                        icon.width = 68;
-                        icon.height = 68;
-                        icon.src = rawData.icon;
-                        card.append(icon);
-                    }
+                        card.append(icon)
+
                     if (rawData.description)
                     {
                         card.classList.add("description")
