@@ -427,7 +427,7 @@ export class WebGenElements
                 {
                     const icon: any = document.createElement('img');
 
-                    if (rawData.icon && rawData.align == "left")
+                    if (rawData.icon)
                     {
                         card.classList.add('img');
                         icon.loading = "lazy";
