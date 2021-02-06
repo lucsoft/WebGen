@@ -430,6 +430,8 @@ export class WebGenElements
                         card.classList.add('img');
                         const icon: any = document.createElement('img');
                         icon.loading = "lazy";
+                        icon.width = 68;
+                        icon.height = 68;
                         icon.src = rawData.icon;
                         card.append(icon);
                     }
@@ -460,6 +462,8 @@ export class WebGenElements
                         card.classList.add('img');
                         const icon: any = document.createElement('img');
                         icon.loading = "lazy";
+                        icon.width = 68;
+                        icon.height = 68;
                         icon.src = rawData.icon;
                         card.append(icon);
                     }

@@ -50,7 +50,3 @@ card.modern .title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-card.modern img {
-    height: 4.2rem;
-    width: 4.2rem;
-}
