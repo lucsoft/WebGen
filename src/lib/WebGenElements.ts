@@ -363,9 +363,8 @@ export class WebGenElements
      */
     cards({ minColumnWidth, maxWidth, gap }: {
         minColumnWidth?: number,
-        maxWidth?: number,
-        gap?: number,
-        title?: string,
+        maxWidth?: string,
+        gap?: number
     }, ...cardArray: CardArray)
     {
         let element = document.createElement("cardlist");
@@ -373,9 +372,10 @@ export class WebGenElements
         if (minColumnWidth)
             element.style.setProperty('--card-min-width', minColumnWidth + "rem")
         if (maxWidth)
-            element.style.setProperty('--max-width', (maxWidth * 10) + "rem")
+            element.style.setProperty('--max-width', maxWidth)
         if (gap)
             element.style.setProperty('--gap', minColumnWidth + "rem")
+
         element.addEventListener("value", (action) =>
         {
             element.innerHTML = "";

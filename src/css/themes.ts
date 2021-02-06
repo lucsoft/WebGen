@@ -41,10 +41,10 @@ export const dark = `
         --default-shadow: unset;
         --background-color: hsla(0, 0%, 4%, 1);
         --on-background-text: #313131;
-        --background-card: hsla(0, 0%, 11%, 1);
+        --background-card: hsla(0, 0%, 9%, 1);
         --on-card-text: #ffffff;
         --on-card-subtext: #646464;
-        --on-card-background: rgb(56, 56, 56);
+        --on-card-background: hsl(0deg 0% 14%);
         --text-red: #f81919;
     }
 `;

@@ -67,7 +67,7 @@ web.ready = () =>
                     onclick: () => { console.log('yaay') }
                 }
             ]
-        }).cards({ minColumnWidth: 14 },
+        }).pageTitle({ text: "Hello World!" }).cards({ minColumnWidth: 14, },
             cards.defaultCard({ title: "supr", small: true }),
             cards.defaultCard({ title: "supr", subtitle: "supr" }),
             cards.modernCard({

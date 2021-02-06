@@ -19,7 +19,7 @@
 }
 .tinymenu button {
     margin: 0;
-    background: var(--on-card-background);
+    background: transparent;
     backdrop-filter: none;
     border-radius: 0.1rem;
     color: var(--on-card-text);
