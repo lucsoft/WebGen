@@ -38,38 +38,20 @@ article#float {
     width: 32rem;
     z-index: 50;
 }
-html {
-    overflow: hidden;
-}
 body {
     background: var(--background-color);
     font-family: 'Roboto';
     color: white;
     font-family: 'Roboto';
     font-weight: 300;
-    padding: 0;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: overlay;
-    height: 100vh;
 }
 html {
     scroll-behavior: smooth;
 }
 .hide {
     display: none !important;
-}
-#particles-js {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    z-index: -1;
-}
-#particles-js .particles-js-canvas-el {
-    width: 100%;
-    height: 100%;
 }
 .material-icons-new {
     display: inline-block;
@@ -92,12 +74,6 @@ h4 {
     margin-top: -2rem;
     text-align: center;
     font-size: 1.4rem;
-}
-ins.adsbygoogle {
-    text-align: center;
-}
-#reveal-ad {
-    background: none;
 }
 
 ::-webkit-scrollbar {
@@ -174,90 +150,6 @@ span.eventicon {
     backdrop-filter: blur(0.2rem);
     z-index: 5;
     overflow: auto;
-}
-img.pixelated {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-}
-.uploader {
-    background: var(--default-background-color);
-    max-width: 59rem;
-    width: -webkit-fill-available;
-    width: -moz-available;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, 0);
-    height: 25rem;
-    overflow: hidden;
-    border-radius: .4rem;
-}
-.uploader::after {
-    content: 'Drag & Drop files or just click here';
-    top: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-top: 1rem;
-    color: rgba(255, 255, 255, 0.38);
-    font-size: 1.3rem;
-    font-style: italic;
-}
-.uploader .title {
-    background: var(--default-background-color);
-    width: -webkit-fill-available;
-    position: absolute;
-    padding: 1.2rem;
-    z-index: 3;
-}
-.uploader button.two {
-    background: #1aab1a;
-    padding: 0.6rem 2.3rem;
-    float: right;
-    margin: 0.6rem;
-    z-index: 4;
-    position: relative;
-}
-.uploader input#file {
-    background: none;
-    box-shadow: none;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-    border-radius: 0;
-    margin: 0;
-    z-index: 1;
-}
-.uploader ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    margin-top: 3.59rem;
-    height: 21.5rem;
-    overflow-y: auto;
-}
-.uploader li {
-    background: rgba(0, 0, 0, 0.32);
-    padding: 1rem;
-    position: relative;
-}
-.uploader img {
-    width: 3.38rem;
-    image-rendering: pixelated;
-    margin: -0.6rem -.4rem;
-    margin-right: .6rem;
-    min-height: 3.4rem;
-    min-width: 1rem;
-    display: inline-block;
-}
-.uploader ul li span {
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    display: inline-block;
-    margin: -1rem 1rem;
-    transform: translate(0, -8px);
 }
 .progressS {
     position: absolute;
