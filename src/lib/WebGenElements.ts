@@ -442,7 +442,7 @@ export class WebGenElements
                     if (rawData.subtitle !== undefined)
                     {
                         card.classList.add("subtitle")
-                        const subtitle = document.createElement('h5');
+                        const subtitle = document.createElement('h1');
                         subtitle.classList.add('subtitle');
                         subtitle.innerText = rawData.subtitle;
                         container.append(subtitle);
