@@ -126,8 +126,7 @@ web.ready = () =>
                         right: MultiStateSwitch("small",
                             { title: "Replace", action: () => action(cardElement, "value", [ cards.noteCard({ icon: "🧠", title: "Hello World!" }) ]) })
                     }
-                )
-                ,
+                ),
                 buttons: [
                     {
                         text: "Okay",

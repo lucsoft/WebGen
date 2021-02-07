@@ -45,8 +45,9 @@ card.rich .container .text {
 }
 card.rich form {
     margin-top: calc(0rem - var(--gap));
-    padding: 0.5rem 0.5rem 0.5rem;
+    padding: 0 0.5rem;
     position: relative;
+    margin: 0 0 -0.7rem;
 }
 card.rich form .loader.loading input {
     color: transparent;
@@ -106,8 +107,8 @@ card.rich form .loader svg circle {
 card.rich form .content {
     font-size: 1.2rem;
     position: absolute;
-    bottom: calc(1.5rem + var(--gap));
-    left: 0.5rem;
+    bottom: var(--gap);
+    left: calc(0.5rem + var(--gap));
     opacity: 0;
     transition: opacity 150ms ease;
 }

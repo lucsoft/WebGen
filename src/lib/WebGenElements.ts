@@ -523,7 +523,8 @@ export class WebGenElements
                             buttonlist.append(button)
                         });
                         card.append(buttonlist);
-                    }
+                    } else
+                        card.style.paddingBottom = "var(--gap)"
                     element.append(card);
                 } else if (checkIfNoteCard(rawData))
                 {
