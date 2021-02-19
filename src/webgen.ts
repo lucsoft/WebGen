@@ -1,12 +1,11 @@
 import { Elements } from './lib/Elements';
 import { Style } from './lib/Style';
 import { SupportedThemes } from './lib/SupportedThemes';
-export * as cards from './lib/Cards';
 export { DataConnect, ProtocolDC } from './lib/DataConnect';
 export { WebFunctions } from './lib/Functions';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './lib/ProfileData';
 export { SupportedThemes } from './lib/SupportedThemes';
-export { WebGenElements, CardArray } from './lib/WebGenElements';
+export { WebGenElements } from './lib/WebGenElements';
 class Script
 {
     load(url: string)
