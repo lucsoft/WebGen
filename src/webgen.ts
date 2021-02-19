@@ -5,6 +5,8 @@ export * as WebFunctions from './lib/Functions';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './lib/ProfileData';
 export { SupportedThemes } from './lib/SupportedThemes';
 export { WebGenElements } from './lib/WebGenElements';
+export * as cards from './cards'
+export * as components from './components'
 export class WebGen
 {
     style: Style;
