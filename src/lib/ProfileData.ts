@@ -1,5 +1,4 @@
-export class User
-{
+export type User = {
     username?: string;
     id?: string;
     avatar?: string;
@@ -9,21 +8,19 @@ export class User
     homes?: number[];
     type?: "developer" | "user" | "tester";
     callMe?: string;
-    permissions: (string)[] = [];
+    permissions: (string)[];
 }
-export class EmailPasswordAuth
-{
+export type EmailPasswordAuth = {
     email?: string;
     password?: string;
 }
-export class IDTokenAuth
-{
+export type IDTokenAuth = {
     id?: string;
     token?: string;
 }
 export class ProfileData
 {
-    user: User = new User();
-    auth: IDTokenAuth = new IDTokenAuth();
+    user: User = { permissions: [] };
+    auth: IDTokenAuth = {};
     modules: any;
 }

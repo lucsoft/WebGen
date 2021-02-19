@@ -20,14 +20,16 @@ export class Style
     private head = document.head;
     private theme: HTMLStyleElement;
     private hooks: ((current: SupportedThemes, isAuto: boolean) => void)[] = [];
-    constructor()
+    constructor(autoLoadFonts: boolean)
     {
-        var roboto = document.createElement('link');
-        roboto.rel = "stylesheet";
-        roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,500|Material+Icons|Material+Icons+Round&display=swap";
-        if (this.head)
-            this.head.append(roboto);
+        if (autoLoadFonts)
+        {
+            var roboto = document.createElement('link');
+            roboto.rel = "stylesheet";
+            roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,500|Material+Icons|Material+Icons+Round&display=swap";
 
+            this.head?.append(roboto);
+        }
         this.theme = document.createElement('style')
         this.theme.id = 'theme';
         this.head.appendChild(this.theme);
@@ -38,7 +40,7 @@ export class Style
         this.hooks.push(action);
     }
     getImage = (): string | undefined => { return undefined; }
-    private current = SupportedThemes.notset;
+    private current: SupportedThemes | undefined = undefined;
     handleTheme(theme: SupportedThemes, isAuto: boolean = false)
     {
         if (!this.head) return;

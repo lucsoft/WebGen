@@ -7,7 +7,7 @@
     "scripts": {
         "start": "webpack serve",
         "build": "tsc",
-        "prepublishOnly": "@powershell cp ./src/css/*.css ./bin/css/ && tsc"
+        "prepublishOnly": "cp ./src/css/*.css ./bin/css/ && tsc"
     },
     "repository": {
         "type": "git",

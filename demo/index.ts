@@ -4,9 +4,9 @@ import { SupportedThemes, WebGen } from '../src/webgen';
 
 var web = new WebGen();
 
-
-const themeArray = Object.values(SupportedThemes).filter(x => x !== SupportedThemes.notset);
-const themeArrayWithActions = themeArray.map((x) => ({ title: x as string, action: () => web.style.handleTheme(x as SupportedThemes) }));
+const themeNaming = [ "auto", "blur", "dark", "gray", "white" ];
+const themeArray = Object.values([ SupportedThemes.auto, SupportedThemes.blur, SupportedThemes.dark, SupportedThemes.gray, SupportedThemes.white ]);
+const themeArrayWithActions = themeArray.map((x) => ({ title: themeNaming[ x ], action: () => web.style.handleTheme(x as SupportedThemes) }));
 const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
 web.style.getImage = () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg';
 web.style.hookThemeChange((theme, isAuto) =>

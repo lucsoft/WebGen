@@ -33,14 +33,12 @@ export class Elements
             this.staticFixedWindow = staticFixedWindow;
         }
     }
+
     /**
      * Dont display in DOM
      */
-    none(): WebGenElements
-    {
-        var article = document.createElement("article2");
-        return new WebGenElements(article, this.style);
-    }
+    none = () => new WebGenElements(document.createElement("article"), this.style);
+
     /**
      * Display in DOM
      */
@@ -63,7 +61,7 @@ export class Elements
         this.staticNotify.append(notifcation);
     }
 
-    fixedWindow(show: boolean, clear: boolean = false): WebGenElements
+    fixedWindow(show: boolean, clear: boolean = false)
     {
         this.staticFixedWindow.style.display = show ? "block" : "none";
         if (clear)
@@ -73,23 +71,17 @@ export class Elements
     /**
      * Display in DOM as Custom Article
      */
-    custom(article: HTMLElement): WebGenElements
-    {
-        return new WebGenElements(article, this.style);
-    }
+    custom = (article: HTMLElement) => new WebGenElements(article, this.style);
 
     clear(search: HTMLElement | string)
     {
         if (typeof search === "string")
         {
             const searchE = document.querySelector(search);
-            if (searchE)
-                searchE.innerHTML = "";
+            if (searchE) searchE.innerHTML = "";
         }
         else
             search.innerHTML = ""
-
-        console.log(typeof search);
     }
 
 }
