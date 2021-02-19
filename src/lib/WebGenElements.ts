@@ -610,12 +610,10 @@ export class WebGenElements
         return this;
     }
 
-    custom(settings: {
-        element: HTMLElement
-    })
+    custom(element: HTMLElement)
     {
-        this.ele.append(settings.element);
-        this.last = settings.element;
+        this.ele.append(element);
+        this.last = element;
         return this;
     }
 
