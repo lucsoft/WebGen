@@ -1,27 +1,19 @@
-import { defaultCard, richCard, loginCard, modernCard, noteCard, searchCard, SearchMode } from "../src/cards/index";
+import { defaultCard, richCard, loginCard, modernCard, noteCard, searchCard, SearchMode } from "../src/cards";
+import { action, dropdown, input, list, multiStateSwitch, switchButtons } from "../src/components";
 import { SupportedThemes, WebGen } from '../src/webgen';
 
 var web = new WebGen();
 
-const {
-    switch: Switch,
-    list: List,
-    multiStateSwitch: MultiStateSwitch,
-    action,
-    dropdown,
-    input
-} = web.elements.none().components;
+
 const themeArray = Object.values(SupportedThemes).filter(x => x !== SupportedThemes.notset);
 const themeArrayWithActions = themeArray.map((x) => ({ title: x as string, action: () => web.style.handleTheme(x as SupportedThemes) }));
 const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
 web.style.getImage = () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg';
 web.style.hookThemeChange((theme, isAuto) =>
 {
-    if (isAuto)
-        action(customDropDown, "value", themeArray.length - 1);
-    else
-        action(customDropDown, "value", themeArray.findIndex((x) => x == theme));
+    action(customDropDown, "value", isAuto ? themeArray.length - 1 : themeArray.findIndex((x) => x == theme));
 });
+
 const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
     .title({
         type: "big",
@@ -73,7 +65,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
         }),
         richCard({
             title: "Hello World!",
-            content: List({},
+            content: list({},
                 {
                     left: "Example Switch",
                     actions: [
@@ -99,7 +91,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 },
                 {
                     left: "Example Actions",
-                    right: Switch({
+                    right: switchButtons({
                         disabled: false,
                         checked: false,
                         onClick: () => web.elements.notify("Updating"),
@@ -108,7 +100,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 },
                 {
                     left: "MultiStateSwitch",
-                    right: MultiStateSwitch("small",
+                    right: multiStateSwitch("small",
                         { title: "gray", action: () => web.style.handleTheme(SupportedThemes.gray) },
                         { title: "dark", action: () => web.style.handleTheme(SupportedThemes.dark) },
                         { title: "white", action: () => web.style.handleTheme(SupportedThemes.white) },
@@ -118,7 +110,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 },
                 {
                     left: "Update CardArray",
-                    right: MultiStateSwitch("small",
+                    right: multiStateSwitch("small",
                         { title: "Replace", action: () => action(cardElement, "value", [ noteCard({ icon: "🧠", title: "Hello World!" }) ]) })
                 }
             ),
