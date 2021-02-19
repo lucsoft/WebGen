@@ -27,11 +27,9 @@ export class WebGen
     style: Style = new Style();
     script: Script = new Script();
     elements: Elements = new Elements(this.style);
-    ready: Function = () => { };
-    enable(theme: SupportedThemes)
+    constructor(theme: SupportedThemes = SupportedThemes.auto)
     {
         console.log("Loaded %cWebGen%cNPM", 'font-size: 2rem', 'font-size: 1.7rem;padding-left: 0.4rem;color:rgb(200,0,0)');
-        this.ready();
         this.style.handleTheme(theme);
     }
 }
