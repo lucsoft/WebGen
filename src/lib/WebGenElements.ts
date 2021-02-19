@@ -275,10 +275,6 @@ export class WebGenElements
         this.style = style;
         this.last = element;
     }
-    private getID()
-    {
-        return Math.round(Math.random() * 100000000 + 10000000).toString()
-    }
 
     setStyle(style: string)
     {
@@ -292,7 +288,6 @@ export class WebGenElements
     })
     {
         let element = document.createElement("cardlist");
-        element.id = this.getID();
         if (settings.small)
             element.classList.add("small");
 
@@ -365,7 +360,6 @@ export class WebGenElements
     }, ...cardArray: CommonCard[])
     {
         let element = document.createElement("cardlist");
-        element.id = this.getID();
         if (minColumnWidth)
             element.style.setProperty('--card-min-width', minColumnWidth + "rem")
         if (maxWidth)
@@ -617,7 +611,6 @@ export class WebGenElements
     })
     {
         let element = document.createElement('span');
-        element.id = this.getID();
         element.classList.add('pagetitle');
         element.addEventListener("value", (action) =>
         {
@@ -642,7 +635,6 @@ export class WebGenElements
         if (settings.type == "big")
         {
             let element = document.createElement("span");
-            element.id = this.getID();
             if (settings.img != undefined)
             {
                 element.classList.add("titlew", "withimg");
@@ -660,7 +652,6 @@ export class WebGenElements
             if (settings.subtitle)
             {
                 let element = document.createElement("h2");
-                element.id = this.getID();
                 element.innerHTML = settings.title;
                 let element2 = document.createElement("h4");
                 element2.innerHTML = settings.subtitle;
@@ -671,7 +662,6 @@ export class WebGenElements
             } else
             {
                 let element = document.createElement("h2");
-                element.id = this.getID();
                 element.innerHTML = settings.title;
                 this.ele.append(element);
                 this.last = element;
@@ -683,7 +673,6 @@ export class WebGenElements
     buttons(settings: { big: boolean, list: { text: string, onclick: (e: HTMLButtonElement) => any }[] })
     {
         let element = document.createElement("center");
-        element.id = this.getID();
         settings.list.forEach(x =>
         {
             let button = document.createElement("button");
