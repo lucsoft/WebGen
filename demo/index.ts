@@ -1,6 +1,5 @@
-import { defaultCard, richCard, loginCard, modernCard, noteCard, searchCard, SearchMode } from "../src/cards";
 import { action, dropdown, input, list, multiStateSwitch, switchButtons } from "../src/components";
-import { SupportedThemes, WebGen } from '../src/webgen';
+import { defaultCard, loginCard, modernCard, noteCard, richCard, searchCard, SearchMode, SupportedThemes, WebGen } from '../src/webgen';
 
 var web = new WebGen();
 

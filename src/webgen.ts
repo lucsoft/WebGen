@@ -5,7 +5,14 @@ export * as WebFunctions from './lib/Functions';
 export { EmailPasswordAuth, IDTokenAuth, ProfileData, User } from './lib/ProfileData';
 export { SupportedThemes } from './lib/SupportedThemes';
 export { WebGenElements } from './lib/WebGenElements';
-export * from './cards'
+export * from './cards/searchCard';
+export * from './cards/defaultCard';
+export * from './cards/headlessCard';
+export * from './cards/loginCard';
+export * from './cards/modernCard';
+export * from './cards/noteCard';
+export * from './cards/richCard';
+
 export * from './components'
 export class WebGen
 {
