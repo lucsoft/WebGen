@@ -1,6 +1,6 @@
 
+import { CardTypes, CommonCard } from "../types/card";
 import { Style } from './Style';
-import { DefaultCard, ModernCard, RichCard, NoteCard, checkIfDefaultCard, checkIfModernCard, checkIfRichCard, checkIfNoteCard, checkIfHeadlessCard, HeadlessCard } from './Cards';
 
 function hasTouch()
 {
@@ -9,7 +9,6 @@ function hasTouch()
         || navigator.msMaxTouchPoints > 0;
 }
 
-export type CardArray = (DefaultCard | ModernCard | RichCard | NoteCard | HeadlessCard)[];
 class Components
 {
     cardProgress(id: string)
@@ -295,9 +294,7 @@ export class WebGenElements
         let element = document.createElement("cardlist");
         element.id = this.getID();
         if (settings.small)
-        {
             element.classList.add("small");
-        }
 
         element.classList.add("grid_columns_" + settings.columns || "auto");
         settings.list.forEach((e) =>
@@ -365,7 +362,7 @@ export class WebGenElements
         minColumnWidth?: number,
         maxWidth?: string,
         gap?: number
-    }, ...cardArray: CardArray)
+    }, ...cardArray: CommonCard[])
     {
         let element = document.createElement("cardlist");
         element.id = this.getID();
@@ -381,137 +378,131 @@ export class WebGenElements
             element.innerHTML = "";
             reRenderCards((action as CustomEvent).detail);
         })
-        const reRenderCards = (elements: CardArray) =>
+        const reRenderCards = (elements: CommonCard[]) =>
         {
-            for (const rawData of elements)
+            for (const cmCard of elements)
             {
                 const card = document.createElement('card');
 
-                if (rawData.height && rawData.height > 0)
-                    card.style.gridRow = `span ${rawData.height}`;
+                if (cmCard.height && cmCard.height > 0)
+                    card.style.gridRow = `span ${cmCard.height}`;
 
-                if (rawData.width && rawData.width > 0)
-                    card.style.gridColumn = `span calc(${rawData.width})`;
+                if (cmCard.width && cmCard.width > 0)
+                    card.style.gridColumn = `span calc(${cmCard.width})`;
 
-                if (checkIfHeadlessCard(rawData))
+                if (cmCard.type == CardTypes.Headless)
                 {
-                    card.append(rawData.html)
+                    card.append(cmCard.html)
                     element.append(card);
-                } else if (checkIfDefaultCard(rawData))
+                } else if (cmCard.type == CardTypes.Default)
                 {
-                    if (rawData.small)
-                        card.classList.add("small");
+                    if (cmCard.small) card.classList.add("small");
                     card.classList.add("lline")
 
                     const title = document.createElement('h1');
                     title.classList.add('title');
-                    if (typeof rawData.title === "string")
-                        title.innerText = rawData.title;
+                    if (typeof cmCard.title === "string")
+                        title.innerText = cmCard.title;
                     else
-                        title.append(rawData.title);
+                        title.append(cmCard.title);
                     card.append(title);
-                    if (rawData.subtitle)
+                    if (cmCard.subtitle)
                     {
                         card.classList.add("subtitle")
                         const subtitle = document.createElement('span');
                         subtitle.classList.add('subtitle');
-                        if (typeof rawData.subtitle === "string")
-                            subtitle.innerText = rawData.subtitle;
+                        if (typeof cmCard.subtitle === "string")
+                            subtitle.innerText = cmCard.subtitle;
                         else
-                            subtitle.append(rawData.subtitle);
+                            subtitle.append(cmCard.subtitle);
                         card.append(subtitle);
                     }
 
                     element.append(card);
-                } else if (checkIfModernCard(rawData))
+                } else if (cmCard.type == CardTypes.Modern)
                 {
                     const icon: any = document.createElement('img');
 
-                    if (rawData.icon)
+                    if (cmCard.icon)
                     {
                         card.classList.add('img');
                         icon.loading = "lazy";
-                        icon.alt = rawData.title;
+                        icon.alt = cmCard.title;
                         icon.width = 68;
                         icon.height = 68;
-                        icon.src = rawData.icon;
+                        icon.src = cmCard.icon;
                     }
-                    if (rawData.icon && rawData.align == "left")
+                    if (cmCard.icon && cmCard.align == "left")
                         card.append(icon)
                     card.classList.add('modern');
-                    card.classList.add(rawData.align);
+                    card.classList.add(cmCard.align);
                     const container = document.createElement('div');
                     container.classList.add('title-list')
-                    if (rawData.subtitle !== undefined)
+                    if (cmCard.subtitle !== undefined)
                     {
                         card.classList.add("subtitle")
                         const subtitle = document.createElement('h1');
                         subtitle.classList.add('subtitle');
-                        subtitle.innerText = rawData.subtitle;
+                        subtitle.innerText = cmCard.subtitle;
                         container.append(subtitle);
                     }
 
                     const title = document.createElement('h1');
                     title.classList.add('title');
-                    if (typeof rawData.title === "string")
-                        title.innerText = rawData.title;
+                    if (typeof cmCard.title === "string")
+                        title.innerText = cmCard.title;
                     else
-                        title.append(rawData.title);
+                        title.append(cmCard.title);
                     container.append(title);
                     card.append(container);
 
-                    if (rawData.icon && rawData.align == "right")
+                    if (cmCard.icon && cmCard.align == "right")
                         card.append(icon)
 
-                    if (rawData.description)
+                    if (cmCard.description)
                     {
                         card.classList.add("description")
                         const description = document.createElement('span');
                         description.classList.add('description');
-                        if (typeof rawData.description === "string")
-                            description.innerText = rawData.description;
+                        if (typeof cmCard.description === "string")
+                            description.innerText = cmCard.description;
                         else
-                            description.append(rawData.description);
+                            description.append(cmCard.description);
                         card.append(description);
                     }
                     element.append(card);
-                } else if (checkIfRichCard(rawData))
+                } else if (cmCard.type == CardTypes.Rich)
                 {
-                    if (rawData.title)
+                    if (cmCard.title)
                     {
                         let spantitle = document.createElement("h1");
                         spantitle.classList.add('rich-title');
-                        if (typeof rawData.title === "string")
-                            spantitle.innerText = rawData.title;
+                        if (typeof cmCard.title === "string")
+                            spantitle.innerText = cmCard.title;
                         else
-                            spantitle.append(rawData.title);
+                            spantitle.append(cmCard.title);
                         card.append(spantitle);
                     }
                     card.classList.add("rich");
                     const container = document.createElement('div');
                     container.classList.add('container');
-                    if (typeof rawData.content == "string")
-                    {
-                        container.append(this.components.format(rawData.content));
-                    } else if (rawData.content instanceof HTMLElement)
-                    {
-                        container.append(rawData.content);
-                    } else
-                    {
-                        rawData.content.forEach(x =>
-                        {
-                            if (typeof x == "string")
-                                container.append(this.components.format(x));
-                            else
-                                container.append(x);
-                        });
-                    }
+                    if (typeof cmCard.content == "string")
+                        container.append(this.components.format(cmCard.content));
+                    else if (cmCard.content instanceof HTMLElement)
+                        container.append(cmCard.content);
+                    else
+                        cmCard.content.forEach(x =>
+                            container.append(typeof x == "string"
+                                ? this.components.format(x)
+                                : x
+                            ));
+
                     card.append(container);
-                    if (rawData.buttons)
+                    if (cmCard.buttons)
                     {
                         let buttonlist = document.createElement("buttonlist");
                         card.classList.add('buttons');
-                        rawData.buttons.forEach(x =>
+                        cmCard.buttons.forEach(x =>
                         {
                             const button = document.createElement('button');
                             button.onclick = x.action;
@@ -526,19 +517,19 @@ export class WebGenElements
                     } else
                         card.style.paddingBottom = "var(--gap)"
                     element.append(card);
-                } else if (checkIfNoteCard(rawData))
+                } else if (cmCard.type == CardTypes.Note)
                 {
                     card.classList.add('note');
                     const icon = document.createElement('span');
                     icon.classList.add('icon');
 
-                    icon.innerText = rawData.icon;
+                    icon.innerText = cmCard.icon;
                     const text = document.createElement('span');
                     text.classList.add('text');
-                    if (typeof rawData.title === "string")
-                        text.innerText = rawData.title;
+                    if (typeof cmCard.title === "string")
+                        text.innerText = cmCard.title;
                     else
-                        text.append(rawData.title);
+                        text.append(cmCard.title);
                     card.append(icon, text);
                     element.append(card);
                 }
@@ -671,12 +662,10 @@ export class WebGenElements
                 let element = document.createElement("h2");
                 element.id = this.getID();
                 element.innerHTML = settings.title;
-                this.ele.append(element);
                 let element2 = document.createElement("h4");
                 element2.innerHTML = settings.subtitle;
-                this.ele.append(element2);
                 let element3 = document.createElement("br");
-                this.ele.append(element3);
+                this.ele.append(element, element2, element3);
                 this.last = element;
                 return this;
             } else
@@ -715,10 +704,7 @@ export class WebGenElements
             let br_mh = document.createElement("br");
             br_mh.classList.add("mobilehide");
             let br = document.createElement("br");
-            this.ele.append(br_mh);
-            this.ele.append(br_mh);
-            this.ele.append(br_mh);
-            this.ele.append(br);
+            this.ele.append(br_mh, br_mh, br_mh, br);
         }
         this.ele.append(element);
         this.last = element;

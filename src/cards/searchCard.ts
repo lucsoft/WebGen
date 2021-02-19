@@ -1,27 +1,26 @@
-import { HeadlessCard } from './Cards';
+import { CardTypes } from "../types/card";
+import { HeadlessCard } from "./headlessCard";
 
-export class SearchEntry
-{
-
-    constructor(name: string, id: string)
-    {
-        this.name = name;
-        this.id = id;
-    }
-
+export type SearchEntry = {
     name: string;
     icon?: string;
     tags?: string[];
     category?: string;
     suffix?: string;
     id: string;
+}
 
+export const enum SearchMode
+{
+    ShowBegin,
+    HideBegin,
+    HideWhenEmpty
 }
 
 export function searchCard(settings: {
     type: "smart" | "default",
     maxWidth?: string | "default",
-    mode?: "showBegin" | "hideBegin" | "hideWhenEmpty"
+    mode?: SearchMode
     placeholder?: string,
     notfound?: string,
     actions?: {
@@ -65,7 +64,7 @@ export function searchCard(settings: {
         }
         if (lastsearch == input.value) return;
         lastsearch = input.value;
-        if (settings.mode === "hideWhenEmpty" && lastsearch === "")
+        if (settings.mode === SearchMode.HideWhenEmpty && lastsearch === "")
         {
             ul.innerHTML = "";
             return;
@@ -177,7 +176,7 @@ export function searchCard(settings: {
     search.append(input);
     search.append(ul);
 
-    if (settings.mode === "showBegin")
+    if (settings.mode === SearchMode.ShowBegin)
     {
         settings.index.forEach(x =>
         {
@@ -246,7 +245,7 @@ export function searchCard(settings: {
     }
 
     return {
-        type: "less",
+        type: CardTypes.Headless,
         html: search,
         width: settings.width
     };
