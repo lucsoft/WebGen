@@ -115,12 +115,12 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
             ),
             buttons: [
                 {
-                    text: "Okay",
+                    title: "Okay",
                     color: "normal",
                     action: () => { }
                 },
                 {
-                    text: "Exit",
+                    title: "Exit",
                     color: "red",
                     action: () => { }
                 }

@@ -95,50 +95,7 @@ h4 {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-@keyframes eventicon_ani {
-    0% {
-        transform: rotate(2deg) scale(0.95);
-        opacity: 0;
-    }
-    90% {
-        opacity: 1;
-    }
-}
-@keyframes eventicon_ani2 {
-    0% {
-        padding-top: 1.5rem;
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    90% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
 
-span.eventicon img {
-    width: 4rem;
-    height: 4rem;
-    transform: rotate(-13deg) scale(1);
-    filter: drop-shadow(0 0.3rem .4rem rgba(0,0,0,0.2));
-    animation: eventicon_ani 500ms ease;
-}
-span.eventicon span.text {
-    padding-top: 1.1rem;
-    padding-left: 1rem;
-    font-size: 0.8em;
-    text-shadow: 0 0 0.4rem rgba(0,0,0,0.3);
-    animation: eventicon_ani2 500ms ease;
-
-}
-span.eventicon {
-    user-select: none;
-    bottom: 1rem;
-    left: 1rem;
-    position: fixed;
-    display: inline-flex;
-    z-index: -1;
-}
 #fixedWindow {
     position: fixed;
     top: 0;
@@ -150,23 +107,6 @@ span.eventicon {
     backdrop-filter: blur(0.2rem);
     z-index: 5;
     overflow: auto;
-}
-.progressS {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.07);
-    width: 10rem;
-    border-radius: 1rem;
-    right: 2rem;
-    top: 2rem;
-    height: 0.6rem;
-    overflow: hidden;
-}
-.progressS span.progress {
-    background: #ffffffe0;
-    height: 2rem;
-    margin: 0;
-    transform: none;
-    transition: width 250ms linear;
 }
 
 .notify {

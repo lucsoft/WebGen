@@ -37,7 +37,7 @@ export class Elements
     /**
      * Dont display in DOM
      */
-    none = () => new WebGenElements(document.createElement("article"), this.style);
+    none = () => new WebGenElements(document.createElement("article"));
 
     /**
      * Display in DOM
@@ -51,7 +51,7 @@ export class Elements
             article.classList.add('maxWidth');
             article.style.maxWidth = options.maxWidth;
         }
-        return new WebGenElements(article, this.style);
+        return new WebGenElements(article);
     }
     notify(test: string)
     {
@@ -66,12 +66,12 @@ export class Elements
         this.staticFixedWindow.style.display = show ? "block" : "none";
         if (clear)
             this.staticFixedWindow.innerHTML = "";
-        return new WebGenElements(this.staticFixedWindow, this.style);
+        return new WebGenElements(this.staticFixedWindow);
     }
     /**
      * Display in DOM as Custom Article
      */
-    custom = (article: HTMLElement) => new WebGenElements(article, this.style);
+    custom = (article: HTMLElement) => new WebGenElements(article);
 
     clear(search: HTMLElement | string)
     {

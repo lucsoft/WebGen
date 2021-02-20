@@ -1,17 +1,13 @@
 
-import { format } from "../components";
+import { format, htmlStringy } from "../components";
 import { CardTypes, CommonCard } from "../types/card";
 import { Style } from './Style';
 
-function hasTouch()
-{
-    return 'ontouchstart' in document.documentElement
-        || navigator.maxTouchPoints > 0
-        || navigator.msMaxTouchPoints > 0;
-}
+const hasTouch = () =>
+    'ontouchstart' in document.documentElement
+    || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 
-export interface CardButtonList
-{
+export type CardButtonList = {
     title: string,
     icon?: string,
     value?: string,
@@ -23,20 +19,15 @@ export interface CardButtonList
 export class WebGenElements
 {
     private ele: HTMLElement;
-    style: Style;
     last: HTMLElement;
 
-    constructor(element: HTMLElement, style: Style)
+    constructor(element: HTMLElement)
     {
         this.ele = element;
-        this.style = style;
         this.last = element;
     }
 
-    setStyle(style: string)
-    {
-        this.ele.setAttribute("style", style);
-    }
+    setStyle = (style: string) => this.ele.setAttribute("style", style)
 
     cardButtons(settings: {
         small?: boolean,
@@ -54,9 +45,8 @@ export class WebGenElements
             let card = document.createElement("card");
             card.classList.add("cardButton");
             if (e.active)
-            {
                 card.classList.add('active');
-            }
+
             card.id = e.id;
             card.innerHTML = `${e.icon ? `<img src="${e.icon}">` : ''}<span class="title">${e.title}</span>${e.value != undefined ? `<span class="value">${e.value}</span>` : ''}`;
             if (e.onClick)
@@ -83,8 +73,7 @@ export class WebGenElements
                             if (img)
                             {
                                 const imgE = card.querySelector('img');
-                                if (imgE)
-                                    imgE.src = img;
+                                if (imgE) imgE.src = img;
                             }
 
                             if (hasTouch())
@@ -96,9 +85,8 @@ export class WebGenElements
                 }
             }
             else
-            {
                 card.onclick = () => card.classList.toggle('active');
-            }
+
             element.append(card);
         });
         this.ele.append(element);
@@ -152,20 +140,14 @@ export class WebGenElements
 
                     const title = document.createElement('h1');
                     title.classList.add('title');
-                    if (typeof cmCard.title === "string")
-                        title.innerText = cmCard.title;
-                    else
-                        title.append(cmCard.title);
+                    htmlStringy(title, cmCard.title)
                     card.append(title);
                     if (cmCard.subtitle)
                     {
                         card.classList.add("subtitle")
                         const subtitle = document.createElement('span');
                         subtitle.classList.add('subtitle');
-                        if (typeof cmCard.subtitle === "string")
-                            subtitle.innerText = cmCard.subtitle;
-                        else
-                            subtitle.append(cmCard.subtitle);
+                        htmlStringy(subtitle, cmCard.subtitle)
                         card.append(subtitle);
                     }
 
@@ -200,10 +182,7 @@ export class WebGenElements
 
                     const title = document.createElement('h1');
                     title.classList.add('title');
-                    if (typeof cmCard.title === "string")
-                        title.innerText = cmCard.title;
-                    else
-                        title.append(cmCard.title);
+                    htmlStringy(title, cmCard.title)
                     container.append(title);
                     card.append(container);
 
@@ -215,10 +194,7 @@ export class WebGenElements
                         card.classList.add("description")
                         const description = document.createElement('span');
                         description.classList.add('description');
-                        if (typeof cmCard.description === "string")
-                            description.innerText = cmCard.description;
-                        else
-                            description.append(cmCard.description);
+                        htmlStringy(description, cmCard.description)
                         card.append(description);
                     }
                     element.append(card);
@@ -228,10 +204,7 @@ export class WebGenElements
                     {
                         let spantitle = document.createElement("h1");
                         spantitle.classList.add('rich-title');
-                        if (typeof cmCard.title === "string")
-                            spantitle.innerText = cmCard.title;
-                        else
-                            spantitle.append(cmCard.title);
+                        htmlStringy(spantitle, cmCard.title)
                         card.append(spantitle);
                     }
                     card.classList.add("rich");
@@ -258,10 +231,7 @@ export class WebGenElements
                             const button = document.createElement('button');
                             button.onclick = x.action;
                             button.classList.add(x.color);
-                            if (typeof x.text == "string")
-                                button.innerText = x.text;
-                            else
-                                card.append(x.text);
+                            htmlStringy(button, x.title)
                             buttonlist.append(button)
                         });
                         card.append(buttonlist);
@@ -277,10 +247,7 @@ export class WebGenElements
                     icon.innerText = cmCard.icon;
                     const text = document.createElement('span');
                     text.classList.add('text');
-                    if (typeof cmCard.title === "string")
-                        text.innerText = cmCard.title;
-                    else
-                        text.append(cmCard.title);
+                    htmlStringy(text, cmCard.title)
                     card.append(icon, text);
                     element.append(card);
                 }
@@ -314,36 +281,26 @@ export class WebGenElements
             element.style.maxWidth = settings.maxWidth;
 
         if (settings.nomargin)
-        {
             element.classList.add('nomargin');
-        }
+
         let sidebar = document.createElement('sidebar')
         if (settings.theme == "one")
-        {
             sidebar.classList.add('d');
-        }
+
         if (settings.sidebarIsList)
-        {
             sidebar.classList.add('list');
-        }
+
         let content = document.createElement('content');
         if (settings.defaultContentPadding)
-        {
             content.style.padding = "1rem";
-        }
+
         settings.left.forEach((x) =>
         {
-            if (x instanceof HTMLElement)
-                sidebar.append(x)
-            else
-                sidebar.append(x.last)
+            sidebar.append(x instanceof HTMLElement ? x : x.last)
         });
         settings.right.forEach((x) =>
         {
-            if (x instanceof HTMLElement)
-                content.append(x)
-            else
-                content.append(x.last)
+            content.append(x instanceof HTMLElement ? x : x.last)
         });
         element.append(sidebar);
         element.append(content);
@@ -370,16 +327,14 @@ export class WebGenElements
         let element = document.createElement('span');
         element.classList.add('pagetitle');
         element.addEventListener("value", (action) =>
-        {
-            element.innerHTML = (action as CustomEvent).detail;
-        })
+            element.innerHTML = (action as CustomEvent).detail)
         element.dispatchEvent(new CustomEvent("value", { detail: settings.text }))
         this.ele.append(element);
         this.last = element;
         return this;
     }
+
     /**
-     *
      * @param settings img only works on big
      */
     title(settings: {
@@ -406,24 +361,22 @@ export class WebGenElements
             return this;
         }
         else if (settings.type === "small")
+        {
+            let element = document.createElement("h2");
+            element.innerHTML = settings.title;
+
             if (settings.subtitle)
             {
-                let element = document.createElement("h2");
-                element.innerHTML = settings.title;
                 let element2 = document.createElement("h4");
                 element2.innerHTML = settings.subtitle;
                 let element3 = document.createElement("br");
                 this.ele.append(element, element2, element3);
-                this.last = element;
-                return this;
             } else
-            {
-                let element = document.createElement("h2");
-                element.innerHTML = settings.title;
                 this.ele.append(element);
-                this.last = element;
-                return this;
-            }
+
+            this.last = element;
+            return this;
+        }
         return this;
     }
 
@@ -433,16 +386,9 @@ export class WebGenElements
         settings.list.forEach(x =>
         {
             let button = document.createElement("button");
-            if (settings.big)
-            {
-                button.classList.add("one")
-                button.innerHTML = x.text;
-                button.onclick = () => x.onclick(button);
-            } else
-            {
-                button.innerHTML = x.text;
-                button.onclick = () => x.onclick(button);
-            }
+            if (settings.big) button.classList.add("one")
+            button.innerHTML = x.text;
+            button.onclick = () => x.onclick(button);
             element.append(button);
         });
         if (settings.big)

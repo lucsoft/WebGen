@@ -1,6 +1,6 @@
 import { HTMLStringy } from "./html";
 
 export type ButtonActions = {
-    text: HTMLStringy;
+    title: HTMLStringy;
     action: () => void;
 }

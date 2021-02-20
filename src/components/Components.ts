@@ -1,3 +1,6 @@
+import { ButtonActions } from "../types/actions";
+import { HTMLStringy } from "../types/html";
+
 export function cardProgress(id: string)
 {
     const cardprogress = document.createElement("span");
@@ -229,7 +232,7 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
     return listE;
 }
 
-export function multiStateSwitch(style: "normal" | "small", ...test: { title: string, action: () => void }[])
+export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActions[])
 {
     const tinymenu = document.createElement('div');
     tinymenu.classList.add('tinymenu', style)
@@ -237,8 +240,16 @@ export function multiStateSwitch(style: "normal" | "small", ...test: { title: st
     {
         const button = document.createElement('button');
         button.onclick = iterator.action;
-        button.innerText = iterator.title;
+        htmlStringy(button, iterator.title);
         tinymenu.append(button);
     }
     return tinymenu;
 }
+
+export const htmlStringy = (ele: HTMLElement, data: HTMLStringy) =>
+{
+    if (typeof data === "string")
+        ele.innerText = data;
+    else
+        ele.append(data);
+};
