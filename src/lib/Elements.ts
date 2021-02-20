@@ -69,9 +69,6 @@ export class Elements
         return new WebGenElements(this.staticFixedWindow);
     }
 
-    /**
-     *
-     */
     custom = (element: HTMLElement, options?: { maxWidth?: string }) =>
     {
         if (options?.maxWidth)
