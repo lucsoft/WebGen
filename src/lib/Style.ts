@@ -20,8 +20,10 @@ export class Style
     private head = document.head;
     private theme: HTMLStyleElement;
     private hooks: ((current: SupportedThemes, isAuto: boolean) => void)[] = [];
-    constructor(autoLoadFonts: boolean)
+    private image: () => string;
+    constructor(autoLoadFonts: boolean, image: () => string)
     {
+        this.image = image;
         if (autoLoadFonts)
         {
             var roboto = document.createElement('link');
@@ -38,7 +40,6 @@ export class Style
     {
         this.hooks.push(action);
     }
-    getImage = (): string | undefined => { return undefined; }
     private current: SupportedThemes | undefined = undefined;
     handleTheme(theme: SupportedThemes, isAuto: boolean = false)
     {
@@ -55,13 +56,7 @@ export class Style
             case SupportedThemes.blur:
                 if (this.current == theme)
                     return;
-                const image = this.getImage();
-                if (image === undefined)
-                {
-                    console.error('Blur requires to set an image use .getImage = () => "url|base64Image"')
-                    return;
-                }
-                this.theme.innerHTML = blur.replace('%base64Image%', `'${image}'`);
+                this.theme.innerHTML = blur.replace('%base64Image%', `'${this.image()}'`);
                 this.current = theme;
                 this.hooks.forEach(x => x(theme, isAuto));
                 break;

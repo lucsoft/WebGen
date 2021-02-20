@@ -1,7 +1,6 @@
 
 import { format, htmlStringy } from "../components";
 import { CardTypes, CommonCard } from "../types/card";
-import { Style } from './Style';
 
 const hasTouch = () =>
     'ontouchstart' in document.documentElement

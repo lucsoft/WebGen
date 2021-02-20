@@ -1,13 +1,13 @@
 import { action, dropdown, input, list, multiStateSwitch, switchButtons } from "../src/components";
 import { defaultCard, loginCard, modernCard, noteCard, richCard, searchCard, SearchMode, SupportedThemes, WebGen } from '../src/webgen';
 
-var web = new WebGen();
+var web = new WebGen({ theme: SupportedThemes.auto, image: () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg' });
 
 const themeNaming = [ "auto", "blur", "dark", "gray", "white" ];
 const themeArray = Object.values([ SupportedThemes.auto, SupportedThemes.blur, SupportedThemes.dark, SupportedThemes.gray, SupportedThemes.white ]);
 const themeArrayWithActions = themeArray.map((x) => ({ title: themeNaming[ x ], action: () => web.style.handleTheme(x as SupportedThemes) }));
 const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
-web.style.getImage = () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg';
+
 web.style.hookThemeChange((theme, isAuto) =>
 {
     action(customDropDown, "value", isAuto ? themeArray.length - 1 : themeArray.findIndex((x) => x == theme));

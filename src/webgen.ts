@@ -11,18 +11,22 @@ export * from './cards/loginCard';
 export * from './cards/modernCard';
 export * from './cards/noteCard';
 export * from './cards/richCard';
+type themes = { theme: SupportedThemes.blur, autoLoadFonts?: boolean, image: () => string } | { theme?: Exclude<SupportedThemes, SupportedThemes.blur>, autoLoadFonts?: boolean, image?: () => string };
 
 export * from './components'
 export class WebGen
 {
     style: Style;
     elements: Elements;
-    constructor(options: { theme?: SupportedThemes, autoLoadFonts?: boolean } = {})
+
+    /**
+     * @param options Image is required when using Blur Theme
+     */
+    constructor(options: themes = {})
     {
         console.log("Loaded @lucsoft/webgen");
-        this.style = new Style(options.autoLoadFonts ?? true);
+        this.style = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''));
         this.elements = new Elements(this.style);
-
         this.style.handleTheme(options.theme ?? SupportedThemes.auto);
     }
 }
