@@ -11,9 +11,12 @@ export * from './cards/loginCard';
 export * from './cards/modernCard';
 export * from './cards/noteCard';
 export * from './cards/richCard';
-type themes = { theme: SupportedThemes.blur, autoLoadFonts?: boolean, image: () => string } | { theme?: Exclude<SupportedThemes, SupportedThemes.blur>, autoLoadFonts?: boolean, image?: () => string };
-
 export * from './components'
+export * from './types/actions';
+export * from './types/card';
+export * from './types/html';
+
+type themes = { theme: SupportedThemes.blur, autoLoadFonts?: boolean, image: () => string } | { theme?: Exclude<SupportedThemes, SupportedThemes.blur>, autoLoadFonts?: boolean, image?: () => string };
 export class WebGen
 {
     style: Style;

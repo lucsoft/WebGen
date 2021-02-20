@@ -68,10 +68,19 @@ export class Elements
             this.staticFixedWindow.innerHTML = "";
         return new WebGenElements(this.staticFixedWindow);
     }
+
     /**
-     * Display in DOM as Custom Article
+     *
      */
-    custom = (article: HTMLElement) => new WebGenElements(article);
+    custom = (element: HTMLElement, options?: { maxWidth?: string }) =>
+    {
+        if (options?.maxWidth)
+        {
+            element.classList.add('maxWidth');
+            element.style.maxWidth = options.maxWidth;
+        }
+        new WebGenElements(element)
+    };
 
     clear(search: HTMLElement | string)
     {

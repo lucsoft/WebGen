@@ -14,7 +14,7 @@
     --text-size: 1.3rem;
 }
 
-article.maxWidth {
+.maxWidth {
     display: block;
     margin: 0 auto;
 }
