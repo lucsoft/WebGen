@@ -76,7 +76,7 @@ export class Elements
             element.classList.add('maxWidth');
             element.style.maxWidth = options.maxWidth;
         }
-        new WebGenElements(element)
+        return new WebGenElements(element)
     };
 
     clear(search: HTMLElement | string)
