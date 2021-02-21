@@ -26,7 +26,7 @@ export const blur = `
     }
     card, center > button {
         backdrop-filter: blur(1rem);
-        -webkit-backdrop-filter: var(1rem);
+        -webkit-backdrop-filter: blur(1rem);
     }
     input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 50px black inset !important;
