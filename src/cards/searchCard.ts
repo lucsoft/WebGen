@@ -42,7 +42,7 @@ export function searchCard(settings: {
     if (settings.actions?.close)
     {
         let icon = document.createElement("i");
-        icon.classList.add("material-icons");
+        icon.classList.add("material-icons-round");
         icon.innerHTML = "close";
         icon.onclick = settings.actions?.close;
         search.append(icon);

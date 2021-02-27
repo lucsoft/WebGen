@@ -28,7 +28,7 @@ export class Style
         {
             var roboto = document.createElement('link');
             roboto.rel = "stylesheet";
-            roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,500|Material+Icons|Material+Icons+Round&display=swap";
+            roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500|Material+Icons+Round&display=swap";
             this.head?.append(roboto);
         }
         this.theme = document.createElement('style')
