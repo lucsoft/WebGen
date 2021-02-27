@@ -153,18 +153,22 @@ export class WebGenElements
                     element.append(card);
                 } else if (cmCard.type == CardTypes.Modern)
                 {
-                    const icon: any = document.createElement('img');
+                    let icon: any = document.createElement('img');
 
                     if (cmCard.icon)
                     {
                         card.classList.add('img');
-                        icon.loading = "lazy";
-                        icon.alt = cmCard.title;
-                        icon.width = 68;
-                        icon.height = 68;
-                        icon.src = cmCard.icon;
+                        if (typeof cmCard.icon == "string")
+                        {
+                            icon.loading = "lazy";
+                            icon.alt = cmCard.title;
+                            icon.width = 68;
+                            icon.height = 68;
+                            icon.src = cmCard.icon;
+                        } else
+                            icon = new DOMParser().parseFromString(cmCard.icon.svg, "image/svg+xml").children[ 0 ];
                     }
-                    if (cmCard.icon && cmCard.align == "left")
+                    if (cmCard.icon && cmCard.align != "right")
                         card.append(icon)
                     card.classList.add('modern');
                     card.classList.add(cmCard.align);

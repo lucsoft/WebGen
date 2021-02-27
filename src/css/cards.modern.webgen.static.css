@@ -18,6 +18,9 @@ card.modern.img.left {
 card.modern.img.right {
     grid-template-columns: calc(100% - 4.3rem - var(--gap)) 4.3rem;
 }
+card.modern.img.down {
+    display: block;
+}
 card.modern.left .title-list {
     text-align: right;
 }

@@ -5,16 +5,16 @@ export type ModernCard = CommonCardData & {
     type: CardTypes.Modern
     title: HTMLStringy;
     subtitle?: string;
-    icon?: string;
+    icon?: string | { svg: string };
     description?: HTMLStringy;
-    align: "right" | "left";
+    align: "right" | "left" | "down";
 }
 
-export const modernCard = (options: { title: HTMLStringy, subtitle?: string, description?: HTMLStringy, align?: "right" | "left", icon?: string, width?: number, height?: number; }): ModernCard =>
+export const modernCard = (options: { title: HTMLStringy, subtitle?: string, description?: HTMLStringy, align?: "right" | "left" | "down", icon?: string | { svg: string }, width?: number, height?: number; }): ModernCard =>
 ({
     type: CardTypes.Modern,
     title: options.title,
-    align: options.align ?? 'left',
+    align: options.align ?? 'right',
     description: options.description,
     subtitle: options.subtitle,
     icon: options.icon,
