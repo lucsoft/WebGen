@@ -2,7 +2,7 @@ switch {
     text-align: center;
     background: var(--on-card-background);
     display: inline-block;
-    padding: .24rem .3rem .2rem;
+    padding: 3px 4px 3px;
     width: 3.3rem;
     border-radius: 30rem;
     cursor: pointer;
@@ -15,9 +15,9 @@ switch:after {
     color: #6f6f6f;
     background: #00000029;
     display: block;
-    width: .6rem;
+    width: 10px;
     position: relative;
-    padding: .2rem 0.35rem;
+    padding: 3px 5.7px;
     border-radius: 100rem;
     transition: all 700ms cubic-bezier(0.96, -0.61, 0.26, 1.63);
     transform: translate(0%) rotate(-90deg);
@@ -46,6 +46,7 @@ button {
     padding: .4rem;
     background: var(--background-card);
     color: var(--on-card-text);
+    font-family: var(--font);
     padding-left: .7rem;
     padding-right: .7rem;
     border: none;
@@ -98,7 +99,7 @@ input:not(.ignore-default)[type="text"], input:not(.ignore-default)[type="passwo
     font-size: 1.1rem;
     padding: 0.7rem;
     margin-left: -0.5rem;
-    font-family: "Roboto";
+    font-family: var(--font);
     font-weight: 300;
     display: block;
     width: fill-available;
@@ -145,7 +146,6 @@ span.pagetitle {
     font-size: 3.4rem;
     font-weight: 800;
     margin: 1.6rem 0 -0.2rem 0rem;
-    font-family: "Roboto";
     display: block;
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.18);
 }
@@ -242,7 +242,6 @@ input[type="button"]:not(.notdefault) {
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: 300;
-    font-family: "Roboto";
     margin: 0.5rem;
     margin-bottom: 1rem;
     border-radius: 0.2rem;
@@ -264,7 +263,6 @@ input[type="submit"] {
     padding: 0.7rem;
     padding-left: 1.4rem;
     padding-right: 1.4rem;
-    font-family: "Roboto";
     font-weight: 300;
     display: block;
     background: white;
@@ -300,38 +298,10 @@ input[type="text"].flatweb::placeholder {
 
 }
 
-addbutton::after {
-    content: '+';
-    font-family: monospace;
-    padding: 0.4rem;
-    padding-bottom: 0.3rem;
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
-    color: white;
-    border-radius: 0.2rem;
-    position: relative;
-    top: -1.6rem;
-    background: rgb(66, 162, 47);
-}
-closebutton::after {
-    content: 'X';
-    font-family: monospace;
-    padding: 0.4rem;
-    padding-bottom: 0.3rem;
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
-    color: white;
-    border-radius: 0.2rem;
-    background: rgb(189, 31, 31);
-}
-closebutton:hover::after {
-    background: rgb(165, 26, 26);
-}
 switch.disabled::after {
     background: rgb(151, 151, 151) !important;
     animation: none;
 }
-
 
 @media(max-width: 950px) {
     span.titlew {
@@ -416,7 +386,6 @@ splitView content {
     text-align: left;
 }
 content h3 {
-    font-family: "Roboto";
     margin: 0;
     font-weight: 200;
     font-size: 2.3rem;
@@ -475,7 +444,7 @@ list.style2 item {
     user-select: none;
     display: grid;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 1rem;
+    padding: .9rem 0.6rem;
     text-align: left;
     position: relative;
     grid-template-columns: auto max-content;
@@ -483,7 +452,7 @@ list.style2 item {
 }
 
 list.style2 item .left {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 list.style2 item .left .desc {
@@ -593,7 +562,7 @@ list.two button.one, input,select {
     width: fill-available;
     width: -moz-available;
     color: var(--default-card-color);
-    font-family: "Roboto";
+    font: var(--font);
     padding: 1rem;
     margin: 0.5rem;
     margin-bottom: 1rem;
@@ -657,7 +626,6 @@ list.one item {
 list.one item span.title {
     font-size: 2.5rem;
     padding-top: 0.5rem;
-    font-family: 'Roboto';
     font-weight: 200;
     display: block;
 }
@@ -878,7 +846,6 @@ drop-down.small {
 drop-down span {
     font-size: 1.5rem;
     font-weight: 300;
-    font-family: "Roboto";
     transition: all 150ms ease;
     text-align: center;
     cursor: pointer;
