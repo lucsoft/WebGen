@@ -8,29 +8,31 @@ card.rich {
 }
 card.rich .rich-title {
     margin: var(--gap);
-    font-size: 2rem;
-    padding-left: 0.5rem;
+    font-size: 1.8rem;
     font-weight: 300;
 }
 card.rich buttonlist {
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-    margin: 0.5rem 1rem;
+    margin: 0.5rem 1.15rem;
 }
 card.rich buttonlist button {
     background: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-transform: uppercase;
     box-shadow: none;
-    font-family: var(--font);
     color: var(--on-card-text);
     font-weight: 400;
     letter-spacing: .05rem;
-    padding: .4rem 0.6rem;
+    padding: .6rem 0.7rem .5rem;
+    transition: background-color 100ms ease;
 }
 card.rich buttonlist button.red {
     color: var(--text-red);
+}
+card.rich buttonlist button:hover {
+    background-color: var(--on-card-background);
 }
 card.rich .container {
     align-self: baseline;
@@ -87,7 +89,6 @@ card.rich form input.default {
     font-size: 1.5rem;
     font-weight: 300;
     background: var(--on-card-background);
-    font-family: var(--font);
     padding: 1rem;
     margin: var(--gap) 0;
     border-radius: 0.2rem;
