@@ -1,3 +1,4 @@
+import { span } from "../components";
 import { Style } from './Style';
 import { WebGenElements } from './WebGenElements';
 
@@ -55,9 +56,8 @@ export class Elements
     }
     notify(test: string)
     {
-        const notifcation = document.createElement('span')
+        const notifcation = span(test)
         setTimeout(() => notifcation.remove(), 6010);
-        notifcation.innerText = test;
         this.staticNotify.append(notifcation);
     }
 

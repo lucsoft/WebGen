@@ -1,10 +1,12 @@
 import { ButtonActions } from "../types/actions";
 import { HTMLStringy } from "../types/html";
 
+export const createElement = document.createElement;
+
 export function cardProgress(id: string)
 {
-    const cardprogress = document.createElement("span");
-    const pro = document.createElement("span");
+    const cardprogress = createElement("span");
+    const pro = createElement("span");
     pro.classList.add("pro")
     pro.id = id;
     cardprogress.classList.add("cardprogress");
@@ -14,7 +16,7 @@ export function cardProgress(id: string)
 
 export function format(text: string)
 {
-    const formt = document.createElement("span");
+    const formt = createElement("span");
     formt.classList.add('text');
     formt.innerHTML = text;
     return formt;
@@ -37,10 +39,10 @@ export function switchButtons(options: {
     onAnimationComplete?: (active: boolean) => void;
 })
 {
-    const span = document.createElement('span');
+    const span = createElement('span');
 
-    const switchE = document.createElement('switch');
-    const input = document.createElement('input');
+    const switchE = createElement('switch');
+    const input = createElement('input');
 
     input.classList.add("hide");
     input.type = "checkbox";
@@ -86,16 +88,19 @@ export function switchButtons(options: {
     return span;
 }
 
-export function span(message: string | HTMLElement): HTMLElement
+export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
+
+export function custom(type: string, message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement
 {
-    const span = document.createElement('span');
+    const span = createElement(type);
+    span.classList.add(...classList)
+
     if (typeof message == "string")
         span.innerText = message;
-    else
+    else if (message != undefined)
         span.append(message);
     return span;
 }
-
 /**
  * # Actions
  * @value (number)
@@ -103,10 +108,10 @@ export function span(message: string | HTMLElement): HTMLElement
  */
 export function dropdown(options: { default: number; disable?: boolean; small?: boolean; } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement
 {
-    const input = document.createElement('drop-down');
-    const title = document.createElement('span');
+    const input = createElement('drop-down');
+    const title = createElement('span');
     title.innerText = entrys[ options.default ].title ?? 'Unkown';
-    const ul = document.createElement('ul');
+    const ul = createElement('ul');
     ul.tabIndex = 0;
     title.onclick = () =>
     {
@@ -138,7 +143,7 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
 
     entrys.forEach(element =>
     {
-        const li = document.createElement('li');
+        const li = createElement('li');
         li.innerText = element.title;
         li.onclick = () =>
         {
@@ -154,7 +159,7 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
 
 export function input(options: { type?: string, placeholder?: string, value?: string, width?: string })
 {
-    const input = document.createElement('input');
+    const input = createElement('input');
     input.classList.add('tiny-input', 'ignore-default');
     if (options.type)
         input.type = options.type;
@@ -173,7 +178,7 @@ export function input(options: { type?: string, placeholder?: string, value?: st
  */
 export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
 {
-    const listE = document.createElement('list');
+    const listE = createElement('list');
 
     if (!options.margin)
         listE.classList.add('nomargin')
@@ -189,10 +194,10 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
         listE.innerHTML = "";
         for (const iterator of (action as CustomEvent).detail)
         {
-            const item = document.createElement('item');
+            const item = createElement('item');
             if (iterator.click)
                 item.onclick = iterator.click;
-            const left = document.createElement('span');
+            const left = createElement('span');
             if (typeof iterator.left === "string")
             {
                 left.classList.add('left');
@@ -202,7 +207,7 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
             item.append(left);
             if (iterator.right !== undefined || (iterator.actions !== undefined && iterator.actions.length !== 0))
             {
-                const right = document.createElement('span');
+                const right = createElement('span');
                 right.classList.add('right');
 
                 if (iterator.right)
@@ -215,7 +220,7 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
                 if (iterator.actions)
                     for (const action of iterator.actions)
                     {
-                        const act = document.createElement('i');
+                        const act = createElement('i');
                         act.innerText = action.type;
                         act.classList.add('material-icons-round');
                         act.onclick = action.click;
@@ -234,11 +239,11 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
 
 export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActions[])
 {
-    const tinymenu = document.createElement('div');
+    const tinymenu = createElement('div');
     tinymenu.classList.add('tinymenu', style)
     for (const iterator of test)
     {
-        const button = document.createElement('button');
+        const button = createElement('button');
         button.onclick = iterator.action;
         htmlStringy(button, iterator.title);
         tinymenu.append(button);
@@ -246,6 +251,9 @@ export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActio
     return tinymenu;
 }
 
+/**
+ * @deprecated - please use custom or span
+ */
 export const htmlStringy = (ele: HTMLElement, data: HTMLStringy) =>
 {
     if (typeof data === "string")

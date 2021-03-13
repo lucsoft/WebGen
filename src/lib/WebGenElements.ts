@@ -1,5 +1,5 @@
 
-import { format, htmlStringy } from "../components";
+import { createElement, custom, format, htmlStringy, span } from "../components";
 import { CardTypes, CommonCard } from "../types/card";
 
 const hasTouch = () =>
@@ -34,14 +34,14 @@ export class WebGenElements
         list: CardButtonList[]
     })
     {
-        let element = document.createElement("cardlist");
+        let element = createElement("cardlist");
         if (settings.small)
             element.classList.add("small");
 
         element.classList.add("grid_columns_" + settings.columns || "auto");
         settings.list.forEach((e) =>
         {
-            let card = document.createElement("card");
+            let card = createElement("card");
             card.classList.add("cardButton");
             if (e.active)
                 card.classList.add('active');
@@ -103,7 +103,7 @@ export class WebGenElements
         gap?: number
     }, ...cardArray: CommonCard[])
     {
-        let element = document.createElement("cardlist");
+        let element = createElement("cardlist");
         if (minColumnWidth)
             element.style.setProperty('--card-min-width', minColumnWidth + "rem")
         if (maxWidth)
@@ -120,7 +120,7 @@ export class WebGenElements
         {
             for (const cmCard of elements)
             {
-                const card = document.createElement('card');
+                const card = createElement('card');
 
                 if (cmCard.height && cmCard.height > 0)
                     card.style.gridRow = `span ${cmCard.height}`;
@@ -137,23 +137,20 @@ export class WebGenElements
                     if (cmCard.small) card.classList.add("small");
                     card.classList.add("lline")
 
-                    const title = document.createElement('h1');
+                    const title = createElement('h1');
                     title.classList.add('title');
                     htmlStringy(title, cmCard.title)
                     card.append(title);
                     if (cmCard.subtitle)
                     {
                         card.classList.add("subtitle")
-                        const subtitle = document.createElement('span');
-                        subtitle.classList.add('subtitle');
-                        htmlStringy(subtitle, cmCard.subtitle)
-                        card.append(subtitle);
+                        card.append(span(cmCard.subtitle, 'subtitle'));
                     }
 
                     element.append(card);
                 } else if (cmCard.type == CardTypes.Modern)
                 {
-                    let icon: any = document.createElement('img');
+                    let icon: any = createElement('img');
 
                     if (cmCard.icon)
                     {
@@ -172,18 +169,18 @@ export class WebGenElements
                         card.append(icon)
                     card.classList.add('modern');
                     card.classList.add(cmCard.align);
-                    const container = document.createElement('div');
+                    const container = createElement('div');
                     container.classList.add('title-list')
                     if (cmCard.subtitle !== undefined)
                     {
                         card.classList.add("subtitle")
-                        const subtitle = document.createElement('h1');
+                        const subtitle = createElement('h1');
                         subtitle.classList.add('subtitle');
                         subtitle.innerText = cmCard.subtitle;
                         container.append(subtitle);
                     }
 
-                    const title = document.createElement('h1');
+                    const title = createElement('h1');
                     title.classList.add('title');
                     htmlStringy(title, cmCard.title)
                     container.append(title);
@@ -195,23 +192,16 @@ export class WebGenElements
                     if (cmCard.description)
                     {
                         card.classList.add("description")
-                        const description = document.createElement('span');
-                        description.classList.add('description');
-                        htmlStringy(description, cmCard.description)
-                        card.append(description);
+                        card.append(span(cmCard.description, 'description'));
                     }
                     element.append(card);
                 } else if (cmCard.type == CardTypes.Rich)
                 {
                     if (cmCard.title)
-                    {
-                        let spantitle = document.createElement("h1");
-                        spantitle.classList.add('rich-title');
-                        htmlStringy(spantitle, cmCard.title)
-                        card.append(spantitle);
-                    }
+                        card.append(custom('h1', cmCard.title, 'rich-title'));
+
                     card.classList.add("rich");
-                    const container = document.createElement('div');
+                    const container = createElement('div');
                     container.classList.add('container');
                     if (typeof cmCard.content == "string")
                         container.append(format(cmCard.content));
@@ -227,11 +217,11 @@ export class WebGenElements
                     card.append(container);
                     if (cmCard.buttons)
                     {
-                        let buttonlist = document.createElement("buttonlist");
+                        let buttonlist = createElement("buttonlist");
                         card.classList.add('buttons');
                         cmCard.buttons.forEach(x =>
                         {
-                            const button = document.createElement('button');
+                            const button = createElement('button');
                             button.onclick = x.action;
                             button.classList.add(x.color);
                             htmlStringy(button, x.title)
@@ -244,14 +234,10 @@ export class WebGenElements
                 } else if (cmCard.type == CardTypes.Note)
                 {
                     card.classList.add('note');
-                    const icon = document.createElement('span');
-                    icon.classList.add('icon');
-
-                    icon.innerText = cmCard.icon;
-                    const text = document.createElement('span');
-                    text.classList.add('text');
-                    htmlStringy(text, cmCard.title)
-                    card.append(icon, text);
+                    card.append(
+                        span(cmCard.icon, 'icon'),
+                        span(cmCard.title, 'text')
+                    );
                     element.append(card);
                 }
             }
@@ -275,7 +261,7 @@ export class WebGenElements
         maxWidth?: string | "default"
     })
     {
-        let element = document.createElement('splitView');
+        let element = createElement('splitView');
         element.classList.add(settings.theme == undefined || settings.theme == "modern" ? 'm' : settings.theme);
         if (settings.maxWidth)
             element.classList.add('maxWidth');
@@ -286,14 +272,14 @@ export class WebGenElements
         if (settings.nomargin)
             element.classList.add('nomargin');
 
-        let sidebar = document.createElement('sidebar')
+        let sidebar = createElement('sidebar')
         if (settings.theme == "one")
             sidebar.classList.add('d');
 
         if (settings.sidebarIsList)
             sidebar.classList.add('list');
 
-        let content = document.createElement('content');
+        let content = createElement('content');
         if (settings.defaultContentPadding)
             content.style.padding = "1rem";
 
@@ -327,7 +313,7 @@ export class WebGenElements
         text: string
     })
     {
-        let element = document.createElement('span');
+        let element = createElement('span');
         element.classList.add('pagetitle');
         element.addEventListener("value", (action) =>
             element.innerHTML = (action as CustomEvent).detail)
@@ -349,7 +335,7 @@ export class WebGenElements
     {
         if (settings.type == "big")
         {
-            let element = document.createElement("span");
+            let element = createElement("span");
             if (settings.img != undefined)
             {
                 element.classList.add("titlew", "withimg");
@@ -365,14 +351,14 @@ export class WebGenElements
         }
         else if (settings.type === "small")
         {
-            let element = document.createElement("h2");
+            let element = createElement("h2");
             element.innerHTML = settings.title;
 
             if (settings.subtitle)
             {
-                let element2 = document.createElement("h4");
+                let element2 = createElement("h4");
                 element2.innerHTML = settings.subtitle;
-                let element3 = document.createElement("br");
+                let element3 = createElement("br");
                 this.ele.append(element, element2, element3);
             } else
                 this.ele.append(element);
@@ -385,10 +371,10 @@ export class WebGenElements
 
     buttons(settings: { big: boolean, list: { text: string, onclick: (e: HTMLButtonElement) => any }[] })
     {
-        let element = document.createElement("center");
+        let element = createElement("center");
         settings.list.forEach(x =>
         {
-            let button = document.createElement("button");
+            let button = createElement("button");
             if (settings.big) button.classList.add("one")
             button.innerHTML = x.text;
             button.onclick = () => x.onclick(button);
@@ -396,9 +382,9 @@ export class WebGenElements
         });
         if (settings.big)
         {
-            let br_mh = document.createElement("br");
+            let br_mh = createElement("br");
             br_mh.classList.add("mobilehide");
-            let br = document.createElement("br");
+            let br = createElement("br");
             this.ele.append(br_mh, br_mh, br_mh, br);
         }
         this.ele.append(element);
