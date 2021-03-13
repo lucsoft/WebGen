@@ -1,7 +1,7 @@
 import { ButtonActions } from "../types/actions";
 import { HTMLStringy } from "../types/html";
 
-export const createElement = document.createElement;
+export const createElement = (type: string) => window.document.createElement(type);
 
 export function cardProgress(id: string)
 {
@@ -42,7 +42,7 @@ export function switchButtons(options: {
     const span = createElement('span');
 
     const switchE = createElement('switch');
-    const input = createElement('input');
+    const input = createElement('input') as HTMLInputElement;
 
     input.classList.add("hide");
     input.type = "checkbox";
@@ -159,7 +159,7 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
 
 export function input(options: { type?: string, placeholder?: string, value?: string, width?: string })
 {
-    const input = createElement('input');
+    const input = createElement('input') as HTMLInputElement;
     input.classList.add('tiny-input', 'ignore-default');
     if (options.type)
         input.type = options.type;

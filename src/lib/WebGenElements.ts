@@ -1,5 +1,5 @@
 
-import { createElement, custom, format, htmlStringy, span } from "../components";
+import { createElement, custom, format, htmlStringy, span } from "../components/index";
 import { CardTypes, CommonCard } from "../types/card";
 
 const hasTouch = () =>
@@ -111,7 +111,7 @@ export class WebGenElements
         if (gap)
             element.style.setProperty('--gap', minColumnWidth + "rem")
 
-        element.addEventListener("value", (action) =>
+        element.addEventListener("value", (action: any) =>
         {
             element.innerHTML = "";
             reRenderCards((action as CustomEvent).detail);
@@ -374,7 +374,7 @@ export class WebGenElements
         let element = createElement("center");
         settings.list.forEach(x =>
         {
-            let button = createElement("button");
+            let button = createElement("button") as HTMLButtonElement;
             if (settings.big) button.classList.add("one")
             button.innerHTML = x.text;
             button.onclick = () => x.onclick(button);
