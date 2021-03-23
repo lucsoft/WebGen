@@ -1,5 +1,6 @@
 import { ButtonActions } from "../types/actions";
 import { HTMLStringy } from "../types/html";
+import { conditionalCSSClass } from "./Helper";
 
 export const createElement = (type: string) => window.document.createElement(type);
 
@@ -43,22 +44,14 @@ export function switchButtons(options: {
     input.classList.add("hide");
     input.type = "checkbox";
     span.addEventListener("disabled", (action) => {
-        if ((action as CustomEvent).detail === true) {
-            switchE.classList.add('disabled');
-            input.disabled = true;
-        } else {
-            switchE.classList.remove('disabled');
-            input.disabled = false;
-        }
+        const checkThing = (action as CustomEvent).detail;
+        conditionalCSSClass(switchE, checkThing, 'disabled')
+        input.disabled = checkThing;
     })
     span.addEventListener("checked", (action) => {
-        if ((action as CustomEvent).detail === true) {
-            input.checked = true;
-            switchE.classList.add("active");
-        } else {
-            input.checked = false;
-            switchE.classList.remove("active");
-        }
+        const checkThing = (action as CustomEvent).detail;
+        conditionalCSSClass(switchE, checkThing, 'active')
+        input.checked = checkThing;
     })
 
     span.dispatchEvent(new CustomEvent("disabled", { detail: options.disabled }))
@@ -79,7 +72,12 @@ export function switchButtons(options: {
 
 export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
 export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", ...classList);
-
+export const img = (source: string, ...classList: string[]) => {
+    const img = createElement('img') as HTMLImageElement
+    img.classList.add(...classList)
+    img.src = source;
+    return img;
+};
 export function custom(type: string, message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement {
     const span = createElement(type);
     span.classList.add(...classList)
@@ -111,11 +109,7 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
     if (options.small)
         input.classList.add('small')
     input.addEventListener("disabled", (action) => {
-        if ((action as CustomEvent).detail === true)
-            input.classList.add('disabled');
-        else ((action as CustomEvent).detail === true)
-        input.classList.remove('disabled');
-
+        conditionalCSSClass(input, (action as CustomEvent).detail, 'disabled')
     })
     input.addEventListener("value", (action) => {
         if ((action as CustomEvent).detail !== undefined)
