@@ -3,8 +3,7 @@ import { HTMLStringy } from "../types/html";
 
 export const createElement = (type: string) => window.document.createElement(type);
 
-export function cardProgress(id: string)
-{
+export function cardProgress(id: string) {
     const cardprogress = createElement("span");
     const pro = createElement("span");
     pro.classList.add("pro")
@@ -14,16 +13,14 @@ export function cardProgress(id: string)
     return cardprogress;
 }
 
-export function format(text: string)
-{
+export function format(text: string) {
     const formt = createElement("span");
     formt.classList.add('text');
     formt.innerHTML = text;
     return formt;
 }
 
-export function action(element: HTMLElement, type: string, value: unknown)
-{
+export function action(element: HTMLElement, type: string, value: unknown) {
     element.dispatchEvent(new CustomEvent(type, { detail: value }))
 }
 
@@ -37,8 +34,7 @@ export function switchButtons(options: {
     checked?: boolean;
     onClick?: (active: boolean) => void;
     onAnimationComplete?: (active: boolean) => void;
-})
-{
+}) {
     const span = createElement('span');
 
     const switchE = createElement('switch');
@@ -46,26 +42,20 @@ export function switchButtons(options: {
 
     input.classList.add("hide");
     input.type = "checkbox";
-    span.addEventListener("disabled", (action) =>
-    {
-        if ((action as CustomEvent).detail === true)
-        {
+    span.addEventListener("disabled", (action) => {
+        if ((action as CustomEvent).detail === true) {
             switchE.classList.add('disabled');
             input.disabled = true;
-        } else
-        {
+        } else {
             switchE.classList.remove('disabled');
             input.disabled = false;
         }
     })
-    span.addEventListener("checked", (action) =>
-    {
-        if ((action as CustomEvent).detail === true)
-        {
+    span.addEventListener("checked", (action) => {
+        if ((action as CustomEvent).detail === true) {
             input.checked = true;
             switchE.classList.add("active");
-        } else
-        {
+        } else {
             input.checked = false;
             switchE.classList.remove("active");
         }
@@ -74,8 +64,7 @@ export function switchButtons(options: {
     span.dispatchEvent(new CustomEvent("disabled", { detail: options.disabled }))
     span.dispatchEvent(new CustomEvent("checked", { detail: options.checked }))
 
-    span.onclick = () =>
-    {
+    span.onclick = () => {
         if (input.disabled)
             return;
         switchE.classList.toggle("active");
@@ -89,9 +78,9 @@ export function switchButtons(options: {
 }
 
 export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
+export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", ...classList);
 
-export function custom(type: string, message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement
-{
+export function custom(type: string, message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement {
     const span = createElement(type);
     span.classList.add(...classList)
 
@@ -106,34 +95,29 @@ export function custom(type: string, message: undefined | string | HTMLElement, 
  * @value (number)
  * @disable (boolean)
  */
-export function dropdown(options: { default: number; disable?: boolean; small?: boolean; } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement
-{
+export function dropdown(options: { default: number; disable?: boolean; small?: boolean; } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement {
     const input = createElement('drop-down');
     const title = createElement('span');
     title.innerText = entrys[ options.default ].title ?? 'Unkown';
     const ul = createElement('ul');
     ul.tabIndex = 0;
-    title.onclick = () =>
-    {
+    title.onclick = () => {
         input.classList.add('open');
         ul.focus();
     };
-    ul.onblur = () =>
-    {
+    ul.onblur = () => {
         input.classList.remove('open');
     }
     if (options.small)
         input.classList.add('small')
-    input.addEventListener("disabled", (action) =>
-    {
+    input.addEventListener("disabled", (action) => {
         if ((action as CustomEvent).detail === true)
             input.classList.add('disabled');
         else ((action as CustomEvent).detail === true)
         input.classList.remove('disabled');
 
     })
-    input.addEventListener("value", (action) =>
-    {
+    input.addEventListener("value", (action) => {
         if ((action as CustomEvent).detail !== undefined)
             title.innerText = entrys[ (action as CustomEvent).detail ].title ?? 'Unkown';
     })
@@ -141,12 +125,10 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
     input.dispatchEvent(new CustomEvent("disabled", { detail: options.disable }))
     input.dispatchEvent(new CustomEvent("value", { detail: options.default }))
 
-    entrys.forEach(element =>
-    {
+    entrys.forEach(element => {
         const li = createElement('li');
         li.innerText = element.title;
-        li.onclick = () =>
-        {
+        li.onclick = () => {
             input.classList.remove('open');
             title.innerText = element.title;
             element.action();
@@ -157,8 +139,7 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
     return input;
 }
 
-export function input(options: { type?: string, placeholder?: string, value?: string, width?: string })
-{
+export function input(options: { type?: string, placeholder?: string, value?: string, width?: string }) {
     const input = createElement('input') as HTMLInputElement;
     input.classList.add('tiny-input', 'ignore-default');
     if (options.type)
@@ -176,8 +157,7 @@ export function input(options: { type?: string, placeholder?: string, value?: st
  * #Actions
  *  @value (list)
  */
-export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[])
-{
+export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[]) {
     const listE = createElement('list');
 
     if (!options.margin)
@@ -188,38 +168,32 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
 
     if (options.noHeigthLimit)
         listE.classList.add('noHeigthLimit')
-    listE.addEventListener("value", (action) =>
-    {
+    listE.addEventListener("value", (action) => {
 
         listE.innerHTML = "";
-        for (const iterator of (action as CustomEvent).detail)
-        {
+        for (const iterator of (action as CustomEvent).detail) {
             const item = createElement('item');
             if (iterator.click)
                 item.onclick = iterator.click;
             const left = createElement('span');
-            if (typeof iterator.left === "string")
-            {
+            if (typeof iterator.left === "string") {
                 left.classList.add('left');
                 left.innerText = iterator.left;
             } else
                 left.append(iterator.left)
             item.append(left);
-            if (iterator.right !== undefined || (iterator.actions !== undefined && iterator.actions.length !== 0))
-            {
+            if (iterator.right !== undefined || (iterator.actions !== undefined && iterator.actions.length !== 0)) {
                 const right = createElement('span');
                 right.classList.add('right');
 
-                if (iterator.right)
-                {
+                if (iterator.right) {
                     if (iterator.actions && iterator.actions.length > 0)
                         iterator.right.classList.add('always');
                     right.append(iterator.right)
                 }
 
                 if (iterator.actions)
-                    for (const action of iterator.actions)
-                    {
+                    for (const action of iterator.actions) {
                         const act = createElement('i');
                         act.innerText = action.type;
                         act.classList.add('material-icons-round');
@@ -237,12 +211,10 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
     return listE;
 }
 
-export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActions[])
-{
+export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActions[]) {
     const tinymenu = createElement('div');
     tinymenu.classList.add('tinymenu', style)
-    for (const iterator of test)
-    {
+    for (const iterator of test) {
         const button = createElement('button');
         button.onclick = iterator.action;
         htmlStringy(button, iterator.title);
@@ -254,8 +226,7 @@ export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActio
 /**
  * @deprecated - please use custom or span
  */
-export const htmlStringy = (ele: HTMLElement, data: HTMLStringy) =>
-{
+export const htmlStringy = (ele: HTMLElement, data: HTMLStringy) => {
     if (typeof data === "string")
         ele.innerText = data;
     else
