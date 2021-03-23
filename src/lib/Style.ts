@@ -14,38 +14,33 @@ import '../css/modern.css';
 
 import { blur, dark, white } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';
+import { createElement } from "../components";
 
-export class Style
-{
+export class Style {
     private head = document.head;
     private theme: HTMLStyleElement;
     private hooks: ((current: SupportedThemes, isAuto: boolean) => void)[] = [];
     private image: () => string;
-    constructor(autoLoadFonts: boolean, image: () => string)
-    {
+    constructor(autoLoadFonts: boolean, image: () => string) {
         this.image = image;
-        if (autoLoadFonts)
-        {
-            var roboto = document.createElement('link');
+        if (autoLoadFonts) {
+            var roboto = createElement('link') as HTMLLinkElement;
             roboto.rel = "stylesheet";
             roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500|Material+Icons+Round&display=swap";
             this.head?.append(roboto);
         }
-        this.theme = document.createElement('style')
+        this.theme = createElement('style') as HTMLStyleElement
         this.theme.id = 'theme';
         this.head.appendChild(this.theme);
 
     }
-    hookThemeChange(action: (current: SupportedThemes, isAuto: boolean) => void)
-    {
+    hookThemeChange(action: (current: SupportedThemes, isAuto: boolean) => void) {
         this.hooks.push(action);
     }
     private current: SupportedThemes | undefined = undefined;
-    handleTheme(theme: SupportedThemes, isAuto: boolean = false)
-    {
+    handleTheme(theme: SupportedThemes, isAuto: boolean = false) {
         if (!this.head) return;
-        switch (theme)
-        {
+        switch (theme) {
             case SupportedThemes.gray:
                 if (this.current == theme)
                     return;

@@ -5,7 +5,7 @@
     overflow: hidden;
     border-radius: var(--border-radius);
 }
-.search > i {
+.search > .webgen-icon {
     position: absolute;
     top: 0;
     right: 0;
@@ -48,14 +48,14 @@
     display: flex;
     white-space: nowrap;
 }
-.search ul li right i {
+.search ul li right .webgen-icon {
     color: var(--on-card-text);
     font-size: 1.7rem;
     transition: margin-right 250ms ease-out, opacity 150ms ease-out;
     margin-right: -1.7rem;
     opacity: 0;
 }
-.search ul li:hover right i {
+.search ul li:hover right .webgen-icon {
     margin-right: 0;
     margin: 0 0.2rem;
     opacity: 1;

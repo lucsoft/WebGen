@@ -33,11 +33,7 @@ switch.active:after {
 switch.disabled {
     cursor: not-allowed;
 }
-i {
-    color: #606060;
-    font-size: .8rem;
-}
-item i {
+item .webgen-icon {
     display: block;
     margin-top: -2rem;
     transform: translate(0,2rem);
@@ -467,15 +463,15 @@ list.style2 item i {
     transform: translate(-0.2rem, 1px);
 }
 
-list.style2 item .right i {
+list.style2 item .right .webgen-icon {
     color: var(--on-card-text);
     opacity: 0;
     margin: 0 -1.7rem 0 0;
-    font-size: 1.7rem;
+    font-size: 1rem;
     transition: all 350ms ease-out;
 }
 
-list.style2 item:hover .right i {
+list.style2 item:hover .right .webgen-icon {
     margin-right: 0.23rem;
     opacity: 1;
 }
@@ -519,7 +515,7 @@ list.noHeigthLimit item .right {
 list item:hover .right .always {
     margin-right: 0.8rem;
 }
-list item i.material-icons {
+list item .webgen-icon {
     font-size: 0.7rem;
     padding-left: 0.7rem;
     padding-right: 0.3rem;

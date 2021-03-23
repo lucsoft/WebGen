@@ -8,8 +8,7 @@ const themeArray = Object.values([ SupportedThemes.auto, SupportedThemes.blur, S
 const themeArrayWithActions = themeArray.map((x) => ({ title: themeNaming[ x ], action: () => web.style.handleTheme(x as SupportedThemes) }));
 const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithActions);
 
-web.style.hookThemeChange((theme, isAuto) =>
-{
+web.style.hookThemeChange((theme, isAuto) => {
     action(customDropDown, "value", isAuto ? themeArray.length - 1 : themeArray.findIndex((x) => x == theme));
 });
 
@@ -18,14 +17,17 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
     .title({
         type: "big",
         title: "Big Title"
-    }).title({
+    })
+    .title({
         type: "big",
         title: "Big Title",
         subtitle: "Sub Title"
-    }).title({
+    })
+    .title({
         type: "small",
         title: "Title"
-    }).title({
+    })
+    .title({
         type: "small",
         title: "Title",
         subtitle: "Subtitle"
@@ -42,7 +44,8 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 onclick: () => { console.log('yaay') }
             }
         ]
-    }).buttons({
+    })
+    .buttons({
         big: false,
         list: [
             {
@@ -54,7 +57,9 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 onclick: () => { console.log('yaay') }
             }
         ]
-    }).pageTitle({ text: "Hello World!" }).cards({ minColumnWidth: 14, },
+    })
+    .pageTitle({ text: "Hello World!" })
+    .cards({ minColumnWidth: 14, },
         defaultCard({ title: "supr", small: true }),
         defaultCard({ title: "supr", subtitle: "supr" }),
         modernCard({
@@ -79,8 +84,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                     left: "Example Switch",
                     actions: [
                         {
-                            type: "get_app", click: () =>
-                            {
+                            type: "get_app", click: () => {
                                 web.elements.fixedWindow(true, true).buttons({
                                     big: false,
                                     list: [
@@ -144,8 +148,7 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
                 text: "Password"
             },
             errorMessage: 'Falsche Anmeldedaten',
-            makeLogin: () => new Promise((complete) =>
-            {
+            makeLogin: () => new Promise((complete) => {
                 setTimeout(() => complete(false), 5000);
             })
         }),
@@ -159,20 +162,16 @@ const cardElement: HTMLElement = web.elements.body({ maxWidth: "50rem" })
             mode: SearchMode.ShowBegin,
             notfound: "No Entries",
             actions: {
-                close: () =>
-                {
+                close: () => {
 
                 },
-                remove: (entry) =>
-                {
+                remove: (entry) => {
                     console.log(entry);
                 },
-                edit: (entry) =>
-                {
+                edit: (entry) => {
                     console.log(entry);
                 },
-                download: (entry) =>
-                {
+                download: (entry) => {
                     console.log(entry);
                 }
             },

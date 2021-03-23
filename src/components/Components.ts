@@ -1,25 +1,7 @@
 import { ButtonActions } from "../types/actions";
-import { HTMLStringy } from "../types/html";
 import { conditionalCSSClass } from "./Helper";
 
 export const createElement = (type: string) => window.document.createElement(type);
-
-export function cardProgress(id: string) {
-    const cardprogress = createElement("span");
-    const pro = createElement("span");
-    pro.classList.add("pro")
-    pro.id = id;
-    cardprogress.classList.add("cardprogress");
-    cardprogress.append(pro);
-    return cardprogress;
-}
-
-export function format(text: string) {
-    const formt = createElement("span");
-    formt.classList.add('text');
-    formt.innerHTML = text;
-    return formt;
-}
 
 export function action(element: HTMLElement, type: string, value: unknown) {
     element.dispatchEvent(new CustomEvent(type, { detail: value }))
@@ -71,11 +53,11 @@ export function switchButtons(options: {
 }
 
 export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
-export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", ...classList);
-export const img = (source: string, ...classList: string[]) => {
+export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", "webgen-icon", ...classList);
+export const img = (source: string | undefined, ...classList: string[]) => {
     const img = createElement('img') as HTMLImageElement
     img.classList.add(...classList)
-    img.src = source;
+    if (source) img.src = source;
     return img;
 };
 export function custom(type: string, message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement {
@@ -188,9 +170,7 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
 
                 if (iterator.actions)
                     for (const action of iterator.actions) {
-                        const act = createElement('i');
-                        act.innerText = action.type;
-                        act.classList.add('material-icons-round');
+                        const act = mIcon(action.type);
                         act.onclick = action.click;
                         right.append(act);
                     }
@@ -209,20 +189,9 @@ export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActio
     const tinymenu = createElement('div');
     tinymenu.classList.add('tinymenu', style)
     for (const iterator of test) {
-        const button = createElement('button');
+        const button = custom('button', iterator.title);
         button.onclick = iterator.action;
-        htmlStringy(button, iterator.title);
         tinymenu.append(button);
     }
     return tinymenu;
 }
-
-/**
- * @deprecated - please use custom or span
- */
-export const htmlStringy = (ele: HTMLElement, data: HTMLStringy) => {
-    if (typeof data === "string")
-        ele.innerText = data;
-    else
-        ele.append(data);
-};

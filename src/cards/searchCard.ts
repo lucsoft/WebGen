@@ -1,3 +1,4 @@
+import { createElement, img, mIcon, span } from "../components";
 import { CardTypes } from "../types/card";
 import { HeadlessCard } from "./headlessCard";
 
@@ -10,8 +11,7 @@ export type SearchEntry = {
     id: string;
 }
 
-export const enum SearchMode
-{
+export const enum SearchMode {
     ShowBegin,
     HideBegin,
     HideWhenEmpty
@@ -32,50 +32,74 @@ export function searchCard(settings: {
     },
     index: SearchEntry[],
     width?: number
-}): HeadlessCard
-{
-    let search = document.createElement("div");
+}): HeadlessCard {
+    let search = createElement("div");
     search.classList.add("search");
-    let input: HTMLInputElement = document.createElement("input");
-    let ul: HTMLUListElement = document.createElement("ul")
+    let input = createElement("input") as HTMLInputElement;
+    let ul = createElement("ul") as HTMLUListElement
     input.placeholder = settings.placeholder || "Search...";
-    if (settings.actions?.close)
-    {
-        let icon = document.createElement("i");
-        icon.classList.add("material-icons-round");
-        icon.innerHTML = "close";
+    if (settings.actions?.close) {
+        let icon = mIcon("close");
         icon.onclick = settings.actions?.close;
         search.append(icon);
     }
 
     let list: SearchEntry[] = [];
     let lastsearch = "";
+    const reRenderElements = (x: SearchEntry) => {
+        let tags: HTMLElement[] = [];
+        x.tags?.filter((tag) => tags.push(span(tag, "tag")))
+        let li = createElement("li");
+        li.onclick = () => settings.actions?.click?.(x);
+        const left = createElement("left");
+        const right = createElement("right");
+        if (x.icon) {
+            const image = img(x.icon);
+            image.loading = "lazy";
+            left.append(image);
+        }
+        left.append(x.name);
+        if (x.category) right.append(span(x.category, "tag", "category"));
 
-    input.onkeyup = (d: KeyboardEvent) =>
-    {
-        if (d.key == "Enter")
-        {
-            if (ul.children.item.length == 1)
-            {
+        if (x.suffix) right.append(x.suffix);
+        right.append(...tags);
+        if (settings.actions?.download) {
+            const download = mIcon("get_app");
+            download.onclick = () => settings.actions?.download?.(x);
+            right.append(download);
+        }
+        if (settings.actions?.edit) {
+            const edit = mIcon("edit");
+            edit.onclick = () => settings.actions?.edit?.(x);
+            right.append(edit);
+        }
+        if (settings.actions?.remove) {
+            const remove = mIcon("delete");
+            remove.onclick = () => settings.actions?.remove?.(x);
+            right.append(remove);
+        }
+        li.append(left);
+        li.append(right);
+        ul.append(li);
+    }
+    input.onkeyup = (d: KeyboardEvent) => {
+        if (d.key == "Enter") {
+            if (ul.children.item.length == 1) {
                 let element = <HTMLButtonElement | undefined>ul.children[ 0 ];
                 element?.click();
             }
-
         }
         if (lastsearch == input.value) return;
         lastsearch = input.value;
-        if (settings.mode === SearchMode.HideWhenEmpty && lastsearch === "")
-        {
+        if (settings.mode === SearchMode.HideWhenEmpty && lastsearch === "") {
             ul.innerHTML = "";
             return;
         }
-        if (settings.type == "smart" && settings.index)
-        {
+        if (settings.type == "smart" && settings.index) {
             let smart = input.value.split(` `);
             let tags: string[] = [];
             let name = "";
-            smart.forEach(e =>
-            {
+            smart.forEach(e => {
                 if (e.startsWith("#") || e.startsWith("!"))
                     tags.push(e);
                 else
@@ -84,8 +108,7 @@ export function searchCard(settings: {
             });
             name = name.slice(1);
             list = settings.index;
-            tags.forEach(e =>
-            {
+            tags.forEach(e => {
                 if (e.startsWith("#"))
                     list = list.filter(x => x.tags ? x.tags.indexOf(e.slice(1)) != -1 : false);
                 else if (e.startsWith("!"))
@@ -100,71 +123,9 @@ export function searchCard(settings: {
 
 
         ul.innerHTML = "";
-        list.forEach(x =>
-        {
-            let tags: HTMLElement[] = [];
-            if (x.tags != undefined)
-            {
-                x.tags.filter((tag) =>
-                {
-                    const tagE = document.createElement("span");
-                    tagE.classList.add("tag");
-                    tagE.innerText = tag;
-                    tags.push(tagE);
-                })
-            }
-            let li = document.createElement("li");
-            li.onclick = () => settings.actions?.click?.(x);
-            const left = document.createElement("left");
-            const right = document.createElement("right");
-            if (x.icon)
-            {
-                const image = document.createElement("img");
-                image.src = x.icon;
-                left.append(image);
-            }
-            left.append(x.name);
-            if (x.category)
-            {
-                const category = document.createElement("span");
-                category.classList.add("tag", "category");
-                category.innerText = x.category;
-                right.append(category);
-            }
-            if (x.suffix)
-                right.append(x.suffix);
-            right.append(...tags);
-            if (settings.actions?.download)
-            {
-                const download = document.createElement("i");
-                download.classList.add("material-icons-round")
-                download.innerHTML = "get_app";
-                download.onclick = () => settings.actions?.download?.(x);
-                right.append(download);
-            }
-            if (settings.actions?.edit)
-            {
-                const edit = document.createElement("i");
-                edit.classList.add("material-icons-round")
-                edit.innerHTML = "edit";
-                edit.onclick = () => settings.actions?.edit?.(x);
-                right.append(edit);
-            }
-            if (settings.actions?.remove)
-            {
-                const remove = document.createElement("i");
-                remove.classList.add("material-icons-round")
-                remove.innerHTML = "delete";
-                remove.onclick = () => settings.actions?.remove?.(x);
-                right.append(remove);
-            }
-            li.append(left);
-            li.append(right);
-            ul.append(li);
-        });
-        if (ul.childNodes.length == 0 && settings.notfound !== undefined)
-        {
-            let li = document.createElement("li");
+        list.forEach(x => reRenderElements(x));
+        if (ul.childNodes.length == 0 && settings.notfound !== undefined) {
+            let li = createElement("li");
             li.onclick = () => settings?.actions?.click?.({ id: "notfound", name: "notfound" });
             li.classList.add("gray");
             li.innerText = settings.notfound;
@@ -176,72 +137,8 @@ export function searchCard(settings: {
     search.append(input);
     search.append(ul);
 
-    if (settings.mode === SearchMode.ShowBegin)
-    {
-        settings.index.forEach(x =>
-        {
-            let tags: HTMLElement[] = [];
-            if (x.tags != undefined)
-            {
-                x.tags.filter((tag) =>
-                {
-                    const tagE = document.createElement("span");
-                    tagE.classList.add("tag");
-                    tagE.innerText = tag;
-                    tags.push(tagE);
-                })
-            }
-            let li = document.createElement("li");
-            li.onclick = () => settings.actions?.click?.(x);
-            const left = document.createElement("left");
-            const right = document.createElement("right");
-            if (x.icon)
-            {
-                const image: any = document.createElement("img");
-                image.src = x.icon;
-                image.loading = "lazy";
-                left.append(image);
-            }
-            left.append(x.name);
-            if (x.category)
-            {
-                const category = document.createElement("span");
-                category.classList.add("tag", "category");
-                category.innerText = x.category;
-                right.append(category);
-            }
-            if (x.suffix)
-                right.append(x.suffix);
-            right.append(...tags);
-            if (settings.actions?.download)
-            {
-                const download = document.createElement("i");
-                download.classList.add("material-icons-round")
-                download.innerHTML = "get_app";
-                download.onclick = () => settings.actions?.download?.(x);
-                right.append(download);
-            }
-            if (settings.actions?.edit)
-            {
-                const edit = document.createElement("i");
-                edit.classList.add("material-icons-round")
-                edit.innerHTML = "edit";
-                edit.onclick = () => settings.actions?.edit?.(x);
-                right.append(edit);
-            }
-            if (settings.actions?.remove)
-            {
-                const remove = document.createElement("i");
-                remove.classList.add("material-icons-round")
-                remove.innerHTML = "delete";
-                remove.onclick = () => settings.actions?.remove?.(x);
-                right.append(remove);
-            }
-            li.append(left);
-            li.append(right);
-            ul.append(li);
-        });
-
+    if (settings.mode === SearchMode.ShowBegin) {
+        settings.index.forEach(x => reRenderElements(x));
     }
 
     return {
