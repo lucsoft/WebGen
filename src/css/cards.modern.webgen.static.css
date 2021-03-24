@@ -28,14 +28,14 @@ card.modern .subtitle {
     position: unset;
     font-weight: bold;
     color: #676767;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-transform: none;
     display: block;
     margin: 0;
 }
 card.modern span.description {
     display: block;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     margin-top: 0.8rem;
     font-weight: 300;
     text-align: left;
@@ -43,12 +43,15 @@ card.modern span.description {
 card.modern.img span.description {
     grid-column: 1 / 3;
 }
+card.modern.img img {
+    margin-bottom: -18px;
+}
 card.modern .title {
     padding: 0;
     font-weight: 600;
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     display: block;
-    margin: -0.2rem 0 -0.6rem;
+    margin: -0.2rem 0 -1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

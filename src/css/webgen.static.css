@@ -7,6 +7,7 @@
     --on-card-background: rgb(238, 238, 238);
     --max-width: 90vw;
     --border-radius: 0.6rem;
+    --box-shadow: none;
     --font: 'Roboto';
     --card-min-width: 12rem;
     --gap: 1.3rem;

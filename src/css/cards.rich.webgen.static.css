@@ -33,6 +33,7 @@ card.rich buttonlist button.red {
 }
 card.rich buttonlist button:hover {
     background-color: var(--on-card-background);
+    box-shadow: var(--box-shadow);
 }
 card.rich .container {
     align-self: baseline;

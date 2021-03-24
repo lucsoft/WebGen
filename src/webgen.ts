@@ -2,31 +2,50 @@ import { Elements } from './lib/Elements';
 import { Style } from './lib/Style';
 import { SupportedThemes } from './lib/SupportedThemes';
 export { SupportedThemes } from './lib/SupportedThemes';
-export { WebGenElements } from './lib/WebGenElements';
-export * from './cards/searchCard';
-export * from './cards/defaultCard';
-export * from './cards/headlessCard';
-export * from './cards/loginCard';
-export * from './cards/modernCard';
-export * from './cards/noteCard';
-export * from './cards/richCard';
-export * from './components'
-export * from './types/actions';
-export * from './types/card';
-export * from './types/html';
+import './css/webgen.static.css';
 
-type themes = { theme: SupportedThemes.blur, autoLoadFonts?: boolean, image: () => string } | { theme?: Exclude<SupportedThemes, SupportedThemes.blur>, autoLoadFonts?: boolean, image?: () => string };
-export class WebGen {
-    style: Style;
-    elements: Elements;
+import './css/cards.webgen.static.css';
+import './css/cards.lline.webgen.static.css';
 
-    /**
-     * @param options Image is required when using Blur Theme
-     */
-    constructor(options: themes = {}) {
-        console.log("Loaded @lucsoft/webgen");
-        this.style = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''));
-        this.elements = new Elements(this.style);
-        this.style.handleTheme(options.theme ?? SupportedThemes.auto);
+import './css/elements.css';
+import './css/grouping.css';
+import './css/master.css';
+import './css/modern.css';
+export * from './components/Components'
+export * from './components/Helper'
+export * from './components/cards/searchCard'
+export * from './components/cards/defaultCard'
+export * from './components/cards/headlessCard'
+export * from './components/cards/loginCard'
+export * from './components/cards/modernCard'
+export * from './components/cards/noteCard'
+export * from './components/cards/richCard'
+export * from './components/cards/searchCard'
+export * from './components/generic/Title'
+export * from './components/generic/Custom'
+export * from './components/generic/Card'
+export * from './components/generic/PageTitle'
+export * from './components/generic/Button'
+
+export * from './types'
+
+type themes = {
+    theme: SupportedThemes.blur,
+    autoLoadFonts?: boolean,
+    image: () => string
+} | {
+    theme?: Exclude<SupportedThemes, SupportedThemes.blur>,
+    autoLoadFonts?: boolean,
+    image?: () => string
+};
+
+export const WebGen = (options: themes = {}) => {
+    console.log("Loaded @lucsoft/webgen");
+    const theme = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''));
+    theme.update(options.theme ?? SupportedThemes.auto);
+
+    return {
+        theme,
+        render: new Elements()
     }
 }

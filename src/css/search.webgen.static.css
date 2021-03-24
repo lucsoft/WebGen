@@ -65,8 +65,8 @@
 }
 
 span.tag {
-    background: var(--on-card-text);
-    color: var(--on-background-text);
+    background: var(--on-card-background);
+    color: var(--on-card-text);
     padding: 0.2rem 0.5rem;
     margin: 0 0.2rem;
     width: max-content;
@@ -75,4 +75,5 @@ span.tag {
     border-radius: 0.15rem;
     white-space: nowrap;
     display: inline-block;
+    box-shadow: var(--box-shadow);
 }

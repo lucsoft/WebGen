@@ -1,13 +1,10 @@
-import { createElement, span } from "../components";
-import { Style } from './Style';
-import { WebGenElements } from './WebGenElements';
+import { createElement, span } from "../components/Components";
+import { RenderComponent } from "../types/RenderingX";
 
 export class Elements {
-    style: Style;
     private staticNotify: HTMLElement;
     private staticFixedWindow: HTMLElement;
-    constructor(style: Style) {
-        this.style = style;
+    constructor() {
         const notify: HTMLElement | null = document.querySelector('#notify');
         if (notify)
             this.staticNotify = notify;
@@ -29,53 +26,80 @@ export class Elements {
             document.body.append(staticFixedWindow);
             this.staticFixedWindow = staticFixedWindow;
         }
+        this.staticFixedWindow;
     }
 
-    /**
-     * Dont display in DOM
-     */
-    none = () => new WebGenElements(createElement("article"));
-
-    /**
-     * Display in DOM
-     */
-    body(options?: { maxWidth?: string }): WebGenElements {
-        var article = createElement("article");
-        document.body.append(article);
-        if (options?.maxWidth) {
-            article.classList.add('maxWidth');
-            article.style.maxWidth = options.maxWidth;
-        }
-        return new WebGenElements(article);
-    }
     notify(test: string) {
         const notifcation = span(test)
         setTimeout(() => notifcation.remove(), 6010);
         this.staticNotify.append(notifcation);
     }
 
-    fixedWindow(show: boolean, clear: boolean = false) {
-        this.staticFixedWindow.style.display = show ? "block" : "none";
-        if (clear)
-            this.staticFixedWindow.innerHTML = "";
-        return new WebGenElements(this.staticFixedWindow);
-    }
+    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT | undefined, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) =>
+        this.toCustom({ ...options, shell: document.body }, initStateData, data)
 
-    custom = (element: HTMLElement, options?: { maxWidth?: string }) => {
-        if (options?.maxWidth) {
-            element.classList.add('maxWidth');
-            element.style.maxWidth = options.maxWidth;
+    toCustom<DataT>(options: { maxWidth?: string, shell: HTMLElement }, initStateData: DataT | undefined, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) {
+        const shell = createElement('article')
+        let state = initStateData;
+        options.shell.append(shell)
+        if (options.maxWidth) {
+            shell.classList.add('maxWidth');
+            shell.style.maxWidth = options.maxWidth;
         }
-        return new WebGenElements(element)
-    };
 
-    clear(search: HTMLElement | string) {
-        if (typeof search === "string") {
-            const searchE = document.querySelector(search);
-            if (searchE) searchE.innerHTML = "";
+        let drawedElements: [ number, HTMLElement | undefined ][] = [];
+
+        const fetchedData = data((updateState) => {
+            if (updateState !== undefined) {
+                state = { ...state, ...updateState };
+                fullRedraw()
+            }
+            else
+                drawFromCache()
+        })
+        function singleRedrawFunction(index: number, updateState: any) {
+            if (updateState !== undefined) {
+                state = { ...state, ...updateState };
+            }
+            const data = drawedElements.find(([ findIndex ]) => findIndex == index)
+            if (data) data[ 1 ] = undefined;
+            drawFromCache()
         }
-        else
-            search.innerHTML = ""
-    }
 
+        function drawFromCache() {
+            shell.innerHTML = "";
+            shell.append(...drawedElements.map(element => {
+                if (element[ 1 ] != undefined)
+                    return element[ 1 ];
+                const reDrawElement = fetchedData[ element[ 0 ] ];
+                const preRendered = typeof reDrawElement == "object"
+                    ? reDrawElement.draw()
+                    : reDrawElement((updateState) => singleRedrawFunction(element[ 0 ], updateState), state as any).draw()
+                drawedElements.find(x => x[ 0 ] == element[ 0 ])![ 1 ] = preRendered;
+                return preRendered;
+            }));
+        }
+
+        function fullRedraw() {
+            drawedElements = [];
+            drawedElements = fetchedData.map((x, index) => [
+                index,
+                typeof x == "object"
+                    ? x.draw()
+                    : x((updateState) => singleRedrawFunction(index, updateState), state as any).draw()
+            ])
+            drawFromCache()
+        }
+        fullRedraw()
+
+        return {
+            getState: () => initStateData,
+            redraw: (data?: Partial<DataT>) => {
+                if (data !== undefined) {
+                    state = { ...state, ...data } as any;
+                }
+                fullRedraw()
+            }
+        }
+    }
 }

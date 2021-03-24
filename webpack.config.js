@@ -1,10 +1,16 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 module.exports = {
     entry: {
         app: "./demo/index.ts",
     },
-    mode: "development",
-
+    mode: "production",
+    output: {
+        filename: '[name].js',
+        chunkFilename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
     resolve: {
         extensions: [ ".js", ".ts" ]
     },
@@ -16,7 +22,9 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [ 'style-loader', 'css-loader' ],
+                use: [ {
+                    loader: MiniCssExtractPlugin.loader
+                }, 'css-loader' ],
             }
         ]
     },
@@ -24,9 +32,21 @@ module.exports = {
     devServer: {
         contentBase: "./dist"
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'async',
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30
+        }
+    },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        }),
         new HtmlWebpackPlugin({
-            inject: false,
+            inject: 'body',
+            chunks: [ 'app' ],
             template: './index.html',
             filename: 'index.html',
 

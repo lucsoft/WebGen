@@ -1,11 +1,6 @@
 :root {
-    --default-background-color: rgb(230, 230, 230);
     --default-shadow: 0px 7px 28px 0px rgba(0, 0, 0, 0.40);
-    --default-card-radius:4px;
-    --default-card-margin: 0.6rem 0;
-    --default-card-padding: 1.5rem;
     --default-card-color: black;
-    --default-max-width: 70rem;
     --default-transition-time: 150ms;
     --default-secondary-color: #474747;
 }
@@ -67,12 +62,14 @@ h2 {
     text-align: center;
     font-size: 3rem;
     margin-top: 0;
+    color: var(--on-background-text);
 }
 h4 {
     font-weight: 300;
     margin-top: -2rem;
     text-align: center;
     font-size: 1.4rem;
+    color: var(--on-background-text);
 }
 
 ::-webkit-scrollbar {

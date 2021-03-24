@@ -1,18 +1,7 @@
 export const blur = `
- /*   :root {
-        --default-background-color: rgba(0, 0, 0, 0.575);
-        --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
-        --default-card-radius:4px;
-        --default-card-margin: 0.6rem 0;
-        --default-card-padding: 1.5rem;
-        --default-card-color: white;
-        --default-backdrop: blur(1.5rem);
-    }*/
     :root {
-        --default-background-color: rgb(24, 24, 24);
-        --default-shadow: unset;
         --background-color: hsla(0, 0%, 4%, 1);
-        --on-background-text: #313131;
+        --on-background-text: white;
         --background-card: hsla(0, 0%, 0%, 0.67);
         --on-card-text: #ffffff;
         --on-card-subtext: #646464;
@@ -38,10 +27,9 @@ export const blur = `
 `;
 export const dark = `
     :root {
-        --default-background-color: rgb(16, 16, 16);
-        --default-shadow: unset;
+        --box-shadow: none;
         --background-color: hsla(0, 0%, 4%, 1);
-        --on-background-text: #313131;
+        --on-background-text: #ececec;
         --background-card: hsla(0, 0%, 9%, 1);
         --on-card-text: #ffffff;
         --on-card-subtext: #646464;
@@ -52,17 +40,13 @@ export const dark = `
 
 export const white = `
     :root {
-        --default-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.45);
-        --default-background-color: rgb(255, 255, 255);
+        --box-shadow: 0px 4px 8px 0px rgb(0 0 0 / 15%);
         --background-color: hsla(0, 0%, 90%, 1);
-        --on-background-text: white;
+        --on-background-text: black;
         --background-card: hsla(0, 0%, 100%, 1);
         --on-card-text: #2d2d2d;
         --on-card-subtext: #646464;
         --on-card-background: rgb(255, 255, 255);
         --text-red: #f81919;
-    }
-    .titlew, h2 {
-        text-shadow: 0 0 18px rgb(0 0 0 / 61%);
     }
 `;

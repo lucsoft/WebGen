@@ -1,26 +1,14 @@
-import '../css/webgen.static.css';
-
-import '../css/cards.webgen.static.css';
-import '../css/cards.lline.webgen.static.css';
-import '../css/cards.modern.webgen.static.css';
-import '../css/cards.rich.webgen.static.css';
-import '../css/cards.note.webgen.static.css';
-import '../css/search.webgen.static.css';
-
-import '../css/elements.css';
-import '../css/grouping.css';
-import '../css/master.css';
-import '../css/modern.css';
-
 import { blur, dark, white } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';
-import { createElement } from "../components";
+import { createElement } from "../components/Components";
 
 export class Style {
     private head = document.head;
     private theme: HTMLStyleElement;
     private hooks: ((current: SupportedThemes, isAuto: boolean) => void)[] = [];
     private image: () => string;
+    private current: SupportedThemes | undefined = undefined;
+
     constructor(autoLoadFonts: boolean, image: () => string) {
         this.image = image;
         if (autoLoadFonts) {
@@ -32,13 +20,11 @@ export class Style {
         this.theme = createElement('style') as HTMLStyleElement
         this.theme.id = 'theme';
         this.head.appendChild(this.theme);
-
     }
-    hookThemeChange(action: (current: SupportedThemes, isAuto: boolean) => void) {
+    onUpdate(action: (current: SupportedThemes, isAuto: boolean) => void) {
         this.hooks.push(action);
     }
-    private current: SupportedThemes | undefined = undefined;
-    handleTheme(theme: SupportedThemes, isAuto: boolean = false) {
+    update(theme: SupportedThemes, isAuto: boolean = false) {
         if (!this.head) return;
         switch (theme) {
             case SupportedThemes.gray:
@@ -71,10 +57,10 @@ export class Style {
                 break;
             case SupportedThemes.auto:
                 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                this.handleTheme(mediaQuery.matches ? SupportedThemes.dark : SupportedThemes.white, true);
+                this.update(mediaQuery.matches ? SupportedThemes.dark : SupportedThemes.white, true);
 
                 mediaQuery.addEventListener('change', e =>
-                    this.handleTheme(e.matches ? SupportedThemes.dark : SupportedThemes.white, true));
+                    this.update(e.matches ? SupportedThemes.dark : SupportedThemes.white, true));
                 break;
             default:
                 break;
