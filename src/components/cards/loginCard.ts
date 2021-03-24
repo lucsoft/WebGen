@@ -1,4 +1,4 @@
-import { createElement, span } from "../components";
+import { createElement, span } from "../Components";
 import { richCard } from "./richCard";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
