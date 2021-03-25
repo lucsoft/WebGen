@@ -1,7 +1,7 @@
 import { createElement, img, mIcon, span } from "../Components";
-import { CardTypes, CommonCard } from "../../types/card";
+import { CommonCard } from "../../types/card";
 import '../../css/search.webgen.static.css';
-console.log('searchCard');
+
 export type SearchEntry = {
     name: string;
     icon?: string;
