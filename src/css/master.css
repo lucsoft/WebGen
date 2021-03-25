@@ -92,20 +92,6 @@ h4 {
     background: #555;
 }
 
-#fixedWindow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 8rem 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(0.2rem);
-    -webkit-backdrop-filter: blur(0.2rem);
-    z-index: 5;
-    overflow: auto;
-}
-
 .notify {
     display: flex;
     position: fixed;
