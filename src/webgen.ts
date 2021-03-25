@@ -6,11 +6,13 @@ import './css/webgen.static.css';
 
 import './css/cards.webgen.static.css';
 import './css/cards.lline.webgen.static.css';
+import './css/dialog.webgen.static.css';
 
 import './css/elements.css';
 import './css/grouping.css';
 import './css/master.css';
 import './css/modern.css';
+
 export * from './components/Components'
 export * from './components/Helper'
 export * from './components/cards/searchCard'
@@ -26,7 +28,7 @@ export * from './components/generic/Custom'
 export * from './components/generic/Card'
 export * from './components/generic/PageTitle'
 export * from './components/generic/Button'
-
+export * from './components/light-components/loadingWheel';
 export * from './types'
 
 type themes = {
