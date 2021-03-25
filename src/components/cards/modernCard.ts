@@ -20,7 +20,7 @@ export const modernCard = (options: { title: HTMLStringy, subtitle?: string, des
             } else
                 icon = new DOMParser().parseFromString(options.icon.svg, "image/svg+xml").children[ 0 ];
         }
-        if (options.icon && options.align != "right")
+        if (options.icon && (options.align ?? 'right') != "right")
             card.append(icon)
         card.classList.add('modern');
         card.classList.add(options.align ?? 'right');
@@ -37,7 +37,7 @@ export const modernCard = (options: { title: HTMLStringy, subtitle?: string, des
         container.append(custom('h1', options.title, 'title'));
         card.append(container);
 
-        if (options.icon && options.align == "right")
+        if (options.icon && (options.align ?? 'right') == "right")
             card.append(icon)
 
         if (options.description) {
