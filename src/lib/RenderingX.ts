@@ -1,9 +1,8 @@
 import { createElement, span } from "../components/Components";
 import { RenderComponent } from "../types/RenderingX";
 
-export class Elements {
+export class RenderingX {
     private staticNotify: HTMLElement;
-    private staticFixedWindow: HTMLElement;
     constructor() {
         const notify: HTMLElement | null = document.querySelector('#notify');
         if (notify)
@@ -16,17 +15,6 @@ export class Elements {
             this.staticNotify = notifyNew;
         }
 
-        const fixedWindow: HTMLElement | null = document.querySelector("#fixedWindow");
-        if (fixedWindow)
-            this.staticFixedWindow = fixedWindow;
-        else {
-            const staticFixedWindow = createElement("article");
-            staticFixedWindow.id = "fixedWindow";
-            staticFixedWindow.style.display = "none";
-            document.body.append(staticFixedWindow);
-            this.staticFixedWindow = staticFixedWindow;
-        }
-        this.staticFixedWindow;
     }
 
     notify(test: string) {
