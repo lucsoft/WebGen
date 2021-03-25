@@ -17,9 +17,11 @@ export class RenderingX {
 
     }
 
-    notify(test: string) {
+    notify(test: string, keepOpenUntilDone?: () => Promise<undefined>) {
         const notifcation = span(test)
-        setTimeout(() => notifcation.remove(), 6010);
+        if (keepOpenUntilDone === undefined)
+            setTimeout(() => notifcation.remove(), 6010);
+        else keepOpenUntilDone().then(() => notifcation.remove())
         this.staticNotify.append(notifcation);
     }
 
