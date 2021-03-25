@@ -1,6 +1,6 @@
 import { createElement, custom, span } from "../components/Components";
 import { loadingWheel } from "../components/light-components/loadingWheel";
-import { RenderComponent, RenderElement } from "../types/RenderingX";
+import { DialogActionAfterSubmit, DialogOptions, RenderComponent, RenderElement } from "../types/RenderingX";
 
 export class RenderingX {
     private staticNotify: HTMLElement;
@@ -30,7 +30,11 @@ export class RenderingX {
         this.staticNotify.append(notifcation);
     }
 
-    toDialog(options: { title?: string | HTMLElement, content: RenderElement | HTMLElement, buttons?: [ label: string, action: ((() => undefined | 'close' | 'remove-close') | (() => Promise<undefined | 'close' | 'remove-close'>) | 'auto-close' | 'auto-close-remove'), color?: 'normal' | 'red' ][] } | HTMLElement) {
+    private checkIfOptionsIstCustomElement = (value: any): value is { customElement: HTMLElement } => {
+        return typeof (value as any).customElement !== "undefined";
+    }
+
+    toDialog(options: DialogOptions | { customElement: HTMLElement }) {
 
         const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
         const closeDialog = (autoRemove = true) => {
@@ -39,9 +43,9 @@ export class RenderingX {
             if (autoRemove) dialogBackdrop.remove()
         };
 
-        if (options instanceof HTMLElement) {
-            options.classList.add('dialog')
-            dialogBackdrop.append(options);
+        if (this.checkIfOptionsIstCustomElement(options)) {
+            options.customElement.classList.add('dialog')
+            dialogBackdrop.append(options.customElement);
         } else {
             const dialog = createElement('div')
 
@@ -61,9 +65,9 @@ export class RenderingX {
                     const button = custom('button', language, color)
                     button.onclick = () => {
                         if (buttonList.classList.contains('loading')) return;
-                        if (action === 'auto-close')
+                        if (action === DialogActionAfterSubmit.Close)
                             closeDialog(false)
-                        else if (action === 'auto-close-remove')
+                        else if (action === DialogActionAfterSubmit.RemoveClose)
                             closeDialog()
                         else {
                             const exec = action()
@@ -72,12 +76,12 @@ export class RenderingX {
                                 buttonList.classList.add('loading')
                                 button.classList.add('loading')
                                 exec.then((onSubmit) => {
-                                    if (onSubmit) closeDialog(onSubmit === 'remove-close')
+                                    if (onSubmit) closeDialog(onSubmit === DialogActionAfterSubmit.RemoveClose)
                                     buttonList.classList.remove('loading')
                                     button.classList.remove('loading')
                                 })
                             } else if (exec)
-                                closeDialog(exec === 'remove-close')
+                                closeDialog(exec === DialogActionAfterSubmit.RemoveClose)
 
                         }
                     }

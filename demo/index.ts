@@ -1,4 +1,4 @@
-import { action, Button, Card, defaultCard, dropdown, input, list, loginCard, modernCard, multiStateSwitch, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, switchButtons, Title, WebGen } from '../src/webgen';
+import { action, Button, Card, defaultCard, DialogActionAfterSubmit, dropdown, input, list, loginCard, modernCard, multiStateSwitch, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, switchButtons, Title, WebGen } from '../src/webgen';
 
 var web = WebGen({ theme: SupportedThemes.auto, image: () => 'https://cdn.pixabay.com/photo/2019/07/01/14/30/squirrel-4310069_1280.jpg' });
 
@@ -25,8 +25,8 @@ const testDialog = web.render.toDialog({
     title: "Hello World",
     content: span("This is a nice test"),
     buttons: [
-        [ 'close', 'auto-close' ],
-        [ 'submit', () => new Promise(done => setTimeout(() => done('close'), 2000)) ]
+        [ 'close', DialogActionAfterSubmit.Close ],
+        [ 'submit', () => new Promise(done => setTimeout(() => done(DialogActionAfterSubmit.Close), 2000)) ]
     ]
 })
 
