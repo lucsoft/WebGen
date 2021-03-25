@@ -1,4 +1,5 @@
 import { createElement, span } from "../Components";
+import { loadingWheel } from "../light-components/loadingWheel";
 import { richCard } from "./richCard";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
@@ -51,12 +52,8 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     loader.classList.add('loader');
 
     loader.append(buttonInput);
-    const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    icon.setAttribute("viewBox", "0 0 73 73")
-    icon.setAttribute("xmlns", "http://www.w3.org/2000/svg")
-    icon.setAttribute("fill", "none");
-    icon.innerHTML = `<circle cx="36.5" cy="36.5" r="35.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-    loader.append(icon);
+
+    loader.append(loadingWheel());
     const content = span(errorMessage ?? 'wrong credentials', 'content');
     form.append(loader, content);
     buttonInput.onclick = () => {
