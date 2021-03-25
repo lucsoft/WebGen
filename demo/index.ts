@@ -16,7 +16,7 @@ const customDropDown = dropdown({ default: 4, small: true }, ...themeArrayWithAc
 
 web.theme.onUpdate((theme) => {
     action(customDropDown, "value", themeArray.findIndex((x) => x == theme));
-    body.redraw({
+    body.forceRedraw({
         theme: themeArray.findIndex((x) => x == theme)
     })
 });

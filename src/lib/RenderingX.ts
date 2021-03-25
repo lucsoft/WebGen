@@ -104,7 +104,7 @@ export class RenderingX {
     toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT | undefined, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) =>
         this.toCustom({ ...options, shell: document.body }, initStateData, data)
 
-    toCustom<DataT>(options: { maxWidth?: string, shell: HTMLElement }, initStateData: DataT | undefined, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) {
+    toCustom<DataT>(options: { maxWidth?: string, shell: HTMLElement }, initStateData: DataT | undefined, data: ((redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]) {
         const shell = createElement('article')
         let state = initStateData;
         options.shell.append(shell)
@@ -113,46 +113,45 @@ export class RenderingX {
             shell.style.maxWidth = options.maxWidth;
         }
 
-        let drawedElements: [ number, HTMLElement | undefined ][] = [];
+        let drawedElements: [ number, HTMLElement, boolean | undefined ][] = [];
 
-        const fetchedData = data((updateState) => {
+        const fetchedData = typeof data === "function" ? data((updateState) => {
             if (updateState !== undefined) {
                 state = { ...state, ...updateState };
                 fullRedraw()
             }
-            else
-                drawFromCache()
-        })
+            else drawFromCache()
+        }) : data;
         function singleRedrawFunction(index: number, updateState: any) {
             if (updateState !== undefined) {
                 state = { ...state, ...updateState };
             }
             const data = drawedElements.find(([ findIndex ]) => findIndex == index)
-            if (data) data[ 1 ] = undefined;
+            if (data) data[ 2 ] = true;
             drawFromCache()
         }
 
         function drawFromCache() {
-            shell.innerHTML = "";
-            shell.append(...drawedElements.map(element => {
-                if (element[ 1 ] != undefined)
-                    return element[ 1 ];
-                const reDrawElement = fetchedData[ element[ 0 ] ];
+            drawedElements.forEach(([ id, currentElement, requiresRerender ]) => {
+                if (requiresRerender === false) return;
+
+                const reDrawElement = fetchedData[ id ];
                 const preRendered = typeof reDrawElement == "object"
                     ? reDrawElement.draw()
-                    : reDrawElement((updateState) => singleRedrawFunction(element[ 0 ], updateState), state as any).draw()
-                drawedElements.find(x => x[ 0 ] == element[ 0 ])![ 1 ] = preRendered;
+                    : reDrawElement((updateState) => singleRedrawFunction(id, updateState), state as any).draw()
+
+                if (currentElement === undefined)
+                    shell.append(preRendered);
+                else
+                    shell.replaceChild(preRendered, currentElement)
+                drawedElements.find(([ oldId ]) => oldId == id)![ 1 ] = preRendered;
                 return preRendered;
-            }));
+            })
         }
 
         function fullRedraw() {
-            drawedElements = [];
-            drawedElements = fetchedData.map((x, index) => [
-                index,
-                typeof x == "object"
-                    ? x.draw()
-                    : x((updateState) => singleRedrawFunction(index, updateState), state as any).draw()
+            drawedElements = fetchedData.map((_, index) => [
+                index, drawedElements[ index ]?.[ 1 ], true
             ])
             drawFromCache()
         }
@@ -160,7 +159,14 @@ export class RenderingX {
 
         return {
             getState: () => initStateData,
-            redraw: (data?: Partial<DataT>) => {
+            indexRedraw: (index: number, data?: Partial<DataT>) => {
+                if (data !== undefined) {
+                    state = { ...state, ...data } as any;
+                }
+                drawedElements.find(x => x[ 0 ] === index)![ 2 ] = true;
+                drawFromCache()
+            },
+            forceRedraw: (data?: Partial<DataT>) => {
                 if (data !== undefined) {
                     state = { ...state, ...data } as any;
                 }

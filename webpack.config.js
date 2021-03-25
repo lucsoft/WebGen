@@ -5,7 +5,7 @@ module.exports = {
     entry: {
         app: "./demo/index.ts",
     },
-    mode: "production",
+    mode: "development",
     output: {
         filename: '[name].js',
         chunkFilename: '[name].bundle.js',
