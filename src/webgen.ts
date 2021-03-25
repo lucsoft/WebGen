@@ -1,4 +1,4 @@
-import { Elements } from './lib/Elements';
+import { RenderingX } from './lib/RenderingX';
 import { Style } from './lib/Style';
 import { SupportedThemes } from './lib/SupportedThemes';
 export { SupportedThemes } from './lib/SupportedThemes';
@@ -46,6 +46,6 @@ export const WebGen = (options: themes = {}) => {
 
     return {
         theme,
-        render: new Elements()
+        render: new RenderingX()
     }
 }
