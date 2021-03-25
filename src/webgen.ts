@@ -30,7 +30,7 @@ export * from './components/generic/PageTitle'
 export * from './components/generic/Button'
 export * from './components/light-components/loadingWheel';
 export * from './types'
-
+export * from './lib/RenderingX';
 type themes = {
     theme: SupportedThemes.blur,
     autoLoadFonts?: boolean,
