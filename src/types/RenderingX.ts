@@ -15,4 +15,4 @@ export type DialogButtonAcction = [
     color?: 'normal' | 'red'
 ]
 export type DialogOptions = { title?: string | HTMLElement, content: RenderElement | HTMLElement, buttons?: DialogButtonAcction[] };
-export type RenderComponent<DataT> = RenderElement | ((singleRedraw: (updateStateData?: Partial<DataT>) => void, state: DataT) => RenderElement);
+export type RenderComponent<DataT> = HTMLElement | RenderElement | ((singleRedraw: (updateStateData?: Partial<DataT>) => void, state: DataT) => HTMLElement | RenderElement);

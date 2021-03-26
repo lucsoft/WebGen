@@ -123,9 +123,9 @@ export class RenderingX {
             else drawFromCache()
         }) : data;
         function singleRedrawFunction(index: number, updateState: any) {
-            if (updateState !== undefined) {
+            if (updateState !== undefined)
                 state = { ...state, ...updateState };
-            }
+
             const data = drawedElements.find(([ findIndex ]) => findIndex == index)
             if (data) data[ 2 ] = true;
             drawFromCache()
@@ -136,16 +136,18 @@ export class RenderingX {
                 if (requiresRerender === false) return;
 
                 const reDrawElement = fetchedData[ id ];
+                const helpDraw = (data: HTMLElement | RenderElement) => data instanceof HTMLElement ? data : data.draw();
                 const preRendered = typeof reDrawElement == "object"
-                    ? reDrawElement.draw()
-                    : reDrawElement((updateState) => singleRedrawFunction(id, updateState), state as any).draw()
+                    ? reDrawElement
+                    : reDrawElement((updateState) => singleRedrawFunction(id, updateState), state as any)
 
+                const mappedrender = helpDraw(preRendered);
                 if (currentElement === undefined)
-                    shell.append(preRendered);
+                    shell.append(mappedrender);
                 else
-                    shell.replaceChild(preRendered, currentElement)
-                drawedElements.find(([ oldId ]) => oldId == id)![ 1 ] = preRendered;
-                return preRendered;
+                    shell.replaceChild(mappedrender, currentElement)
+                drawedElements.find(([ oldId ]) => oldId == id)![ 1 ] = mappedrender;
+                return mappedrender;
             })
         }
 
