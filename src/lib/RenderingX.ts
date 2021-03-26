@@ -158,7 +158,7 @@ export class RenderingX {
         fullRedraw()
 
         return {
-            getState: () => initStateData,
+            getState: () => state,
             indexRedraw: (index: number, data?: Partial<DataT>) => {
                 if (data !== undefined) {
                     state = { ...state, ...data } as any;
