@@ -101,7 +101,7 @@ export class RenderingX {
         return {
             open: () => {
                 if (!this.checkIfOptionsIstCustomElement(options) && this.checkIfOptionsIstRenderingXResult(options.content))
-                    this.checkIfOptionsIstRenderingXResult(options.content.forceRedraw())
+                    options.content.forceRedraw()
                 dialogBackdrop.classList.add('open')
                 document.body.style.overflowY = "hidden";
             },
