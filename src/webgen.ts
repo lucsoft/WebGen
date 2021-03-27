@@ -30,20 +30,26 @@ export * from './components/generic/Button'
 export * from './components/light-components/loadingWheel';
 export * from './types'
 export * from './lib/RenderingX';
-type themes = {
-    theme: SupportedThemes.blur,
+type WebGenOptions = {
     autoLoadFonts?: boolean,
+    emitEventOnSameThemeChange?: boolean,
+    updateThemeOnInit?: false,
+    onThemeUpdate?: (newTheme: SupportedThemes) => void
+} & ({
+    theme: SupportedThemes.blur,
     image: () => string
 } | {
     theme?: Exclude<SupportedThemes, SupportedThemes.blur>,
-    autoLoadFonts?: boolean,
     image?: () => string
-};
+});
 
-export const WebGen = (options: themes = {}) => {
+export const WebGen = (options: WebGenOptions = {}) => {
     console.log("Loaded @lucsoft/webgen");
-    const theme = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''));
-    theme.update(options.theme ?? SupportedThemes.auto);
+    const theme = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''), options.emitEventOnSameThemeChange ?? false);
+    if (options.onThemeUpdate)
+        theme.onThemeUpdate(options.onThemeUpdate)
+    if (options.updateThemeOnInit ?? true)
+        theme.updateTheme(options.theme ?? SupportedThemes.auto);
 
     return {
         theme,
