@@ -75,7 +75,7 @@ export function custom(type: string, message: undefined | string | HTMLElement, 
  * @value (number)
  * @disable (boolean)
  */
-export function dropdown(options: { default: number; disable?: boolean; small?: boolean; } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement {
+export function dropdown(options: { default: number; disable?: boolean; small?: boolean; autoWidth?: boolean } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement {
     const input = createElement('drop-down');
     const title = createElement('span');
     title.innerText = entrys[ options.default ].title ?? 'Unkown';
@@ -88,8 +88,8 @@ export function dropdown(options: { default: number; disable?: boolean; small?: 
     ul.onblur = () => {
         input.classList.remove('open');
     }
-    if (options.small)
-        input.classList.add('small')
+    conditionalCSSClass(input, options.autoWidth, 'auto-width')
+    conditionalCSSClass(input, options.small, 'small')
     input.addEventListener("disabled", (action) => {
         conditionalCSSClass(input, (action as CustomEvent).detail, 'disabled')
     })
