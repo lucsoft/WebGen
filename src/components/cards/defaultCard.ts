@@ -2,6 +2,8 @@ import { CommonCard } from "../../types/card"
 import { HTMLStringy } from "../../types/html"
 import { custom, span } from "../Components";
 
+import '../../css/cards.lline.webgen.static.css';
+
 export const defaultCard = (options: { title: HTMLStringy, subtitle?: string, small?: boolean, width?: number, height?: number; }): CommonCard =>
 ({
     getSize: () => ({ height: options.height, width: options.width }),
