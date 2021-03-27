@@ -867,7 +867,7 @@ drop-down ul {
     list-style: none;
     padding: 0.3rem 0;
     margin: 0;
-    left: 0;
+    right: 0;
     display: none;
     min-width: -webkit-fill-available;
     border-radius: 0.5rem;
@@ -899,6 +899,9 @@ drop-down.open ul {
 }
 drop-down ul li {
     padding: 0.5rem 0.9rem;
+}
+drop-down.auto-width ul li {
+    white-space: nowrap;
 }
 drop-down ul li:hover {
     background: rgba(255, 255, 255, 0.089);
