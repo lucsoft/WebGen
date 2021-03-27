@@ -32,7 +32,7 @@ const body = web.render.toBody({ maxWidth: "50rem" }, {
     switchChecked: false,
     replace: true,
     theme: 0
-}, () => [
+}, (state, rerender) => [
     Title({
         type: "big",
         title: "Big Title"
@@ -78,7 +78,7 @@ const body = web.render.toBody({ maxWidth: "50rem" }, {
         ]
     }),
     PageTitle("Hello World!"),
-    (rerender, state) => Card({ minColumnWidth: 14 },
+    Card({ minColumnWidth: 14 },
         defaultCard({ title: "supr", small: true }),
         defaultCard({ title: "supr", subtitle: "supr" }),
         modernCard({

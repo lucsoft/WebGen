@@ -109,10 +109,10 @@ export class RenderingX {
         };
     }
 
-    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>
+    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (stateData: DataT, redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>
         this.toCustom({ ...options, shell: document.body }, initStateData, data)
 
-    toCustom<DataT>(options: { maxWidth?: string, shell?: HTMLElement }, initStateData: DataT, data: ((redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]): RenderingXResult<DataT> {
+    toCustom<DataT>(options: { maxWidth?: string, shell?: HTMLElement }, initStateData: DataT, data: ((stateData: DataT, redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]): RenderingXResult<DataT> {
         const shell = createElement('article')
         let state = initStateData;
         options.shell?.append(shell)
@@ -123,7 +123,7 @@ export class RenderingX {
 
         let drawedElements: [ number, HTMLElement, boolean | undefined ][] = [];
 
-        const fetchedData = typeof data === "function" ? data((updateState) => {
+        const fetchedData = typeof data === "function" ? data(state, (updateState) => {
             if (updateState !== undefined) {
                 state = { ...state, ...updateState };
                 fullRedraw()
@@ -147,7 +147,7 @@ export class RenderingX {
                 const helpDraw = (data: HTMLElement | RenderElement) => data instanceof HTMLElement ? data : data.draw();
                 const preRendered = typeof reDrawElement == "object"
                     ? reDrawElement
-                    : reDrawElement((updateState) => singleRedrawFunction(id, updateState), state as any)
+                    : reDrawElement(state, (updateState) => singleRedrawFunction(id, updateState))
 
                 const mappedrender = helpDraw(preRendered);
                 if (currentElement === undefined)

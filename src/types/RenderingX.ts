@@ -24,4 +24,10 @@ export type DialogOptions = {
     content: RenderingXResult<any> | RenderElement | HTMLElement,
     buttons?: DialogButtonAcction[]
 };
-export type RenderComponent<DataT> = HTMLElement | RenderElement | ((singleRedraw: (updateStateData?: Partial<DataT>) => void, state: DataT) => HTMLElement | RenderElement);
+export type RenderComponent<DataT> =
+    HTMLElement
+    | RenderElement
+    | ((state: DataT, singleRedraw: (updateStateData?: Partial<DataT>) => void) =>
+        HTMLElement
+        | RenderElement
+    );
