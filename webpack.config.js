@@ -32,13 +32,6 @@ module.exports = {
     devServer: {
         contentBase: "./dist"
     },
-    optimization: {
-        splitChunks: {
-            chunks: 'async',
-            maxAsyncRequests: 30,
-            maxInitialRequests: 30
-        }
-    },
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css',

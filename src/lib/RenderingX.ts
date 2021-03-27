@@ -1,6 +1,6 @@
 import { createElement, custom, span } from "../components/Components";
 import { loadingWheel } from "../components/light-components/loadingWheel";
-import { DialogActionAfterSubmit, DialogOptions, RenderComponent, RenderElement } from "../types/RenderingX";
+import { DialogActionAfterSubmit, DialogOptions, RenderComponent, RenderElement, RenderingXResult } from "../types/RenderingX";
 
 export class RenderingX {
     private staticNotify: HTMLElement;
@@ -34,6 +34,10 @@ export class RenderingX {
         return typeof (value as any).customElement !== "undefined";
     }
 
+    private checkIfOptionsIstRenderingXResult = (value: any): value is RenderingXResult<any> => {
+        return typeof (value as any).getState !== "undefined";
+    }
+
     toDialog(options: DialogOptions | { customElement: HTMLElement }) {
 
         const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
@@ -53,7 +57,9 @@ export class RenderingX {
             dialogBackdrop.append(dialog);
             if (options.title) dialog.append(span(options.title, 'dialog-title'))
 
-            const renderedContent = options.content instanceof HTMLElement ? options.content : options.content.draw();
+            const renderedContent = options.content instanceof HTMLElement
+                ? options.content
+                : (this.checkIfOptionsIstRenderingXResult(options.content) ? options.content.getShell() : options.content.draw());
 
             renderedContent.classList.add('dialog-content')
             dialog.append(renderedContent)
@@ -94,6 +100,8 @@ export class RenderingX {
         this.dialogShell.append(dialogBackdrop)
         return {
             open: () => {
+                if (!this.checkIfOptionsIstCustomElement(options) && this.checkIfOptionsIstRenderingXResult(options.content))
+                    this.checkIfOptionsIstRenderingXResult(options.content.forceRedraw())
                 dialogBackdrop.classList.add('open')
                 document.body.style.overflowY = "hidden";
             },
@@ -101,13 +109,13 @@ export class RenderingX {
         };
     }
 
-    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT | undefined, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) =>
+    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>
         this.toCustom({ ...options, shell: document.body }, initStateData, data)
 
-    toCustom<DataT>(options: { maxWidth?: string, shell: HTMLElement }, initStateData: DataT | undefined, data: ((redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]) {
+    toCustom<DataT>(options: { maxWidth?: string, shell?: HTMLElement }, initStateData: DataT, data: ((redraw: (updateStateData?: DataT) => void) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]): RenderingXResult<DataT> {
         const shell = createElement('article')
         let state = initStateData;
-        options.shell.append(shell)
+        options.shell?.append(shell)
         if (options.maxWidth) {
             shell.classList.add('maxWidth');
             shell.style.maxWidth = options.maxWidth;
@@ -161,18 +169,17 @@ export class RenderingX {
 
         return {
             getState: () => state,
-            indexRedraw: (index: number, data?: Partial<DataT>) => {
+            getShell: () => shell,
+            forceRedraw: (data?: Partial<DataT>, index?: number) => {
                 if (data !== undefined) {
                     state = { ...state, ...data } as any;
                 }
-                drawedElements.find(x => x[ 0 ] === index)![ 2 ] = true;
-                drawFromCache()
-            },
-            forceRedraw: (data?: Partial<DataT>) => {
-                if (data !== undefined) {
-                    state = { ...state, ...data } as any;
+                if (index) {
+                    drawedElements.find(x => x[ 0 ] === index)![ 2 ] = true;
+                    drawFromCache()
                 }
-                fullRedraw()
+                else
+                    fullRedraw()
             }
         }
     }
