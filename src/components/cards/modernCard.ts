@@ -14,8 +14,8 @@ export const modernCard = (options: { title: HTMLStringy, subtitle?: string, des
             if (typeof options.icon == "string") {
                 icon.loading = "lazy";
                 icon.alt = options.title;
-                icon.width = 68;
-                icon.height = 68;
+                icon.width = 60;
+                icon.height = 60;
                 icon.src = options.icon;
             } else
                 icon = new DOMParser().parseFromString(options.icon.svg, "image/svg+xml").children[ 0 ];
