@@ -69,26 +69,20 @@ export class RenderingX {
 
                 options.buttons.forEach(([ language, action, color = 'normal' ]) => {
                     const button = custom('button', language, color)
-                    button.onclick = () => {
+                    button.onclick = async () => {
                         if (buttonList.classList.contains('loading')) return;
                         if (action === DialogActionAfterSubmit.Close)
                             closeDialog(false)
                         else if (action === DialogActionAfterSubmit.RemoveClose)
                             closeDialog()
                         else {
-                            const exec = action()
                             button.append(loadingWheel())
-                            if (exec instanceof Promise) {
-                                buttonList.classList.add('loading')
-                                button.classList.add('loading')
-                                exec.then((onSubmit) => {
-                                    if (onSubmit) closeDialog(onSubmit === DialogActionAfterSubmit.RemoveClose)
-                                    buttonList.classList.remove('loading')
-                                    button.classList.remove('loading')
-                                })
-                            } else if (exec)
-                                closeDialog(exec === DialogActionAfterSubmit.RemoveClose)
-
+                            buttonList.classList.add('loading')
+                            button.classList.add('loading')
+                            const data = await action();
+                            if (data !== undefined) closeDialog(data === DialogActionAfterSubmit.RemoveClose)
+                            buttonList.classList.remove('loading')
+                            button.classList.remove('loading')
                         }
                     }
                     buttonList.append(button);
@@ -109,10 +103,10 @@ export class RenderingX {
         };
     }
 
-    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (stateData: DataT, redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>
+    toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>
         this.toCustom({ ...options, shell: document.body }, initStateData, data)
 
-    toCustom<DataT>(options: { maxWidth?: string, shell?: HTMLElement }, initStateData: DataT, data: ((stateData: DataT, redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]): RenderingXResult<DataT> {
+    toCustom<DataT>(options: { maxWidth?: string, shell?: HTMLElement }, initStateData: DataT, data: ((redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]) | RenderComponent<DataT>[]): RenderingXResult<DataT> {
         const shell = createElement('article')
         let state = initStateData;
         options.shell?.append(shell)
@@ -123,7 +117,7 @@ export class RenderingX {
 
         let drawedElements: [ number, HTMLElement, boolean | undefined ][] = [];
 
-        const fetchedData = typeof data === "function" ? data(state, (updateState) => {
+        const fetchedData = typeof data === "function" ? data((updateState) => {
             if (updateState !== undefined) {
                 state = { ...state, ...updateState };
                 fullRedraw()

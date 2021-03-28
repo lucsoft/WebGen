@@ -16,8 +16,9 @@ const testDialog = web.render.toDialog({
     title: "Hello World",
     content: span("This is a nice test"),
     buttons: [
-        [ 'close', DialogActionAfterSubmit.Close ],
-        [ 'submit', () => new Promise(done => setTimeout(() => done(DialogActionAfterSubmit.Close), 2000)) ]
+        [ 'Direct', DialogActionAfterSubmit.Close ],
+        [ 'Function', () => DialogActionAfterSubmit.Close ],
+        [ 'Promise', () => new Promise(done => setTimeout(() => done(DialogActionAfterSubmit.Close), 2000)) ]
     ]
 })
 web.theme.onThemeUpdate((theme) => {
@@ -32,7 +33,7 @@ const body = web.render.toBody({ maxWidth: "50rem" }, {
     switchChecked: false,
     replace: true,
     theme: 0
-}, (state, rerender) => [
+}, (rerender) => [
     Title({
         type: "big",
         title: "Big Title"
@@ -78,7 +79,7 @@ const body = web.render.toBody({ maxWidth: "50rem" }, {
         ]
     }),
     PageTitle("Hello World!"),
-    Card({ minColumnWidth: 14 },
+    (state) => Card({ minColumnWidth: 14 },
         defaultCard({ title: "supr", small: true }),
         defaultCard({ title: "supr", subtitle: "supr" }),
         modernCard({
