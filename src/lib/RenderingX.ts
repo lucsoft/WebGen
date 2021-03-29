@@ -46,13 +46,29 @@ export class RenderingX {
             document.body.style.overflowY = "unset";
             if (autoRemove) dialogBackdrop.remove()
         };
-
         if (this.checkIfOptionsIstCustomElement(options)) {
             options.customElement.classList.add('dialog')
             dialogBackdrop.append(options.customElement);
         } else {
             const dialog = createElement('div')
 
+            if (options.userRequestClose !== undefined) {
+                document.addEventListener('keyup', (e) => {
+                    if (e.key == "Escape" && dialogBackdrop.classList.contains('open')) {
+                        const data = options.userRequestClose?.()
+                        if (data !== undefined && !dialog.querySelector('buttonlist.loading')) {
+                            closeDialog(data === DialogActionAfterSubmit.RemoveClose)
+                        }
+                    }
+                })
+                dialogBackdrop.onclick = (e) => {
+                    if ((e as any).path[ 0 ] != dialogBackdrop) return
+                    const data = options.userRequestClose?.()
+                    if (data !== undefined && !dialog.querySelector('buttonlist.loading')) {
+                        closeDialog(data === DialogActionAfterSubmit.RemoveClose)
+                    }
+                }
+            }
             dialog.classList.add('dialog')
             dialogBackdrop.append(dialog);
             if (options.title) dialog.append(span(options.title, 'dialog-title'))

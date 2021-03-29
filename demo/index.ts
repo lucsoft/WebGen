@@ -15,6 +15,7 @@ var web = WebGen({
 const testDialog = web.render.toDialog({
     title: "Hello World",
     content: span("This is a nice test"),
+    userRequestClose: () => DialogActionAfterSubmit.Close,
     buttons: [
         [ 'Direct', DialogActionAfterSubmit.Close ],
         [ 'Function', () => DialogActionAfterSubmit.Close ],

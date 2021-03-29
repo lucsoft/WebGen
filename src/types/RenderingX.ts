@@ -10,7 +10,7 @@ export type RenderingXResult<StateDataT> = {
     getShell: () => HTMLElement,
     forceRedraw: (data?: Partial<StateDataT>, index?: number) => void
 };
-export type DialogButtonAcction = [
+export type DialogButtonAction = [
     label: string,
     action: (
         (() => undefined | DialogActionAfterSubmit)
@@ -21,8 +21,9 @@ export type DialogButtonAcction = [
 ]
 export type DialogOptions = {
     title?: string | HTMLElement,
+    userRequestClose?: () => DialogActionAfterSubmit | undefined,
     content: RenderingXResult<any> | RenderElement | HTMLElement,
-    buttons?: DialogButtonAcction[]
+    buttons?: DialogButtonAction[]
 };
 export type RenderComponent<DataT> =
     HTMLElement
