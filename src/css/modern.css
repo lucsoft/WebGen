@@ -109,6 +109,7 @@ buttonlist button.loading {
 }
 
 buttonlist button.loading circle {
+    r: 9px;
     r: 9;
     stroke-width: 2px;
 }
@@ -129,6 +130,7 @@ buttonlist button.loading circle {
 .loading-wheel circle {
     stroke-dashoffset: 58px;
     stroke-dasharray: 83px;
+    r: 12px;
     r: 12;
     stroke-width: 4px;
 }

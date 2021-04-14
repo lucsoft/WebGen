@@ -62,7 +62,7 @@ export class RenderingX {
                     }
                 })
                 dialogBackdrop.onclick = (e) => {
-                    if ((e as any).path[ 0 ] != dialogBackdrop) return
+                    if (e.target != dialogBackdrop) return
                     const data = options.userRequestClose?.()
                     if (data !== undefined && !dialog.querySelector('buttonlist.loading')) {
                         closeDialog(data === DialogActionAfterSubmit.RemoveClose)
