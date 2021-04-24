@@ -13,10 +13,10 @@ card.modern:not(.description) {
     padding: var(--gap);
 }
 card.modern.img.left {
-    grid-template-columns: min-content auto;
+    grid-template-columns: auto calc(100% - 60px - calc(var(--gap) / 1.2));
 }
 card.modern.img.right {
-    grid-template-columns: auto min-content;
+    grid-template-columns: calc(100% - 60px - calc(var(--gap) / 1.2)) auto;
 }
 card.modern.img.down {
     display: block;
