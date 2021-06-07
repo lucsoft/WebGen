@@ -1,4 +1,3 @@
-import { RenderingX } from './lib/RenderingX';
 import { Style } from './lib/Style';
 import { SupportedThemes } from './lib/SupportedThemes';
 export { SupportedThemes } from './lib/SupportedThemes';
@@ -52,7 +51,6 @@ export const WebGen = (options: WebGenOptions = {}) => {
         theme.updateTheme(options.theme ?? SupportedThemes.auto);
 
     return {
-        theme,
-        render: new RenderingX()
+        theme
     }
 }
