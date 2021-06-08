@@ -1,6 +1,8 @@
 import { createElement, custom, span } from "../components/Components";
 import { loadingWheel } from "../components/light-components/loadingWheel";
 import { DialogActionAfterSubmit, DialogOptions, RenderComponent, RenderElement, RenderingXResult } from "../types/RenderingX";
+import '../css/cards.webgen.static.css';
+import '../css/dialog.webgen.static.css';
 
 export class RenderingX {
     private staticNotify: HTMLElement;

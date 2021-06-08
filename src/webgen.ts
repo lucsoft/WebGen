@@ -3,9 +3,6 @@ import { SupportedThemes } from './lib/SupportedThemes';
 export { SupportedThemes } from './lib/SupportedThemes';
 import './css/webgen.static.css';
 
-import './css/cards.webgen.static.css';
-import './css/dialog.webgen.static.css';
-
 import './css/elements.css';
 import './css/grouping.css';
 import './css/master.css';
