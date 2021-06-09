@@ -1,6 +1,5 @@
-import { createElement, custom, span } from "../components/Components";
-import { loadingWheel } from "../components/light-components/loadingWheel";
-import { DialogActionAfterSubmit, DialogOptions, RenderComponent, RenderElement, RenderingXResult } from "../types/RenderingX";
+import { createElement, span } from "../components/Components";
+import { RenderComponent, RenderElement, RenderingXResult } from "../types/RenderingX";
 import '../css/cards.webgen.static.css';
 import '../css/dialog.webgen.static.css';
 
@@ -30,95 +29,6 @@ export class RenderingX {
             setTimeout(() => notifcation.remove(), 6010);
         else keepOpenUntilDone().then(() => notifcation.remove())
         this.staticNotify.append(notifcation);
-    }
-
-    private checkIfOptionsIstCustomElement = (value: any): value is { customElement: HTMLElement } => {
-        return typeof (value as any).customElement !== "undefined";
-    }
-
-    private checkIfOptionsIstRenderingXResult = (value: any): value is RenderingXResult<any> => {
-        return typeof (value as any).getState !== "undefined";
-    }
-
-    toDialog(options: DialogOptions | { customElement: HTMLElement }) {
-
-        const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
-        const closeDialog = (autoRemove = true) => {
-            dialogBackdrop.classList.remove('open')
-            document.body.style.overflowY = "unset";
-            if (autoRemove) dialogBackdrop.remove()
-        };
-        if (this.checkIfOptionsIstCustomElement(options)) {
-            options.customElement.classList.add('dialog')
-            dialogBackdrop.append(options.customElement);
-        } else {
-            const dialog = createElement('div')
-
-            if (options.userRequestClose !== undefined) {
-                document.addEventListener('keyup', (e) => {
-                    if (e.key == "Escape" && dialogBackdrop.classList.contains('open')) {
-                        const data = options.userRequestClose?.()
-                        if (data !== undefined && !dialog.querySelector('buttonlist.loading')) {
-                            closeDialog(data === DialogActionAfterSubmit.RemoveClose)
-                        }
-                    }
-                })
-                dialogBackdrop.onclick = (e) => {
-                    if (e.target != dialogBackdrop) return
-                    const data = options.userRequestClose?.()
-                    if (data !== undefined && !dialog.querySelector('buttonlist.loading')) {
-                        closeDialog(data === DialogActionAfterSubmit.RemoveClose)
-                    }
-                }
-            }
-            dialog.classList.add('dialog')
-            dialogBackdrop.append(dialog);
-            if (options.title) dialog.append(span(options.title, 'dialog-title'))
-
-            const renderedContent = options.content instanceof HTMLElement
-                ? options.content
-                : (this.checkIfOptionsIstRenderingXResult(options.content) ? options.content.getShell() : options.content.draw());
-
-            renderedContent.classList.add('dialog-content')
-            dialog.append(renderedContent)
-
-            if (options.buttons) {
-                const buttonList = createElement('buttonlist')
-
-                options.buttons.forEach(([ language, action, color = 'normal' ]) => {
-                    const button = custom('button', language, color)
-                    button.onclick = async () => {
-                        if (buttonList.classList.contains('loading')) return;
-                        if (action === DialogActionAfterSubmit.Close)
-                            closeDialog(false)
-                        else if (action === DialogActionAfterSubmit.RemoveClose)
-                            closeDialog()
-                        else {
-                            button.append(loadingWheel())
-                            buttonList.classList.add('loading')
-                            button.classList.add('loading')
-                            const data = await action();
-                            if (data !== undefined) closeDialog(data === DialogActionAfterSubmit.RemoveClose)
-                            buttonList.classList.remove('loading')
-                            button.classList.remove('loading')
-                        }
-                    }
-                    buttonList.append(button);
-                })
-                dialog.append(buttonList)
-            }
-        }
-
-        this.dialogShell.append(dialogBackdrop)
-        return {
-            open: () => {
-                if (!this.checkIfOptionsIstCustomElement(options) && this.checkIfOptionsIstRenderingXResult(options.content))
-                    options.content.forceRedraw()
-                dialogBackdrop.classList.add('open')
-                document.body.style.overflowY = "hidden";
-            },
-            close: closeDialog
-        };
     }
 
     toBody = <DataT>(options: { maxWidth?: string }, initStateData: DataT, data: (redraw: ((stateData?: Partial<DataT>) => void)) => RenderComponent<DataT>[]): RenderingXResult<DataT> =>

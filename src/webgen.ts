@@ -26,6 +26,8 @@ export * from './components/generic/Button'
 export * from './components/light-components/loadingWheel';
 export * from './types'
 export * from './lib/RenderingX';
+export * from './lib/View';
+export * from './lib/Dialog';
 type WebGenOptions = {
     autoLoadFonts?: boolean,
     emitEventOnSameThemeChange?: boolean,
