@@ -37,8 +37,13 @@ export function View<State>(render: ViewOptions<State>) {
             if (appendOnElement) renderFunction();
             return options;
         },
-        setClass: (...classes: string[]) => {
-            cssClasses = classes;
+        addClass: (...classes: string[]) => {
+            cssClasses.push(...classes);
+            if (appendOnElement) renderFunction();
+            return options;
+        },
+        enableCenterFromMiddle: () => {
+            cssClasses.push("flex-center");
             if (appendOnElement) renderFunction();
             return options;
         },

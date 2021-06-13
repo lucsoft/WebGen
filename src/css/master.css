@@ -139,3 +139,8 @@ h4 {
     min-width: 12rem;
     animation: 6000ms flyin ease;
 }
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

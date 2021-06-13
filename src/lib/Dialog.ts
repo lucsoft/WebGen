@@ -55,7 +55,7 @@ export function Dialog<State>(render: ViewOptions<State>) {
             const dialog = custom('div', undefined, 'dialog')
             if (title) dialog.append(span(title, 'dialog-title'))
             View(render)
-                .setClass('dialog-content')
+                .addClass('dialog-content')
                 .appendOn(dialog)
             if (buttons.length > 0) {
                 const buttonList = createElement('buttonlist')
