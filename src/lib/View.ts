@@ -2,8 +2,13 @@ import { createElement } from "../components/Components";
 import type { Component } from "../types";
 import '../css/cards.webgen.static.css';
 import { ViewOptions } from "../types/ViewOptions";
-
-export function View<State>(render: ViewOptions<State>) {
+export type ViewData = {
+    setMaxWidth: (maxWidth: string) => ViewData
+    addClass: (...classes: string[]) => ViewData
+    enableCenterFromMiddle: () => ViewData
+    appendOn: (component: HTMLElement) => ViewData
+}
+export function View<State>(render: ViewOptions<State>): ViewData {
     let appendOnElement: HTMLElement | null = null;
     let hasMaxWidth: string | null = null;
     let cssClasses: string[] = [];

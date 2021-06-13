@@ -15,7 +15,16 @@ export type DialogButton = {
 const dialogShell = custom('div', undefined, 'dialog-shell');
 document.body.append(dialogShell);
 
-export function Dialog<State>(render: ViewOptions<State>) {
+export type DialogData = {
+    addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "style" ]) => DialogData
+    setTitle: (text: string) => DialogData
+    allowUserClose: () => DialogData
+    onClose: (action: () => void) => DialogData
+    close: () => DialogData
+    open: () => void
+}
+
+export function Dialog<State>(render: ViewOptions<State>): DialogData {
 
     const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
     dialogShell.append(dialogBackdrop)
