@@ -1,7 +1,7 @@
 {
     "name": "@lucsoft/webgen",
     "version": "1.18.0",
-    "description": "WebGen 1.10",
+    "description": "WebGen 1.18",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
     "sideEffects": [
