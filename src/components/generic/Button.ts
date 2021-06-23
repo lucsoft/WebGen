@@ -4,6 +4,7 @@ import { createElement, mIcon } from "../Components";
 import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel";
 import { conditionalCSSClass } from "../Helper";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
 
 export type ButtonAction = {
     setProgress: (progress: number) => void
@@ -21,11 +22,12 @@ export const Button = ({ state, text, pressOn, progress, color, href, dropdown, 
     selectedOn?: () => void
 }): Component => {
     let button = createElement("a") as HTMLAnchorElement;
+    button.tabIndex = [ ButtonStyle.Spinner, ButtonStyle.Progress ].includes(state ?? ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled(color);
     button.classList.add("wbutton", color ?? Color.Grayscaled, state ?? ButtonStyle.Normal)
     if (href) button.href = href;
     const prog = createElement("div");
     button.append(loadingWheel());
-
+    button.onkeydown = accessibilityButton(button)
     if (dropdown) {
         const list = createElement("ul")
         document.addEventListener('click', (e) => {
@@ -36,6 +38,8 @@ export const Button = ({ state, text, pressOn, progress, color, href, dropdown, 
         })
         dropdown.forEach(([ displayName, action ]) => {
             const entry = createElement("a")
+            entry.tabIndex = 0;
+            entry.onkeydown = accessibilityButton(entry);
             entry.innerText = displayName;
             entry.onclick = () => {
                 action();

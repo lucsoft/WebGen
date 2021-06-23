@@ -9,7 +9,6 @@
     cursor: pointer;
     position: relative;
     user-select: none;
-    padding-right: 1px;
     text-decoration: none;
     transition: transform 100ms ease;
     z-index: 1;
@@ -17,6 +16,11 @@
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
     transition: background-color 200ms ease;
     overflow: hidden;
+}
+
+.wtab:focus {
+    outline: none;
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 30%);
 }
 
 .wtab .item {
@@ -29,7 +33,7 @@
     transition: background 250ms ease;
 }
 
-.wtab .item:not(.active):hover {
+.wtab .item:not(.active):is(:hover, .hover) {
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 20%);
 }
 

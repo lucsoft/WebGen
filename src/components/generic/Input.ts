@@ -17,12 +17,11 @@ export const Input = ({ color, value, changeOn, placeholder, type }: {
 
     let input = createElement("input") as HTMLInputElement;
     input.type = type ?? "text";
-    shell.tabIndex = 1;
-
-    shell.onfocus = () => {
+    input.disabled = color == Color.Disabled;
+    input.onfocus = () => {
         input.focus()
         shell.classList.add("has-value")
-    };
+    }
     shell.onclick = () => {
         if (input.value === "") {
             shell.classList.add("has-value")
