@@ -19,9 +19,12 @@ export * from './components/cards/noteCard'
 export * from './components/cards/richCard'
 export * from './components/cards/searchCard'
 export * from './components/generic/Title'
+export * from './components/generic/Tab'
+export * from './components/generic/Checkbox'
+export * from './components/generic/Input'
 export * from './components/generic/Custom'
 export * from './components/generic/Card'
-export * from './components/generic/Stacks';
+export * from './components/generic/Stacks'
 export * from './components/generic/PageTitle'
 export * from './components/generic/Button'
 export * from './components/light-components/loadingWheel';
