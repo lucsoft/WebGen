@@ -1,7 +1,11 @@
-import { createElement, custom, span } from "../components/Components";
+import { createElement, custom, draw, span } from "../components/Components";
+import { Button } from "../components/generic/Button";
+import { Horizontal } from "../components/generic/Stacks";
 import { loadingWheel } from "../components/light-components/loadingWheel";
 import '../css/dialog.webgen.static.css';
+import { ButtonStyle } from "../types";
 import { ViewOptions } from "../types/ViewOptions";
+import { Color } from "./Color";
 import { View } from "./View";
 
 type DialogButtonAction = ((() => undefined | 'close') | (() => Promise<undefined | 'close'>) | 'close');
@@ -9,14 +13,15 @@ type DialogButtonAction = ((() => undefined | 'close') | (() => Promise<undefine
 export type DialogButton = {
     label: string,
     action: DialogButtonAction,
-    style: 'flat' | 'red'
+    color: Color,
+    state?: ButtonStyle.Inline | ButtonStyle.Normal | ButtonStyle.Secondary
 }
 
 const dialogShell = custom('div', undefined, 'dialog-shell');
 document.body.append(dialogShell);
 
 export type DialogData = {
-    addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "style" ]) => DialogData
+    addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "color" ], state?: DialogButton[ "state" ]) => DialogData
     setTitle: (text: string) => DialogData
     allowUserClose: () => DialogData
     onClose: (action: () => void) => DialogData
@@ -34,8 +39,8 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
     const buttons: DialogButton[] = [];
 
     const settings = {
-        addButton: (label: string, action: DialogButtonAction, style: DialogButton[ "style" ] = "flat") => {
-            buttons.push({ label, action, style })
+        addButton: (label: string, action: DialogButtonAction, color: DialogButton[ "color" ] = Color.Grayscaled, state: DialogButton[ "state" ]) => {
+            buttons.push({ label, action, color, state })
             return settings;
         },
         setTitle: (text: string) => { title = text; return settings; },
@@ -67,28 +72,23 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
                 .addClass('dialog-content')
                 .appendOn(dialog)
             if (buttons.length > 0) {
-                const buttonList = createElement('buttonlist')
-                buttons.forEach(({ action, label, style }) => {
-                    const button = custom('button', label, style)
-                    button.onclick = async () => {
-                        if (buttonList.classList.contains('loading')) return;
+                const list = Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
+                    text: label,
+                    state: state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline),
+                    color,
+                    pressOn: async ({ changeState }) => {
                         if (action === 'close')
                             settings.close()
                         else {
-                            button.append(loadingWheel())
-                            buttonList.classList.add('loading')
-                            button.classList.add('loading')
+                            changeState(ButtonStyle.Spinner);
                             const data = await action();
-                            isLoading = true;
                             if (data !== undefined) settings.close()
-                            buttonList.classList.remove('loading')
-                            button.classList.remove('loading')
-                            isLoading = false;
+                            changeState(state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
                         }
                     }
-                    buttonList.append(button);
-                })
-                dialog.append(buttonList);
+                })))
+
+                dialog.append(draw(list));
             }
             dialogBackdrop.append(dialog);
             dialogBackdrop.classList.add('open')
