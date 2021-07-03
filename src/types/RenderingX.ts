@@ -1,3 +1,6 @@
+/**
+ * @deprecated Please use Component
+ */
 export interface RenderElement {
     draw: () => HTMLElement
 }
