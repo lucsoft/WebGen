@@ -38,57 +38,6 @@ item .webgen-icon {
     margin-top: -2rem;
     transform: translate(0,2rem);
 }
-button {
-    padding: .4rem;
-    background: var(--background-card);
-    color: var(--on-card-text);
-    backdrop-filter: var(--backdrop-filter);
-    font-family: var(--font);
-    padding-left: .7rem;
-    padding-right: .7rem;
-    border: none;
-    font-size: 0.8rem;
-    border-radius: .3rem;
-    transition: transform 500ms ease;
-    box-shadow: 0px 5px 13px 0px rgb(0 0 0 / 18%);
-    margin: 0.2rem;
-}
-center button:hover {
-    background: var(--on-card-background);
-
-    transform: scale(1.01) translate(0,-2px);
-    transition: transform 150ms ease;
-}
-button.one {
-    box-shadow: 0px 9px 26px 0px rgb(0 0 0 / 33%);
-    font-size: 1rem;
-    margin: 0.4rem;
-    padding: 1rem 1.5rem !important;
-}
-button.one.disabled {
-    background: transparent;
-    box-shadow: none;
-}
-button.two {
-    box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.28);
-    font-size: 1rem;
-    margin: 0.4rem;
-    padding: 0.9rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
-}
-button.three {
-    padding: 1rem 3rem;
-    margin-top: .1rem !important;
-    margin-right: 0.5rem !important;
-    display: inline-block;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-}
-center button:active {
-    transform: translate(0,0);
-    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0), 0px 5px 16px 0px rgba(0, 0, 0, 0.5) inset;
-}
 *:focus {
     outline: none;
 }
@@ -152,43 +101,7 @@ span.pagetitle.maxWidth {
     position: relative;
     transform: translate(-50%);
 }
-span.titleg {
-    display: block;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    margin-bottom: 0.6rem;
-    font-size: 1.2rem;
-}
-span.titlew.spaceNoNav,cardlist.spaceHalf{
-    transition: margin-top 250ms ease;
-    margin-top: 10rem;
-}
-span.titlew.spaceHalf, cardlist.spaceHalf{
-    transition: all 250ms ease;
-    margin-top: 4rem;
-}
-@keyframes blobin {
-    0% {
-        transform: scale(0.8) translate(0,10rem);
-        opacity: 0;
-    }
 
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-@keyframes blobout {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(0.8) translate(0,10rem);
-        opacity: 0;
-    }
-}
 span.titlew.nospace {
     transition: all 250ms ease;
     margin-top: 0rem;
@@ -224,47 +137,6 @@ input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 50px var(--on-card-background) inset !important;
     -webkit-text-fill-color: var(--on-card-text) !important;
 }
-
-input[type="button"]:not(.notdefault) {
-    right: 0;
-    width: auto;
-    padding: 0.9rem 2.5rem;
-    display: block;
-    background: var(--on-card-background);
-    color: var(--on-card-text);
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin: 0.5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.2rem;
-    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33), 0px 5px 16px 0px rgba(0, 0, 0, 0) inset;
-    text-align: left;
-    border: none;
-}
-input[type="button"]:not(.notdefault):hover {
-    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.55), 0px 5px 16px 0px rgba(0, 0, 0, 0) inset;
-    transform: translate(0,-5px);
-}
-input[type="button"]:not(.notdefault):active {
-    transform: translate(0,0px);
-
-    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0),0px 5px 16px 0px rgba(0, 0, 0, 0.5) inset;
-}
-input[type="submit"] {
-    font-size: 1.1rem;
-    padding: 0.7rem;
-    padding-left: 1.4rem;
-    padding-right: 1.4rem;
-    font-weight: 300;
-    display: block;
-    background: white;
-    float: right;
-    border-radius: 0.2rem;
-    border: none;
-    margin: 0 -0.4rem 0.5rem 0;
-}
-
 @-moz-document url-prefix() {
     switch.active::after {
         margin: 0.05rem -0.1rem;
@@ -329,13 +201,6 @@ switch.disabled::after {
         font-size: 3rem;
     }
     span.subtitlew {
-        font-size: 1rem;
-    }
-    button.one {
-        margin: 0.3rem;
-        padding: 0.5rem;
-        padding-left: 1.1rem;
-        padding-right: 1.1rem;
         font-size: 1rem;
     }
 }
@@ -474,10 +339,6 @@ list.style2 item i.fliped {
     transform: translate(-0.2rem, 5px) rotate(180deg);
 }
 
-list.style2 item button.help {
-    margin: -1rem .1rem;
-}
-
 list.nomargin {
     margin: -0.5rem;
     margin-left: -1.5rem;
@@ -542,26 +403,6 @@ list.two {
     display: block;
     margin-top: 0.5rem;
 }
-list.two button.one, input,select {
-    display: block;
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: 300;
-    width: -webkit-fill-available;
-    width: fill-available;
-    width: -moz-available;
-    color: var(--default-card-color);
-    font: var(--font);
-    padding: 1rem;
-    margin: 0.5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.2rem;
-    box-shadow: var(--box-shadow);
-    transition: transform 150ms ease, box-shadow 150ms ease;
-    text-align: left;
-    padding-left: 1.5rem;
-    border: none;
-}
 list.two input {
     width: -webkit-fill-available;
     width: -moz-available;
@@ -584,17 +425,6 @@ list.two input:focus {
 list.two input::placeholder {
     color: rgba(0, 0, 0, 0.562);
     font-style: italic;
-}
-list.two button.one:hover,select:hover {
-    z-index: 1;
-    transform: translate(0,-0.3rem);
-
-    box-shadow: 0px 8px 28px 0px rgba(0, 0, 0, 0.51), inset 0px 0px 0px 0px rgba(0, 0, 0, 0.75);;
-}
-list.two button.one:active {
-    transition: all 100ms ease 0.01s;
-    transform: translate(0,0) scale(1);
-    box-shadow: 0px 0px 0px -10px rgba(0, 0, 0, 0.51), inset -2px 6px 21px -3px rgba(0, 0, 0, 0.75);
 }
 list.one,list.one.colums4 {
     display: grid !important;
@@ -798,112 +628,4 @@ span.text h1 {
     display: inline-block;
     background: transparent;
     box-shadow: none;
-}
-div#tag_ava {
-    padding-top: 1.2rem;
-    margin-left: -0.5rem;
-    display: block;
-    position: relative;
-    width: 32rem;
-}
-#tag_ava span.tag {
-    margin-bottom: 0.6rem;
-    background: white;
-    color: black;
-    display: inline-block;
-}
-
-drop-down {
-    position: relative;
-    margin: 0.5rem;
-    display: inline-block;
-    padding: 1rem;
-    background-color: var(--on-card-background);
-    border-radius: 0.2rem;
-    box-shadow: var(--box-shadow);
-    transition: background-color 100ms ease;
-}
-drop-down.small {
-    position: relative;
-    display: inline-block;
-    border-radius: 0.2rem;
-    padding: 0;
-    margin: 0;
-    box-shadow: var(--box-shadow);
-}
-drop-down span {
-    font-size: 1.5rem;
-    font-weight: 300;
-    transition: all 150ms ease;
-    text-align: center;
-    cursor: pointer;
-    margin: -1.2rem -1rem -1rem;
-    display: block;
-    padding: 1.2rem 1rem 1rem;
-}
-drop-down.small span {
-    font-size: 0.9rem;
-    margin: 0;
-    padding: 0.35rem 0.9rem;
-}
-drop-down span:after {
-    content: ' ';
-    border-bottom: 1px solid var(--on-card-text);
-    display: inline-block;
-    border-right: 1px solid var(--on-card-text);
-    height: 10px;
-    width: 10px;
-    transform: rotate(45deg);
-    margin: 0 0.3rem 0.15rem 0.9rem;
-}
-drop-down.small span:after {
-    height: 5px;
-    width: 5px;
-    margin: 0 0 0.15rem 0.5rem;
-}
-drop-down ul {
-    position: absolute;
-    bottom: 0;
-    background-color: var(--on-card-background);
-    list-style: none;
-    padding: 0.3rem 0;
-    margin: 0;
-    right: 0;
-    display: none;
-    min-width: -webkit-fill-available;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0px 7px 12px #00000040;
-    backdrop-filter: var(--default-backdrop);
-    -webkit-backdrop-filter: var(--default-backdrop);
-}
-@keyframes dropDownTransistion {
-    0% {
-        opacity: 0;
-        color: transparent;
-        transform: scaleY(0.5) translate(0, 50%);
-    }
-    100% {
-        opacity: 1;
-        color: var(--on-card-text);
-        transform: scaleY(1) translate(0, 0%);
-    }
-}
-drop-down.open {
-    background-color: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-}
-drop-down.open ul {
-    animation: dropDownTransistion 100ms ease;
-    display: block;
-}
-drop-down ul li {
-    padding: 0.5rem 0.9rem;
-}
-drop-down.auto-width ul li {
-    white-space: nowrap;
-}
-drop-down ul li:hover {
-    background: rgba(255, 255, 255, 0.089);
 }
