@@ -1,4 +1,4 @@
-cardlist {
+grid {
     max-width: var(--max-width);
     margin: var(--gap) auto;
     display: grid;
@@ -20,7 +20,7 @@ card {
 }
 
 @media(max-width: 520px) {
-    cardlist {
+    grid {
         grid-template-columns: 1fr;
             grid-auto-rows: unset;
     }
@@ -28,12 +28,12 @@ card {
         --gap: .8rem;
         --card-min-width: 16rem;
     }
-    cardlist card {
+    grid card {
         grid-column: span 1;
     }
 }
 @media(max-width: 420px) {
-    cardlist {
+    grid {
         grid-template-columns: 1fr;
     }
     :root {
