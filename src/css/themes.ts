@@ -2,10 +2,10 @@ export const blur = `
     :root {
         --background-color: hsla(0, 0%, 4%, 1);
         --on-background-text: white;
-        --background-card: hsla(0, 0%, 0%, 0.67);
+        --background-card: hsl(0deg 0% 8% / 68%);
         --on-card-text: #ffffff;
         --on-card-subtext: #646464;
-        --on-card-background: rgba(0, 0, 0, 0.6);
+        --on-card-background: rgb(51 51 51);
         --text-red: #f81919;
     }
     body {
@@ -16,6 +16,9 @@ export const blur = `
     card, center > button {
         backdrop-filter: blur(1rem);
         -webkit-backdrop-filter: blur(1rem);
+    }
+    .dialog-backdrop.open .dialog {
+        backdrop-filter: blur(1rem);
     }
     input:-webkit-autofill {
         -webkit-box-shadow: 0 0 0 50px black inset !important;

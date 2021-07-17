@@ -21,7 +21,7 @@ export type DialogData = {
     allowUserClose: () => DialogData
     onClose: (action: () => void) => DialogData
     close: () => DialogData
-    open: () => void
+    open: () => DialogData
 }
 
 export function Dialog<State>(render: ViewOptions<State>): DialogData {
@@ -93,6 +93,7 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
             dialogBackdrop.append(dialog);
             dialogBackdrop.classList.add('open')
             document.body.style.overflowY = "hidden";
+            return settings;
         }
     }
     return settings;
