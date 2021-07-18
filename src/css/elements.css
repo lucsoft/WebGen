@@ -42,6 +42,7 @@ button {
     padding: .4rem;
     background: var(--background-card);
     color: var(--on-card-text);
+    backdrop-filter: var(--backdrop-filter);
     font-family: var(--font);
     padding-left: .7rem;
     padding-right: .7rem;

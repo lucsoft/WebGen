@@ -28,24 +28,22 @@ export * from './types'
 export * from './lib/RenderingX';
 export * from './lib/View';
 export * from './lib/Dialog';
-type WebGenOptions = {
+
+export type WebGenOptions = {
     autoLoadFonts?: boolean,
-    emitEventOnSameThemeChange?: boolean,
     updateThemeOnInit?: false,
-    onThemeUpdate?: (newTheme: SupportedThemes) => void
-} & ({
-    theme: SupportedThemes.blur,
-    image: () => string
-} | {
-    theme?: Exclude<SupportedThemes, SupportedThemes.blur>,
-    image?: () => string
-});
+    events?: {
+        "themeChanged"?: (data: SupportedThemes, options: Style) => void;
+        "themeRefreshed"?: (data: SupportedThemes, options: Style) => void;
+    },
+    theme?: SupportedThemes,
+    defaultElementToHookStylesIn?: HTMLElement
+};
 
 export const WebGen = (options: WebGenOptions = {}) => {
     console.log("Loaded @lucsoft/webgen");
-    const theme = new Style(options.autoLoadFonts ?? true, options.image ?? (() => ''), options.emitEventOnSameThemeChange ?? false);
-    if (options.onThemeUpdate)
-        theme.onThemeUpdate(options.onThemeUpdate)
+    const theme = new Style(options);
+
     if (options.updateThemeOnInit ?? true)
         theme.updateTheme(options.theme ?? SupportedThemes.auto);
 
