@@ -28,39 +28,6 @@ card.rich form {
     position: relative;
     margin: 0 0 -0.7rem;
 }
-card.rich form .loader.loading input {
-    color: transparent;
-}
-card.rich form .loader.loading input:hover {
-    box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33) !important;
-    transform: none !important;
-}
-card.rich form .loader {
-    position: relative;
-    width: max-content;
-    display: block;
-    margin: 0;
-    margin-left: auto;
-    margin-bottom: var(--gap);
-}
-
-card.rich form .loader input {
-    margin: 0;
-}
-card.rich form input.default {
-    font-size: 1.5rem;
-    font-weight: 300;
-    background: var(--on-card-background);
-    padding: 1rem;
-    margin: var(--gap) 0;
-    border-radius: 0.2rem;
-    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.15));
-    text-align: left;
-    color: var(--on-card-text);
-    padding-left: 1.5rem;
-    transition: none;
-    border: none;
-}
 card.rich form .content {
     font-size: 1.2rem;
     position: absolute;

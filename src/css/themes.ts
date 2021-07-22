@@ -6,7 +6,8 @@ export const blur: { [ key in string ]: string } = {
     [ "--on-card-subtext" ]: "#646464",
     [ "--on-card-background" ]: "rgb(41 41 41)",
     [ "--text-red" ]: "#f81919",
-    [ "--backdrop-filter" ]: "blur(1rem)"
+    [ "--backdrop-filter" ]: "blur(1rem)",
+    [ "--color-grayscaled-inline-font" ]: "white"
 }
 
 export const dark: { [ key in string ]: string } = {
@@ -18,9 +19,12 @@ export const dark: { [ key in string ]: string } = {
     [ "--on-card-subtext" ]: "#646464",
     [ "--on-card-background" ]: "hsl(0deg 0% 14%)",
     [ "--text-red" ]: "#f81919",
+    [ "--color-grayscaled-inline-font" ]: "white",
+    [ "--color-disabled-lightness" ]: "14%",
+    [ "--color-disabled-font" ]: "#5c5c5c"
 };
 
-export const white: { [ key in string ]: string } = {
+export const light: { [ key in string ]: string } = {
     [ "--box-shadow" ]: " 0px 4px 8px 0px rgb(0 0 0 / 15%)",
     [ "--background-color" ]: " hsla(0, 0%, 90%, 1)",
     [ "--on-background-text" ]: " black",
@@ -29,4 +33,7 @@ export const white: { [ key in string ]: string } = {
     [ "--on-card-subtext" ]: "#646464",
     [ "--on-card-background" ]: " rgb(255, 255, 255)",
     [ "--text-red" ]: "#f81919",
+    [ "--color-grayscaled-lightness" ]: "15%",
+    [ "--color-grayscaled-font" ]: "#ffffff",
+    [ "--color-grayscaled-inline-font" ]: "black"
 }

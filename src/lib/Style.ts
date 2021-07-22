@@ -1,4 +1,4 @@
-import { blur, dark, white } from '../css/themes';
+import { blur, dark, light } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';
 import { createElement } from "../components/Components";
 import { WebGenOptions } from "../webgen";
@@ -22,8 +22,8 @@ export class Style {
         }
         this.theme = styleAppendTo;
         this.mediaQuery.addEventListener('change', e => {
-            if (this.current == SupportedThemes.autoDark || this.current == SupportedThemes.autoWhite)
-                this.updateTheme(e.matches ? SupportedThemes.autoDark : SupportedThemes.autoWhite)
+            if (this.current == SupportedThemes.autoDark || this.current == SupportedThemes.autoLight)
+                this.updateTheme(e.matches ? SupportedThemes.autoDark : SupportedThemes.autoLight)
         });
     }
 
@@ -35,12 +35,12 @@ export class Style {
     clearImage() {
         document.body.style.background = "";
     }
-
+    getTheme = () => this.current
     getColors = (): ColorDef => ({
         [ Color.Critical ]: [ 360, 86, 65, "#333333" ],
         [ Color.Colored ]: [ 227, 85, 65, "#FFFFFF" ],
-        [ Color.Grayscaled ]: [ 0, 0, 100, "#242424" ],
-        [ Color.Disabled ]: [ 0, 0, 85, "#A0A0A0" ],
+        [ Color.Grayscaled ]: [ 0, 0, 100, "#333333" ],
+        [ Color.Disabled ]: [ 0, 0, 75, "#A0A0A0" ],
     })
 
     overrideTheme(data: { [ key in string ]: string }) {
@@ -64,19 +64,19 @@ export class Style {
 
     private applyStyles(data: { [ x: string ]: string; }) {
         const extendData = {
-            ...data,
-            ...this.mapColorDef(this.getColors())
+            ...this.mapColorDef(this.getColors()),
+            ...data
         }
-
         Object.entries(extendData).forEach(([ key, value ]) => this.theme.style.setProperty(key, value))
     }
 
     updateTheme(theme: SupportedThemes) {
         this.options.events?.themeRefreshed?.(theme, this);
         if (theme === SupportedThemes.auto)
-            this.updateTheme(this.mediaQuery.matches ? SupportedThemes.autoDark : SupportedThemes.autoWhite);
+            this.updateTheme(this.mediaQuery.matches ? SupportedThemes.autoDark : SupportedThemes.autoLight);
         else {
             if (this.current == theme) return;
+            if (theme === SupportedThemes.gray) this.theme.removeAttribute("style");
             this.applyStyles(this.getMapping()[ theme ]!);
             this.current = theme;
             this.options.events?.themeChanged?.(theme, this);
@@ -84,11 +84,11 @@ export class Style {
     }
 
     private getMapping = (): { [ theme in SupportedThemes ]?: { [ key in string ]: string } } => ({
-        [ SupportedThemes.white ]: white,
+        [ SupportedThemes.light ]: light,
         [ SupportedThemes.gray ]: {},
         [ SupportedThemes.dark ]: dark,
         [ SupportedThemes.blur ]: blur,
-        [ SupportedThemes.autoWhite ]: white,
+        [ SupportedThemes.autoLight ]: light,
         [ SupportedThemes.autoDark ]: dark,
     });
 }

@@ -1,7 +1,13 @@
+import { Component } from "../types";
 import { ButtonActions } from "../types/actions";
 import { conditionalCSSClass } from "./Helper";
 
 export const createElement = (type: string) => window.document.createElement(type);
+
+export function draw(component: Component): HTMLElement {
+    if (component instanceof HTMLElement) return component;
+    return component.draw();
+}
 
 export function action(element: HTMLElement, type: string, value: unknown) {
     element.dispatchEvent(new CustomEvent(type, { detail: value }))
@@ -70,50 +76,7 @@ export function custom(type: string, message: undefined | string | HTMLElement, 
         span.append(message);
     return span;
 }
-/**
- * # Actions
- * @value (number)
- * @disable (boolean)
- */
-export function dropdown(options: { default: number; disable?: boolean; small?: boolean; autoWidth?: boolean } = { default: 0 }, ...entrys: { title: string, action: () => void }[]): HTMLElement {
-    const input = createElement('drop-down');
-    const title = createElement('span');
-    title.innerText = entrys[ options.default ].title ?? 'Unkown';
-    const ul = createElement('ul');
-    ul.tabIndex = 0;
-    title.onclick = () => {
-        input.classList.add('open');
-        ul.focus();
-    };
-    ul.onblur = () => {
-        input.classList.remove('open');
-    }
-    conditionalCSSClass(input, options.autoWidth, 'auto-width')
-    conditionalCSSClass(input, options.small, 'small')
-    input.addEventListener("disabled", (action) => {
-        conditionalCSSClass(input, (action as CustomEvent).detail, 'disabled')
-    })
-    input.addEventListener("value", (action) => {
-        if ((action as CustomEvent).detail !== undefined)
-            title.innerText = entrys[ (action as CustomEvent).detail ].title ?? 'Unkown';
-    })
 
-    input.dispatchEvent(new CustomEvent("disabled", { detail: options.disable }))
-    input.dispatchEvent(new CustomEvent("value", { detail: options.default }))
-
-    entrys.forEach(element => {
-        const li = createElement('li');
-        li.innerText = element.title;
-        li.onclick = () => {
-            input.classList.remove('open');
-            title.innerText = element.title;
-            element.action();
-        }
-        ul.append(li);
-    });
-    input.append(title, ul);
-    return input;
-}
 
 export function input(options: { type?: string, placeholder?: string, value?: string, width?: string }) {
     const input = createElement('input') as HTMLInputElement;
@@ -132,8 +95,9 @@ export function input(options: { type?: string, placeholder?: string, value?: st
 /**
  * #Actions
  *  @value (list)
+ * @deprecated Please use Vertical()
  */
-export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: string | HTMLElement; right?: HTMLElement; click?: () => void; actions?: { type: string, click: () => void }[] }[]) {
+export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: Component | string; right?: Component | string; click?: () => void; actions?: { type: string, click: () => void }[] }[]) {
     const listE = createElement('list');
 
     if (!options.margin)
@@ -183,15 +147,4 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
     listE.dispatchEvent(new CustomEvent("value", { detail: listRaw }))
 
     return listE;
-}
-
-export function multiStateSwitch(style: "normal" | "small", ...test: ButtonActions[]) {
-    const tinymenu = createElement('div');
-    tinymenu.classList.add('tinymenu', style)
-    for (const iterator of test) {
-        const button = custom('button', iterator.title);
-        button.onclick = iterator.action;
-        tinymenu.append(button);
-    }
-    return tinymenu;
 }

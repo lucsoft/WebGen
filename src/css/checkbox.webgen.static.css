@@ -1,0 +1,60 @@
+.wcheckbox {
+    height: 37px;
+    width: 39px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 100ms ease;
+    z-index: 1;
+    color: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    background: hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 25%);
+    transition: background-color 100ms ease;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.wcheckbox .webgen-icon {
+    opacity: 0;
+    transition: opacity 100ms ease;
+}
+.wcheckbox.selected {
+    background: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    color: var(--font-color);
+}
+.wcheckbox.selected .webgen-icon {
+    opacity: 1;
+}
+.wcheckbox:not(.disabled).selected {
+    box-shadow: 0px 0px 0px 0px hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 25%);
+    transition: box-shadow 250ms ease;
+}
+.wcheckbox:not(.disabled).selected:hover {
+    box-shadow: 0px 0px 0px 4px hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 25%);
+}
+.wcheckbox.grayscaled {
+    --background-color-h: var(--color-grayscaled-hue);
+    --background-color-s: var(--color-grayscaled-saturation);
+    --background-color-l: var(--color-grayscaled-lightness);
+    --font-color: var(--color-grayscaled-font);
+}
+.wcheckbox.colored {
+    --background-color-h: var(--color-colored-hue);
+    --background-color-s: var(--color-colored-saturation);
+    --background-color-l: var(--color-colored-lightness);
+    --font-color: var(--color-colored-font);
+}
+.wcheckbox.critical {
+    --background-color-h: var(--color-critical-hue);
+    --background-color-s: var(--color-critical-saturation);
+    --background-color-l: var(--color-critical-lightness);
+    --font-color: var(--color-critical-font);
+}
+.wcheckbox.disabled {
+    cursor: default;
+    --background-color-h: var(--color-disabled-hue);
+    --background-color-s: var(--color-disabled-saturation);
+    --background-color-l: var(--color-disabled-lightness);
+    --font-color: var(--color-disabled-font);
+}

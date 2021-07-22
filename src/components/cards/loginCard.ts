@@ -1,5 +1,4 @@
 import { createElement, span } from "../Components";
-import { loadingWheel } from "../light-components/loadingWheel";
 import { richCard } from "./richCard";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
@@ -40,40 +39,36 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
 
         form.append(passwordFiled);
     }
-    let buttonInput = createElement("input") as HTMLInputElement;
-    buttonInput.type = "button";
-    buttonInput.value = button || "Login";
-    if (password)
-        passwordFiled.onkeyup = (e) => {
-            if (e.key == "Enter")
-                buttonInput.click();
-        }
-    const loader = createElement("div");
-    loader.classList.add('loader');
-
-    loader.append(buttonInput);
-
-    loader.append(loadingWheel());
-    const content = span(errorMessage ?? 'wrong credentials', 'content');
-    form.append(loader, content);
-    buttonInput.onclick = () => {
-        if (loader.classList.contains('loading'))
-            return;
-        loader.classList.add('loading')
-        makeLogin({
+    const submitAction = async () => {
+        const response = await makeLogin({
             password: passwordFiled.value,
             email: emailField.value || undefined,
             url: urlField.value || undefined
-        }).then((response) => {
-            if (!response) {
-                loader.classList.remove('loading');
-                content.classList.add('failed');
-            }
         })
-    }
+        if (!response) {
+            content.innerText = errorMessage ?? 'wrong credentials';
+        }
+
+    };
+    if (password)
+        passwordFiled.onkeyup = (e) => {
+            if (e.key == "Enter")
+                submitAction();
+        }
+    const content = span('');
+    content.style.alignSelf = "center";
+
+    form.append(content);
 
     return richCard({
         title: titleText || "Login",
-        content: form
+        content: form,
+        buttonListLeftArea: content,
+        buttons: [
+            {
+                title: button || "Login",
+                action: submitAction
+            }
+        ]
     });
 }

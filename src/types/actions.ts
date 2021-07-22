@@ -1,6 +1,12 @@
-import { HTMLStringy } from "./html";
-
 export type ButtonActions = {
-    title: HTMLStringy;
+    title: string;
     action: () => void;
+}
+
+export const enum ButtonStyle {
+    Inline = "inline",
+    Normal = "normal",
+    Secondary = "secondary",
+    Spinner = "spinner",
+    Progress = "progress"
 }

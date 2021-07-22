@@ -1,9 +1,9 @@
 export const enum SupportedThemes {
-    white,
+    light,
     gray,
     dark,
     blur,
     auto,
     autoDark,
-    autoWhite
+    autoLight
 }

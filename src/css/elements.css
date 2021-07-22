@@ -33,29 +33,10 @@ switch.active:after {
 switch.disabled {
     cursor: not-allowed;
 }
-item .webgen-icon {
+item > .webgen-icon {
     display: block;
     margin-top: -2rem;
     transform: translate(0,2rem);
-}
-*:focus {
-    outline: none;
-}
-input:not(.ignore-default)[type="text"], input:not(.ignore-default)[type="password"], input:not(.ignore-default)[type="number"], input:not(.ignore-default)[type="email"]  {
-    font-size: 1.1rem;
-    padding: 0.7rem;
-    margin-left: -0.5rem;
-    font-family: var(--font);
-    font-weight: 300;
-    display: block;
-    width: fill-available;
-    width: -webkit-fill-available;
-    width: -moz-available;
-    border-radius: 0.2rem;
-    border: none;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    transition: all 150ms ease;
 }
 @keyframes flyinout {
     0% {
@@ -132,35 +113,6 @@ span.titlew.withimg img {
     margin-bottom: 2rem;
     border-radius: 100%;
     min-height: 10rem;
-}
-input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 50px var(--on-card-background) inset !important;
-    -webkit-text-fill-color: var(--on-card-text) !important;
-}
-@-moz-document url-prefix() {
-    switch.active::after {
-        margin: 0.05rem -0.1rem;
-    }
-    switch:not(.active)::after {
-        margin: 0.05rem 0.05rem;
-    }
-  }
-input[type="text"].flatweb {
-    border: none;
-    padding: 0.5rem;
-    color: black;
-    margin: -0.2rem;
-    border-radius: 0.2rem;
-    background: rgb(212, 212, 212);
-    outline: 0;
-}
-input[type="text"].white::placeholder {
-    color: white;
-
-}
-input[type="text"].flatweb::placeholder {
-    color: rgb(39, 39, 39);
-
 }
 
 switch.disabled::after {
@@ -321,20 +273,6 @@ list.style2 item i {
     margin-right: 1rem;
     transform: translate(-0.2rem, 1px);
 }
-
-list.style2 item .right .webgen-icon {
-    color: var(--on-card-text);
-    opacity: 0;
-    margin: 0 -1.7rem 0 0;
-    font-size: 1rem;
-    transition: all 350ms ease-out;
-}
-
-list.style2 item:hover .right .webgen-icon {
-    margin-right: 0.23rem;
-    opacity: 1;
-}
-
 list.style2 item i.fliped {
     transform: translate(-0.2rem, 5px) rotate(180deg);
 }
@@ -370,7 +308,7 @@ list.noHeigthLimit item .right {
 list item:hover .right .always {
     margin-right: 0.8rem;
 }
-list item .webgen-icon {
+list item > .webgen-icon {
     font-size: 0.7rem;
     padding-left: 0.7rem;
     padding-right: 0.3rem;
@@ -402,29 +340,6 @@ list item span.time {
 list.two {
     display: block;
     margin-top: 0.5rem;
-}
-list.two input {
-    width: -webkit-fill-available;
-    width: -moz-available;
-    margin-left: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    padding: 1rem;
-    padding-left: 1.5rem;
-}
-list.two input.custom {
-    width: calc(100% - 10.1rem) !important;
-    display: inline-block !important;
-}
-list.two input:focus {
-    z-index: 1;
-    transform: translate(0,-0.3rem) scale(1.01);
-
-    box-shadow: 0px 8px 28px 0px rgba(0, 0, 0, 0.51), inset 0px 0px 0px 0px rgba(0, 0, 0, 0.75);;
-}
-list.two input::placeholder {
-    color: rgba(0, 0, 0, 0.562);
-    font-style: italic;
 }
 list.one,list.one.colums4 {
     display: grid !important;
