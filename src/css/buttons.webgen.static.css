@@ -1,0 +1,96 @@
+.wbutton {
+    padding: 0 0.9rem;
+    height: 2.3rem;
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+    text-decoration: none;
+    transition: transform 100ms ease;
+}
+.wbutton:active {
+    transform: translate(0, 3%);
+}
+.wbutton.normal {
+    background: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    color: var(--font-color);
+}
+.wbutton.inline {
+    color: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    transition: background-color 200ms ease;
+}
+.wbutton:not(.disabled).inline:hover {
+    background: hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 25%);
+}
+.wbutton.secondary {
+    color: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    background: hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 25%);
+    transition: background-color 200ms ease;
+}
+.wbutton:not(.disabled).secondary:hover {
+    background: hsla(var(--background-color-h),var(--background-color-s),var(--background-color-l), 35%);
+}
+.wbutton.progress {
+    background: hsl(var(--background-color-h),var(--background-color-s), var(--background-color-l), 85%);
+    color: var(--font-color);
+    position: relative;
+}
+.wbutton.progress .progress {
+    background: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
+    transition: width 150ms ease;
+    width: 25%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    bottom: 0;
+}
+
+.wbutton.spinner {
+    background: hsl(var(--background-color-h),var(--background-color-s),var(--background-color-l));
+    color: transparent;
+    position: relative;
+}
+.wbutton.spinner .loading-wheel {
+    height: 46px;
+    width: 46px;
+}
+.wbutton.spinner .loading-wheel circle {
+    stroke: var(--font-color);
+}
+.wbutton.grayscaled {
+    --background-color-h: var(--color-grayscaled-hue);
+    --background-color-s: var(--color-grayscaled-saturation);
+    --background-color-l: var(--color-grayscaled-lightness);
+    --font-color: var(--color-grayscaled-font);
+}
+.wbutton.colored {
+    --background-color-h: var(--color-colored-hue);
+    --background-color-s: var(--color-colored-saturation);
+    --background-color-l: var(--color-colored-lightness);
+    --font-color: var(--color-colored-font);
+}
+.wbutton.critical {
+    --background-color-h: var(--color-critical-hue);
+    --background-color-s: var(--color-critical-saturation);
+    --background-color-l: var(--color-critical-lightness);
+    --font-color: var(--color-critical-font);
+}
+.wbutton.disabled {
+    cursor: default;
+    --background-color-h: var(--color-disabled-hue);
+    --background-color-s: var(--color-disabled-saturation);
+    --background-color-l: var(--color-disabled-lightness);
+    --font-color: var(--color-disabled-font);
+}
+
+.wbutton .suffixIcon {
+    display: block;
+    width: 2.3rem;
+    height: 2.3rem;
+    align-items: center;
+}

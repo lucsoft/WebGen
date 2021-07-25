@@ -1,4 +1,4 @@
-import { Button, Card, defaultCard, Dialog, dropdown, input, list, loginCard, modernCard, multiStateSwitch, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, switchButtons, Title, View, WebGen } from "../src/webgen";
+import { Button, ButtonState, Card, Color, defaultCard, Dialog, dropdown, Horizontal, input, list, loginCard, modernCard, multiStateSwitch, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, switchButtons, Title, Vertical, View, WebGen } from "../src/webgen";
 
 const web = WebGen({
     events: {
@@ -37,28 +37,28 @@ View<ViewOptions>(({ draw, state, update }) => {
             .onClose(() => update({ showDialog: false }))
             .open()
     }
-
-    draw(Button({
-        big: false,
-        list: [
-            {
-                text: "Show Titles",
-                onclick: () => update({ stateID: 1 })
-            },
-            {
-                text: "Show Buttons",
-                onclick: () => update({ stateID: 2 })
-            },
-            {
-                text: "Show Cards",
-                onclick: () => update({ stateID: 3 })
-            },
-            {
-                text: "Show Dialog",
-                onclick: () => update({ showDialog: true })
-            }
-        ]
-    }))
+    draw(Horizontal({
+        gap: "0.5rem",
+        align: 'center'
+    },
+        Button({
+            text: "Show Titles",
+            pressOn: () => update({ stateID: 1 })
+        }),
+        Button({
+            text: "Show Buttons",
+            pressOn: () => update({ stateID: 2 })
+        }),
+        Button({
+            text: "Show Cards",
+            style: Color.Colored,
+            pressOn: () => update({ stateID: 3 })
+        }),
+        Button({
+            text: "Show Dialog",
+            pressOn: () => update({ showDialog: true })
+        })
+    ));
 
     if (state.stateID === 1) {
         draw(Title({
@@ -77,32 +77,23 @@ View<ViewOptions>(({ draw, state, update }) => {
     }
 
     if (state.stateID === 2) {
-        draw(Button({
-            big: true,
-            list: [
-                {
-                    text: 'wow',
-                    onclick: () => { console.log('yaay') }
+        const color = [ Color.Disabled, Color.Grayscaled, Color.Colored, Color.Critical ];
+        const state = [ ButtonState.Inline, ButtonState.Secondary, ButtonState.Normal, ButtonState.Progress, ButtonState.Spinner ];
+        draw(Horizontal({ align: 'center', gap: "19px" },
+            ...color.map(color => Vertical({ gap: "19px" }, ...state.map(state => Button({
+                style: color,
+                state,
+                pressOn: ({ setProgress, changeState }) => {
+                    if (state === ButtonState.Progress)
+                        setProgress(Math.random() * (100 - 0))
+                    if (state === ButtonState.Normal)
+                        changeState(ButtonState.Spinner)
                 },
-                {
-                    text: 'such buttons',
-                    onclick: () => { console.log('yaay') }
-                }
-            ]
-        }))
-        draw(Button({
-            big: false,
-            list: [
-                {
-                    text: 'wow',
-                    onclick: () => { console.log('yaay') }
-                },
-                {
-                    text: 'such buttons',
-                    onclick: () => { console.log('yaay') }
-                }
-            ]
-        }))
+                progress: 25,
+                text: 'action'
+            }))))
+        ))
+
     }
 
     if (state.stateID === 3) {
