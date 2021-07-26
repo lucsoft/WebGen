@@ -1,0 +1,68 @@
+.wtab {
+    height: 37px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 13.8px;
+    letter-spacing: .02rem;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    padding-right: 1px;
+    text-decoration: none;
+    transition: transform 100ms ease;
+    z-index: 1;
+    color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+    transition: background-color 200ms ease;
+    overflow: hidden;
+}
+
+.wtab .item {
+    height: 33px;
+    margin: 0 2px;
+    padding: 0 6px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    transition: background 250ms ease;
+}
+
+.wtab .item:not(.active):hover {
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 20%);
+}
+
+.wtab .active {
+    background: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
+    color: var(--font-color);
+}
+
+.wtab.grayscaled {
+    --background-color-h: var(--color-grayscaled-hue);
+    --background-color-s: var(--color-grayscaled-saturation);
+    --background-color-l: var(--color-grayscaled-lightness);
+    --font-color: var(--color-grayscaled-font);
+}
+
+.wtab.colored {
+    --background-color-h: var(--color-colored-hue);
+    --background-color-s: var(--color-colored-saturation);
+    --background-color-l: var(--color-colored-lightness);
+    --font-color: var(--color-colored-font);
+}
+
+.wtab.critical {
+    --background-color-h: var(--color-critical-hue);
+    --background-color-s: var(--color-critical-saturation);
+    --background-color-l: var(--color-critical-lightness);
+    --font-color: var(--color-critical-font);
+}
+
+.wtab.disabled {
+    cursor: default;
+    --background-color-h: var(--color-disabled-hue);
+    --background-color-s: var(--color-disabled-saturation);
+    --background-color-l: var(--color-disabled-lightness);
+    --font-color: var(--color-disabled-font);
+}

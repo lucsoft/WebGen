@@ -4,7 +4,8 @@ import '../../css/stack.webgen.static.css';
 
 export type StackOpts = {
     gap?: string,
-    align?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-evenly' | 'space-around'
+    align?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-evenly' | 'space-around',
+    margin?: string
 };
 
 export const Horizontal = (opts: StackOpts, ...components: Component[]): Component => {
@@ -40,4 +41,6 @@ function applySettings(opts: StackOpts, list: HTMLDivElement) {
         list.style.gap = opts.gap;
     if (opts.align)
         list.style.justifyContent = opts.align;
+    if (opts.margin)
+        list.style.margin = opts.margin;
 }
