@@ -1,4 +1,5 @@
-import { createElement, span } from "../Components";
+import { createElement, draw, span } from "../Components";
+import { Input } from "../generic/Input";
 import { richCard } from "./richCard";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
@@ -11,47 +12,41 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     makeLogin: (loginData: { password: string, email?: string, url?: string }) => Promise<boolean>
 }) => {
     let form = createElement("form") as HTMLFormElement;
-    let emailField = createElement("input") as HTMLInputElement;
-    let passwordFiled = createElement("input") as HTMLInputElement;
-    let urlField = createElement("input") as HTMLInputElement;
-    if (url) {
-        urlField.type = "url";
-        urlField.classList.add('default');
-        urlField.placeholder = url.text;
-        if (url.default)
-            urlField.value = url.default;
-        form.append(urlField);
-    }
-    if (email) {
-        emailField.type = "email";
-        emailField.placeholder = email.text;
-        emailField.classList.add('default');
-        if (email.default)
-            emailField.value = email.default;
-        form.append(emailField);
-    }
-    if (password) {
-        passwordFiled.type = "password";
-        passwordFiled.placeholder = password.text;
-        passwordFiled.classList.add('default');
-        if (password.default)
-            passwordFiled.value = password.default;
+    form.style.display = "grid";
+    form.style.gap = "1rem";
+    form.style.margin = "0 -1rem";
+    let emailField = draw(Input({
+        type: "email",
+        placeholder: email?.text ?? "Email",
+        value: email?.default
+    }));
+    let passwordFiled = draw(Input({
+        type: "password",
+        placeholder: password?.text ?? 'Passwords',
+        value: password?.default
+    }));
+    let urlField = draw(Input({
+        type: "url",
+        placeholder: url?.text ?? 'Location',
+        value: url?.default
+    }));
 
-        form.append(passwordFiled);
-    }
+    if (url) form.append(urlField);
+    if (email) form.append(emailField);
+    if (password) form.append(passwordFiled);
+
     const submitAction = async () => {
         const response = await makeLogin({
-            password: passwordFiled.value,
-            email: emailField.value || undefined,
-            url: urlField.value || undefined
+            password: passwordFiled.querySelector('input')!.value,
+            email: emailField.querySelector('input')?.value || undefined,
+            url: urlField.querySelector('input')?.value || undefined
         })
         if (!response) {
             content.innerText = errorMessage ?? 'wrong credentials';
         }
-
     };
     if (password)
-        passwordFiled.onkeyup = (e) => {
+        passwordFiled.querySelector('input')!.onkeyup = (e) => {
             if (e.key == "Enter")
                 submitAction();
         }
