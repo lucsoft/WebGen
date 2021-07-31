@@ -17,7 +17,7 @@ export class Style {
         if (options.autoLoadFonts ?? true) {
             var roboto = createElement('link') as HTMLLinkElement;
             roboto.rel = "stylesheet";
-            roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500|Material+Icons+Round&display=swap";
+            roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500&display=swap";
             styleAppendTo.append(roboto);
         }
         this.theme = styleAppendTo;

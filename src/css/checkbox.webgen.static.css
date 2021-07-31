@@ -20,6 +20,10 @@
     transition: opacity 100ms ease;
 }
 
+.wcheckbox .bi {
+    font-size: 25px;
+}
+
 .wcheckbox.selected {
     background: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
     color: var(--font-color);

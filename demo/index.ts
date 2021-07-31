@@ -1,6 +1,7 @@
-import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen } from "../src/webgen";
+import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen, BootstrapIcons, CommonIconType, CommonIcon, Icon } from "../src/webgen";
 
 const web = WebGen({
+    icon: new BootstrapIcons(),
     events: {
         themeChanged: (newTheme, opt) => {
             if (newTheme == SupportedThemes.blur)
@@ -23,7 +24,6 @@ const themeNaming = [ "light", "gray", "dark", "blur", "auto", "auto (dark)", "a
 const themeArray = [ SupportedThemes.light, SupportedThemes.gray, SupportedThemes.dark, SupportedThemes.blur, SupportedThemes.auto, SupportedThemes.autoDark, SupportedThemes.autoLight ]
 
 const themeArrayWithActions = themeArray.map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ]);
-
 
 View<ViewOptions>(({ use: draw, state, update }) => {
 
@@ -119,7 +119,7 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                         left: "Example Switch",
                         actions: [
                             {
-                                type: "get_app", click: () => update({ showDialog: true })
+                                type: Icon(CommonIcon(CommonIconType.Download)), click: () => update({ showDialog: true })
                             }
                         ]
                     },

@@ -1,17 +1,18 @@
 import { Color } from "../../lib/Color";
 import { ButtonStyle, Component } from "../../types";
-import { createElement, mIcon } from "../Components";
+import { createElement, draw } from "../Components";
 import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel";
 import { conditionalCSSClass } from "../Helper";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
+import { CommonIcon, CommonIconType, Icon } from "./Icon";
 
 export type ButtonAction = {
     setProgress: (progress: number) => void
     setEnabled: (enable: boolean) => void
     changeState: (state: ButtonStyle) => void
 };
-export const Button = ({ state, text, pressOn, progress, color, href, dropdown, selectedOn }: {
+export const Button = ({ state, text, pressOn, progress, color, href, dropdown, selectedOn, arrowDownIcon }: {
     state?: ButtonStyle,
     color?: Color,
     progress?: number,
@@ -19,7 +20,8 @@ export const Button = ({ state, text, pressOn, progress, color, href, dropdown, 
     dropdown?: ([ displayName: string, action: () => void ])[],
     text: string,
     pressOn?: (e: ButtonAction) => void,
-    selectedOn?: () => void
+    selectedOn?: () => void,
+    arrowDownIcon?: string
 }): Component => {
     let button = createElement("a") as HTMLAnchorElement;
     button.tabIndex = [ ButtonStyle.Spinner, ButtonStyle.Progress ].includes(state ?? ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled(color);
@@ -77,7 +79,7 @@ export const Button = ({ state, text, pressOn, progress, color, href, dropdown, 
     if (dropdown) {
         const iconContainer = createElement("div")
         iconContainer.classList.add("icon-suffix")
-        iconContainer.append(mIcon("expand_more"))
+        iconContainer.append(draw(Icon(arrowDownIcon ?? CommonIcon(CommonIconType.ArrowDown))))
         button.append(iconContainer);
     }
     button.onclick = () => {

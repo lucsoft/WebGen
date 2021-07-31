@@ -4,6 +4,7 @@
     --default-transition-time: 150ms;
     --default-secondary-color: #474747;
 }
+
 article#fulllanding {
     margin-top: -5.1rem;
     padding-top: 5rem;
@@ -17,15 +18,19 @@ article#fulllanding {
     padding-bottom: 1.5rem;
     transition: all var(--default-transition-time) ease;
 }
+
 article#fulllanding.dark {
     color: black;
 }
+
 article#fulllanding.min {
     min-height: 5rem;
 }
+
 article#fulllanding.nonav {
     min-height: calc(100vh - 1.4rem);
 }
+
 article#float {
     position: fixed;
     bottom: 0;
@@ -33,6 +38,7 @@ article#float {
     width: 32rem;
     z-index: 50;
 }
+
 body {
     background: var(--background-color);
     font-family: var(--font);
@@ -41,12 +47,15 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+
 html {
     scroll-behavior: smooth;
 }
+
 .hide {
     display: none !important;
 }
+
 .material-icons-new {
     display: inline-block;
     width: 24px;
@@ -54,9 +63,11 @@ html {
     background-repeat: no-repeat;
     background-size: contain;
 }
+
 .icon-white {
     filter: contrast(4) invert(1);
 }
+
 h2 {
     font-weight: 200;
     text-align: center;
@@ -64,6 +75,7 @@ h2 {
     margin-top: 0;
     color: var(--on-background-text);
 }
+
 h4 {
     font-weight: 300;
     margin-top: -2rem;
@@ -85,7 +97,6 @@ h4 {
 ::-webkit-scrollbar-thumb {
     background: rgb(37, 37, 37);
     border-radius: 1rem;
-
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -103,12 +114,13 @@ h4 {
     flex-wrap: wrap;
     align-content: flex-end;
 }
+
 @keyframes flyin {
     0% {
         opacity: 0.5;
         transform: translate(0px, 20px);
     }
-    4%{
+    4% {
         transform: translate(0px, 0px);
     }
     5% {
@@ -127,6 +139,7 @@ h4 {
         transform: translate(0px, -5px);
     }
 }
+
 .notify span {
     display: block;
     background: #2d2d2d;
@@ -139,8 +152,16 @@ h4 {
     min-width: 12rem;
     animation: 6000ms flyin ease;
 }
+
 .flex-center {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.bi {
+    font-size: 17.8px;
+    aspect-ratio: 1 / 1;
+    line-height: 1;
+    padding-top: 2px;
 }

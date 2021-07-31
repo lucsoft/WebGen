@@ -1,6 +1,7 @@
-import { createElement, img, mIcon, span } from "../Components";
+import { createElement, draw, img, span } from "../Components";
 import { CommonCard } from "../../types/card";
 import '../../css/search.webgen.static.css';
+import { CommonIcon, CommonIconType, Icon } from "../generic/Icon";
 
 export type SearchEntry = {
     name: string;
@@ -23,6 +24,12 @@ export const searchCard = (settings: {
     mode?: SearchMode
     placeholder?: string,
     notfound?: string,
+    icons?: {
+        edit: string
+        close: string
+        remove: string
+        download: string
+    },
     actions?: {
         close?: () => void,
         click?: (arg: SearchEntry) => void,
@@ -42,7 +49,7 @@ export const searchCard = (settings: {
         let ul = createElement("ul") as HTMLUListElement
         input.placeholder = settings.placeholder || "Search...";
         if (settings.actions?.close) {
-            let icon = mIcon("close");
+            let icon = draw(Icon(settings.icons?.close ?? CommonIcon(CommonIconType.Close)));
             icon.onclick = settings.actions?.close;
             search.append(icon);
         }
@@ -67,17 +74,17 @@ export const searchCard = (settings: {
             if (x.suffix) right.append(x.suffix);
             right.append(...tags);
             if (settings.actions?.download) {
-                const download = mIcon("get_app");
+                const download = draw(Icon(settings.icons?.download ?? CommonIcon(CommonIconType.Download)));
                 download.onclick = () => settings.actions?.download?.(x);
                 right.append(download);
             }
             if (settings.actions?.edit) {
-                const edit = mIcon("edit");
+                const edit = draw(Icon(settings.icons?.edit ?? CommonIcon(CommonIconType.Edit)));
                 edit.onclick = () => settings.actions?.edit?.(x);
                 right.append(edit);
             }
             if (settings.actions?.remove) {
-                const remove = mIcon("delete");
+                const remove = draw(Icon(settings.icons?.remove ?? CommonIcon(CommonIconType.Delete)));
                 remove.onclick = () => settings.actions?.remove?.(x);
                 right.append(remove);
             }

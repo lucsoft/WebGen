@@ -1,5 +1,6 @@
 import { Component } from "../types";
 import { ButtonActions } from "../types/actions";
+import { CommonIcon, CommonIconType, Icon } from "./generic/Icon";
 import { conditionalCSSClass } from "./Helper";
 
 export const createElement = (type: string) => window.document.createElement(type);
@@ -14,7 +15,6 @@ export function action(element: HTMLElement, type: string, value: unknown) {
 }
 
 export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
-export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", "webgen-icon", ...classList);
 export const img = (source: string | undefined, ...classList: string[]) => {
     const img = createElement('img') as HTMLImageElement
     img.classList.add(...classList)
@@ -37,7 +37,7 @@ export function custom(type: string, message: undefined | string | HTMLElement, 
  *  @value (list)
  * @deprecated Please use Vertical()
  */
-export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: Component | string; right?: Component | string; click?: () => void; actions?: { type: string, click: () => void }[] }[]) {
+export function list(options: { margin?: boolean; style?: "none" | "default"; noHeigthLimit?: boolean }, ...listRaw: { left: Component | string; right?: Component | string; click?: () => void; actions?: { type: Component, click: () => void }[] }[]) {
     const listE = createElement('list');
 
     if (!options.margin)
@@ -74,7 +74,7 @@ export function list(options: { margin?: boolean; style?: "none" | "default"; no
 
                 if (iterator.actions)
                     for (const action of iterator.actions) {
-                        const act = mIcon(action.type);
+                        const act = draw(action.type);
                         act.onclick = action.click;
                         right.append(act);
                     }

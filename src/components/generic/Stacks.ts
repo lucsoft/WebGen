@@ -65,6 +65,8 @@ function applySettings(opts: StackOpts, list: HTMLDivElement) {
         list.style.gap = opts.gap;
     if (opts.align)
         list.style.justifyContent = opts.align;
-    if (opts.margin)
+    if (opts.margin) {
+        list.style.width = `calc(100% - ${opts.margin} - ${opts.margin})`;
         list.style.margin = opts.margin;
+    }
 }
