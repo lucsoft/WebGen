@@ -1,43 +1,9 @@
-switch {
-    text-align: center;
-    background: var(--on-card-background);
-    display: inline-block;
-    padding: 3px 4px 3px;
-    width: 3.3rem;
-    border-radius: 30rem;
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
-    font-size: 1rem;
-}
-
-switch:after {
-    content: 'I';
-    color: #6f6f6f;
-    background: #00000029;
-    display: block;
-    width: 10px;
-    position: relative;
-    padding: 3px 5.7px;
-    border-radius: 100rem;
-    transition: all 700ms cubic-bezier(0.96, -0.61, 0.26, 1.63);
-    transform: translate(0%) rotate(-90deg);
-    font-size: .8rem;
-}
-switch.active:after {
-    background: #40bf29;
-    content: 'I';
-    color: white;
-    transition: all 700ms cubic-bezier(0.96, -0.61, 0.26, 1.63);
-    transform: translate(150%) rotate(360deg);
-}
-switch.disabled {
-    cursor: not-allowed;
-}
-item > .webgen-icon {
+item>.webgen-icon {
     display: block;
     margin-top: -2rem;
-    transform: translate(0,2rem);
+    transform: translate(0, 2rem);
 }
+
 @keyframes flyinout {
     0% {
         transform: translate(0, 5rem);
@@ -69,6 +35,7 @@ span.titlew {
     text-align: center;
     color: var(--on-background-text);
 }
+
 span.pagetitle {
     font-size: 3.4rem;
     font-weight: 800;
@@ -76,6 +43,7 @@ span.pagetitle {
     display: block;
     color: var(--on-background-text);
 }
+
 span.pagetitle.maxWidth {
     max-width: 45rem;
     left: 50%;
@@ -87,11 +55,13 @@ span.titlew.nospace {
     transition: all 250ms ease;
     margin-top: 0rem;
 }
+
 span.titlew:not(.withimg) {
     font-size: 6.3rem;
     padding-top: 5rem;
 }
-span.titlew:not(.withimg) > .subtitlew {
+
+span.titlew:not(.withimg)>.subtitlew {
     font-size: 1.6rem;
     margin-top: -0.5rem;
 }
@@ -103,9 +73,9 @@ span.subtitlew {
     font-weight: 200;
     letter-spacing: 0.1rem;
 }
+
 span.titlew.withimg {
     padding-top: 2rem;
-
 }
 
 span.titlew.withimg img {
@@ -113,11 +83,6 @@ span.titlew.withimg img {
     margin-bottom: 2rem;
     border-radius: 100%;
     min-height: 10rem;
-}
-
-switch.disabled::after {
-    background: rgb(151, 151, 151) !important;
-    animation: none;
 }
 
 @media(max-width: 950px) {
@@ -130,10 +95,11 @@ switch.disabled::after {
         text-align: center;
         margin-left: 0 !important;
     }
-    span.titlew.spaceNoNav,span.titlew.spaceHalf {
+    span.titlew.spaceNoNav, span.titlew.spaceHalf {
         margin-top: 0rem;
     }
 }
+
 @media(max-width: 520px) {
     span.titlew {
         font-size: 3.3rem;
@@ -142,8 +108,8 @@ switch.disabled::after {
     span.subtitlew {
         font-size: 1.15rem;
     }
-
 }
+
 @media(max-width: 470px) {
     span.titlew.withimg img {
         width: 11rem;
@@ -156,6 +122,7 @@ switch.disabled::after {
         font-size: 1rem;
     }
 }
+
 @media(max-width: 350px) {
     span.titlew.withimg img {
         width: 10rem;
@@ -171,11 +138,13 @@ switch.disabled::after {
         padding-bottom: 1rem;
     }
 }
+
 splitView {
     display: grid;
     grid-template-columns: 200px auto;
     transition: all var(--default-transition-time) ease !important;
 }
+
 splitView.m {
     left: 50%;
     position: relative;
@@ -186,27 +155,32 @@ splitView.m {
     grid-template-columns: 1fr 1fr;
     display: grid;
 }
+
 splitView.auto {
     grid-template-columns: max-content auto;
 }
+
 splitView content {
     text-align: left;
 }
+
 content h3 {
     margin: 0;
     font-weight: 200;
     font-size: 2.3rem;
     padding: 0 0 0.2rem 0.6rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.24);
-    box-shadow: 0 5px 5px -5px rgb(0,0,0,0.1);
+    box-shadow: 0 5px 5px -5px rgb(0, 0, 0, 0.1);
 }
+
 splitView.one sidebar.d {
     background: rgb(230, 230, 230);
-    color:black;
+    color: black;
     font-size: 1.5rem;
-    box-shadow: 5px 0px 5px -5px rgb(0,0,0,0.1);
+    box-shadow: 5px 0px 5px -5px rgb(0, 0, 0, 0.1);
     transition: all var(--default-transition-time) ease;
 }
+
 splitView.one sidebar.d span.title {
     font-size: 2rem;
     padding: 1rem;
@@ -216,12 +190,13 @@ splitView.one sidebar.d span.title {
     margin-bottom: 0.5rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.055);
     display: block;
-
 }
+
 splitView.nomargin {
     margin: -1rem -1.5rem;
     margin-bottom: -1.6rem;
 }
+
 splitView.one sidebar.d span.subtitle {
     color: rgb(34, 34, 34);
     font-style: italic;
@@ -230,22 +205,27 @@ splitView.one sidebar.d span.subtitle {
     padding-left: 1.5rem;
     display: block;
 }
+
 splitView.padding sidebar.d {
     padding: 1rem;
 }
+
 splitView.padding content.d {
     padding: 1rem;
 }
+
 sidebar.list {
     padding: 0 !important;
 }
+
 sidebar.list .item {
     display: block;
     font-size: 1.3rem;
     padding: 0.5rem 1rem;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-left: 1rem;
 }
+
 list.style2 item {
     margin-left: 1rem;
     user-select: none;
@@ -273,6 +253,7 @@ list.style2 item i {
     margin-right: 1rem;
     transform: translate(-0.2rem, 1px);
 }
+
 list.style2 item i.fliped {
     transform: translate(-0.2rem, 5px) rotate(180deg);
 }
@@ -296,19 +277,20 @@ list item:first-child {
 }
 
 list item .right {
-    height: 1.73rem;
     display: flex;
     align-items: center;
-    margin-top: -0.1rem;
     justify-content: flex-end;
 }
+
 list.noHeigthLimit item .right {
     height: unset;
 }
+
 list item:hover .right .always {
     margin-right: 0.8rem;
 }
-list item > .webgen-icon {
+
+list item>.webgen-icon {
     font-size: 0.7rem;
     padding-left: 0.7rem;
     padding-right: 0.3rem;
@@ -337,19 +319,21 @@ list item span.time {
     margin-left: 0;
     display: inline-block;
 }
+
 list.two {
     display: block;
     margin-top: 0.5rem;
 }
-list.one,list.one.colums4 {
+
+list.one, list.one.colums4 {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-
 }
+
 list.one.colums5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
 }
+
 list.one item {
     text-align: center;
     padding: 0rem;
@@ -357,12 +341,14 @@ list.one item {
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
 }
+
 list.one item span.title {
     font-size: 2.5rem;
     padding-top: 0.5rem;
     font-weight: 200;
     display: block;
 }
+
 list.one item span.subtitle {
     font-size: 0.9rem;
     padding: 0.1rem;
@@ -370,8 +356,9 @@ list.one item span.subtitle {
     padding-right: 0.3rem;
     border-radius: 0.1rem;
     color: rgb(24, 24, 24);
-    background: rgb(0,0,0,0.1);
+    background: rgb(0, 0, 0, 0.1);
 }
+
 list.one img {
     margin-left: auto;
     margin-right: auto;
@@ -379,6 +366,7 @@ list.one img {
     width: 60%;
     display: block;
 }
+
 list.one.colums5 item.colum1 {
     grid-column: 1 / 6;
     width: min-content;
@@ -396,30 +384,30 @@ list.one.colums4 item.colum1 {
     transform: scale(1.2) translate(-42%);
 }
 
-
 list.one.colums4 item.colums2.a {
     grid-column: 2 / 3 !important;
-
 }
+
 list.one.colums4 item.colums2.b {
     grid-column: 3 / 5 !important;
     width: 45%;
-
 }
+
 list.one item:not(.colums2):not(.colum1) {
     transform: scale(0.9);
 }
+
 list.one item.centered {
     position: relative;
     left: 50%;
     transform: translate(-50%);
 }
+
 @media (max-width: 950px) {
     card.popup list.one span.title {
         margin-top: unset;
         padding: unset;
         padding-left: unset;
-
     }
     splitView.m {
         grid-template-columns: 1fr;
@@ -431,7 +419,7 @@ list.one item.centered {
         font-size: 5rem;
         padding-top: 2rem;
     }
-    span.titlew:not(.withimg) > .subtitlew {
+    span.titlew:not(.withimg)>.subtitlew {
         font-size: 1.5rem;
     }
     h2 {
@@ -441,6 +429,7 @@ list.one item.centered {
         font-size: 1.2rem;
     }
 }
+
 @media(max-width: 480px) {
     span.titlew:not(.withimg) {
         font-size: 3rem;
@@ -454,6 +443,7 @@ list.one item.centered {
         font-size: 0.9rem;
     }
 }
+
 @keyframes blinktext {
     0% {
         opacity: 1;
@@ -465,13 +455,13 @@ list.one item.centered {
         opacity: 1;
     }
 }
+
 @keyframes loadingwheel {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
-
     100% {
-      opacity: 0;
+        opacity: 0;
     }
 }
 
@@ -482,7 +472,6 @@ list.one item.centered {
     justify-content: space-around;
     margin-top: 3rem;
     flex-wrap: wrap;
-
 }
 
 .iconE img {
@@ -492,6 +481,7 @@ list.one item.centered {
     transform: translate(-50%, 0);
     position: relative;
 }
+
 .iconE span {
     background: #fdfdfd;
     color: black;
@@ -500,6 +490,7 @@ list.one item.centered {
     border-radius: .2rem;
     display: block;
 }
+
 .iconE span.uploaded:before {
     content: "cloud_done";
     font-family: "Material Icons Round";
@@ -509,6 +500,7 @@ list.one item.centered {
     margin-left: 0.3rem;
     margin-right: 0.4rem;
 }
+
 .tags {
     overflow: hidden;
     display: flex;
@@ -517,15 +509,18 @@ list.one item.centered {
     border-radius: .3rem;
     box-shadow: 0px 5px 16px 0px rgba(0, 0, 0, 0.33);
 }
+
 .tags ul {
     list-style: none;
     padding: 0;
     margin: 0;
     float: left;
 }
+
 span.text h1 {
     font-weight: 300;
 }
+
 .tags ul li {
     display: unset;
     background: #fdfdfd;
@@ -538,6 +533,7 @@ span.text h1 {
     top: 0.8rem;
     left: 0.2rem;
 }
+
 .tags .newtag {
     margin: 0;
     display: inline-block;
