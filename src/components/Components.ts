@@ -13,51 +13,6 @@ export function action(element: HTMLElement, type: string, value: unknown) {
     element.dispatchEvent(new CustomEvent(type, { detail: value }))
 }
 
-/**
- * # Actions
- * @checked (boolean)
- * @disable (boolean)
- */
-export function switchButtons(options: {
-    disabled?: boolean;
-    checked?: boolean;
-    onClick?: (active: boolean) => void;
-    onAnimationComplete?: (active: boolean) => void;
-}) {
-    const span = createElement('span');
-
-    const switchE = createElement('switch');
-    const input = createElement('input') as HTMLInputElement;
-
-    input.classList.add("hide");
-    input.type = "checkbox";
-    span.addEventListener("disabled", (action) => {
-        const checkThing = (action as CustomEvent).detail;
-        conditionalCSSClass(switchE, checkThing, 'disabled')
-        input.disabled = checkThing;
-    })
-    span.addEventListener("checked", (action) => {
-        const checkThing = (action as CustomEvent).detail;
-        conditionalCSSClass(switchE, checkThing, 'active')
-        input.checked = checkThing;
-    })
-
-    span.dispatchEvent(new CustomEvent("disabled", { detail: options.disabled }))
-    span.dispatchEvent(new CustomEvent("checked", { detail: options.checked }))
-
-    span.onclick = () => {
-        if (input.disabled)
-            return;
-        switchE.classList.toggle("active");
-        input.checked = !input.checked;
-        options.onClick?.(input.checked);
-        setTimeout(() => options.onAnimationComplete?.(input.checked), 500);
-    }
-    span.append(switchE);
-    span.append(input);
-    return span;
-}
-
 export const span = (message: undefined | string | HTMLElement, ...classList: string[]): HTMLElement => custom('span', message, ...classList)
 export const mIcon = (icon: string, ...classList: string[]) => custom("span", icon, "material-icons-round", "webgen-icon", ...classList);
 export const img = (source: string | undefined, ...classList: string[]) => {
@@ -75,21 +30,6 @@ export function custom(type: string, message: undefined | string | HTMLElement, 
     else if (message != undefined)
         span.append(message);
     return span;
-}
-
-
-export function input(options: { type?: string, placeholder?: string, value?: string, width?: string }) {
-    const input = createElement('input') as HTMLInputElement;
-    input.classList.add('tiny-input', 'ignore-default');
-    if (options.type)
-        input.type = options.type;
-    if (options.width)
-        input.style.width = options.width;
-    if (options.value)
-        input.value = options.value;
-    if (options.placeholder)
-        input.placeholder = options.placeholder;
-    return input;
 }
 
 /**
