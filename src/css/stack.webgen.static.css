@@ -1,10 +1,13 @@
 .horizontal-stack {
     display: flex;
+    width: 100%;
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
 .vertical-stack {
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;

@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Card, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen } from "../src/webgen";
+import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen } from "../src/webgen";
 
 const web = WebGen({
     events: {
@@ -25,10 +25,10 @@ const themeArray = [ SupportedThemes.light, SupportedThemes.gray, SupportedTheme
 const themeArrayWithActions = themeArray.map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ]);
 
 
-View<ViewOptions>(({ draw, state, update }) => {
+View<ViewOptions>(({ use: draw, state, update }) => {
 
     if (state.showDialog === true) {
-        Dialog(({ draw }) => { draw(span("This is a nice test")) })
+        Dialog(({ use }) => { use(span("This is a nice test")) })
             .allowUserClose()
             .addButton("Direct", 'close')
             .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)
@@ -90,7 +90,7 @@ View<ViewOptions>(({ draw, state, update }) => {
 
     if (state.stateID === 3) {
         draw(PageTitle("Hello World!"));
-        draw(Card({ minColumnWidth: 14 },
+        draw(Grid({ minColumnWidth: 14 },
             defaultCard({ title: "supr", small: true }),
             defaultCard({ title: "supr", subtitle: "supr" }),
             modernCard({
