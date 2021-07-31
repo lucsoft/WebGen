@@ -1,4 +1,4 @@
-import { Button, ButtonState, Card, Color, defaultCard, Dialog, dropdown, Horizontal, input, list, loginCard, modernCard, multiStateSwitch, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, switchButtons, Title, Vertical, View, WebGen } from "../src/webgen";
+import { Button, ButtonStyle, Card, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen } from "../src/webgen";
 
 const web = WebGen({
     events: {
@@ -19,11 +19,11 @@ type ViewOptions = {
     switchChecked: boolean;
 };
 
-const themeNaming = [ "white", "gray", "dark", "blur", "auto", "auto (dark)", "auto (white)" ];
-const themeArray = [ SupportedThemes.white, SupportedThemes.gray, SupportedThemes.dark, SupportedThemes.blur, SupportedThemes.auto, SupportedThemes.autoDark, SupportedThemes.autoWhite ]
+const themeNaming = [ "light", "gray", "dark", "blur", "auto", "auto (dark)", "auto (light)" ];
+const themeArray = [ SupportedThemes.light, SupportedThemes.gray, SupportedThemes.dark, SupportedThemes.blur, SupportedThemes.auto, SupportedThemes.autoDark, SupportedThemes.autoLight ]
 
-const themeArrayWithActions = themeArray.map((x, i) => ({ title: themeNaming[ i ], action: () => web.theme.updateTheme(x) }));
-const customDropDown = dropdown({ default: 4, small: true, autoWidth: true }, ...themeArrayWithActions);
+const themeArrayWithActions = themeArray.map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ]);
+
 
 View<ViewOptions>(({ draw, state, update }) => {
 
@@ -31,8 +31,8 @@ View<ViewOptions>(({ draw, state, update }) => {
         Dialog(({ draw }) => { draw(span("This is a nice test")) })
             .allowUserClose()
             .addButton("Direct", 'close')
-            .addButton("Fuction", () => 'close')
-            .addButton("Promise", () => new Promise(done => setTimeout(() => done('close'), 2000)))
+            .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)
+            .addButton("Promise", () => new Promise(done => setTimeout(() => done('close'), 2000)), Color.Colored, ButtonStyle.Secondary)
             .setTitle("Hello World!")
             .onClose(() => update({ showDialog: false }))
             .open()
@@ -41,23 +41,15 @@ View<ViewOptions>(({ draw, state, update }) => {
         gap: "0.5rem",
         align: 'center'
     },
-        Button({
-            text: "Show Titles",
-            pressOn: () => update({ stateID: 1 })
-        }),
-        Button({
-            text: "Show Buttons",
-            pressOn: () => update({ stateID: 2 })
-        }),
-        Button({
-            text: "Show Cards",
-            style: Color.Colored,
-            pressOn: () => update({ stateID: 3 })
-        }),
-        Button({
-            text: "Show Dialog",
-            pressOn: () => update({ showDialog: true })
-        })
+        Tab({
+            color: Color.Colored,
+            selectedIndex: state.showDialog ? 3 : (state.stateID !== undefined ? state.stateID - 1 : undefined)
+        },
+            [ "Show Titles", () => update({ stateID: 1 }) ],
+            [ "Show Buttons", () => update({ stateID: 2 }) ],
+            [ "Show Cards", () => update({ stateID: 3 }) ],
+            [ "Show Dialog", () => update({ showDialog: true }) ],
+        )
     ));
 
     if (state.stateID === 1) {
@@ -78,20 +70,20 @@ View<ViewOptions>(({ draw, state, update }) => {
 
     if (state.stateID === 2) {
         const color = [ Color.Disabled, Color.Grayscaled, Color.Colored, Color.Critical ];
-        const state = [ ButtonState.Inline, ButtonState.Secondary, ButtonState.Normal, ButtonState.Progress, ButtonState.Spinner ];
+        const state = [ ButtonStyle.Inline, ButtonStyle.Secondary, ButtonStyle.Normal, ButtonStyle.Progress, ButtonStyle.Spinner ];
         draw(Horizontal({ align: 'center', gap: "19px" },
-            ...color.map(color => Vertical({ gap: "19px" }, ...state.map(state => Button({
-                style: color,
+            ...color.map(color => Vertical({ gap: "19px" }, ...state.map((state, index) => Button({
+                color: color,
                 state,
                 pressOn: ({ setProgress, changeState }) => {
-                    if (state === ButtonState.Progress)
+                    if (state === ButtonStyle.Progress)
                         setProgress(Math.random() * (100 - 0))
-                    if (state === ButtonState.Normal)
-                        changeState(ButtonState.Spinner)
                 },
                 progress: 25,
                 text: 'action'
-            }))))
+            })), Checkbox({
+                color
+            })))
         ))
 
     }
@@ -132,31 +124,31 @@ View<ViewOptions>(({ draw, state, update }) => {
                         ]
                     },
                     {
-                        left: input({ placeholder: "Some text", width: "8rem" }),
-                        right: customDropDown
+                        left: Input({
+                            placeholder: "Some Value"
+                        }),
+                        right: Button({
+                            text: themeNaming[ themeArray.indexOf(web.theme.getTheme()) ],
+                            dropdown: themeArrayWithActions,
+                            selectedOn: () => update({})
+                        })
                     },
                     {
                         left: "Example Actions",
-                        right: switchButtons({
-                            disabled: state.switchDisable,
-                            checked: state.switchChecked,
-                            onClick: () => { },//render.notify("Updating"),
-                            onAnimationComplete: () => {
-                                update({
-                                    switchDisable: true,
-                                    switchChecked: true
-                                })
+                        right: Checkbox({
+                            selected: state.switchChecked,
+                            toggledOn: () => {
+                                update({ switchChecked: !state.switchChecked })
                             }
                         })
                     },
                     {
                         left: "MultiStateSwitch",
-                        right: multiStateSwitch("small",
-                            { title: "gray", action: () => web.theme.updateTheme(SupportedThemes.gray) },
-                            { title: "dark", action: () => web.theme.updateTheme(SupportedThemes.dark) },
-                            { title: "white", action: () => web.theme.updateTheme(SupportedThemes.white) },
-                            { title: "blur", action: () => web.theme.updateTheme(SupportedThemes.blur) },
-                            { title: "auto", action: () => web.theme.updateTheme(SupportedThemes.auto) },
+                        right: Tab({
+                            selectedIndex: getThemeID(),
+                            selectedOn: () => update({})
+                        },
+                            ...themeArray.filter(x => x !== SupportedThemes.autoLight && x !== SupportedThemes.autoDark).map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ])
                         )
                     },
                     {
@@ -166,12 +158,10 @@ View<ViewOptions>(({ draw, state, update }) => {
                 buttons: [
                     {
                         title: "Okay",
-                        color: "normal",
                         action: () => { }
                     },
                     {
                         title: "Exit",
-                        color: "red",
                         action: () => { }
                     }
                 ]
@@ -223,3 +213,9 @@ View<ViewOptions>(({ draw, state, update }) => {
     }
 
 }).appendOn(document.body).setMaxWidth("80rem")
+
+function getThemeID(): number {
+    const indexTheme = themeArray.indexOf(web.theme.getTheme());
+    if (indexTheme >= 4) return 4;
+    return indexTheme;
+}
