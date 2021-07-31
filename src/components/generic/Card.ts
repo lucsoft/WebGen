@@ -1,4 +1,4 @@
-import { CommonCard, Component } from "../../types";
+import { Component } from "../../types";
 import { headless } from "../cards/headlessCard";
 import { createElement, draw } from "../Components";
 

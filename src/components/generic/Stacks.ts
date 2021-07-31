@@ -4,6 +4,7 @@ import '../../css/stack.webgen.static.css';
 
 export type StackOpts = {
     gap?: string,
+    classes?: string[]
     align?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-evenly' | 'space-around',
     margin?: string
 };
@@ -65,6 +66,8 @@ function applySettings(opts: StackOpts, list: HTMLDivElement) {
         list.style.gap = opts.gap;
     if (opts.align)
         list.style.justifyContent = opts.align;
+    if (opts.classes)
+        list.classList.add(...opts.classes)
     if (opts.margin) {
         list.style.width = `calc(100% - ${opts.margin} - ${opts.margin})`;
         list.style.margin = opts.margin;

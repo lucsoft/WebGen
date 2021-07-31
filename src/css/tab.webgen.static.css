@@ -16,6 +16,7 @@
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
     transition: background-color 200ms ease;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .wtab:focus {
