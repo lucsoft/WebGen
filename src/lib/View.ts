@@ -22,7 +22,7 @@ export function View<State>(render: ViewOptions<State>): ViewData {
                 Object.assign(state, data);
                 renderFunction();
             },
-            draw: (comp) => activeCompnents.push(comp)
+            use: (comp) => activeCompnents.push(comp)
         })
         const newShell = createElement('article');
         if (hasMaxWidth) {
