@@ -12,10 +12,10 @@ export const Input = ({ color, value, changeOn, placeholder, type }: {
 }): Component => {
     let shell = createElement("div") as HTMLDivElement;
     shell.classList.add("winput", color ?? Color.Grayscaled)
-    if (value || "" != "") shell.classList.add("has-value")
     let label = span(placeholder)
 
     let input = createElement("input") as HTMLInputElement;
+    if (value || "" != "") { shell.classList.add("has-value"); input.value = value ?? ""; }
     input.type = type ?? "text";
     input.disabled = color == Color.Disabled;
     input.onfocus = () => {
