@@ -12,8 +12,11 @@
     user-select: none;
     text-decoration: none;
     transition: transform 100ms ease;
-    z-index: 1;
     white-space: nowrap;
+}
+
+.wbutton.isList {
+    z-Index: 1;
 }
 
 .wbutton:active {
