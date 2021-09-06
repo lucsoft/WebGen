@@ -31,7 +31,7 @@ export const Button = ({ state, text, pressOn, progress, color, href, dropdown, 
     button.append(loadingWheel());
     button.onkeydown = accessibilityButton(button)
     if (dropdown) {
-        button.classList.add("isList“)
+        button.classList.add("isList")
         const list = createElement("ul")
         document.addEventListener('click', (e) => {
             if (!button.contains(e.target as Node)) {
