@@ -24,7 +24,7 @@ export type DialogData = {
     addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "color" ], state?: DialogButton[ "state" ]) => DialogData
     setTitle: (text: string) => DialogData
     allowUserClose: () => DialogData
-    addClass: (...classes: string[]) => DialogButton
+    addClass: (...classes: string[]) => DialogData
     onClose: (action: () => void) => DialogData
     close: () => DialogData
     open: () => DialogData
