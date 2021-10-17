@@ -34,6 +34,7 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
     const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
     dialogShell.append(dialogBackdrop)
     let isLoading = false;
+    let cssClasses: string[] = [];
     let onCloseAction: null | (() => void) = null;
     let title: string | null = null;
     const buttons: DialogButton[] = [];
@@ -43,6 +44,11 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
             buttons.push({ label, action, color, state })
             return settings;
         },
+        /**
+         * Notice: This addClass is not Hot Update (View is). Dialog needs a reopen to update.
+         * CSS Classes gets applied to the Dialog not the Content
+        */
+        addClass: (...classes: string[]) => { cssClasses.push(...classes); return settings; },
         setTitle: (text: string) => { title = text; return settings; },
         allowUserClose: () => {
             document.addEventListener('keyup', (e) => {
@@ -67,6 +73,7 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
         },
         open: () => {
             const dialog = custom('div', undefined, 'dialog')
+            dialog.classList.add(...cssClasses);
             if (title) dialog.append(span(title, 'dialog-title'))
             View(render)
                 .addClass('dialog-content')
