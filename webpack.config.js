@@ -30,7 +30,6 @@ module.exports = {
     },
 
     devServer: {
-        contentBase: "./dist",
         port: 8100
     },
     plugins: [
