@@ -1,6 +1,6 @@
 {
     "name": "@lucsoft/webgen",
-    "version": "1.19.7",
+    "version": "1.19.8",
     "description": "Collection of lucsofts Components",
     "main": "bin/webgen.js",
     "types": "bin/webgen.d.ts",
