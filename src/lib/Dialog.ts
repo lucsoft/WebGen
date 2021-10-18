@@ -1,12 +1,11 @@
 import { createElement, custom, draw, span } from "../components/Components";
 import { Button } from "../components/generic/Button";
 import { Horizontal } from "../components/generic/Stacks";
-import { loadingWheel } from "../components/light-components/loadingWheel";
 import '../css/dialog.webgen.static.css';
 import { ButtonStyle } from "../types";
-import { ViewOptions } from "../types/ViewOptions";
+import { ViewOptions, ViewOptionsFunc } from "../types/ViewOptions";
 import { Color } from "./Color";
-import { View } from "./View";
+import { View, ViewData } from "./View";
 
 type DialogButtonAction = ((() => undefined | 'close') | (() => Promise<undefined | 'close'>) | 'close');
 
@@ -28,9 +27,10 @@ export type DialogData = {
     onClose: (action: () => void) => DialogData
     close: () => DialogData
     open: () => DialogData
+    unsafeViewOptions: <TypeT>() => ViewOptions<TypeT>
 }
 
-export function Dialog<State>(render: ViewOptions<State>): DialogData {
+export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
 
     const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
     dialogShell.append(dialogBackdrop)
@@ -38,6 +38,7 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
     let cssClasses: string[] = [];
     let onCloseAction: null | (() => void) = null;
     let title: string | null = null;
+    let view: ViewData | null = null;
     const buttons: DialogButton[] = [];
 
     const settings = {
@@ -72,11 +73,14 @@ export function Dialog<State>(render: ViewOptions<State>): DialogData {
             onCloseAction?.();
             return settings;
         },
+        unsafeViewOptions: <State>() => {
+            return view!.unsafeViewOptions<State>()
+        },
         open: () => {
             const dialog = custom('div', undefined, 'dialog')
             dialog.classList.add(...cssClasses);
             if (title) dialog.append(span(title, 'dialog-title'))
-            View(render)
+            view = View(render)
                 .addClass('dialog-content')
                 .appendOn(dialog)
             if (buttons.length > 0) {
