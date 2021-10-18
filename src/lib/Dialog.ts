@@ -38,7 +38,11 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     let cssClasses: string[] = [];
     let onCloseAction: null | (() => void) = null;
     let title: string | null = null;
-    let view: ViewData | null = null;
+    const dialog = custom('div', undefined, 'dialog')
+    let view: ViewData = View(render)
+        .addClass('dialog-content')
+        .appendOn(dialog);
+
     const buttons: DialogButton[] = [];
 
     const settings = {
@@ -74,15 +78,11 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             return settings;
         },
         unsafeViewOptions: <State>() => {
-            return view!.unsafeViewOptions<State>()
+            return view.unsafeViewOptions<State>()
         },
         open: () => {
-            const dialog = custom('div', undefined, 'dialog')
             dialog.classList.add(...cssClasses);
-            if (title) dialog.append(span(title, 'dialog-title'))
-            view = View(render)
-                .addClass('dialog-content')
-                .appendOn(dialog)
+            if (title) dialog.prepend(span(title, 'dialog-title'))
             if (buttons.length > 0) {
                 const list = Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
                     text: label,
