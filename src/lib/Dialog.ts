@@ -7,7 +7,9 @@ import { ViewOptions, ViewOptionsFunc } from "../types/ViewOptions";
 import { Color } from "./Color";
 import { View, ViewData } from "./View";
 
-type DialogButtonAction = ((() => undefined | 'close') | (() => Promise<undefined | 'close'>) | 'close');
+type DialogeFinal = void | undefined | 'close' | 'remove';
+
+type DialogButtonAction = ((() => DialogeFinal) | (() => Promise<DialogeFinal>) | 'close' | 'remove');
 
 export type DialogButton = {
     label: string,
@@ -27,6 +29,7 @@ export type DialogData = {
     onClose: (action: () => void) => DialogData
     close: () => DialogData
     open: () => DialogData
+    remove: () => void,
     unsafeViewOptions: <TypeT>() => ViewOptions<TypeT>
 }
 
@@ -38,6 +41,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     let cssClasses: string[] = [];
     let onCloseAction: null | (() => void) = null;
     let title: string | null = null;
+    let firstRun = true;
     const dialog = custom('div', undefined, 'dialog')
     let view: ViewData = View(render)
         .addClass('dialog-content')
@@ -70,10 +74,12 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             onCloseAction = action;
             return settings;
         },
+        remove: () => {
+            dialogBackdrop.remove()
+        },
         close: () => {
             dialogBackdrop.classList.remove('open')
             document.body.style.overflowY = "unset";
-            dialogBackdrop.remove()
             onCloseAction?.();
             return settings;
         },
@@ -81,28 +87,38 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             return view.unsafeViewOptions<State>()
         },
         open: () => {
-            dialog.classList.add(...cssClasses);
-            if (title) dialog.prepend(span(title, 'dialog-title'))
-            if (buttons.length > 0) {
-                const list = Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
-                    text: label,
-                    state: state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline),
-                    color,
-                    pressOn: async ({ changeState }) => {
-                        if (action === 'close')
-                            settings.close()
-                        else {
-                            changeState(ButtonStyle.Spinner);
-                            const data = await action();
-                            if (data !== undefined) settings.close()
-                            changeState(state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
-                        }
-                    }
-                })))
+            if (firstRun) {
+                dialog.classList.add(...cssClasses);
+                if (title) dialog.prepend(span(title, 'dialog-title'))
+                if (buttons.length > 0) {
+                    const list = draw(Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
+                        text: label,
+                        state: state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline),
+                        color,
+                        pressOn: async ({ changeState }) => {
+                            if (isLoading) return;
+                            isLoading = true;
+                            if (action === 'close')
+                                settings.close()
+                            else if (action === 'remove')
+                                settings.close()
+                            else {
+                                changeState(ButtonStyle.Spinner);
+                                const data = await action();
+                                if (data !== undefined) settings.close()
+                                if (data === "remove") settings.remove()
 
-                dialog.append(draw(list));
+                                changeState(state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
+                                isLoading = false;
+                            }
+                        }
+                    }))))
+
+                    dialog.append(list);
+                }
+                firstRun = false;
+                dialogBackdrop.append(dialog);
             }
-            dialogBackdrop.append(dialog);
             dialogBackdrop.classList.add('open')
             document.body.style.overflowY = "hidden";
             return settings;
