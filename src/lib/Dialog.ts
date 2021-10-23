@@ -38,14 +38,17 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     const dialogBackdrop = custom('div', undefined, 'dialog-backdrop')
     dialogShell.append(dialogBackdrop)
     let isLoading = false;
-    let cssClasses: string[] = [];
     let onCloseAction: null | (() => void) = null;
     let title: string | null = null;
     let firstRun = true;
+    let allowUserClose = false;
     const dialog = custom('div', undefined, 'dialog')
     let view: ViewData = View(render)
         .addClass('dialog-content')
         .appendOn(dialog);
+
+    document.addEventListener('keyup', closeDialogFromKeyboard)
+    dialogBackdrop.addEventListener('click', closeDialogFromBackdrop)
 
     const buttons: DialogButton[] = [];
 
@@ -54,20 +57,10 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             buttons.push({ label, action, color, state })
             return settings;
         },
-        /**
-         * Notice: This addClass is not Hot Update (View is). Dialog needs a reopen to update.
-         * CSS Classes gets applied to the Dialog not the Content
-        */
-        addClass: (...classes: string[]) => { cssClasses.push(...classes); return settings; },
+        addClass: (...classes: string[]) => { dialog.classList.add(...classes); return settings; },
         setTitle: (text: string) => { title = text; return settings; },
         allowUserClose: () => {
-            document.addEventListener('keyup', (e) => {
-                if (e.key == "Escape" && dialogBackdrop.classList.contains('open') && !isLoading) settings.close()
-            }, { once: true })
-            dialogBackdrop.addEventListener('click', (e) => {
-                if (e.target != dialogBackdrop || isLoading) return;
-                settings.close()
-            }, { once: true })
+            allowUserClose = true;
             return settings;
         },
         onClose: (action: () => void) => {
@@ -75,6 +68,8 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             return settings;
         },
         remove: () => {
+            document.removeEventListener('keyup', closeDialogFromKeyboard)
+            dialogBackdrop.removeEventListener('click', closeDialogFromBackdrop)
             dialogBackdrop.remove()
         },
         close: () => {
@@ -88,7 +83,6 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
         },
         open: () => {
             if (firstRun) {
-                dialog.classList.add(...cssClasses);
                 if (title) dialog.prepend(span(title, 'dialog-title'))
                 if (buttons.length > 0) {
                     const list = draw(Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
@@ -113,7 +107,6 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                             }
                         }
                     }))))
-
                     dialog.append(list);
                 }
                 firstRun = false;
@@ -125,4 +118,19 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
         }
     }
     return settings;
+
+    function closeDialogFromBackdrop(e: MouseEvent) {
+        if (!allowUserClose)
+            return;
+        if (e.target != dialogBackdrop || isLoading)
+            return;
+        settings.close();
+    }
+
+    function closeDialogFromKeyboard(e: KeyboardEvent) {
+        if (!allowUserClose)
+            return;
+        if (e.key == "Escape" && dialogBackdrop.classList.contains('open') && !isLoading)
+            settings.close();
+    }
 }

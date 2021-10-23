@@ -30,7 +30,15 @@ const dialog = (globalThis as any).dialog = Dialog(({ use }) => { use(span("This
     .addButton("Direct", 'close')
     .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)
     .addButton("Promise", () => new Promise(done => setTimeout(() => done('close'), 2000)), Color.Colored, ButtonStyle.Secondary)
+    .setTitle("Hello World!");
+
+(globalThis as any).test = Dialog(({ use }) => { use(span("This is a nice test")) })
+    .allowUserClose()
+    .addButton("Direct", 'close')
+    .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)
+    .addButton("Promise", () => new Promise(done => setTimeout(() => done('close'), 2000)), Color.Colored, ButtonStyle.Secondary)
     .setTitle("Hello World!")
+    .open();
 
 View<ViewOptions>(({ use: draw, state, update }) => {
 
