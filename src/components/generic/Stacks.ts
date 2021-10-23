@@ -13,7 +13,8 @@ export const Horizontal = (opts: StackOpts, ...components: Component[]): Compone
     let list = createElement("div") as HTMLDivElement;
     list.classList.add("horizontal-stack");
     applySettings(opts, list);
-
+    if (opts.align)
+        list.style.justifyContent = opts.align;
     components.forEach((e) => {
         if (e instanceof HTMLElement)
             list.append(e);
@@ -27,7 +28,8 @@ export const Vertical = (opts: StackOpts, ...components: Component[]): Component
     let list = createElement("div") as HTMLDivElement;
     list.classList.add("vertical-stack");
     applySettings(opts, list);
-
+    if (opts.align)
+        list.style.alignItems = opts.align;
     components.forEach((e) => {
         if (e instanceof HTMLElement)
             list.append(e);
@@ -64,8 +66,6 @@ export const Grid = ({ minColumnWidth, maxWidth, gap }: {
 function applySettings(opts: StackOpts, list: HTMLDivElement) {
     if (opts.gap)
         list.style.gap = opts.gap;
-    if (opts.align)
-        list.style.justifyContent = opts.align;
     if (opts.classes)
         list.classList.add(...opts.classes)
     if (opts.margin) {
