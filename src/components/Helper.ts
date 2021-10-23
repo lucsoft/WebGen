@@ -7,4 +7,4 @@ export const conditionalCSSClass = (element: HTMLElement, condition: boolean | u
         element.classList.remove(className)
 }
 
-export const nullish = (components: (Component | null | undefined)[]) => components.filter(x => x) as Component[];
+export const nullish = (...components: (Component | null | undefined)[]) => components.filter(x => x) as Component[];
