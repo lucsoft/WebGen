@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen, BootstrapIcons, CommonIconType, CommonIcon, Icon } from "../src/webgen";
+import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, list, loginCard, modernCard, noteCard, PageTitle, richCard, searchCard, SearchMode, span, SupportedThemes, Tab, Title, Vertical, View, WebGen, BootstrapIcons, CommonIconType, CommonIcon, Icon, IconButton } from "../src/webgen";
 
 const web = WebGen({
     icon: new BootstrapIcons(),
@@ -85,7 +85,7 @@ View<ViewOptions>(({ use: draw, state, update }) => {
             ...color.map(color => Vertical({ gap: "19px" }, ...state.map((state, index) => Button({
                 color: color,
                 state,
-                pressOn: ({ setProgress, changeState }) => {
+                pressOn: ({ setProgress }) => {
                     if (state === ButtonStyle.Progress)
                         setProgress(Math.random() * (100 - 0))
                 },
@@ -93,6 +93,9 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                 text: 'action'
             })), Checkbox({
                 color
+            }), IconButton({
+                color,
+                icon: CommonIconType.Edit
             })))
         ))
 
