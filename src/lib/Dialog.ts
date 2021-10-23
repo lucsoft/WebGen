@@ -95,7 +95,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                             if (action === 'close')
                                 settings.close()
                             else if (action === 'remove')
-                                settings.close()
+                                settings.close().remove()
                             else {
                                 changeState(ButtonStyle.Spinner);
                                 const data = await action();
@@ -103,8 +103,8 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                                 if (data === "remove") settings.remove()
 
                                 changeState(state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
-                                isLoading = false;
                             }
+                            isLoading = false;
                         }
                     }))))
                     dialog.append(list);
