@@ -3,11 +3,13 @@ import { Component } from "../../types";
 import { createElement, span } from "../Components";
 import '../../css/input.webgen.static.css';
 
-export const Input = ({ color, value, changeOn, placeholder, type }: {
+export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoFocus }: {
     type?: "text" | "email" | "password" | "url"
     color?: Color,
     placeholder: string,
     value?: string,
+    autoFocus?: boolean,
+    blurOn?: (value: string) => void,
     changeOn?: (value: string) => void,
 }): Component => {
     let shell = createElement("div") as HTMLDivElement;
@@ -33,8 +35,10 @@ export const Input = ({ color, value, changeOn, placeholder, type }: {
             shell.classList.remove("has-value")
             input.blur();
         }
+        blurOn?.(input.value)
     }
-
+    //@ts-ignore
+    if (autoFocus) input.autofocus = "true";
     input.onchange = () => changeOn?.(input.value);
 
     shell.append(label, input)
