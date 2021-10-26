@@ -10,7 +10,7 @@
     "scripts": {
         "start": "webpack serve",
         "build": "tsc",
-        "prepublishOnly": "cp ./src/css/*.css ./bin/css/ && tsc && tsc src/webgen.ts --declaration --emitDeclarationOnly --out bin/singleDeclaration.js --module amd --moduleResolution node"
+        "prepublishOnly": "cp ./src/css/*.css ./bin/css/ && tsc && tsc src/webgen.ts --declaration --emitDeclarationOnly --out bin/singleDeclaration.js --module amd --moduleResolution node && mv bin/singleDeclaration.d.ts bin/singleDeclaration.txt"
     },
     "repository": {
         "type": "git",
