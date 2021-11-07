@@ -1,14 +1,21 @@
 .horizontal-stack {
     display: flex;
     width: 100%;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.spacer {
+    flex-basis: 100%;
 }
 
 .vertical-stack {
     display: flex;
     height: 100%;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    box-sizing: border-box;
+}
+
+:is(.horizontal-stack, .vertical-stack)>*:not(.spacer) {
+    flex-shrink: 0;
 }
