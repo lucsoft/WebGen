@@ -1,4 +1,5 @@
-import { createElement, span } from "../components/Components";
+import { createElement } from "../components/Components";
+import { PlainText } from "../components/generic/PlainText";
 import '../css/cards.webgen.static.css';
 import '../css/dialog.webgen.static.css';
 
@@ -19,7 +20,7 @@ export class RenderingX {
     }
 
     notify(test: string, keepOpenUntilDone?: () => Promise<undefined>) {
-        const notifcation = span(test)
+        const notifcation = PlainText(test).draw()
         if (keepOpenUntilDone === undefined)
             setTimeout(() => notifcation.remove(), 6010);
         else keepOpenUntilDone().then(() => notifcation.remove())

@@ -2,7 +2,8 @@ import { Color } from "../../lib/Color";
 import { Component } from "../../types";
 import { createElement } from "../Components";
 import '../../css/tab.webgen.static.css';
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
+import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
+import { Custom } from "./Custom";
 
 export const Tab = ({ color, selectedIndex, selectedOn }: {
     color?: Color,
@@ -39,7 +40,7 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
         if (selectedIndex == index) item.classList.add("active");
     })
 
-    return tabbar;
+    return Custom(tabbar);
 }
 
 function getItems(tabbar: HTMLDivElement): HTMLElement[] {
