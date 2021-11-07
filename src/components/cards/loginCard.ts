@@ -1,5 +1,7 @@
-import { createElement, draw, span } from "../Components";
+import { createElement } from "../Components";
+import { Custom } from "../generic/Custom";
 import { Input } from "../generic/Input";
+import { PlainText } from "../generic/PlainText";
 import { richCard } from "./richCard";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
@@ -15,21 +17,21 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     form.style.display = "grid";
     form.style.gap = "1rem";
     form.style.margin = "0 -1rem";
-    let emailField = draw(Input({
+    let emailField = Input({
         type: "email",
         placeholder: email?.text ?? "Email",
         value: email?.default
-    }));
-    let passwordFiled = draw(Input({
+    }).draw();
+    let passwordFiled = Input({
         type: "password",
         placeholder: password?.text ?? 'Passwords',
         value: password?.default
-    }));
-    let urlField = draw(Input({
+    }).draw();
+    let urlField = Input({
         type: "url",
         placeholder: url?.text ?? 'Location',
         value: url?.default
-    }));
+    }).draw();
 
     if (url) form.append(urlField);
     if (email) form.append(emailField);
@@ -50,14 +52,14 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
             if (e.key == "Enter")
                 submitAction();
         }
-    const content = span('');
+    const content = PlainText('').draw();
     content.style.alignSelf = "center";
 
     form.append(content);
 
     return richCard({
         title: titleText || "Login",
-        content: form,
+        content: Custom(form),
         buttonListLeftArea: content,
         buttons: [
             {

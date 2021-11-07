@@ -1,16 +1,15 @@
 
-import { ButtonStyle } from "../../types/actions";
-import { CommonCard } from "../../types/card";
-import { HTMLStringy } from "../../types/html";
+import { ButtonStyle, CommonCard, Component } from "../../types";
 import '../../css/cards.rich.webgen.static.css';
-import { createElement, custom, draw, span } from "../Components";
+import { createElement, custom } from "../Components";
 import { Color } from "../../lib/Color";
-import { Horizontal } from "../generic/Stacks";
+import { Horizontal, Spacer } from "../generic/Stacks";
 import { Button } from "../generic/Button";
+import { Custom } from "../generic/Custom";
 
 export const richCard = (options: {
-    title: HTMLStringy,
-    content: (HTMLStringy)[] | (HTMLStringy),
+    title: string,
+    content: Component,
     buttonListLeftArea?: HTMLElement,
     buttons?: { title: string, action: (() => void) | (() => Promise<void>), variant?: ButtonStyle, color?: Color }[],
     width?: number,
@@ -25,35 +24,34 @@ export const richCard = (options: {
         card.classList.add("rich");
         const container = createElement('div');
         container.classList.add('container');
-        if (typeof options.content == "string")
-            container.append(span(options.content, "title"));
-        else if (options.content instanceof HTMLElement)
-            container.append(options.content);
-        else
-            options.content.forEach(x => container.append(typeof x == "string" ? span(x, "title") : x));
-
+        container.append(options.content.draw())
         card.append(container);
         if (options.buttons) {
-            const buttonList = Horizontal({ align: 'flex-end', gap: "0.5rem", margin: !options.buttonListLeftArea ? ".7rem" : undefined },
-                ...options.buttons.map(({ action, title, color, variant }, index) => Button({
-                    text: title,
-                    pressOn: async ({ changeState }) => {
+            const buttonList = Horizontal(
+                Spacer(),
+                ...options.buttons.map(({ action, title, color, variant }, index) => Button(title)
+                    .onClick(async ({ changeState }) => {
                         changeState(ButtonStyle.Spinner);
                         await action();
                         changeState(getStateFromData(variant, options, index));
-                    },
-                    state: getStateFromData(variant, options, index),
-                    color: color ?? Color.Grayscaled
-                })));
+                    })
+                    .setColor(color ?? Color.Grayscaled)
+                    .setStyle(getStateFromData(variant, options, index))
+                ))
+                .setGap("0.5rem")
+                .setMargin(!options.buttonListLeftArea ? ".7rem" : undefined);
             if (options.buttonListLeftArea) {
-                card.append(draw(Horizontal({ align: 'space-between', margin: ".7rem" }, options.buttonListLeftArea, buttonList)));
+                card.append(Horizontal(Custom(options.buttonListLeftArea), buttonList)
+                    .setMargin(".7rem")
+                    .draw()
+                );
             } else
-                card.append(draw(buttonList))
+                card.append(buttonList.draw())
         } else
             card.style.paddingBottom = "var(--gap)"
         return card;
     }
 })
-function getStateFromData(variant: ButtonStyle | undefined, options: { title: HTMLStringy; content: (HTMLStringy)[] | (HTMLStringy); buttonListLeftArea?: HTMLElement | undefined; buttons?: { title: string; action: (() => void) | (() => Promise<void>); variant?: ButtonStyle | undefined; color?: Color | undefined; }[] | undefined; width?: number | undefined; height?: number | undefined; }, index: number): ButtonStyle {
+function getStateFromData(variant: ButtonStyle | undefined, options: { title: string; content: Component; buttonListLeftArea?: HTMLElement | undefined; buttons?: { title: string; action: (() => void) | (() => Promise<void>); variant?: ButtonStyle | undefined; color?: Color | undefined; }[] | undefined; width?: number | undefined; height?: number | undefined; }, index: number): ButtonStyle {
     return variant ?? (options.buttons?.length == 1 ? ButtonStyle.Normal : (index == 1 ? ButtonStyle.Normal : ButtonStyle.Inline));
 }

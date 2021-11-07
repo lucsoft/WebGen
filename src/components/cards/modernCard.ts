@@ -1,9 +1,8 @@
-import { CommonCard } from "../../types"
-import { HTMLStringy } from "../../types/html"
+import { CommonCard, Component } from "../../types"
 import '../../css/cards.modern.webgen.static.css';
-import { createElement, custom, img, span } from "../Components";
+import { createElement, custom, img } from "../Components";
 
-export const modernCard = (options: { title: HTMLStringy, subtitle?: string, description?: HTMLStringy, align?: "right" | "left" | "down", icon?: string | { svg: string }, width?: number, height?: number; }): CommonCard =>
+export const modernCard = (options: { title: string, subtitle?: string, description?: Component, align?: "right" | "left" | "down", icon?: string | { svg: string }, width?: number, height?: number; }): CommonCard =>
 ({
     getSize: () => ({ height: options.height ? options.height + 1 : undefined, width: options.width }),
     draw: (card) => {
@@ -42,7 +41,7 @@ export const modernCard = (options: { title: HTMLStringy, subtitle?: string, des
 
         if (options.description) {
             card.classList.add("description")
-            card.append(span(options.description, 'description'));
+            card.append(options.description.addClass('description').draw());
         }
         return card;
     }
