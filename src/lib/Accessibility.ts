@@ -5,4 +5,4 @@ export const accessibilityButton = (button: HTMLElement): (ev: KeyboardEvent) =>
         button.click();
     }
 }
-export const accessibilityDisableTabOnDisabled = (color: Color | undefined): number => color === Color.Disabled ? -1 : 0;
+export const accessibilityDisableTabOnDisabled = (color: Color | undefined = Color.Grayscaled): number => color === Color.Disabled ? -1 : 0;

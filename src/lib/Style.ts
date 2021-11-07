@@ -1,9 +1,9 @@
 import { blur, dark, light } from '../css/themes';
 import { SupportedThemes } from './SupportedThemes';
 import { createElement } from "../components/Components";
-import { WebGenOptions } from "../webgen";
+import { ColorDef } from "../types";
 import { Color } from "./Color";
-import { ColorDef } from "../types/Colors";
+import { WebGenOptions } from "../webgen";
 
 export class Style {
     private theme: HTMLElement;
@@ -15,7 +15,7 @@ export class Style {
         const styleAppendTo = options.defaultElementToHookStylesIn ?? document.documentElement;
         this.options = options;
         if (options.autoLoadFonts ?? true) {
-            var roboto = createElement('link') as HTMLLinkElement;
+            const roboto = createElement('link');
             roboto.rel = "stylesheet";
             roboto.href = "https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500&display=swap";
             styleAppendTo.append(roboto);

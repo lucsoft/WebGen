@@ -1,7 +1,6 @@
 import { createElement } from "../components/Components";
-import type { Component } from "../types";
+import type { Component, ViewOptions, ViewOptionsFunc } from "../types";
 import '../css/cards.webgen.static.css';
-import { ViewOptions, ViewOptionsFunc } from "../types/ViewOptions";
 export type ViewData = {
     setMaxWidth: (maxWidth: string) => ViewData
     addClass: (...classes: string[]) => ViewData
@@ -17,7 +16,7 @@ export function View<State>(render: ViewOptionsFunc<State>): ViewData {
     let shell = createElement('article')
     const state = {} as State;
     const renderFunction = () => {
-        render({
+        const data = render({
             state,
             update: (data) => {
                 Object.assign(state, data);
@@ -25,6 +24,7 @@ export function View<State>(render: ViewOptionsFunc<State>): ViewData {
             },
             use: (comp) => activeCompnents.push(comp)
         })
+        if (data) activeCompnents.push(data);
         const newShell = createElement('article');
         if (hasMaxWidth) {
             newShell.classList.add('maxWidth');
@@ -43,16 +43,14 @@ export function View<State>(render: ViewOptionsFunc<State>): ViewData {
             if (appendOnElement) renderFunction();
             return options;
         },
-        unsafeViewOptions: <State>(): ViewOptions<State> => {
-            return {
-                state,
-                update: (data) => {
-                    Object.assign(state, data);
-                    renderFunction();
-                },
-                use: (comp) => activeCompnents.push(comp)
-            };
-        },
+        unsafeViewOptions: <State>(): ViewOptions<State> => ({
+            state,
+            update: (data) => {
+                Object.assign(state, data);
+                renderFunction();
+            },
+            use: (comp) => activeCompnents.push(comp)
+        }),
         addClass: (...classes: string[]) => {
             cssClasses.push(...classes);
             if (appendOnElement) renderFunction();
