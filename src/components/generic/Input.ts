@@ -1,7 +1,9 @@
 import { Color } from "../../lib/Color";
 import { Component } from "../../types";
-import { createElement, span } from "../Components";
+import { createElement } from "../Components";
 import '../../css/input.webgen.static.css';
+import { PlainText } from "./PlainText";
+import { Custom } from "./Custom";
 
 export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoFocus }: {
     type?: "text" | "email" | "password" | "url"
@@ -14,7 +16,7 @@ export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoF
 }): Component => {
     let shell = createElement("div") as HTMLDivElement;
     shell.classList.add("winput", color ?? Color.Grayscaled)
-    let label = span(placeholder)
+    let label = PlainText(placeholder).draw()
 
     let input = createElement("input") as HTMLInputElement;
     if (value || "" != "") { shell.classList.add("has-value"); input.value = value ?? ""; }
@@ -42,5 +44,5 @@ export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoF
     input.onchange = () => changeOn?.(input.value);
 
     shell.append(label, input)
-    return shell;
+    return Custom(shell);
 }

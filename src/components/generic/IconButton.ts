@@ -1,19 +1,29 @@
 import { Color } from "../../lib/Color";
-import { Component } from "../../types";
-import { createElement, draw } from "../Components";
+import { createElement } from "../Components";
 import '../../css/iconbutton.webgen.static.css';
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
 import { CommonIcon, CommonIconType, Icon } from "./Icon";
+import { changeClassAtIndex } from "../Helper";
 
-export const IconButton = ({ color, icon, clickOn }: {
-    color?: Color,
-    icon: CommonIconType | string,
-    clickOn?: () => void
-}): Component => {
+export const IconButton = (icon: CommonIconType | string) => {
     let button = createElement("div") as HTMLDivElement;
-    button.tabIndex = accessibilityDisableTabOnDisabled(color);
-    button.classList.add("wiconbutton", color ?? Color.Grayscaled)
-    button.onclick = () => clickOn?.()
-    button.append(draw(Icon(typeof icon == "number" ? CommonIcon(icon) : icon)))
-    return button;
+    button.classList.add("wiconbutton", Color.Grayscaled)
+    button.append(Icon(typeof icon == "number" ? CommonIcon(icon) : icon))
+    const settigns = {
+        draw: () => button,
+        addClass: (...classes: string[]) => {
+            button.classList.add(...classes);
+            return settigns;
+        },
+        setColor: (color: Color) => {
+            button.tabIndex = accessibilityDisableTabOnDisabled(color);
+            changeClassAtIndex(button, color, 1);
+            return settigns;
+        },
+        onClick: (action: () => void) => {
+            button.onclick = () => action()
+            return settigns;
+        }
+    };
+    return settigns;
 }

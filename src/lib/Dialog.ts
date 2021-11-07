@@ -1,9 +1,9 @@
-import { createElement, custom, draw, span } from "../components/Components";
+import { custom } from "../components/Components";
 import { Button } from "../components/generic/Button";
-import { Horizontal } from "../components/generic/Stacks";
+import { Horizontal, Spacer } from "../components/generic/Stacks";
+import { PlainText } from "../components/generic/PlainText";
 import '../css/dialog.webgen.static.css';
-import { ButtonStyle } from "../types";
-import { ViewOptions, ViewOptionsFunc } from "../types/ViewOptions";
+import { ButtonStyle, ViewOptions, ViewOptionsFunc } from "../types";
 import { Color } from "./Color";
 import { View, ViewData } from "./View";
 
@@ -15,14 +15,14 @@ export type DialogButton = {
     label: string,
     action: DialogButtonAction,
     color: Color,
-    state?: ButtonStyle.Inline | ButtonStyle.Normal | ButtonStyle.Secondary
+    style?: ButtonStyle.Inline | ButtonStyle.Normal | ButtonStyle.Secondary
 }
 
 const dialogShell = custom('div', undefined, 'dialog-shell');
 document.body.append(dialogShell);
 
 export type DialogData = {
-    addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "color" ], state?: DialogButton[ "state" ]) => DialogData
+    addButton: (label: string, action: DialogButtonAction, style?: DialogButton[ "color" ], state?: DialogButton[ "style" ]) => DialogData
     setTitle: (text: string) => DialogData
     allowUserClose: () => DialogData
     addClass: (...classes: string[]) => DialogData
@@ -53,8 +53,8 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     const buttons: DialogButton[] = [];
 
     const settings = {
-        addButton: (label: string, action: DialogButtonAction, color: DialogButton[ "color" ] = Color.Grayscaled, state: DialogButton[ "state" ]) => {
-            buttons.push({ label, action, color, state })
+        addButton: (label: string, action: DialogButtonAction, color: DialogButton[ "color" ] = Color.Grayscaled, state: DialogButton[ "style" ]) => {
+            buttons.push({ label, action, color, style: state })
             return settings;
         },
         addClass: (...classes: string[]) => { dialog.classList.add(...classes); return settings; },
@@ -78,18 +78,15 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             onCloseAction?.();
             return settings;
         },
-        unsafeViewOptions: <State>() => {
-            return view.unsafeViewOptions<State>()
-        },
+        unsafeViewOptions: <State>() => view.unsafeViewOptions<State>(),
         open: () => {
             if (firstRun) {
-                if (title) dialog.prepend(span(title, 'dialog-title'))
+                if (title) dialog.prepend(PlainText(title).addClass('dialog-title').draw())
                 if (buttons.length > 0) {
-                    const list = draw(Horizontal({ align: 'flex-end', margin: "0.7rem", gap: "0.5rem" }, ...buttons.map(({ action, color, label, state }, i) => Button({
-                        text: label,
-                        state: state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline),
-                        color,
-                        pressOn: async ({ changeState }) => {
+                    dialog.append(Horizontal(Spacer(), ...buttons.map(({ action, color, label, style }, i) => Button(label)
+                        .setStyle(style ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline))
+                        .setColor(color)
+                        .onClick(async ({ changeState }) => {
                             if (isLoading) return;
                             isLoading = true;
                             if (action === 'close')
@@ -102,12 +99,11 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                                 if (data !== undefined) settings.close()
                                 if (data === "remove") settings.remove()
 
-                                changeState(state ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
+                                changeState(style ?? (buttons.length - 1 == i ? ButtonStyle.Normal : ButtonStyle.Inline));
                             }
                             isLoading = false;
-                        }
-                    }))))
-                    dialog.append(list);
+
+                        }))).setMargin("0.7rem").setGap("0.5rem").draw());
                 }
                 firstRun = false;
                 dialogBackdrop.append(dialog);

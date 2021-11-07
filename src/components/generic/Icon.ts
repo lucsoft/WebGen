@@ -1,14 +1,15 @@
 import { Component } from "../../types";
-import { custom, span } from "../Components";
+import { custom } from "../Components";
+import { PlainText } from "./PlainText";
 
-export const Icon = (icon: string, ...classList: string[]): Component => {
+export const Icon = (icon: string, ...classList: string[]): HTMLElement => {
     const webgenIcon: string = (globalThis as any).WEBGEN_ICON;
     if (webgenIcon == "material")
         return custom("span", icon, "material-icons-round", "webgen-icon", ...classList)
     else if (webgenIcon == "bootstrap")
-        return custom("span", undefined, "bi", "bi-" + icon, "webgen-icon", ...classList)
+        return custom("span", undefined, "bi", `bi-${icon}`, "webgen-icon", ...classList)
     else
-        return span("")
+        return PlainText("").draw()
 };
 
 export const enum CommonIconType {
