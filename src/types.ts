@@ -14,7 +14,7 @@ export const enum CardTypes {
 }
 
 export type CommonCard = {
-    draw: (preCard: HTMLElement) => HTMLElement
+    draw: (preCard: Component) => Component
     getSize: () => { width?: number, height?: number }
 }
 
@@ -25,11 +25,12 @@ export const enum ButtonStyle {
     Spinner = "spinner",
     Progress = "progress"
 }
-
-export type Component = {
-    draw: () => HTMLElement,
-    addClass: (...classes: string[]) => Component
+export interface BaseComponent<TypeT, Component extends Element> {
+    draw: () => Component,
+    addClass: (...classes: string[]) => TypeT
 }
+export interface Component extends BaseComponent<Component, HTMLElement> { }
+
 export type ViewOptions<State> = {
     use: (comp: Component) => void;
     state: Partial<State>;

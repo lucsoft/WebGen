@@ -5,6 +5,9 @@ import '../../css/input.webgen.static.css';
 import { PlainText } from "./PlainText";
 import { Custom } from "./Custom";
 
+/**
+ * @deprecated Options will be removed intro a build like style as the other components
+ */
 export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoFocus }: {
     type?: "text" | "email" | "password" | "url"
     color?: Color,

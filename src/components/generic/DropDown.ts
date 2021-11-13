@@ -13,6 +13,11 @@ type ButtonAction = {
     setEnabled: (enable: boolean) => void
     changeState: (state: ButtonStyle) => void
 };
+
+/**
+ * @deprecated this DropDown will be replace with a new one
+ * @todo Cleanup Options
+ */
 export const DropDown = ({ state, text, pressOn, progress, color, href, dropdown, selectedOn, arrowDownIcon }: {
     state?: ButtonStyle,
     color?: Color,
@@ -81,7 +86,7 @@ export const DropDown = ({ state, text, pressOn, progress, color, href, dropdown
     if (dropdown) {
         const iconContainer = createElement("div")
         iconContainer.classList.add("icon-suffix")
-        iconContainer.append(Icon(arrowDownIcon ?? CommonIcon(CommonIconType.ArrowDown)))
+        iconContainer.append(Icon(arrowDownIcon ?? CommonIcon(CommonIconType.ArrowDown)).draw())
         button.append(iconContainer);
     }
     button.onclick = () => {

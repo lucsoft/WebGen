@@ -5,6 +5,9 @@ import '../../css/tab.webgen.static.css';
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
 import { Custom } from "./Custom";
 
+/**
+ * @deprecated Options to be replaced with build style
+ */
 export const Tab = ({ color, selectedIndex, selectedOn }: {
     color?: Color,
     selectedIndex?: number,

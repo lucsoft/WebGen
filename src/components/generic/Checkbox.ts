@@ -4,13 +4,19 @@ import '../../css/checkbox.webgen.static.css';
 import { changeClassAtIndex, conditionalCSSClass } from "../Helper";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
 import { CommonIcon, CommonIconType, Icon } from "./Icon";
+import { BaseComponent } from "../../types";
 
-export const Checkbox = (selected = false, icon = CommonIcon(CommonIconType.Done)) => {
+export interface CheckBoxComponent extends BaseComponent<CheckBoxComponent, HTMLDivElement> {
+    setColor: (color: Color) => CheckBoxComponent
+    onClick: (action: (value: boolean) => void) => CheckBoxComponent
+}
+
+export const Checkbox = (selected = false, icon = CommonIcon(CommonIconType.Done)): CheckBoxComponent => {
     let button = createElement("div");
     button.tabIndex = accessibilityDisableTabOnDisabled();
     button.classList.add("wcheckbox", Color.Grayscaled)
     if (selected) button.classList.add("selected");
-    button.append(Icon(icon))
+    button.append(Icon(icon).draw())
     button.onkeydown = accessibilityButton(button)
     let onClick = (value: boolean) => { };
     button.onclick = () => {
@@ -19,7 +25,7 @@ export const Checkbox = (selected = false, icon = CommonIcon(CommonIconType.Done
         conditionalCSSClass(button, !selected, "selected");
         setTimeout(() => onClick(selected), 300)
     }
-    const settings = {
+    const settings: CheckBoxComponent = {
         draw: () => button,
         addClass: (...classes: string[]) => {
             button.classList.add(...classes);

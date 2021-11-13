@@ -1,11 +1,15 @@
 import { Color } from "../../lib/Color";
-import { ButtonStyle } from "../../types";
+import { BaseComponent, ButtonStyle, Component } from "../../types";
 import { createElement } from "../Components";
 import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel";
-import { changeClassAtIndex, conditionalCSSClass, dropNullish } from "../Helper";
+import { changeClassAtIndex, conditionalCSSClass } from "../Helper";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
-
+export interface ButtonComponent extends BaseComponent<ButtonComponent, HTMLAnchorElement> {
+    onClick: (action: ((e: ButtonAction) => void) | string) => ButtonComponent
+    setStyle: (style: ButtonStyle, progress?: number) => ButtonComponent
+    setColor: (color: Color) => ButtonComponent
+}
 export type ButtonAction = {
     setProgress: (progress: number) => void
     setEnabled: (enable: boolean) => void
@@ -14,7 +18,7 @@ export type ButtonAction = {
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
 
-export const Button = (text: string) => {
+export const Button = (text: string): ButtonComponent => {
     let button = createElement("a");
     button.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
     button.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
@@ -38,7 +42,7 @@ export const Button = (text: string) => {
         if (button.classList.contains(Color.Disabled)) return;
         pressOn({ setProgress, setEnabled, changeState })
     };
-    const settings = {
+    const settings: ButtonComponent = {
         draw: () => button,
         onClick: (action: ((e: ButtonAction) => void) | string) => {
             if (typeof action == "string") button.href = action;

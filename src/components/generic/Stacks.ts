@@ -1,11 +1,12 @@
-import { CommonCard, Component } from "../../types";
+import { BaseComponent, CommonCard, Component } from "../../types";
 import { createElement } from "../Components";
 import '../../css/stack.webgen.static.css';
+import { Custom } from "./Custom";
 
-export function Spacer(): Component {
+export function Spacer() {
     const spacer = createElement("div");
     spacer.classList.add("spacer");
-    const settings = {
+    const settings: Component = {
         draw: () => spacer,
         addClass: (...classes: string[]) => {
             spacer.classList.add(...classes);
@@ -15,8 +16,12 @@ export function Spacer(): Component {
     return settings;
 }
 
+export interface StackComponent extends BaseComponent<StackComponent, HTMLDivElement> {
+    setMargin: (margin?: string) => StackComponent
+    setGap: (gap: string) => StackComponent
+}
 function makeSettings(list: HTMLDivElement) {
-    const settings = {
+    const settings: StackComponent = {
         draw: () => list,
         addClass: (...classes: string[]) => {
             list.classList.add(...classes);
@@ -49,16 +54,21 @@ export const Vertical = (...components: Component[]) => {
     return makeSettings(list);
 }
 
+export interface GridComponent extends BaseComponent<GridComponent, HTMLDivElement> {
+    setMaxWidth: (maxWidth: string) => GridComponent
+    setMinColumnWidth: (width: string) => GridComponent
+    setGap: (gap: string) => GridComponent
+}
 export const Grid = (...cardArray: CommonCard[]) => {
-    let element = createElement("grid" as "title");
+    let element = createElement("grid" as "div");
     element.append(...cardArray.map(x => {
         const card = createElement('card' as "div");
         const { height, width } = x.getSize();
         if (height && height > 0) card.style.gridRow = `span ${height}`;
         if (width && width > 0) card.style.gridColumn = `span calc(${width})`;
-        return x.draw(card)
+        return x.draw(Custom(card)).draw()
     }))
-    const settings = {
+    const settings: GridComponent = {
         draw: () => element,
         addClass: (...classes: string[]) => {
             element.classList.add(...classes);
