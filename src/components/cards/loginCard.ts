@@ -16,7 +16,6 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     let form = createElement("form") as HTMLFormElement;
     form.style.display = "grid";
     form.style.gap = "1rem";
-    form.style.margin = "0 -1rem";
     let emailField = Input({
         type: "email",
         placeholder: email?.text ?? "Email",
@@ -60,7 +59,7 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     return richCard({
         title: titleText || "Login",
         content: Custom(form),
-        buttonListLeftArea: content,
+        buttonListLeftArea: Custom(content),
         buttons: [
             {
                 title: button || "Login",

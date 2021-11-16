@@ -1,11 +1,12 @@
 import { CommonCard, Component } from "../../types"
 import '../../css/cards.modern.webgen.static.css';
 import { createElement, custom, img } from "../Components";
-
+import { Custom } from "../generic/Custom";
 export const modernCard = (options: { title: string, subtitle?: string, description?: Component, align?: "right" | "left" | "down", icon?: string | { svg: string }, width?: number, height?: number; }): CommonCard =>
 ({
     getSize: () => ({ height: options.height ? options.height + 1 : undefined, width: options.width }),
-    draw: (card) => {
+    make: () => {
+        const card = createElement('card' as any);
         let icon: any = img(undefined);
 
         if (options.icon) {
@@ -43,6 +44,6 @@ export const modernCard = (options: { title: string, subtitle?: string, descript
             card.classList.add("description")
             card.append(options.description.addClass('description').draw());
         }
-        return card;
+        return Custom(card);
     }
 })

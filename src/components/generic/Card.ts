@@ -1,8 +1,3 @@
-import { Component } from "../../types";
-import { headless } from "../cards/headlessCard";
-import { createElement } from "../Components";
+import { CommonCard, Component } from "../../types";
 
-export const Card = (compoent: Component): Component => {
-    const card = createElement('card' as any);
-    return headless(compoent).draw(card);
-}
+export const Card = (compoent: CommonCard): Component => compoent.make()
