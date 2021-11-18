@@ -2,33 +2,32 @@ card.rich {
     display: grid;
     justify-content: start;
     grid-row: span 2;
-    grid-column:  span 2;
+    grid-column: span 2;
     grid-template-columns: 1fr;
     grid-template-rows: max-content auto max-content;
 }
+
 card.rich .rich-title {
-    margin: var(--gap);
+    margin: var(--gap) 1rem;
     font-size: 1.8rem;
     font-weight: 300;
 }
-card.rich .container {
-    align-self: baseline;
-    margin: 0 var(--gap);
-}
+
 card.rich:not(.buttons) .text {
     margin-bottom: var(--gap);
 }
+
 card.rich .container .text {
     display: block;
     font-size: var(--text-size);
 }
-card.rich form {
-    margin-top: calc(0rem - var(--gap));
-    padding: 0 0.5rem;
-    position: relative;
-    margin: 0 0 -0.7rem;
+
+card.rich>.vertical-stack>.container {
+    margin: 0 1rem;
+    flex-shrink: 1;
 }
-card.rich form .content {
+
+card.rich form.content {
     font-size: 1.2rem;
     position: absolute;
     bottom: var(--gap);
@@ -36,6 +35,13 @@ card.rich form .content {
     opacity: 0;
     transition: opacity 150ms ease;
 }
+
 card.rich form .content.failed {
     opacity: 1;
+}
+
+card.rich .button-list {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 }

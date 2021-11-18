@@ -1,17 +1,12 @@
 card.note {
     display: grid;
     padding: var(--gap);
-    grid-template-columns: calc(var(--gap) * 2) auto;
     justify-content: unset;
     font-size: 2rem;
     grid-column: span 2;
-    gap: var( --gap);
-    font-weight: 300;
+    gap: var(--gap);
 }
-card.note .icon {
-    text-align: center;
-    align-self: baseline;
-}
-card.note .text {
-    transform: translate(0, 2px);
+
+card.note .horizontal-stack {
+    gap: var(--gap);
 }

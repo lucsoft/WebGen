@@ -1,7 +1,7 @@
 import { BaseComponent, CommonCard, Component } from "../../types";
 import { createElement } from "../Components";
 import '../../css/stack.webgen.static.css';
-import { Custom } from "./Custom";
+import { dropNullish } from "../Helper";
 
 export function Spacer() {
     const spacer = createElement("div");
@@ -40,17 +40,17 @@ function makeSettings(list: HTMLDivElement) {
     return settings;
 }
 
-export const Horizontal = (...components: (Component)[]) => {
+export const Horizontal = (...components: (Component | null)[]) => {
     const list = createElement("div");
     list.classList.add("horizontal-stack");
-    components.forEach((e) => list.append(e.draw()))
+    dropNullish(...components).forEach((e) => list.append(e.draw()))
     return makeSettings(list);
 }
 
-export const Vertical = (...components: Component[]) => {
+export const Vertical = (...components: (Component | null)[]) => {
     let list = createElement("div");
     list.classList.add("vertical-stack");
-    components.forEach((e) => list.append(e.draw()))
+    dropNullish(...components).forEach((e) => list.append(e.draw()))
     return makeSettings(list);
 }
 
@@ -62,11 +62,11 @@ export interface GridComponent extends BaseComponent<GridComponent, HTMLDivEleme
 export const Grid = (...cardArray: CommonCard[]) => {
     let element = createElement("grid" as "div");
     element.append(...cardArray.map(x => {
-        const card = createElement('card' as "div");
+        const card = x.make().draw();
         const { height, width } = x.getSize();
         if (height && height > 0) card.style.gridRow = `span ${height}`;
         if (width && width > 0) card.style.gridColumn = `span calc(${width})`;
-        return x.draw(Custom(card)).draw()
+        return card
     }))
     const settings: GridComponent = {
         draw: () => element,

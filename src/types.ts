@@ -14,7 +14,7 @@ export const enum CardTypes {
 }
 
 export type CommonCard = {
-    draw: (preCard: Component) => Component
+    make: () => Component
     getSize: () => { width?: number, height?: number }
 }
 
