@@ -1,15 +1,15 @@
 
-import { ButtonStyle, CommonCard, Component } from "../../types";
+import { ButtonStyle, CommonCard, Component } from "../../types.ts";
 import '../../css/cards.rich.webgen.static.css';
-import { createElement, custom } from "../Components";
-import { Color } from "../../lib/Color";
-import { Horizontal, Spacer, Vertical } from "../generic/Stacks";
-import { Button } from "../generic/Button";
-import { Custom } from "../generic/Custom";
-import { Card } from "../generic/Card";
-import { dropNullish } from "../Helper";
-import { PlainText } from "../generic/PlainText";
-import { headless } from "./headlessCard";
+import { createElement, custom } from "../Components.ts";
+import { Color } from "../../lib/Color.ts";
+import { Horizontal, Spacer, Vertical } from "../generic/Stacks.ts";
+import { Button } from "../generic/Button.ts";
+import { Custom } from "../generic/Custom.ts";
+import { Card } from "../generic/Card.ts";
+import { dropNullish } from "../Helper.ts";
+import { PlainText } from "../generic/PlainText.ts";
+import { headless } from "./headlessCard.ts";
 
 function getStateFromData(variant: ButtonStyle | undefined, options: any, index: number): ButtonStyle {
     return variant ?? (options.buttons?.length == 1 ? ButtonStyle.Normal : (index == 1 ? ButtonStyle.Normal : ButtonStyle.Inline));

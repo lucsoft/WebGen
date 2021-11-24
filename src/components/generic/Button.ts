@@ -1,10 +1,10 @@
-import { Color } from "../../lib/Color";
-import { BaseComponent, ButtonStyle, Component } from "../../types";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { BaseComponent, ButtonStyle } from "../../types.ts";
+import { createElement } from "../Components.ts";
 import '../../css/buttons.webgen.static.css';
-import { loadingWheel } from "../light-components/loadingWheel";
-import { changeClassAtIndex, conditionalCSSClass } from "../Helper";
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
+import { loadingWheel } from "../light-components/loadingWheel.ts";
+import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 export interface ButtonComponent extends BaseComponent<ButtonComponent, HTMLAnchorElement> {
     onClick: (action: ((e: ButtonAction) => void) | string) => ButtonComponent
     setStyle: (style: ButtonStyle, progress?: number) => ButtonComponent
@@ -19,7 +19,7 @@ const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
 
 export const Button = (text: string): ButtonComponent => {
-    let button = createElement("a");
+    const button = createElement("a");
     button.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
     button.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
     const prog = createElement("div");

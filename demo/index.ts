@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, loginCard, modernCard, noteCard, richCard, SupportedThemes, Tab, PlainText, Vertical, View, WebGen, BootstrapIcons, CommonIconType, IconButton, DropDown, Spacer } from "../src/webgen";
+import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, loginCard, modernCard, noteCard, richCard, SupportedThemes, Tab, PlainText, Vertical, View, WebGen, BootstrapIcons, CommonIconType, IconButton, DropDown, Spacer, DialogData } from "../src/webgen.ts";
 
 const web = WebGen({
     icon: new BootstrapIcons(),
@@ -26,7 +26,7 @@ const color = [ Color.Disabled, Color.Grayscaled, Color.Colored, Color.Critical 
 const style = [ ButtonStyle.Inline, ButtonStyle.Secondary, ButtonStyle.Normal, ButtonStyle.Progress, ButtonStyle.Spinner ];
 const themeArrayWithActions = themeArray.map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ]);
 
-const dialog = (globalThis as any).dialog = Dialog(() => PlainText("This is a nice test"))
+const dialog = (globalThis as typeof globalThis & { dialog: DialogData }).dialog = Dialog(() => PlainText("This is a nice test"))
     .allowUserClose()
     .addButton("Direct", 'close')
     .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)

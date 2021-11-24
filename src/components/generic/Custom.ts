@@ -1,4 +1,4 @@
-import { Component } from "../../webgen";
+import { Component } from "../../types.ts";
 
 export const Custom = (text: HTMLElement): Component => {
     const settings: Component = {

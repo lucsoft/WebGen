@@ -1,7 +1,7 @@
-import { BaseComponent, CommonCard, Component } from "../../types";
-import { createElement } from "../Components";
+import { BaseComponent, CommonCard, Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
 import '../../css/stack.webgen.static.css';
-import { dropNullish } from "../Helper";
+import { dropNullish } from "../Helper.ts";
 
 export function Spacer() {
     const spacer = createElement("div");
@@ -48,7 +48,7 @@ export const Horizontal = (...components: (Component | null)[]) => {
 }
 
 export const Vertical = (...components: (Component | null)[]) => {
-    let list = createElement("div");
+    const list = createElement("div");
     list.classList.add("vertical-stack");
     dropNullish(...components).forEach((e) => list.append(e.draw()))
     return makeSettings(list);
@@ -60,7 +60,7 @@ export interface GridComponent extends BaseComponent<GridComponent, HTMLDivEleme
     setGap: (gap: string) => GridComponent
 }
 export const Grid = (...cardArray: CommonCard[]) => {
-    let element = createElement("grid" as "div");
+    const element = createElement("grid" as "div");
     element.append(...cardArray.map(x => {
         const card = x.make().draw();
         const { height, width } = x.getSize();

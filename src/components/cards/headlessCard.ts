@@ -1,6 +1,6 @@
-import { CommonCard, Component } from "../../types";
-import { createElement } from "../Components";
-import { Custom } from "../generic/Custom";
+import { CommonCard, Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
+import { Custom } from "../generic/Custom.ts";
 
 export const headless = (element: Component): CommonCard =>
 ({

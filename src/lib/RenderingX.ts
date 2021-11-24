@@ -1,5 +1,5 @@
-import { createElement } from "../components/Components";
-import { PlainText } from "../components/generic/PlainText";
+import { createElement } from "../components/Components.ts";
+import { PlainText } from "../components/generic/PlainText.ts";
 import '../css/cards.webgen.static.css';
 import '../css/dialog.webgen.static.css';
 

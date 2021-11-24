@@ -1,9 +1,9 @@
-import { Color } from "../../lib/Color";
-import { Component } from "../../types";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
 import '../../css/input.webgen.static.css';
-import { PlainText } from "./PlainText";
-import { Custom } from "./Custom";
+import { PlainText } from "./PlainText.ts";
+import { Custom } from "./Custom.ts";
 
 /**
  * @deprecated Options will be removed intro a build like style as the other components
@@ -17,11 +17,11 @@ export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoF
     blurOn?: (value: string) => void,
     changeOn?: (value: string) => void,
 }): Component => {
-    let shell = createElement("div") as HTMLDivElement;
+    const shell = createElement("div") as HTMLDivElement;
     shell.classList.add("winput", color ?? Color.Grayscaled)
-    let label = PlainText(placeholder).draw()
+    const label = PlainText(placeholder).draw()
 
-    let input = createElement("input") as HTMLInputElement;
+    const input = createElement("input") as HTMLInputElement;
     if (value || "" != "") { shell.classList.add("has-value"); input.value = value ?? ""; }
     input.type = type ?? "text";
     input.disabled = color == Color.Disabled;
@@ -42,7 +42,7 @@ export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoF
         }
         blurOn?.(input.value)
     }
-    //@ts-ignore
+    //@ts-ignore this still exsists i don't know why lib.ts just doesn't include it
     if (autoFocus) input.autofocus = "true";
     input.onchange = () => changeOn?.(input.value);
 

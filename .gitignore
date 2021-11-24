@@ -1,6 +1,6 @@
 dist
-.cache
-node_modules
 bin
 new-version.js
 .DS_Store
+.vscode
+node_modules

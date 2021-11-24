@@ -1,9 +1,9 @@
-import { blur, dark, light } from '../css/themes';
-import { SupportedThemes } from './SupportedThemes';
-import { createElement } from "../components/Components";
-import { ColorDef } from "../types";
-import { Color } from "./Color";
-import { WebGenOptions } from "../webgen";
+import { blur, dark, light } from '../css/themes.ts';
+import { SupportedThemes } from './SupportedThemes.ts';
+import { createElement } from "../components/Components.ts";
+import { ColorDef } from "../types.ts";
+import { Color } from "./Color.ts";
+import { WebGenOptions } from "../webgen.ts";
 
 export class Style {
     private theme: HTMLElement;
@@ -27,7 +27,7 @@ export class Style {
         });
     }
 
-    setImage(src: String) {
+    setImage(src: string) {
         document.body.style.background = `url(${src}) no-repeat center center fixed`;
         document.body.style.backgroundAttachment = "cover";
     }

@@ -1,9 +1,9 @@
 
 import '../../css/cards.note.webgen.static.css';
-import { CommonCard, Component } from "../../types";
-import { PlainText } from "../generic/PlainText";
-import { Horizontal, Spacer } from "../generic/Stacks";
-import { headless } from "./headlessCard";
+import { CommonCard, Component } from "../../types.ts";
+import { PlainText } from "../generic/PlainText.ts";
+import { Horizontal, Spacer } from "../generic/Stacks.ts";
+import { headless } from "./headlessCard.ts";
 
 export const noteCard = (options: { title: Component, icon: string, width?: number, height?: number }): CommonCard =>
 ({

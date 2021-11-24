@@ -1,7 +1,7 @@
-import { CommonCard, Component } from "../../types"
+import { CommonCard, Component } from "../../types.ts"
 import '../../css/cards.modern.webgen.static.css';
-import { createElement, custom, img } from "../Components";
-import { Custom } from "../generic/Custom";
+import { createElement, custom, img } from "../Components.ts";
+import { Custom } from "../generic/Custom.ts";
 export const modernCard = (options: { title: string, subtitle?: string, description?: Component, align?: "right" | "left" | "down", icon?: string | { svg: string }, width?: number, height?: number; }): CommonCard =>
 ({
     getSize: () => ({ height: options.height ? options.height + 1 : undefined, width: options.width }),

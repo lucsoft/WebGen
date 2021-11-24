@@ -1,12 +1,12 @@
-import { Color } from "../../lib/Color";
-import { ButtonStyle, Component } from "../../types";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { ButtonStyle, Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
 import '../../css/buttons.webgen.static.css';
-import { loadingWheel } from "../light-components/loadingWheel";
-import { changeClassAtIndex, conditionalCSSClass } from "../Helper";
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
-import { CommonIcon, CommonIconType, Icon } from "./Icon";
-import { Custom } from "./Custom";
+import { loadingWheel } from "../light-components/loadingWheel.ts";
+import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { Custom } from "./Custom.ts";
 
 type ButtonAction = {
     setProgress: (progress: number) => void

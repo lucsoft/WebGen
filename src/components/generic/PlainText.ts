@@ -1,5 +1,5 @@
-import { Component } from "../../types";
-import { createElement } from "../Components";
+import { Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
 
 export const PlainText = (title: string, type: `h${1 | 2 | 3 | 4 | 5 | 6}` | `span` = "span") => {
     const text = createElement(type);

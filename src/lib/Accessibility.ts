@@ -1,5 +1,6 @@
-import { Color } from "./Color";
+import { Color } from "./Color.ts";
 
+// deno-lint-ignore no-explicit-any
 export const accessibilityButton = (button: HTMLElement): (ev: KeyboardEvent) => any => ({ key }) => {
     if ([ "Enter", "Space" ].includes(key)) {
         button.click();

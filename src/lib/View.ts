@@ -1,5 +1,5 @@
-import { createElement } from "../components/Components";
-import type { Component, ViewOptions, ViewOptionsFunc } from "../types";
+import { createElement } from "../components/Components.ts";
+import type { Component, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import '../css/cards.webgen.static.css';
 export type ViewData = {
     setMaxWidth: (maxWidth: string) => ViewData

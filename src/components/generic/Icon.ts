@@ -1,7 +1,7 @@
-import { Component } from "../../types";
-import { custom } from "../Components";
-import { Custom } from "./Custom";
-import { PlainText } from "./PlainText";
+import { Component } from "../../types.ts";
+import { custom } from "../Components.ts";
+import { Custom } from "./Custom.ts";
+import { PlainText } from "./PlainText.ts";
 
 export const Icon = (icon: string, ...classList: string[]): Component => {
     const webgenIcon: string = (globalThis as any).WEBGEN_ICON;

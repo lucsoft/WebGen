@@ -1,8 +1,8 @@
-import { createElement } from "../Components";
-import { Custom } from "../generic/Custom";
-import { Input } from "../generic/Input";
-import { PlainText } from "../generic/PlainText";
-import { richCard } from "./richCard";
+import { createElement } from "../Components.ts";
+import { Custom } from "../generic/Custom.ts";
+import { Input } from "../generic/Input.ts";
+import { PlainText } from "../generic/PlainText.ts";
+import { richCard } from "./richCard.ts";
 
 export const loginCard = ({ titleText, email, url, button, password, makeLogin, errorMessage }: {
     titleText?: string

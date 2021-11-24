@@ -1,10 +1,10 @@
-import { Color } from "../../lib/Color";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { createElement } from "../Components.ts";
 import '../../css/checkbox.webgen.static.css';
-import { changeClassAtIndex, conditionalCSSClass } from "../Helper";
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
-import { CommonIcon, CommonIconType, Icon } from "./Icon";
-import { BaseComponent } from "../../types";
+import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { BaseComponent } from "../../types.ts";
 
 export interface CheckBoxComponent extends BaseComponent<CheckBoxComponent, HTMLDivElement> {
     setColor: (color: Color) => CheckBoxComponent

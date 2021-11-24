@@ -1,9 +1,9 @@
-import { Color } from "../../lib/Color";
-import { Component } from "../../types";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
 import '../../css/tab.webgen.static.css';
-import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
-import { Custom } from "./Custom";
+import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { Custom } from "./Custom.ts";
 
 /**
  * @deprecated Options to be replaced with build style
@@ -13,7 +13,7 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
     selectedIndex?: number,
     selectedOn?: (index: number) => void,
 }, ...dropdown: ([ displayName: string, action: () => void ])[]): Component => {
-    let tabbar = createElement("div") as HTMLDivElement;
+    const tabbar = createElement("div") as HTMLDivElement;
     tabbar.classList.add("wtab", color ?? Color.Grayscaled)
     tabbar.tabIndex = accessibilityDisableTabOnDisabled(color);
     let focusSelectedIndex = 0
@@ -25,7 +25,7 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
         focusSelectedIndex += (key == "ArrowRight" ? 1 : -1);
         if (focusSelectedIndex == -1) focusSelectedIndex = dropdown.length - 1;
         if (focusSelectedIndex == dropdown.length) focusSelectedIndex = 0;
-        tabbar.onblur?.(null as any)
+        tabbar.onblur?.(null as unknown as FocusEvent)
         getItems(tabbar)[ focusSelectedIndex ].classList.add("hover");
     };
     tabbar.onfocus = () => {
@@ -35,7 +35,7 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
     tabbar.onblur = () => getItems(tabbar).forEach(x => x.classList.remove("hover"));
 
     dropdown.forEach(([ displayName, action ], index) => {
-        let item = createElement("div");
+        const item = createElement("div");
         item.classList.add('item');
         item.onclick = () => { action(); selectedOn?.(index); };
         item.innerText = displayName.toUpperCase();
@@ -46,6 +46,6 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
     return Custom(tabbar);
 }
 
-function getItems(tabbar: HTMLDivElement): HTMLElement[] {
-    return tabbar.querySelectorAll("div.item") as any;
+function getItems(tabbar: HTMLDivElement): NodeListOf<HTMLElement> {
+    return tabbar.querySelectorAll<HTMLElement>("div.item");
 }

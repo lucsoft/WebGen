@@ -1,11 +1,11 @@
-import { custom } from "../components/Components";
-import { Button } from "../components/generic/Button";
-import { Horizontal, Spacer } from "../components/generic/Stacks";
-import { PlainText } from "../components/generic/PlainText";
+import { custom } from "../components/Components.ts";
+import { Button } from "../components/generic/Button.ts";
+import { Horizontal, Spacer } from "../components/generic/Stacks.ts";
+import { PlainText } from "../components/generic/PlainText.ts";
 import '../css/dialog.webgen.static.css';
-import { ButtonStyle, ViewOptions, ViewOptionsFunc } from "../types";
-import { Color } from "./Color";
-import { View, ViewData } from "./View";
+import { ButtonStyle, ViewOptions, ViewOptionsFunc } from "../types.ts";
+import { Color } from "./Color.ts";
+import { View, ViewData } from "./View.ts";
 
 type DialogeFinal = void | undefined | 'close' | 'remove';
 
@@ -43,7 +43,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     let firstRun = true;
     let allowUserClose = false;
     const dialog = custom('div', undefined, 'dialog')
-    let view: ViewData = View(render)
+    const view: ViewData = View(render)
         .addClass('dialog-content')
         .appendOn(dialog);
 

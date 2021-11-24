@@ -1,4 +1,4 @@
-import { Component } from "../types"
+import { Component } from "../types.ts"
 
 export const conditionalCSSClass = (element: HTMLElement, condition: boolean | undefined, className: string) =>
     element.classList[ condition === true ? "add" : "remove" ](className)

@@ -1,4 +1,8 @@
-import { Color } from "./lib/Color";
+import { Color } from "./lib/Color.ts";
+
+export type WebGenGlobalThis = (typeof globalThis & {
+    WEBGEN_ICON: string;
+});
 
 export type ButtonActions = {
     title: string;

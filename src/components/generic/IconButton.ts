@@ -1,10 +1,10 @@
-import { Color } from "../../lib/Color";
-import { createElement } from "../Components";
+import { Color } from "../../lib/Color.ts";
+import { createElement } from "../Components.ts";
 import '../../css/iconbutton.webgen.static.css';
-import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility";
-import { CommonIcon, CommonIconType, Icon } from "./Icon";
-import { changeClassAtIndex } from "../Helper";
-import { BaseComponent } from "../../types";
+import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { changeClassAtIndex } from "../Helper.ts";
+import { BaseComponent } from "../../types.ts";
 
 export interface IconButtonComponent extends BaseComponent<IconButtonComponent, HTMLDivElement> {
     setColor: (color: Color) => IconButtonComponent
