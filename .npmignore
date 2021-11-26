@@ -1,8 +1,0 @@
-demo
-.git
-.npmrc
-src
-webpack.config.js
-node_modules
-new-version.js
-tsconfig.json
