@@ -11,7 +11,7 @@ export type ViewData = {
 export function View<State>(render: ViewOptionsFunc<State>): ViewData {
     let appendOnElement: HTMLElement | null = null;
     let hasMaxWidth: string | null = null;
-    let cssClasses: string[] = [];
+    const cssClasses: string[] = [];
     let activeCompnents: Component[] = [];
     let shell = createElement('article')
     const state = {} as State;
@@ -31,7 +31,7 @@ export function View<State>(render: ViewOptionsFunc<State>): ViewData {
             newShell.style.maxWidth = hasMaxWidth;
         }
         newShell.classList.add(...cssClasses);
-        activeCompnents.forEach(x => newShell.append(x instanceof HTMLElement ? x : x.draw()));
+        newShell.append(...activeCompnents.map(x => x.draw()));
         appendOnElement?.replaceChild(newShell, shell);
         activeCompnents = [];
         shell = newShell;

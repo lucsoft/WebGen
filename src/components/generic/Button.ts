@@ -1,77 +1,50 @@
 import { Color } from "../../lib/Color.ts";
-import { BaseComponent, ButtonStyle } from "../../types.ts";
+import { ColoredComponent, ButtonStyle } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel.ts";
-import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
+import { changeClassAtIndex } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-export interface ButtonComponent extends BaseComponent<ButtonComponent, HTMLAnchorElement> {
-    onClick: (action: ((e: ButtonAction) => void) | string) => ButtonComponent
-    setStyle: (style: ButtonStyle, progress?: number) => ButtonComponent
-    setColor: (color: Color) => ButtonComponent
-}
-export type ButtonAction = {
-    setProgress: (progress: number) => void
-    setEnabled: (enable: boolean) => void
-    changeState: (state: ButtonStyle) => void
-};
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
-
-export const Button = (text: string): ButtonComponent => {
-    const button = createElement("a");
-    button.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-    button.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
-    const prog = createElement("div");
-    button.append(loadingWheel());
-    button.onkeydown = accessibilityButton(button)
-
-    let setEnabled = (enabled: boolean) => button.classList.replace(...enableTuple(enabled))
-    const changeState = (state: ButtonStyle) => {
-        changeClassAtIndex(button, state, 2);
-        conditionalCSSClass(button, state === ButtonStyle.Spinner, "loading")
+class ButtonComponent extends ColoredComponent {
+    prog = createElement("div")
+    constructor(string: string) {
+        super();
+        this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
+        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
+        this.wrapper.append(loadingWheel());
+        this.wrapper.onkeydown = accessibilityButton(this.wrapper)
+        this.wrapper.append(string);
     }
-
-    const setProgress = (progValue: number) => {
-        if (progValue !== undefined)
-            prog.style.width = `${progValue.toString()}%`;
-    }
-    button.append(text.toUpperCase());
-    let pressOn: (e: ButtonAction) => void = () => { };
-    button.onclick = () => {
-        if (button.classList.contains(Color.Disabled)) return;
-        pressOn({ setProgress, setEnabled, changeState })
-    };
-    const settings: ButtonComponent = {
-        draw: () => button,
-        onClick: (action: ((e: ButtonAction) => void) | string) => {
-            if (typeof action == "string") button.href = action;
-            else pressOn = action;
-            return settings;
-        },
-        setStyle: (style: ButtonStyle, progress?: number) => {
-            button.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
-            changeClassAtIndex(button, style, 2);
-            if (style === ButtonStyle.Spinner) {
-                button.classList.add("loading");
-            }
-            if (progress !== undefined && style === ButtonStyle.Progress) {
-                prog.classList.add("progress");
-                prog.style.width = `${progress.toString()}%`;
-                button.append(prog);
-            }
-            return settings;
-        },
-        addClass: (...classes: string[]) => {
-            button.classList.add(...classes);
-            return settings;
-        },
-        setColor: (color: Color) => {
-            setEnabled = (enabled: boolean) => button.classList.replace(...enableTuple(enabled, color))
-            button.tabIndex = speicalSyles.includes(button.classList[ 3 ] as ButtonStyle) ? -1 : accessibilityDisableTabOnDisabled(color);
-            changeClassAtIndex(button, color, 1);
-            return settings;
+    setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled))
+    setStyle(style: ButtonStyle, progress?: number) {
+        this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
+        changeClassAtIndex(this.wrapper, style, 2);
+        if (style === ButtonStyle.Spinner) {
+            this.wrapper.classList.add("loading");
         }
-    };
-    return settings;
+        if (progress !== undefined && style === ButtonStyle.Progress) {
+            this.prog.classList.add("progress");
+            this.prog.style.width = `${progress.toString()}%`;
+            this.wrapper.append(this.prog);
+        }
+        return this;
+    }
+    asLinkButton(link: string): ButtonComponent {
+        this.wrapper.href = link;
+        return this;
+    }
+    onClick(func: (e: ButtonComponent) => void) {
+        if (this.wrapper.classList.contains(Color.Disabled)) return this;
+        this.wrapper.addEventListener('click', () => func(this))
+        return this;
+    }
+    setColor(color: Color) {
+        this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color))
+        this.wrapper.tabIndex = speicalSyles.includes(this.wrapper.classList[ 3 ] as ButtonStyle) ? -1 : accessibilityDisableTabOnDisabled(color);
+        changeClassAtIndex(this.wrapper, color, 1);
+        return this;
+    }
 }
+export const Button = (string: string) => new ButtonComponent(string);

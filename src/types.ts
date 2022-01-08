@@ -1,3 +1,4 @@
+import { createElement } from "./components/Components.ts";
 import { Color } from "./lib/Color.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
@@ -29,11 +30,30 @@ export const enum ButtonStyle {
     Spinner = "spinner",
     Progress = "progress"
 }
-export interface BaseComponent<TypeT, Component extends Element> {
-    draw: () => Component,
-    addClass: (...classes: string[]) => TypeT
+
+export abstract class Component {
+    protected wrapper: HTMLElement = createElement("div")
+
+    addClass(...classes: string[]) {
+        this.wrapper.classList.add(...classes);
+        return this;
+    }
+    draw() {
+        return this.wrapper;
+    }
+    onClick(func: () => void) {
+        this.wrapper.addEventListener('click', func)
+        return this;
+    }
 }
-export interface Component extends BaseComponent<Component, HTMLElement> { }
+export abstract class ColoredComponent extends Component {
+    wrapper = createElement("a")
+    constructor() {
+        super()
+    }
+    abstract setStyle(style: ButtonStyle): ColoredComponent
+    abstract setColor(color: Color): ColoredComponent
+}
 
 export type ViewOptions<State> = {
     use: (comp: Component) => void;
