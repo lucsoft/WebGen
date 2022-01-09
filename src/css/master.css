@@ -5,40 +5,6 @@
     --default-secondary-color: #474747;
 }
 
-article#fulllanding {
-    margin-top: -5.1rem;
-    padding-top: 5rem;
-    min-height: calc(100vh - 5rem);
-    color: white;
-    background: var(--default-fulllandingpageimg);
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-bottom: 1.5rem;
-    transition: all var(--default-transition-time) ease;
-}
-
-article#fulllanding.dark {
-    color: black;
-}
-
-article#fulllanding.min {
-    min-height: 5rem;
-}
-
-article#fulllanding.nonav {
-    min-height: calc(100vh - 1.4rem);
-}
-
-article#float {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 32rem;
-    z-index: 50;
-}
-
 body {
     background: var(--background-color);
     font-family: var(--font);
@@ -67,13 +33,14 @@ html {
 .icon-white {
     filter: contrast(4) invert(1);
 }
-
+h1, h2, h3, h4, h5, h6, span.themed {
+    color: var(--on-background-text);
+}
 h2 {
     font-weight: 200;
     text-align: center;
     font-size: 3rem;
     margin-top: 0;
-    color: var(--on-background-text);
 }
 
 h4 {
@@ -81,7 +48,6 @@ h4 {
     margin-top: -2rem;
     text-align: center;
     font-size: 1.4rem;
-    color: var(--on-background-text);
 }
 
 ::-webkit-scrollbar {
@@ -101,62 +67,6 @@ h4 {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-.notify {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: min-content;
-    z-index: 10;
-    margin: 0.6rem;
-    flex-wrap: wrap;
-    align-content: flex-end;
-}
-
-@keyframes flyin {
-    0% {
-        opacity: 0.5;
-        transform: translate(0px, 20px);
-    }
-    4% {
-        transform: translate(0px, 0px);
-    }
-    5% {
-        opacity: 1;
-        transform: translate(0px, -1px);
-    }
-    6% {
-        transform: translate(0px, 0px);
-    }
-    95% {
-        opacity: 1;
-        transform: translate(0px, 0px);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(0px, -5px);
-    }
-}
-
-.notify span {
-    display: block;
-    background: #2d2d2d;
-    color: gainsboro;
-    padding: 0.55rem 0.8rem;
-    font-size: 1.1rem;
-    margin: 0.25rem 0;
-    opacity: 0;
-    border-radius: 0.15rem;
-    min-width: 12rem;
-    animation: 6000ms flyin ease;
-}
-
-.flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .bi {
