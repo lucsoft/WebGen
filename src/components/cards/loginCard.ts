@@ -13,20 +13,20 @@ export const loginCard = ({ titleText, email, url, button, password, makeLogin, 
     errorMessage?: string,
     makeLogin: (loginData: { password: string, email?: string, url?: string }) => Promise<boolean>
 }) => {
-    let form = createElement("form") as HTMLFormElement;
+    const form = createElement("form") as HTMLFormElement;
     form.style.display = "grid";
     form.style.gap = "1rem";
-    let emailField = Input({
+    const emailField = Input({
         type: "email",
         placeholder: email?.text ?? "Email",
         value: email?.default
     }).draw();
-    let passwordFiled = Input({
+    const passwordFiled = Input({
         type: "password",
         placeholder: password?.text ?? 'Passwords',
         value: password?.default
     }).draw();
-    let urlField = Input({
+    const urlField = Input({
         type: "url",
         placeholder: url?.text ?? 'Location',
         value: url?.default
