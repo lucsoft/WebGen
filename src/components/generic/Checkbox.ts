@@ -1,45 +1,38 @@
 import { Color } from "../../lib/Color.ts";
-import { createElement } from "../Components.ts";
 import '../../css/checkbox.webgen.static.css';
 import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
-import { BaseComponent } from "../../types.ts";
+import { ButtonStyle, ColoredComponent } from "../../types.ts";
 
-export interface CheckBoxComponent extends BaseComponent<CheckBoxComponent, HTMLDivElement> {
-    setColor: (color: Color) => CheckBoxComponent
-    onClick: (action: (value: boolean) => void) => CheckBoxComponent
-}
+class CheckboxComponent extends ColoredComponent {
 
-export const Checkbox = (selected = false, icon = CommonIcon(CommonIconType.Done)): CheckBoxComponent => {
-    let button = createElement("div");
-    button.tabIndex = accessibilityDisableTabOnDisabled();
-    button.classList.add("wcheckbox", Color.Grayscaled)
-    if (selected) button.classList.add("selected");
-    button.append(Icon(icon).draw())
-    button.onkeydown = accessibilityButton(button)
-    let onClick = (value: boolean) => { };
-    button.onclick = () => {
-        if (button.classList.contains(Color.Disabled)) return;
-        const selected = button.classList.contains("selected");
-        conditionalCSSClass(button, !selected, "selected");
-        setTimeout(() => onClick(selected), 300)
+    constructor(selected: boolean, icon: string) {
+        super()
+        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
+        this.wrapper.classList.add("wcheckbox", Color.Grayscaled)
+        if (selected) this.wrapper.classList.add("selected");
+        this.wrapper.append(Icon(icon).draw())
+        this.wrapper.onkeydown = accessibilityButton(this.wrapper)
+
     }
-    const settings: CheckBoxComponent = {
-        draw: () => button,
-        addClass: (...classes: string[]) => {
-            button.classList.add(...classes);
-            return settings;
-        },
-        setColor: (color: Color) => {
-            button.tabIndex = accessibilityDisableTabOnDisabled(color);
-            changeClassAtIndex(button, color, 1);
-            return settings;
-        },
-        onClick: (action: (value: boolean) => void) => {
-            onClick = action;
-            return settings;
-        }
-    };
-    return settings;
+    onClick(action: (value: boolean) => void) {
+        this.wrapper.addEventListener('click', () => {
+            if (this.wrapper.classList.contains(Color.Disabled)) return;
+            const selected = this.wrapper.classList.contains("selected");
+            conditionalCSSClass(this.wrapper, !selected, "selected");
+            setTimeout(() => action(selected), 300)
+        })
+        return this;
+    }
+    setStyle(_style: ButtonStyle): CheckboxComponent {
+        throw new Error("Method not implemented.");
+    }
+    setColor(color: Color): CheckboxComponent {
+        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
+        changeClassAtIndex(this.wrapper, color, 1);
+        return this;
+    }
+
 }
+export const Checkbox = (selected = false, icon = CommonIcon(CommonIconType.Done)) => new CheckboxComponent(selected, icon);
