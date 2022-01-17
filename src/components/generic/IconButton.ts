@@ -1,35 +1,26 @@
 import { Color } from "../../lib/Color.ts";
 import { createElement } from "../Components.ts";
-import '../../css/iconbutton.webgen.static.css';
+import "../../css/iconbutton.webgen.static.css";
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import { changeClassAtIndex } from "../Helper.ts";
-import { BaseComponent } from "../../types.ts";
-
-export interface IconButtonComponent extends BaseComponent<IconButtonComponent, HTMLDivElement> {
-    setColor: (color: Color) => IconButtonComponent
-    onClick: (action: () => void) => IconButtonComponent
+import { ButtonStyle, ColoredComponent } from "../../types.ts";
+export class IconButtonComponent extends ColoredComponent {
+    constructor(icon: CommonIconType | string) {
+        super();
+        this.wrapper.classList.add("wiconbutton", Color.Grayscaled);
+        this.wrapper.append(
+            Icon(typeof icon == "number" ? CommonIcon(icon) : icon).draw(),
+        );
+    }
+    setColor(color: Color) {
+        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
+        changeClassAtIndex(this.wrapper, color, 1);
+        return this;
+    }
+    setStyle(_style: ButtonStyle): IconButtonComponent {
+        throw new Error("Method not implemented.");
+    }
 }
-
-export const IconButton = (icon: CommonIconType | string): IconButtonComponent => {
-    let button = createElement("div") as HTMLDivElement;
-    button.classList.add("wiconbutton", Color.Grayscaled)
-    button.append(Icon(typeof icon == "number" ? CommonIcon(icon) : icon).draw())
-    const settigns: IconButtonComponent = {
-        draw: () => button,
-        addClass: (...classes: string[]) => {
-            button.classList.add(...classes);
-            return settigns;
-        },
-        setColor: (color: Color) => {
-            button.tabIndex = accessibilityDisableTabOnDisabled(color);
-            changeClassAtIndex(button, color, 1);
-            return settigns;
-        },
-        onClick: (action: () => void) => {
-            button.onclick = () => action()
-            return settigns;
-        }
-    };
-    return settigns;
-}
+export const IconButton = (icon: CommonIconType | string) =>
+    new IconButtonComponent(icon);
