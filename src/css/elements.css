@@ -3,23 +3,3 @@ item>.webgen-icon {
     margin-top: -2rem;
     transform: translate(0, 2rem);
 }
-
-@media (max-width: 950px) {
-    card.popup list.one span.title {
-        margin-top: unset;
-        padding: unset;
-        padding-left: unset;
-    }
-    splitView.m {
-        grid-template-columns: 1fr;
-    }
-}
-
-.icons {
-    padding: 1rem 0 1.1rem;
-    border-radius: 0.2rem;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-}

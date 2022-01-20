@@ -1,28 +1,3 @@
-form .choise span.element {
-    display: block;
-    font-size: 1.8rem;
-    padding: .4rem 0;
-}
-form span.title {
-    font-size: 2.4rem;
-    font-weight: 200;
-}
-form .choise span.element.active::before {
-    box-shadow: inset 0 0 0px 3px #3e3e3e;
-    background: white;
-}
-form .choise span.element::before {
-    width: 1.2rem;
-    height: 1.2rem;
-    display: inline-block;
-    border-radius: 1rem;
-    content: ' ';
-    margin-right: 1rem;
-    border: .1rem solid;
-    background: #ffffff00;
-    transition: all 250ms ease;
-    box-shadow: inset 0 0 0px 3px #3e3e3e00;
-}
 .loading-wheel {
     position: absolute;
     top: 50%;

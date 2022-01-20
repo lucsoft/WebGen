@@ -29,7 +29,7 @@ export const DropDown = ({ state, text, pressOn, progress, color, href, dropdown
     selectedOn?: () => void,
     arrowDownIcon?: string
 }): Component => {
-    let button = createElement("a");
+    const button = createElement("a");
     button.tabIndex = [ ButtonStyle.Spinner, ButtonStyle.Progress ].includes(state ?? ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled(color);
     button.classList.add("wbutton", color ?? Color.Grayscaled, state ?? ButtonStyle.Normal)
     if (href) button.href = href;

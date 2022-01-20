@@ -16,7 +16,7 @@
 }
 
 .wbutton.isList {
-    z-Index: 1;
+    z-index: 1;
 }
 
 .wbutton:active {
@@ -77,11 +77,11 @@
     color: var(--color-grayscaled-inline-font, var(--font-color));
 }
 
-.wbutton:focus {
+.wbutton:focus-visible {
     outline: none;
 }
 
-.wbutton:not(.disabled).inline:is(:hover, :focus) {
+.wbutton:not(.disabled).inline:is(:hover, :focus-visible) {
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
 
@@ -90,7 +90,7 @@
     transition: box-shadow 250ms ease;
 }
 
-.wbutton:not(.disabled).normal:is(:hover, :focus) {
+.wbutton:not(.disabled).normal:is(:hover, :focus-visible) {
     box-shadow: 0px 0px 0px 4px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
 
@@ -100,7 +100,7 @@
     transition: background-color 200ms ease;
 }
 
-.wbutton:not(.disabled).secondary:is(:hover, :focus) {
+.wbutton:not(.disabled).secondary:is(:hover, :focus-visible) {
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 35%);
 }
 
