@@ -17,6 +17,7 @@ export * from './components/cards/noteCard.ts'
 export * from './components/cards/richCard.ts'
 export * from './components/generic/PlainText.ts'
 export * from './components/generic/Tab.ts'
+export * from './components/generic/Form.ts';
 export * from './components/generic/Checkbox.ts'
 export * from './components/generic/Input.ts'
 export * from './components/generic/Icon.ts'

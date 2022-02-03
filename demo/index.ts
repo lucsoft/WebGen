@@ -60,8 +60,8 @@ View<ViewOptions>(({ use: draw, state, update }) => {
             Vertical(...style.map((style) => Button("action")
                 .setColor(color)
                 .setStyle(style, 25)
-                .onClick(({ setProgress }) => {
-                    if (style === ButtonStyle.Progress) setProgress(Math.random() * (100 - 0))
+                .onClick(({ setStyle }) => {
+                    if (style === ButtonStyle.Progress) setStyle(ButtonStyle.Progress, Math.random() * (100 - 0))
                 })),
                 Checkbox(false)
                     .setColor(color),
