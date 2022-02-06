@@ -22,6 +22,32 @@ class AlignComponent extends Component {
 export const Spacer = () => new SpacerCompoent().addClass('spacer');
 export const Horizontal = (...components: (Component | null)[]) => new AlignComponent("horizontal-stack", components);
 export const Vertical = (...components: (Component | null)[]) => new AlignComponent("vertical-stack", components);
+class GridComponent extends Component {
+    constructor(components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) {
+        super()
+        this.wrapper.classList.add("wggrid");
+        this.wrapper.style.display = "grid";
+        this.wrapper.append(...components.map(x => {
+            if (Array.isArray(x)) {
+                const { width, heigth } = x[ 0 ];
+                const ele = x[ 1 ].draw();
+                if (width) ele.style.gridColumn = `${width} span`;
+                if (heigth) ele.style.gridRow = `${heigth} span`;
+                return ele;
+            }
+            return x.draw();
+        }))
+    }
+    setGap(gap: string) {
+        this.wrapper.style.gap = gap;
+        return this;
+    }
+    setEvenColumns(count: number, size = "1fr") {
+        this.wrapper.style.gridTemplateColumns = (`${size} `).repeat(count);
+        return this;
+    }
+}
+export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) => new GridComponent(components);
 /*
 export interface GridComponent extends BaseComponent<GridComponent, HTMLDivElement> {
     setMaxWidth: (maxWidth: string) => GridComponent

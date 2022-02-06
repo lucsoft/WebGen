@@ -8,7 +8,7 @@ export const PlainText = (title: string, type: `h${1 | 2 | 3 | 4 | 5 | 6}` | `sp
         this.wrapper.innerText = title;
     }
     setFont(size: number, weight = 100) {
-        this.wrapper.style.fontSize = size + "rem";
+        this.wrapper.style.fontSize = `${size}rem`;
         this.wrapper.style.fontWeight = weight.toString();
         return this;
     }
