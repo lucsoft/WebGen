@@ -6,7 +6,7 @@ export const headless = (element: Component): CommonCard =>
 ({
     getSize: () => ({ height: undefined, width: undefined }),
     make: () => {
-        const card = createElement('card' as any);
+        const card = createElement('card' as 'div');
         card.append(element.draw())
         return Custom(card);
     }

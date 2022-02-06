@@ -4,7 +4,7 @@ import { Custom } from "./Custom.ts";
 import { PlainText } from "./PlainText.ts";
 
 export const Icon = (icon: string, ...classList: string[]): Component => {
-    const webgenIcon: string = (globalThis as any).WEBGEN_ICON;
+    const webgenIcon: string = (globalThis as (typeof globalThis & { WEBGEN_ICON: string })).WEBGEN_ICON;
     switch (webgenIcon) {
         case "material":
             return Custom(custom("span", icon, "material-icons-round", "webgen-icon", ...classList))
@@ -25,7 +25,7 @@ export const enum CommonIconType {
 }
 
 export const CommonIcon = (icon: CommonIconType): string => {
-    const webgenIcon: string = (globalThis as any).WEBGEN_ICON;
+    const webgenIcon: string = (globalThis as (typeof globalThis & { WEBGEN_ICON: string })).WEBGEN_ICON;
     const mapping: { [ type in CommonIconType ]: [ material: string, bootstrap: string ] } = {
         [ CommonIconType.ArrowDown ]: [ "expand_more", "chevron-down" ],
         [ CommonIconType.Done ]: [ "done", "check2" ],

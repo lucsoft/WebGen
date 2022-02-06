@@ -1,5 +1,4 @@
 import { Color } from "../../lib/Color.ts";
-import { createElement } from "../Components.ts";
 import "../../css/iconbutton.webgen.static.css";
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";

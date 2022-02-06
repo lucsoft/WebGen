@@ -6,8 +6,8 @@ export const modernCard = (options: { title: string, subtitle?: string, descript
 ({
     getSize: () => ({ height: options.height ? options.height + 1 : undefined, width: options.width }),
     make: () => {
-        const card = createElement('card' as any);
-        let icon: any = img(undefined);
+        const card = createElement('card' as 'div');
+        let icon = img(undefined);
 
         if (options.icon) {
             card.classList.add('img');
@@ -18,7 +18,7 @@ export const modernCard = (options: { title: string, subtitle?: string, descript
                 icon.height = 60;
                 icon.src = options.icon;
             } else
-                icon = new DOMParser().parseFromString(options.icon.svg, "image/svg+xml").children[ 0 ];
+                icon = new DOMParser().parseFromString(options.icon.svg, "image/svg+xml").children[ 0 ] as HTMLImageElement;
         }
         if (options.icon && (options.align ?? 'right') != "right")
             card.append(icon)
