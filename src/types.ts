@@ -46,6 +46,10 @@ export abstract class Component {
         this.wrapper.style.margin = size;
         return this;
     }
+    setId(id: string) {
+        this.wrapper.id = id;
+        return this;
+    }
     draw() {
         return this.wrapper;
     }
