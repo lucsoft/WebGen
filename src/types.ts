@@ -38,6 +38,12 @@ export abstract class Component {
         this.wrapper.classList.add(...classes);
         return this;
     }
+    setPadding(size: string) {
+        this.wrapper.style.padding = size;
+    }
+    setMargin(size: string) {
+        this.wrapper.style.margin = size;
+    }
     draw() {
         return this.wrapper;
     }
