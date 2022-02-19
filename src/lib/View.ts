@@ -2,77 +2,77 @@ import { createElement } from "../components/Components.ts";
 import type { Component, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import '../css/cards.webgen.static.css';
 import { Custom } from "../components/generic/Custom.ts";
-export type ViewData = {
-    setMaxWidth: (maxWidth: string) => ViewData
-    addClass: (...classes: string[]) => ViewData
-    enableCenterFromMiddle: () => ViewData
-    appendOn: (component: HTMLElement) => ViewData
-    unsafeViewOptions: <StateType>() => ViewOptions<StateType>
-}
-export function View<State>(render: ViewOptionsFunc<State>): ViewData {
-    let appendOnElement: HTMLElement | null = null;
-    let hasMaxWidth: string | null = null;
-    const cssClasses: string[] = [];
-    let activeCompnents: Component[] = [];
-    let shell = createElement('article')
-    const state = {} as State;
-    const renderFunction = () => {
-        const data = render({
-            state,
+class ViewClass<State>
+{
+    #appendOnElement: HTMLElement | null = null;
+    #hasMaxWidth: string | null = null;
+    #cssClasses: string[] = [];
+    #render: ViewOptionsFunc<State>;
+    #state = {} as State;
+    #activeCompnents: Component[] = [];
+    #shell = createElement('article')
+
+    constructor(render: ViewOptionsFunc<State>) {
+        this.#render = render;
+    }
+    #renderFunction() {
+        const data = this.#render({
+            state: this.#state,
             update: (data) => {
-                Object.assign(state, data);
-                renderFunction();
+                Object.assign(this.#state, data);
+                this.#renderFunction();
             },
-            use: (comp) => activeCompnents.push(comp)
+            use: (comp) => this.#activeCompnents.push(comp)
         })
-        if (data) activeCompnents.push(data);
+        if (data) this.#activeCompnents.push(data);
         const newShell = createElement('article');
-        if (hasMaxWidth) {
+        if (this.#hasMaxWidth) {
             newShell.classList.add('maxWidth');
-            newShell.style.maxWidth = hasMaxWidth;
+            newShell.style.maxWidth = this.#hasMaxWidth;
         }
-        newShell.classList.add(...cssClasses);
-        newShell.append(...activeCompnents.map(x => x.draw()));
-        appendOnElement?.replaceChild(newShell, shell);
-        activeCompnents = [];
-        shell = newShell;
-    };
+        newShell.classList.add(...this.#cssClasses);
+        newShell.append(...this.#activeCompnents.map(x => x.draw()));
+        this.#appendOnElement?.replaceChild(newShell, this.#shell);
+        this.#activeCompnents = [];
+        this.#shell = newShell;
+    }
 
-    const options = {
-        setMaxWidth: (maxWidth: string) => {
-            hasMaxWidth = maxWidth;
-            if (appendOnElement) renderFunction();
-            return options;
-        },
-        unsafeViewOptions: <State>(): ViewOptions<State> => ({
-            state,
+    setMaxWidth(maxWidth: string) {
+        this.#hasMaxWidth = maxWidth;
+        if (this.#appendOnElement) this.#renderFunction();
+        return this;
+    }
+    unsafeViewOptions(): ViewOptions<State> {
+        return {
+            state: this.#state,
             update: (data) => {
-                Object.assign(state, data);
-                renderFunction();
+                Object.assign(this.#state, data);
+                this.#renderFunction();
             },
-            use: (comp) => activeCompnents.push(comp)
-        }),
-        addClass: (...classes: string[]) => {
-            cssClasses.push(...classes);
-            if (appendOnElement) renderFunction();
-            return options;
-        },
-        enableCenterFromMiddle: () => {
-            cssClasses.push("flex-center");
-            if (appendOnElement) renderFunction();
-            return options;
-        },
-        asCommponent: () => {
-            return Custom(shell);
-        },
-        appendOn: (component: HTMLElement) => {
-            if (appendOnElement != null) throw new Error("appendOn can only be used once");
-
-            appendOnElement = component;
-            component.append(shell);
-            renderFunction();
-            return options;
+            use: (comp) => this.#activeCompnents.push(comp)
         }
     }
-    return options;
+    addClass(...classes: string[]) {
+        this.#cssClasses.push(...classes);
+        if (this.#appendOnElement) this.#renderFunction();
+        return this;
+    }
+    enableCenterFromMiddle() {
+        this.#cssClasses.push("flex-center");
+        if (this.#appendOnElement) this.#renderFunction();
+        return this;
+    }
+    asCommponent() {
+        return Custom(this.#shell);
+    }
+    appendOn(component: HTMLElement) {
+        if (this.#appendOnElement != null) throw new Error("appendOn can only be used once");
+
+        this.#appendOnElement = component;
+        component.append(this.#shell);
+        this.#renderFunction();
+        return this;
+    }
 }
+
+export const View = <State>(render: ViewOptionsFunc<State>) => new ViewClass<State>(render);
