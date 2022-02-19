@@ -1,6 +1,7 @@
 import { createElement } from "../components/Components.ts";
 import type { Component, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import '../css/cards.webgen.static.css';
+import { Custom } from "../components/generic/Custom.ts";
 export type ViewData = {
     setMaxWidth: (maxWidth: string) => ViewData
     addClass: (...classes: string[]) => ViewData
@@ -60,6 +61,9 @@ export function View<State>(render: ViewOptionsFunc<State>): ViewData {
             cssClasses.push("flex-center");
             if (appendOnElement) renderFunction();
             return options;
+        },
+        asCommponent: () => {
+            return Custom(shell);
         },
         appendOn: (component: HTMLElement) => {
             if (appendOnElement != null) throw new Error("appendOn can only be used once");
