@@ -40,9 +40,11 @@ export abstract class Component {
     }
     setPadding(size: string) {
         this.wrapper.style.padding = size;
+        return this;
     }
     setMargin(size: string) {
         this.wrapper.style.margin = size;
+        return this;
     }
     draw() {
         return this.wrapper;
