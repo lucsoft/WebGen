@@ -62,7 +62,7 @@ class ViewClass<State>
         if (this.#appendOnElement) this.#renderFunction();
         return this;
     }
-    asCommponent() {
+    asComponent() {
         return Custom(this.#shell);
     }
     appendOn(component: HTMLElement) {
