@@ -63,7 +63,14 @@ class ViewClass<State>
         return this;
     }
     asComponent() {
-        return Custom(this.#shell);
+        const component = createElement("div");
+        if (this.#appendOnElement != null) throw new Error("appendOn can only be used once");
+
+        this.#appendOnElement = component;
+        component.append(this.#shell);
+        this.#renderFunction();
+
+        return Custom(component);
     }
     appendOn(component: HTMLElement) {
         if (this.#appendOnElement != null) throw new Error("appendOn can only be used once");
