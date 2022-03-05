@@ -9,7 +9,7 @@ class AlignComponent extends Component {
         this.wrapper.classList.add(type);
         this.wrapper.append(...dropNullish(...components).map(x => x.draw()))
     }
-    setMargin(margin?: string): AlignComponent {
+    setMargin(margin?: string) {
         this.wrapper.style.width = margin ? `calc(100% - ${margin} - ${margin})` : "";
         this.wrapper.style.margin = margin ?? "";
         return this;
@@ -40,6 +40,10 @@ class GridComponent extends Component {
     }
     setGap(gap: string) {
         this.wrapper.style.gap = gap;
+        return this;
+    }
+    setDynamicColumns(minSize = 6, max = "1fr") {
+        this.wrapper.style.gridTemplateColumns = `repeat(auto-fit,minmax(${minSize}rem,${max}))`
         return this;
     }
     setEvenColumns(count: number, size = "1fr") {
