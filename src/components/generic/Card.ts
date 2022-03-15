@@ -1,3 +1,3 @@
-import { CommonCard, Component } from "../../types.ts";
+import { CommonCard } from "../../types.ts";
 
-export const Card = (compoent: CommonCard): Component => compoent.make()
+export const Card = (compoent: CommonCard) => compoent.make()

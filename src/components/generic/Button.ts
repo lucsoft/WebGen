@@ -31,13 +31,25 @@ class ButtonComponent extends ColoredComponent {
         }
         return this;
     }
+    setAlign(type: "center" | "flex-end" | "flex-start" | "stretch") {
+        this.wrapper.style.alignContent = type;
+        return this;
+    }
+    setJustify(type: "center" | "flex-end" | "flex-start" | "stretch") {
+        this.wrapper.style.justifyContent = type;
+        return this;
+    }
     asLinkButton(link: string): ButtonComponent {
         this.wrapper.href = link;
         return this;
     }
-    onClick(func: (e: ButtonComponent) => void) {
+    setGrow(value = 1) {
+        this.wrapper.style.flexGrow = value.toString();
+        return this;
+    }
+    onClick(func: (env: MouseEvent, e: ButtonComponent) => void) {
         if (this.wrapper.classList.contains(Color.Disabled)) return this;
-        this.wrapper.addEventListener('click', () => func(this))
+        this.wrapper.addEventListener('click', (e) => func(e, this))
         return this;
     }
     setColor(color: Color) {

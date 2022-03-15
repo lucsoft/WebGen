@@ -16,19 +16,19 @@ class CheckboxComponent extends ColoredComponent {
         this.wrapper.onkeydown = accessibilityButton(this.wrapper)
 
     }
-    onClick(action: (value: boolean) => void) {
-        this.wrapper.addEventListener('click', () => {
+    onClick(action: (me: MouseEvent, value: boolean) => void) {
+        this.wrapper.addEventListener('click', (me) => {
             if (this.wrapper.classList.contains(Color.Disabled)) return;
             const selected = this.wrapper.classList.contains("selected");
             conditionalCSSClass(this.wrapper, !selected, "selected");
-            setTimeout(() => action(selected), 300)
+            setTimeout(() => action(me, selected), 300)
         })
         return this;
     }
-    setStyle(_style: ButtonStyle): CheckboxComponent {
+    setStyle(_style: ButtonStyle): typeof this {
         throw new Error("Method not implemented.");
     }
-    setColor(color: Color): CheckboxComponent {
+    setColor(color: Color) {
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;

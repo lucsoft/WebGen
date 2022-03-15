@@ -1,5 +1,6 @@
 import { createElement } from "./components/Components.ts";
 import { Color } from "./lib/Color.ts";
+import { CustomComponent } from "./webgen.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
@@ -19,7 +20,7 @@ export const enum CardTypes {
 }
 
 export type CommonCard = {
-    make: () => Component
+    make: () => CustomComponent
     getSize: () => { width?: number, height?: number }
 }
 
@@ -50,10 +51,26 @@ export abstract class Component {
         this.wrapper.id = id;
         return this;
     }
+    setGrow(value = 1) {
+        this.wrapper.style.flexGrow = value.toString();
+        return this;
+    }
+    setAlign(type: "center" | "flex-end" | "flex-start" | "stretch") {
+        this.wrapper.style.alignItems = type;
+        return this;
+    }
+    setJustify(type: "center" | "flex-end" | "flex-start" | "stretch") {
+        this.wrapper.style.justifyItems = type;
+        return this;
+    }
+    setDirection(type: "column" | "row" | "row-reverse" | "column-reverse"): CustomComponent {
+        this.wrapper.style.flexDirection = type;
+        return this;
+    }
     draw() {
         return this.wrapper;
     }
-    onClick(func: () => void) {
+    onClick(func: (ev: MouseEvent) => void) {
         this.wrapper.addEventListener('click', func)
         return this;
     }
@@ -63,8 +80,8 @@ export abstract class ColoredComponent extends Component {
     constructor() {
         super()
     }
-    abstract setStyle(style: ButtonStyle): ColoredComponent
-    abstract setColor(color: Color): ColoredComponent
+    abstract setStyle(style: ButtonStyle): typeof this
+    abstract setColor(color: Color): typeof this
 }
 
 export type ViewOptions<State> = {

@@ -1,5 +1,9 @@
 import { Component } from "../../types.ts";
 
-export const Custom = (text: HTMLElement): Component => new class extends Component {
-    wrapper = text
+export class CustomComponent extends Component {
+    constructor(text: HTMLElement) {
+        super();
+        this.wrapper = text;
+    }
 }
+export const Custom = (text: HTMLElement) => new CustomComponent(text);
