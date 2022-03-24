@@ -1,6 +1,6 @@
-import { serve } from 'https://deno.land/x/esbuild@v0.14.0/mod.js';
-import { httpImports } from "https://deno.land/x/esbuild_plugin_http_imports@v1.2.2/index.ts";
-import { emptyDirSync } from "https://deno.land/std@0.116.0/fs/mod.ts";
+import { serve } from 'https://deno.land/x/esbuild@v0.14.27/mod.js';
+import { httpImports } from "https://deno.land/x/esbuild_plugin_http_imports@v1.2.3/index.ts";
+import { emptyDirSync } from "https://deno.land/std@0.131.0/fs/mod.ts";
 emptyDirSync("dist")
 Deno.copyFileSync("index.html", "dist/index.html")
 console.log("🚀 WebServer @ http://localhost:8100")
