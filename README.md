@@ -14,8 +14,6 @@ WebGen();
 View(() => PlainText("Hello World!")).appendOn(document.body);
 ```
 
-Use a Builder
-
 ```ts
 // Create a serve.ts file
 import { serve } from "https://deno.land/x/esbuild_serve/mod.ts";
@@ -27,15 +25,14 @@ serve({
 });
 ```
 
-Create your HTML (templates/index.html)
-
 ```html
+<!-- Create a templates/index.html file  -->
 <link rel="stylesheet" href="index.css">
 <script src="index.js"></script>
 ```
 
-Run!
-
 ```
 deno run -A --no-check serve.ts
 ```
+
+Done! Have fun! More docs will follow
