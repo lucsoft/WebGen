@@ -8,12 +8,13 @@ import { Custom } from "./Custom.ts";
 /**
  * @deprecated Options will be removed intro a build like style as the other components
  */
-export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoFocus }: {
+export const Input = ({ color, value, changeOn, liveOn, blurOn, placeholder, type, autoFocus }: {
     type?: "text" | "email" | "password" | "url"
     color?: Color,
     placeholder: string,
     value?: string,
     autoFocus?: boolean,
+    liveOn?: (value: string) => void,
     blurOn?: (value: string) => void,
     changeOn?: (value: string) => void,
 }): Component => {
@@ -35,6 +36,7 @@ export const Input = ({ color, value, changeOn, blurOn, placeholder, type, autoF
             input.focus();
         }
     }
+    input.onkeyup = () => liveOn?.(input.value);
     input.onblur = () => {
         if (input.value === "") {
             shell.classList.remove("has-value")

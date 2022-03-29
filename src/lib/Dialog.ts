@@ -5,7 +5,7 @@ import { PlainText } from "../components/generic/PlainText.ts";
 import "../css/dialog.webgen.static.css";
 import { ButtonStyle, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import { Color } from "./Color.ts";
-import { View, ViewData } from "./View.ts";
+import { View } from "./View.ts";
 
 type DialogeFinal = void | undefined | "close" | "remove";
 
@@ -40,7 +40,7 @@ export type DialogData = {
     close: () => DialogData;
     open: () => DialogData;
     remove: () => void;
-    unsafeViewOptions: <TypeT>() => ViewOptions<TypeT>;
+    viewOptions: <TypeT>() => ViewOptions<TypeT>;
 };
 
 export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
@@ -52,7 +52,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
     let firstRun = true;
     let allowUserClose = false;
     const dialog = custom("div", undefined, "dialog");
-    const view: ViewData = View(render)
+    const view = View(render)
         .addClass("dialog-content")
         .appendOn(dialog);
 
@@ -93,7 +93,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             onCloseAction?.();
             return settings;
         },
-        unsafeViewOptions: <State>() => view.unsafeViewOptions<State>(),
+        viewOptions: <TypeT>() => view.viewOptions() as unknown as ViewOptions<TypeT>,
         open: () => {
             if (firstRun) {
                 if (title) {
@@ -116,7 +116,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                                         : ButtonStyle.Inline),
                                 )
                                 .setColor(color)
-                                .onClick(async ({ setStyle }) => {
+                                .onClick(async (_, ele) => {
                                     if (isLoading) return;
                                     isLoading = true;
                                     if (action === "close") {
@@ -124,7 +124,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                                     } else if (action === "remove") {
                                         settings.close().remove();
                                     } else {
-                                        setStyle(ButtonStyle.Spinner);
+                                        ele.setStyle(ButtonStyle.Spinner);
                                         const data = await action();
                                         if (data !== undefined) {
                                             settings.close();
@@ -133,7 +133,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
                                             settings.remove();
                                         }
 
-                                        setStyle(
+                                        ele.setStyle(
                                             style ??
                                             (buttons.length - 1 == i
                                                 ? ButtonStyle.Normal

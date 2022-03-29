@@ -1,6 +1,8 @@
-import { Component } from "../../types.ts";
+import { Component, ComponentArray } from "../../types.ts";
 import '../../css/stack.webgen.static.css';
 import { dropNullish } from "../Helper.ts";
+import { createElement } from "../Components.ts";
+import { Custom } from "./Custom.ts";
 
 class SpacerCompoent extends Component { }
 class AlignComponent extends Component {
@@ -20,8 +22,8 @@ class AlignComponent extends Component {
     }
 }
 export const Spacer = () => new SpacerCompoent().addClass('spacer');
-export const Horizontal = (...components: (Component | null)[]) => new AlignComponent("horizontal-stack", components);
-export const Vertical = (...components: (Component | null)[]) => new AlignComponent("vertical-stack", components);
+export const Horizontal = (...components: ComponentArray) => new AlignComponent("horizontal-stack", components.flat());
+export const Vertical = (...components: ComponentArray) => new AlignComponent("vertical-stack", components.flat());
 class GridComponent extends Component {
     constructor(components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) {
         super()
@@ -50,6 +52,12 @@ class GridComponent extends Component {
         this.wrapper.style.gridTemplateColumns = (`${size} `).repeat(count);
         return this;
     }
+}
+
+export function Box(...components: Component[]) {
+    const block = createElement("div")
+    block.append(...components.map(x => x.draw()))
+    return Custom(block);
 }
 export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) => new GridComponent(components);
 /*

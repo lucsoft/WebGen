@@ -5,6 +5,7 @@ import { CustomComponent } from "./webgen.ts";
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
 });
+export type ComponentArray = ((Component | null)[] | Component | null)[];
 
 export type ButtonActions = {
     title: string;
@@ -43,6 +44,18 @@ export abstract class Component {
         this.wrapper.style.padding = size;
         return this;
     }
+    addPrefix(component: Component) {
+        this.wrapper.prepend(component.draw());
+        return this;
+    }
+    addSuffix(component: Component) {
+        this.wrapper.append(component.draw());
+        return this;
+    }
+    setWidth(size: string) {
+        this.wrapper.style.width = size;
+        return this;
+    }
     setMargin(size: string) {
         this.wrapper.style.margin = size;
         return this;
@@ -69,6 +82,10 @@ export abstract class Component {
     }
     draw() {
         return this.wrapper;
+    }
+    onRightClick(func: (env: MouseEvent) => void) {
+        this.wrapper.addEventListener('contextmenu', (e) => func(e))
+        return this;
     }
     onClick(func: (ev: MouseEvent) => void) {
         this.wrapper.addEventListener('click', func)

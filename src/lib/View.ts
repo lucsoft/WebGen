@@ -42,7 +42,11 @@ class ViewClass<State>
         if (this.#appendOnElement) this.#renderFunction();
         return this;
     }
-    unsafeViewOptions(): ViewOptions<State> {
+    change(viewOptions: (data: ViewOptions<State>) => void) {
+        viewOptions(this.viewOptions());
+        return this;
+    }
+    viewOptions(): ViewOptions<State> {
         return {
             state: this.#state,
             update: (data) => {
