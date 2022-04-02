@@ -1,4 +1,4 @@
-import { serve } from 'https://deno.land/x/esbuild@v0.14.29/mod.js';
+import { serve } from 'https://deno.land/x/esbuild@v0.14.30/mod.js';
 import { httpImports } from "https://deno.land/x/esbuild_plugin_http_imports@v1.2.3/index.ts";
 import { emptyDirSync } from "https://deno.land/std@0.133.0/fs/mod.ts";
 emptyDirSync("dist")
