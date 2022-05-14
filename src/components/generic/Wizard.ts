@@ -8,6 +8,7 @@ import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
+    PageData: () => FormData[]
     Cancel: () => void,
     Next: () => Promise<void> | void,
     Back: () => void,
@@ -159,6 +160,9 @@ export class WizardComponent extends Component {
             },
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,
+            PageData: () => {
+                return this.pages.map(x => x.getFormData())
+            }
         }
     }
 }
