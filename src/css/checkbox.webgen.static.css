@@ -1,6 +1,6 @@
 .wcheckbox {
-    height: 37px;
-    width: 39px;
+    height: 27px;  /* height: 37px; */
+    width: 28px;    /* width: 39px; */
     display: inline-flex;
     align-items: center;
     border-radius: 5px;
