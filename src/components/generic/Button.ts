@@ -7,7 +7,8 @@ import { changeClassAtIndex } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
-class ButtonComponent extends ColoredComponent {
+
+export class ButtonComponent extends ColoredComponent {
     prog = createElement("div")
     constructor(string: string) {
         super();

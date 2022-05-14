@@ -2,7 +2,7 @@ import { createElement } from "../components/Components.ts";
 import type { Component, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import '../css/cards.webgen.static.css';
 import { Custom } from "../components/generic/Custom.ts";
-class ViewClass<State>
+export class ViewClass<State>
 {
     #appendOnElement: HTMLElement | null = null;
     #hasMaxWidth: string | null = null;
