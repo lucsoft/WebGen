@@ -26,7 +26,7 @@ export * from './components/generic/Custom.ts'
 export * from './components/generic/Card.ts'
 export * from './components/generic/Stacks.ts'
 export * from './components/generic/Button.ts'
-export * from './components/generic/DropDown.ts'
+export * from "./components/generic/FromInputs.ts";
 export * from './components/light-components/loadingWheel.ts'
 export * from './types.ts'
 export * from './lib/icons/BootstrapIcons.ts'

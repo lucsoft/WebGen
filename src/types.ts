@@ -33,7 +33,7 @@ export const enum ButtonStyle {
     Progress = "progress"
 }
 
-export abstract class Component {
+export abstract class Component extends EventTarget {
     protected wrapper: HTMLElement = createElement("div")
 
     addClass(...classes: string[]) {

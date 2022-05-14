@@ -3,7 +3,7 @@ import { createElement } from "../Components.ts";
 import { Button } from './Button.ts';
 import { Horizontal, Spacer } from './Stacks.ts';
 
-class FormComponent extends Component {
+export class FormComponent extends Component {
     wrapper = createElement("form");
     constructor(compoents: Record<string, Component>) {
         super();

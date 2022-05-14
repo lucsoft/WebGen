@@ -44,6 +44,10 @@ class GridComponent extends Component {
         this.wrapper.style.gap = gap;
         return this;
     }
+    setRawColumns(template: string) {
+        this.wrapper.style.gridTemplateColumns = template;
+        return this;
+    }
     setDynamicColumns(minSize = 6, max = "1fr") {
         this.wrapper.style.gridTemplateColumns = `repeat(auto-fit,minmax(${minSize}rem,${max}))`
         return this;
