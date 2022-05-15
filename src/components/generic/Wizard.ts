@@ -4,15 +4,17 @@ import { View } from "../../lib/View.ts";
 import { Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
+import { Color } from "../../lib/Color.ts";
 
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
-    PageData: () => FormData[]
+    PageData: () => FormData[],
+    PageValid: () => validator.SafeParseReturnType<unknown, unknown> | false,
     Cancel: () => void,
     Next: () => Promise<void> | void,
     Back: () => void,
-    Submit: () => Promise<void> | void
+    Submit: () => Promise<void> | void,
 }
 
 export type WizardSettings = {
@@ -59,11 +61,12 @@ export class WizardComponent extends Component {
     private settings: WizardSettings | null = null;
     private pageId = 0;
     private view = View(() => {
-        const { Back, Cancel, Next, Submit } = this.getActions();
+        const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
         assert(this.settings);
         const firstPage = this.pageId === 0;
         const btnAr = this.settings.buttonArrangement;
         const lastPage = this.pageId === this.pages.length - 1;
+        const pageValid = PageValid();
         const cancel = firstPage && !(this.settings.hideCancelButton?.())
             ? Button("Cancel")
                 .setJustify("center")
@@ -79,42 +82,26 @@ export class WizardComponent extends Component {
         const next = !lastPage && this.pages.length != 1 ?
             Button("Next")
                 .setJustify("center")
+                .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                 .onClick(Next)
             : null
-
         const submit = lastPage ?
             Button("Submit")
                 .setJustify("center")
+                .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                 .onClick(Submit)
             : null
+
         let footer = null;
         if (btnAr === "flex-start")
-            footer = Horizontal(
-                cancel,
-                back,
-                next,
-                submit,
-                Spacer()
-            )
+            footer = Horizontal(cancel, back, next, submit, Spacer())
         else if (btnAr === "flex-end")
-            footer = Horizontal(
-                Spacer(),
-                cancel,
-                back,
-                next,
-                submit,
-            )
+            footer = Horizontal(Spacer(), cancel, back, next, submit)
         else if (btnAr === "space-between")
-            footer = Horizontal(
-                cancel,
-                back,
-                Spacer(),
-                next,
-                submit,
-            )
+            footer = Horizontal(cancel, back, Spacer(), next, submit)
         else if (typeof btnAr === "function")
             footer = btnAr(this.getActions())
-        console.log(this.pageId, this.pages);
+
         return Vertical(
             ...this.pages[ this.pageId ].getComponents(),
             Spacer(),
@@ -131,7 +118,7 @@ export class WizardComponent extends Component {
 
     getActions() {
         assert(this.settings)
-        return <WizardActions>{
+        const actions = <WizardActions>{
             Cancel: () => {
                 if (typeof this.settings?.cancelAction == "string")
                     location.href = this.settings?.cancelAction;
@@ -142,21 +129,22 @@ export class WizardComponent extends Component {
                 this.view.viewOptions().update({});
             },
             Next: () => {
-                this.pageId++;
-                this.pages[ this.pageId ].getValidators().forEach(x => {
-                    const response = x(this.pages[ this.pageId ].getFormData())
-                    assert(response.success, JSON.stringify({ error: response }));
-                })
+                assert(actions.PageValid());
                 this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
+                this.pageId++;
                 this.view.viewOptions().update({});
             },
             Submit: async () => {
-                this.pages[ this.pageId ].getValidators().forEach(x => {
-                    const response = x(this.pages[ this.pageId ].getFormData())
-                    assert(response.success, JSON.stringify({ error: response }));
-                })
+                assert(actions.PageValid());
                 this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
                 await this.settings?.submitAction(this.pages.map(x => ({ data: x.getFormData() })))
+            },
+            PageValid: () => {
+                const current = this.pages[ this.pageId ];
+                const pageData = current.getFormData();
+                return current.getValidators()
+                    .map(validator => validator(pageData))
+                    .find(validator => !validator.success) ?? true;
             },
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,
@@ -164,6 +152,7 @@ export class WizardComponent extends Component {
                 return this.pages.map(x => x.getFormData())
             }
         }
+        return actions;
     }
 }
 
