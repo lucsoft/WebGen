@@ -10,7 +10,7 @@ export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
     PageData: () => FormData[],
-    PageValid: () => validator.SafeParseReturnType<unknown, unknown> | false,
+    PageValid: () => validator.SafeParseError<unknown> | true,
     Cancel: () => void,
     Next: () => Promise<void> | void,
     Back: () => void,
@@ -28,17 +28,19 @@ export function ValidatedDataObject<Data extends validator.AnyZodObject>(validat
     return (data: unknown) => validation(validator).safeParse(data);
 }
 
-type Validator = (data: unknown) => validator.SafeParseReturnType<unknown, unknown>;
+export type Validator = (data: unknown) => validator.SafeParseReturnType<unknown, unknown>;
+
+type NewType = (formData: FormData, errorMap?: validator.ZodError) => Component[];
 
 export class PageComponent {
     private formData = new FormData();
     private validators = new Set<Validator>()
-    private components: Component[] = [];
-    constructor(render: (formData: FormData) => Component[]) {
-        this.components = render(this.formData);
+    private renderComponents: NewType;
+    constructor(renderComponents: NewType) {
+        this.renderComponents = renderComponents;
     }
-    getComponents() {
-        return this.components;
+    getComponents(errorMap?: validator.ZodError) {
+        return this.renderComponents(this.formData, errorMap);
     }
     addValidator<Data extends validator.AnyZodObject>(validation: (factory: typeof validator) => Data) {
         this.validators.add((data) => validation(validator).safeParse(data));
@@ -53,7 +55,18 @@ export class PageComponent {
         return this.formData;
     }
 }
-
+/**
+ * Pages are Strict Layout Views, mostly only used by a Wizard
+ *
+ * Upsides:
+ *  - Inputs have a simple way to sync there data in a Page
+ *  - Simpler work for a Wizard as it only cares about the data
+ *  - Supports Validators. Validators can suport the FormData
+ *
+ * Downside:
+ *  - Pages are not design to have dynamic layouts. (Use a Wizard)
+ *  - Components can't listen on changes. They only reflect on errors.
+ */
 export const Page = (comp: (formData: FormData) => Component[]) => new PageComponent(comp);
 
 export class WizardComponent extends Component {
@@ -103,7 +116,7 @@ export class WizardComponent extends Component {
             footer = btnAr(this.getActions())
 
         return Vertical(
-            ...this.pages[ this.pageId ].getComponents(),
+            ...this.pages[ this.pageId ].getComponents(pageValid == true ? undefined : pageValid.error),
             Spacer(),
             footer?.addClass("footer") ?? null
         ).addClass("wwizard")
