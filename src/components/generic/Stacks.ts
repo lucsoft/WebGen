@@ -21,6 +21,8 @@ class AlignComponent extends Component {
         return this;
     }
 }
+export const Center = (...list: Component[]) => Horizontal(Spacer(), ...list, Spacer());
+export const CenterV = (...list: Component[]) => Vertical(Spacer(), ...list, Spacer());
 export const Spacer = () => new SpacerCompoent().addClass('spacer');
 export const Horizontal = (...components: ComponentArray) => new AlignComponent("horizontal-stack", components.flat());
 export const Vertical = (...components: ComponentArray) => new AlignComponent("vertical-stack", components.flat());
