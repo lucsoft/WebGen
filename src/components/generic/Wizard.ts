@@ -36,17 +36,21 @@ export class PageComponent {
     private formData = new FormData();
     private validators = new Set<Validator>()
     private renderComponents: NewType;
+    #autoSpacer = true
     constructor(renderComponents: NewType) {
         this.renderComponents = renderComponents;
     }
     getComponents(errorMap?: validator.ZodError) {
-        return this.renderComponents(this.formData, errorMap);
+        return [ ...this.renderComponents(this.formData, errorMap), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
     }
     addValidator<Data extends validator.AnyZodObject>(validation: (factory: typeof validator) => Data) {
         this.validators.add((data) => validation(validator).safeParse(data));
         return this;
     }
-
+    disableAutoSpacerAtBottom() {
+        this.#autoSpacer = false;
+        return this;
+    }
     getValidators() {
         return Array.from(this.validators.values());
     }
@@ -117,7 +121,6 @@ export class WizardComponent extends Component {
 
         return Vertical(
             ...this.pages[ this.pageId ].getComponents(pageValid == true ? undefined : pageValid.error),
-            Spacer(),
             footer?.addClass("footer") ?? null
         ).addClass("wwizard")
     });
