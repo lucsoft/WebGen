@@ -38,7 +38,7 @@ export const Tab = ({ color, selectedIndex, selectedOn }: {
         const item = createElement("div");
         item.classList.add('item');
         item.onclick = () => { action(); selectedOn?.(index); };
-        item.innerText = displayName.toUpperCase();
+        item.innerText = displayName
         tabbar.append(item);
         if (selectedIndex == index) item.classList.add("active");
     })
