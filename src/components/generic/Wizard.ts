@@ -2,11 +2,12 @@
 import { ButtonStyle, Component } from "../../types.ts";
 import * as validator from "https://deno.land/x/zod@v3.14.4/mod.ts";
 import { View } from "../../lib/View.ts";
-import { Horizontal, Spacer, Vertical } from "./Stacks.ts";
+import { CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { delay } from "https://deno.land/std@0.139.0/async/delay.ts";
+import { PlainText } from "./PlainText.ts";
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
@@ -99,7 +100,7 @@ export class WizardComponent extends Component {
     private pageId = 0;
     private view = View(() => {
         const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
-        const footer = View(({ update }) => {
+        const footer = View<{ alreadyClicked: boolean }>(({ update, state }) => {
             assert(this.settings);
             const firstPage = this.pageId === 0;
             const btnAr = this.settings.buttonArrangement;
@@ -120,27 +121,30 @@ export class WizardComponent extends Component {
             const next = !lastPage && this.pages.length != 1 ?
                 Button("Next")
                     .setJustify("center")
+                    .onClick(() => { update({ alreadyClicked: true }) })
                     .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                     .onClick(Next)
                 : null
             const submit = lastPage ?
                 Button("Submit")
                     .setJustify("center")
+                    .onClick(() => { update({ alreadyClicked: true }) })
                     .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                     .onPromiseClick(Submit)
                 : null
-
+            const errorMessage = state.alreadyClicked && pageValid !== true ?
+                CenterV(PlainText((PageValid() as validator.SafeParseError<unknown>).error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null
 
             let footer: Component | null = null;
             if (btnAr === "flex-start")
-                footer = Horizontal(cancel, back, next, submit, Spacer())
+                footer = Horizontal(cancel, back, errorMessage, next, submit, Spacer())
             else if (btnAr === "flex-end")
-                footer = Horizontal(Spacer(), cancel, back, next, submit)
+                footer = Horizontal(Spacer(), cancel, back, errorMessage, next, submit)
             else if (btnAr === "space-between")
-                footer = Horizontal(cancel, back, Spacer(), next, submit)
+                footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit)
             else if (typeof btnAr === "function")
                 footer = btnAr(this.getActions())
-            this.pages[ this.pageId ].requestValidatorRun = () => setTimeout(() => update({}), 10);
+            this.pages[ this.pageId ].requestValidatorRun = () => setTimeout(() => update({ alreadyClicked: false }), 10);
             return footer?.addClass("footer");
         }).asComponent();
         return Vertical(
@@ -184,10 +188,11 @@ export class WizardComponent extends Component {
             PageValid: () => {
                 const current = this.pages[ this.pageId ];
                 const pageData = current.getFormData();
-                return current.getValidators()
+                const response = current.getValidators()
                     // note: this removed arrays, duplicates should be merged into a array
                     .map(validator => validator(Object.fromEntries(pageData.entries())))
                     .find(validator => !validator.success) ?? true;
+                return response;
             },
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,

@@ -18,3 +18,8 @@
     display: block;
     margin: 0 auto;
 }
+
+.error-message {
+    color: red;
+    font-size: 0.8rem;
+}
