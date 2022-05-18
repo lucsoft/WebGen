@@ -1,9 +1,10 @@
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { Color } from "../../lib/Color.ts";
-import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import { ButtonStyle, ColoredComponent, Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
+import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
@@ -99,3 +100,26 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
 }
 
 export const DropDownInput = (label: string, list: string[]) => new DropDownInputComponent(list, label);
+
+export function DropAreaInput(draw: Component, formats: string[], onData?: (data: { blob: Blob, file: File, url: string }[]) => void) {
+    const shell = createElement("div");
+    shell.ondragleave = (ev) => {
+        ev.preventDefault();
+        shell.classList.remove("hover");
+    }
+    shell.ondragover = (ev) => {
+        ev.preventDefault();
+        shell.classList.add("hover");
+    };
+    shell.ondrop = async (ev) => {
+        ev.preventDefault();
+        shell.classList.remove("hover");
+        onData?.(await Promise.all(Array.from(ev.dataTransfer?.files ?? []).filter(x => formats.includes(x.type)).map(async x => {
+            const blob = new Blob([ await x.arrayBuffer() ], { type: x.type });
+            return { file: x, blob, url: URL.createObjectURL(blob) };
+        })));
+    }
+    shell.classList.add("drop-area");
+    shell.append(draw.draw())
+    return Custom(shell);
+}
