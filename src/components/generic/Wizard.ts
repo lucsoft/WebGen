@@ -6,16 +6,16 @@ import { Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
-
+import { delay } from "https://deno.land/std@0.139.0/async/delay.ts";
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
     PageData: () => FormData[],
     PageValid: () => validator.SafeParseError<unknown> | true,
     Cancel: () => void,
-    Next: () => Promise<void> | void,
+    Next: () => Promise<void>,
     Back: () => void,
-    Submit: () => Promise<void> | void,
+    Submit: () => Promise<void>,
 }
 
 export type WizardSettings = {
@@ -100,7 +100,6 @@ export class WizardComponent extends Component {
     private view = View(() => {
         const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
         const footer = View(({ update }) => {
-            this.pages[ this.pageId ].requestValidatorRun = () => { setTimeout(() => update({}), 10) };
             assert(this.settings);
             const firstPage = this.pageId === 0;
             const btnAr = this.settings.buttonArrangement;
@@ -128,7 +127,7 @@ export class WizardComponent extends Component {
                 Button("Submit")
                     .setJustify("center")
                     .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
-                    .onClick(Submit)
+                    .onPromiseClick(Submit)
                 : null
 
 
@@ -141,7 +140,7 @@ export class WizardComponent extends Component {
                 footer = Horizontal(cancel, back, Spacer(), next, submit)
             else if (typeof btnAr === "function")
                 footer = btnAr(this.getActions())
-
+            this.pages[ this.pageId ].requestValidatorRun = () => setTimeout(() => update({}), 10);
             return footer?.addClass("footer");
         }).asComponent();
         return Vertical(
@@ -169,11 +168,13 @@ export class WizardComponent extends Component {
                 this.pageId--;
                 this.view.viewOptions().update({});
             },
-            Next: () => {
+            Next: async () => {
                 assert(actions.PageValid());
                 this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
                 this.pageId++;
+                await delay(10);
                 this.view.viewOptions().update({});
+
             },
             Submit: async () => {
                 assert(actions.PageValid());
