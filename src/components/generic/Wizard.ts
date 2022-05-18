@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { ButtonStyle, Component } from "../../types.ts";
 import * as validator from "https://deno.land/x/zod@v3.14.4/mod.ts";
 import { View } from "../../lib/View.ts";
@@ -30,18 +31,37 @@ export function ValidatedDataObject<Data extends validator.AnyZodObject>(validat
 
 export type Validator = (data: unknown) => validator.SafeParseReturnType<unknown, unknown>;
 
-type NewType = (formData: FormData, errorMap?: validator.ZodError) => Component[];
+type NewType = (formData: FormData) => Component[];
 
 export class PageComponent {
     private formData = new FormData();
+    private proxyFormData;
     private validators = new Set<Validator>()
     private renderComponents: NewType;
+    requestValidatorRun = () => { };
     #autoSpacer = true
     constructor(renderComponents: NewType) {
         this.renderComponents = renderComponents;
+        this.proxyFormData = new Proxy(this.formData, {
+            get: (target: any, property: any) => {
+                if (!(property in target)) return undefined;
+                if (property == "set") {
+                    try {
+                        this.requestValidatorRun()
+                    } catch (_) {
+                        // Yes
+                    }
+                }
+                const value = target[ property ];
+                return typeof value == "function"
+                    ? (...args: any) => value.apply(target, args)
+                    : value;
+            }
+        });
     }
-    getComponents(errorMap?: validator.ZodError) {
-        return [ ...this.renderComponents(this.formData, errorMap), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
+
+    getComponents() {
+        return [ ...this.renderComponents(this.proxyFormData), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
     }
     addValidator<Data extends validator.AnyZodObject>(validation: (factory: typeof validator) => Data) {
         this.validators.add((data) => validation(validator).safeParse(data));
@@ -79,49 +99,54 @@ export class WizardComponent extends Component {
     private pageId = 0;
     private view = View(() => {
         const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
-        assert(this.settings);
-        const firstPage = this.pageId === 0;
-        const btnAr = this.settings.buttonArrangement;
-        const lastPage = this.pageId === this.pages.length - 1;
-        const pageValid = PageValid();
-        const cancel = firstPage && !(this.settings.hideCancelButton?.())
-            ? Button("Cancel")
-                .setJustify("center")
-                .setStyle(ButtonStyle.Secondary)
-                .onClick(Cancel)
-            : null;
-        const back = !firstPage
-            ? Button("Back")
-                .setJustify("center")
-                .setStyle(ButtonStyle.Secondary)
-                .onClick(Back)
-            : null;
-        const next = !lastPage && this.pages.length != 1 ?
-            Button("Next")
-                .setJustify("center")
-                .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
-                .onClick(Next)
-            : null
-        const submit = lastPage ?
-            Button("Submit")
-                .setJustify("center")
-                .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
-                .onClick(Submit)
-            : null
+        const footer = View(({ update }) => {
+            this.pages[ this.pageId ].requestValidatorRun = () => { setTimeout(() => update({}), 10) };
+            assert(this.settings);
+            const firstPage = this.pageId === 0;
+            const btnAr = this.settings.buttonArrangement;
+            const lastPage = this.pageId === this.pages.length - 1;
+            const pageValid = PageValid() === true;
+            const cancel = firstPage && !(this.settings.hideCancelButton?.())
+                ? Button("Cancel")
+                    .setJustify("center")
+                    .setStyle(ButtonStyle.Secondary)
+                    .onClick(Cancel)
+                : null;
+            const back = !firstPage
+                ? Button("Back")
+                    .setJustify("center")
+                    .setStyle(ButtonStyle.Secondary)
+                    .onClick(Back)
+                : null;
+            const next = !lastPage && this.pages.length != 1 ?
+                Button("Next")
+                    .setJustify("center")
+                    .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
+                    .onClick(Next)
+                : null
+            const submit = lastPage ?
+                Button("Submit")
+                    .setJustify("center")
+                    .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
+                    .onClick(Submit)
+                : null
 
-        let footer = null;
-        if (btnAr === "flex-start")
-            footer = Horizontal(cancel, back, next, submit, Spacer())
-        else if (btnAr === "flex-end")
-            footer = Horizontal(Spacer(), cancel, back, next, submit)
-        else if (btnAr === "space-between")
-            footer = Horizontal(cancel, back, Spacer(), next, submit)
-        else if (typeof btnAr === "function")
-            footer = btnAr(this.getActions())
 
+            let footer: Component | null = null;
+            if (btnAr === "flex-start")
+                footer = Horizontal(cancel, back, next, submit, Spacer())
+            else if (btnAr === "flex-end")
+                footer = Horizontal(Spacer(), cancel, back, next, submit)
+            else if (btnAr === "space-between")
+                footer = Horizontal(cancel, back, Spacer(), next, submit)
+            else if (typeof btnAr === "function")
+                footer = btnAr(this.getActions())
+
+            return footer?.addClass("footer");
+        }).asComponent();
         return Vertical(
-            ...this.pages[ this.pageId ].getComponents(pageValid == true ? undefined : pageValid.error),
-            footer?.addClass("footer") ?? null
+            ...this.pages[ this.pageId ].getComponents(),
+            footer
         ).addClass("wwizard")
     });
     constructor(settings: WizardSettings, pages: (actions: WizardActions) => PageComponent[]) {
@@ -159,7 +184,8 @@ export class WizardComponent extends Component {
                 const current = this.pages[ this.pageId ];
                 const pageData = current.getFormData();
                 return current.getValidators()
-                    .map(validator => validator(pageData))
+                    // note: this removed arrays, duplicates should be merged into a array
+                    .map(validator => validator(Object.fromEntries(pageData.entries())))
                     .find(validator => !validator.success) ?? true;
             },
             PageID: () => this.pageId,
