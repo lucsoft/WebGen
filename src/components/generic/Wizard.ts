@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { ButtonStyle, Component } from "../../types.ts";
-import * as validator from "https://deno.land/x/zod@v3.14.4/mod.ts";
+import * as validator from "https://deno.land/x/zod@v3.16.0/mod.ts";
 import { View } from "../../lib/View.ts";
 import { CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
-import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.140.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
-import { delay } from "https://deno.land/std@0.139.0/async/delay.ts";
+import { delay } from "https://deno.land/std@0.140.0/async/delay.ts";
 import { PlainText } from "./PlainText.ts";
 import { extendedFromEntries } from "../Helper.ts";
 
