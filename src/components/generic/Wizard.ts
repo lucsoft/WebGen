@@ -8,6 +8,8 @@ import { assert } from "https://deno.land/std@0.134.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { delay } from "https://deno.land/std@0.139.0/async/delay.ts";
 import { PlainText } from "./PlainText.ts";
+import { extendedFromEntries } from "../Helper.ts";
+
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
@@ -46,7 +48,7 @@ export class PageComponent {
         this.proxyFormData = new Proxy(this.formData, {
             get: (target: any, property: any) => {
                 if (!(property in target)) return undefined;
-                if (property == "set") {
+                if ([ "set", "append", "delete" ].includes(property)) {
                     try {
                         this.requestValidatorRun()
                     } catch (_) {
@@ -189,8 +191,7 @@ export class WizardComponent extends Component {
                 const current = this.pages[ this.pageId ];
                 const pageData = current.getFormData();
                 const response = current.getValidators()
-                    // note: this removed arrays, duplicates should be merged into a array
-                    .map(validator => validator(Object.fromEntries(pageData.entries())))
+                    .map(validator => validator(extendedFromEntries(Array.from(pageData.entries()))))
                     .find(validator => !validator.success) ?? true;
                 return response;
             },

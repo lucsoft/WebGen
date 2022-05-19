@@ -123,3 +123,17 @@ export function DropAreaInput(draw: Component, formats: string[], onData?: (data
     shell.append(draw.draw())
     return Custom(shell);
 }
+
+export function UploadFilesDialog(onData: (files: { blob: Blob, file: File, url: string }[]) => void, accept: string) {
+    const upload = createElement("input")
+    upload.type = "file";
+    upload.accept = accept;
+    upload.click();
+    upload.onchange = async () => {
+        const list = await Promise.all(Array.from(upload.files ?? []).map(async file => {
+            const blob = new Blob([ await file.arrayBuffer() ], { type: file.type });
+            return { blob, file, url: URL.createObjectURL(blob) };
+        }))
+        onData(list);
+    };
+}

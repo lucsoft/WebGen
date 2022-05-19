@@ -3,6 +3,18 @@ import { custom } from "../Components.ts";
 import { Custom } from "./Custom.ts";
 import { PlainText } from "./PlainText.ts";
 
+export const Symbol = (icon: string, ...classList: string[]): Component => {
+    const webgenIcon: string = (globalThis as (typeof globalThis & { WEBGEN_ICON: string })).WEBGEN_ICON;
+    switch (webgenIcon) {
+        case "material":
+            return Custom(custom("span", icon, "material-symbols-rounded", "webgen-icon", ...classList))
+        case "bootstrap":
+            return Custom(custom("span", undefined, "bi", `bi-${icon}`, "webgen-icon", ...classList))
+        default:
+            return PlainText("")
+    }
+};
+
 export const Icon = (icon: string, ...classList: string[]): Component => {
     const webgenIcon: string = (globalThis as (typeof globalThis & { WEBGEN_ICON: string })).WEBGEN_ICON;
     switch (webgenIcon) {
