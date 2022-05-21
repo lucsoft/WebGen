@@ -45,12 +45,17 @@ export class PageComponent {
     #autoSpacer = true
     constructor(renderComponents: NewType) {
         this.renderComponents = renderComponents;
-        this.proxyFormData = new Proxy(this.formData, {
+        this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
+    }
+
+    private getProxyHandler(): ProxyHandler<any> {
+        return {
             get: (target: any, property: any) => {
-                if (!(property in target)) return undefined;
+                if (!(property in target))
+                    return undefined;
                 if ([ "set", "append", "delete" ].includes(property)) {
                     try {
-                        this.requestValidatorRun()
+                        this.requestValidatorRun();
                     } catch (_) {
                         // Yes
                     }
@@ -60,9 +65,19 @@ export class PageComponent {
                     ? (...args: any) => value.apply(target, args)
                     : value;
             }
-        });
+        };
     }
 
+    setDefaultValues(data: FormData | Record<string, string>) {
+        if (data instanceof FormData)
+            this.formData = data;
+        else {
+            for (const [ key, value ] of Object.entries(data)) {
+                this.formData.append(key, value);
+            }
+        }
+        this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
+    }
     getComponents() {
         return [ ...this.renderComponents(this.proxyFormData), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
     }
