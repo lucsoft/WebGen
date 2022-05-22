@@ -77,6 +77,7 @@ export class PageComponent {
             }
         }
         this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
+        return this;
     }
     getComponents() {
         return [ ...this.renderComponents(this.proxyFormData), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
