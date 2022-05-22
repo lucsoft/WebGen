@@ -68,12 +68,13 @@ export class PageComponent {
         };
     }
 
-    setDefaultValues(data: FormData | Record<string, string>) {
+    setDefaultValues(data: FormData | Record<string, string | undefined>) {
         if (data instanceof FormData)
             this.formData = data;
         else {
             for (const [ key, value ] of Object.entries(data)) {
-                this.formData.append(key, value);
+                if (value != undefined)
+                    this.formData.append(key, value);
             }
         }
         this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
