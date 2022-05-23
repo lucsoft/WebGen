@@ -2,7 +2,7 @@
 
 # WebGen 2.0
 
-A SwftUI-like Webframework
+A SwiftUI-like Webframework
 
 ## Getting Started
 
