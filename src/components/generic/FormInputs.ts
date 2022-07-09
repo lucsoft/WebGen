@@ -17,8 +17,8 @@ export abstract class InputForm<Type> extends ColoredComponent {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
         return this;
     }
-    abstract saveData(data: Type): string | Blob
-    abstract parseData(data: FormDataEntryValue): Type
+    abstract saveData(data: Type): string | Blob;
+    abstract parseData(data: FormDataEntryValue): Type;
 
     syncFormData(formData: FormData, key: string) {
         this.formData = formData;
@@ -27,51 +27,56 @@ export abstract class InputForm<Type> extends ColoredComponent {
             this.setValue(this.parseData(formData.get(key)!));
         return this;
     }
+
+    onChange(action: (data: Type) => void) {
+        this.addEventListener("update", (data) => action((<CustomEvent<Type>>data).detail));
+        return this;
+    }
 }
 
 export class DropDownInputComponent<Value extends [ value: string, index: number ]> extends InputForm<Value> {
-    prog = createElement("div")
-    text = createElement("span")
+    prog = createElement("div");
+    text = createElement("span");
     #dropdown: string[];
     constructor(dropdown: string[], label: string) {
         super();
         this.#dropdown = dropdown;
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
+        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper)
+        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.text.innerText = label;
         this.wrapper.append(this.text);
         this.addEventListener("update", (event) => {
             const [ value ] = (<CustomEvent<Value>>event).detail;
             this.text.innerText = value;
             if (this.formData && this.key)
-                this.formData.set(this.key, this.saveData((<CustomEvent>event).detail))
+                this.formData.set(this.key, this.saveData((<CustomEvent>event).detail));
 
-        })
-        this.wrapper.classList.add("isList")
+        });
+        this.wrapper.classList.add("isList");
         this.wrapper.addEventListener("click", () => {
             if (this.wrapper.classList.contains(Color.Disabled)) return;
             if (dropdown) this.wrapper.querySelector('ul')?.classList.toggle("open");
-        })
-        const list = createElement("ul")
+        });
+        const list = createElement("ul");
         document.addEventListener('click', (e) => {
             if (!this.wrapper.contains(e.target as Node)) {
                 list.classList.remove('open');
             }
-        })
+        });
         dropdown.forEach((displayName, index) => {
-            const entry = createElement("a")
+            const entry = createElement("a");
             entry.tabIndex = 0;
             entry.onkeydown = accessibilityButton(entry);
             entry.innerText = displayName;
             entry.onclick = () => this.setValue([ displayName, index ] as Value);
-            list.append(entry)
-        })
-        const iconContainer = createElement("div")
-        iconContainer.classList.add("icon-suffix")
-        iconContainer.append(Icon(CommonIcon(CommonIconType.ArrowDown)).draw())
-        this.wrapper.append(list, iconContainer)
+            list.append(entry);
+        });
+        const iconContainer = createElement("div");
+        iconContainer.classList.add("icon-suffix");
+        iconContainer.append(Icon(CommonIcon(CommonIconType.ArrowDown)).draw());
+        this.wrapper.append(list, iconContainer);
     }
     setStyle(style: ButtonStyle, progress?: number) {
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
@@ -101,12 +106,12 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
 
 export const DropDownInput = (label: string, list: string[]) => new DropDownInputComponent(list, label);
 
-export function DropAreaInput(draw: Component, formats: string[], onData?: (data: { blob: Blob, file: File, url: string }[]) => void) {
+export function DropAreaInput(draw: Component, formats: string[], onData?: (data: { blob: Blob, file: File, url: string; }[]) => void) {
     const shell = createElement("div");
     shell.ondragleave = (ev) => {
         ev.preventDefault();
         shell.classList.remove("hover");
-    }
+    };
     shell.ondragover = (ev) => {
         ev.preventDefault();
         shell.classList.add("hover");
@@ -118,14 +123,14 @@ export function DropAreaInput(draw: Component, formats: string[], onData?: (data
             const blob = new Blob([ await x.arrayBuffer() ], { type: x.type });
             return { file: x, blob, url: URL.createObjectURL(blob) };
         })));
-    }
+    };
     shell.classList.add("drop-area");
-    shell.append(draw.draw())
+    shell.append(draw.draw());
     return Custom(shell);
 }
 
-export function UploadFilesDialog(onData: (files: { blob: Blob, file: File, url: string }[]) => void, accept: string) {
-    const upload = createElement("input")
+export function UploadFilesDialog(onData: (files: { blob: Blob, file: File, url: string; }[]) => void, accept: string) {
+    const upload = createElement("input");
     upload.type = "file";
     upload.accept = accept;
     upload.click();
@@ -133,7 +138,7 @@ export function UploadFilesDialog(onData: (files: { blob: Blob, file: File, url:
         const list = await Promise.all(Array.from(upload.files ?? []).map(async file => {
             const blob = new Blob([ await file.arrayBuffer() ], { type: file.type });
             return { blob, file, url: URL.createObjectURL(blob) };
-        }))
+        }));
         onData(list);
     };
 }
