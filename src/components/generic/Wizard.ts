@@ -19,16 +19,16 @@ export type WizardActions = {
     Next: () => Promise<void>,
     Back: () => void,
     Submit: () => Promise<void>,
-}
+};
 
 export type WizardSettings = {
     cancelAction: (() => void) | string,
     hideCancelButton?: () => boolean,
-    buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component)
-    submitAction: (pages: { data: FormData }[]) => Promise<void> | void
-    nextAction?: (pages: { data: FormData }[], pageId: number) => Promise<void> | void
-}
-export function ValidatedDataObject<Data extends validator.AnyZodObject>(validation: (factory: typeof validator) => Data) {
+    buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
+    submitAction: (pages: { data: FormData; }[]) => Promise<void> | void;
+    nextAction?: (pages: { data: FormData; }[], pageId: number) => Promise<void> | void;
+};
+export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
     return (data: unknown) => validation(validator).safeParse(data);
 }
 
@@ -39,10 +39,10 @@ type NewType = (formData: FormData) => Component[];
 export class PageComponent {
     private formData = new FormData();
     private proxyFormData;
-    private validators = new Set<Validator>()
+    private validators = new Set<Validator>();
     private renderComponents: NewType;
     requestValidatorRun = () => { };
-    #autoSpacer = true
+    #autoSpacer = true;
     constructor(renderComponents: NewType) {
         this.renderComponents = renderComponents;
         this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
@@ -119,7 +119,7 @@ export class WizardComponent extends Component {
     private pageId = 0;
     private view = View(() => {
         const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
-        const footer = View<{ alreadyClicked: boolean }>(({ update, state }) => {
+        const footer = View<{ alreadyClicked: boolean; }>(({ update, state }) => {
             assert(this.settings);
             const firstPage = this.pageId === 0;
             const btnAr = this.settings.buttonArrangement;
@@ -140,47 +140,47 @@ export class WizardComponent extends Component {
             const next = !lastPage && this.pages.length != 1 ?
                 Button("Next")
                     .setJustify("center")
-                    .onClick(() => { update({ alreadyClicked: true }) })
+                    .onClick(() => { update({ alreadyClicked: true }); })
                     .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                     .onClick(Next)
-                : null
+                : null;
             const submit = lastPage ?
                 Button("Submit")
                     .setJustify("center")
-                    .onClick(() => { update({ alreadyClicked: true }) })
+                    .onClick(() => { update({ alreadyClicked: true }); })
                     .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
                     .onPromiseClick(Submit)
-                : null
+                : null;
             const errorMessage = state.alreadyClicked && pageValid !== true ?
-                CenterV(PlainText((PageValid() as validator.SafeParseError<unknown>).error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null
+                CenterV(PlainText((PageValid() as validator.SafeParseError<unknown>).error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null;
 
             let footer: Component | null = null;
             if (btnAr === "flex-start")
-                footer = Horizontal(cancel, back, errorMessage, next, submit, Spacer())
+                footer = Horizontal(cancel, back, errorMessage, next, submit, Spacer());
             else if (btnAr === "flex-end")
-                footer = Horizontal(Spacer(), cancel, back, errorMessage, next, submit)
+                footer = Horizontal(Spacer(), cancel, back, errorMessage, next, submit);
             else if (btnAr === "space-between")
-                footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit)
+                footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit);
             else if (typeof btnAr === "function")
-                footer = btnAr(this.getActions())
+                footer = btnAr(this.getActions());
             this.pages[ this.pageId ].requestValidatorRun = () => setTimeout(() => update({ alreadyClicked: false }), 10);
             return footer?.addClass("footer");
         }).asComponent();
         return Vertical(
             ...this.pages[ this.pageId ].getComponents(),
             footer
-        ).addClass("wwizard")
+        ).addClass("wwizard");
     });
     constructor(settings: WizardSettings, pages: (actions: WizardActions) => PageComponent[]) {
         super();
         this.wrapper.classList;
         this.settings = settings;
         this.pages = pages(this.getActions());
-        this.view.appendOn(this.wrapper)
+        this.view.appendOn(this.wrapper);
     }
 
     getActions() {
-        assert(this.settings)
+        assert(this.settings);
         const actions = <WizardActions>{
             Cancel: () => {
                 if (typeof this.settings?.cancelAction == "string")
@@ -202,7 +202,7 @@ export class WizardComponent extends Component {
             Submit: async () => {
                 assert(actions.PageValid());
                 this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
-                await this.settings?.submitAction(this.pages.map(x => ({ data: x.getFormData() })))
+                await this.settings?.submitAction(this.pages.map(x => ({ data: x.getFormData() })));
             },
             PageValid: () => {
                 const current = this.pages[ this.pageId ];
@@ -215,9 +215,9 @@ export class WizardComponent extends Component {
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,
             PageData: () => {
-                return this.pages.map(x => x.getFormData())
+                return this.pages.map(x => x.getFormData());
             }
-        }
+        };
         return actions;
     }
 }
