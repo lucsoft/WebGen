@@ -83,7 +83,7 @@ export class PageComponent {
     getComponents() {
         return [ ...this.renderComponents(this.proxyFormData), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
     }
-    addValidator<Data extends validator.AnyZodObject>(validation: (factory: typeof validator) => Data) {
+    addValidator<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
         this.validators.add((data) => validation(validator).safeParse(data));
         return this;
     }
