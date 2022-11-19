@@ -23,6 +23,7 @@ export type WizardActions = {
 export type WizardSettings = {
     cancelAction?: (() => void) | string,
     buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
+    buttonAlignment?: "bottom" | "top";
     submitAction: (pages: { data: validator.SafeParseSuccess<any>; }[]) => Promise<void> | void;
 };
 export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
@@ -148,10 +149,16 @@ export class WizardComponent extends Component {
             };
             return footer?.addClass("footer");
         }).asComponent();
-        return Vertical(
-            ...this.pages[ this.pageId ].getComponents(),
-            footer
-        ).addClass("wwizard");
+        if (this.settings?.buttonAlignment == "top")
+            return Vertical(
+                footer,
+                ...this.pages[ this.pageId ].getComponents()
+            ).addClass("wwizard");
+        else
+            return Vertical(
+                ...this.pages[ this.pageId ].getComponents(),
+                footer
+            ).addClass("wwizard");
     });
     constructor(settings: WizardSettings, pages: (actions: WizardActions) => PageComponent<any>[]) {
         super();

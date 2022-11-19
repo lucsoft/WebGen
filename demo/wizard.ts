@@ -5,6 +5,7 @@ WebGen();
 
 
 const wizard = Wizard({
+    buttonAlignment: "top",
     submitAction: () => {
 
     },
