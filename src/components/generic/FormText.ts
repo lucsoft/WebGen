@@ -63,6 +63,13 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
     }
 }
 
+export class InlineTextInput<Value extends string> extends TextInputComponent<Value> {
+    constructor(type: TextInputMode, label: string, mode: InputDataMode) {
+        super(type, label, mode);
+        this.wrapper.classList.add("inline", "has-value", "justify-content-space");
+    }
+}
+
 /**
  * The Simple TextInput.
  *

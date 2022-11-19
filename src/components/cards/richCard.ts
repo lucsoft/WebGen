@@ -6,6 +6,7 @@ import { Horizontal, Spacer, Vertical } from "../generic/Stacks.ts";
 import { Button } from "../generic/Button.ts";
 import { PlainText } from "../generic/PlainText.ts";
 import { headless } from "./headlessCard.ts";
+import { _format } from "https://deno.land/std@0.152.0/path/_util.ts";
 
 function getStateFromData(variant: ButtonStyle | undefined, options: RichCardOptions, index: number): ButtonStyle {
     return variant ?? (options.buttons?.length == 1 ? ButtonStyle.Normal : (index == 1 ? ButtonStyle.Normal : ButtonStyle.Inline));
@@ -35,7 +36,7 @@ export const richCard = (options: RichCardOptions): CommonCard =>
             options.buttonListLeftArea ?? null,
             Spacer(),
             ...(options.buttons ?? []).map(({ action, title, color, variant }, index) => Button(title)
-                .onClick(async ({ setStyle }) => {
+                .onClick(async (_, { setStyle }) => {
                     setStyle(ButtonStyle.Spinner);
                     await action();
                     setStyle(getStateFromData(variant, options, index));
@@ -49,4 +50,4 @@ export const richCard = (options: RichCardOptions): CommonCard =>
     ))
         .make()
         .addClass("rich")
-})
+});

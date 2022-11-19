@@ -93,3 +93,20 @@
     box-shadow: none;
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
+
+.winput.inline {
+    background: transparent;
+    padding: 0 13px;
+}
+
+.winput.inline input {
+    font-weight: bold;
+    font-size: 13.8px;
+    padding: 0;
+    color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
+}
+
+.winput.inline:focus-within {
+    box-shadow: none;
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+}
