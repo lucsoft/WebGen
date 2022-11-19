@@ -16,13 +16,14 @@ export abstract class InputForm<Type> extends ColoredComponent {
 
     protected key: DataSourceKey | null = null;
 
-    setValue(value: Type) {
+    setValue(value: Type | undefined) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
 
         return this;
     }
     abstract saveData(data: Type): string | undefined;
-    abstract parseData(data: FormDataEntryValue): Type;
+    // deno-lint-ignore no-explicit-any
+    abstract parseData(data: any): Type | undefined;
 
     sync<Data extends DataSource>(data: ReactiveProxy<Data>, key: keyof Data) {
         this.data = data;
