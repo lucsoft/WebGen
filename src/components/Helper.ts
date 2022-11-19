@@ -1,13 +1,13 @@
-import { Component } from "../types.ts"
+import { Component } from "../types.ts";
 
 export const conditionalCSSClass = (element: HTMLElement, condition: boolean | undefined, className: string) =>
-    element.classList[ condition === true ? "add" : "remove" ](className)
+    element.classList[ condition === true ? "add" : "remove" ](className);
 
 export const dropNullish = (...components: (Component | null | undefined)[]) => components.filter(x => x) as Component[];
 
-export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString)
+export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
 
-import { groupBy } from "https://deno.land/std@0.140.0/collections/mod.ts";
+import { groupBy } from "https://deno.land/std@0.165.0/collections/group_by.ts";
 
 /**
  * fromEntries can't handle duplicates
@@ -35,5 +35,5 @@ export function extendedFromEntries(data: [ key: string, value: FormDataEntryVal
     });
     return {
         ...Object.fromEntries(pureEntries)
-    }
+    };
 }

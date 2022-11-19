@@ -1,10 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
 import { ButtonStyle, Component } from "../../types.ts";
-import * as validator from "https://deno.land/x/zod@v3.16.0/mod.ts";
+import * as validator from "https://deno.land/x/zod@v3.19.1/mod.ts";
 import { View } from "../../lib/View.ts";
 import { CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
-import { assert } from "https://deno.land/std@0.140.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.165.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { PlainText } from "./PlainText.ts";
 import { DataSource, r, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
