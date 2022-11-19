@@ -1,5 +1,5 @@
 import { delay } from "https://deno.land/std@0.165.0/async/delay.ts";
-import { Button, TextInput, PlainText, View, WebGen, DropDownInput, Wizard, Page, Vertical, Horizontal, Center } from "../src/webgen.ts";
+import { Button, TextInput, PlainText, View, WebGen, DropDownInput, Wizard, Page, Vertical, Horizontal, Center, Reactive } from "../src/webgen.ts";
 
 WebGen();
 
@@ -12,11 +12,12 @@ const wizard = Wizard({
     buttonArrangement: "space-between",
 }, () => [
     Page({
-        text: "hi",
+        text: <string | undefined>undefined,
         select: undefined
     }, (data) => [
         PlainText("Page 1"),
-        PlainText("Input (when this page was first drawn): " + data.text),
+        PlainText("Input (ondraw): " + data.text),
+        Reactive(data, "text", () => PlainText("Input (reactive): " + data.text)),
         Center(
             Vertical(
                 TextInput("text", "Input", "live")

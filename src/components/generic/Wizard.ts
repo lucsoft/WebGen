@@ -7,12 +7,12 @@ import { Button } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.165.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { PlainText } from "./PlainText.ts";
-import { DataSource, r, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
+import { StateData, State, StateHandler } from "../../State.ts";
 
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
-    PageData: () => ReactiveProxy<any>[],
+    PageData: () => StateHandler<any>[],
     PageValid: () => Promise<validator.SafeParseReturnType<any, any>>,
     Cancel: () => void,
     Next: () => Promise<void>,
@@ -32,17 +32,17 @@ export function ValidatedDataObject<Data extends validator.ZodType>(validation: 
 
 export type Validator = (data: unknown) => Promise<validator.SafeParseReturnType<unknown, unknown>>;
 
-type PageData<Data extends DataSource> = (data: ReactiveProxy<Data>) => Component[];
+type PageData<data extends StateData> = (data: StateHandler<data>) => Component[];
 
-export class PageComponent<Data extends DataSource> {
-    private proxyFormData: ReactiveProxy<Data>;
+export class PageComponent<Data extends StateData> {
+    private proxyFormData: StateHandler<Data>;
     private validator?: Validator;
     private renderComponents: PageData<Data>;
     requestValidatorRun = () => { };
     #autoSpacer = true;
     constructor(data: Data, renderComponents: PageData<Data>) {
         this.renderComponents = renderComponents;
-        this.proxyFormData = r(data);
+        this.proxyFormData = State(data);
         for (const iterator of Object.keys(data)) {
             this.proxyFormData.$on(iterator, () => {
                 this.requestValidatorRun();
@@ -80,7 +80,7 @@ export class PageComponent<Data extends DataSource> {
  * Downside:
  *  - Pages are by design not dynamic. (Use a Wizard or a View)
  */
-export const Page = <Data extends DataSource>(data: Data, comp: PageData<Data>) => new PageComponent(data, comp);
+export const Page = <Data extends StateData>(data: Data, comp: PageData<Data>) => new PageComponent(data, comp);
 const ANY_VALIDATOR = () => validator.any().safeParseAsync({});
 export class WizardComponent extends Component {
     private pages: PageComponent<any>[] = [];

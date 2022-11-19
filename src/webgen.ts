@@ -38,6 +38,7 @@ export * from './lib/icons/MaterialIcons.ts';
 export * from './lib/View.ts';
 export * from './lib/Dialog.ts';
 export * from './lib/Color.ts';
+export * from "./State.ts";
 
 export type WebGenOptions = {
     autoLoadFonts?: boolean,
