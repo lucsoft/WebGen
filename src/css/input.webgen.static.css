@@ -36,7 +36,7 @@
 .winput.has-value input {
     font-size: 12px;
     opacity: 1;
-    padding: 0px 0 6px 10px;
+    padding: 0px 5px 6px 10px;
 }
 
 .winput input:focus,

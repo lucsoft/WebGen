@@ -31,14 +31,15 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
                 this.input.focus();
             }
         };
+        this.input.onblur = () => {
+            if (this.input.value === "") {
+                this.wrapper.classList.remove("has-value");
+            }
+        };
         if (mode == "live") {
             this.input.onkeyup = () => this.setValue(this.parseData(this.input.value));
         } else {
             this.input.onchange = () => {
-                if (this.input.value === "") {
-                    this.wrapper.classList.remove("has-value");
-                    this.input.blur();
-                }
                 this.setValue(this.parseData(this.input.value));
             };
         }
@@ -55,8 +56,9 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
         this.input.disabled = color == Color.Disabled;
         return this;
     }
-    parseData(data: FormDataEntryValue): Value {
-        return <Value>data.toString();
+    // deno-lint-ignore no-explicit-any
+    parseData(data: any) {
+        return data;
     }
     saveData(text: Value) {
         return text;
