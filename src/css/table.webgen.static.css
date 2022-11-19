@@ -1,0 +1,136 @@
+.wtable {
+    position: relative;
+    padding: calc(var(--gap) / 2);
+    box-sizing: border-box;
+}
+
+.wtable .drop-area-label {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    align-items: center;
+    font-weight: 700;
+}
+
+.wtable .dropsubtitle {
+    font-weight: 400;
+}
+
+.wtable .wggrid {
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    align-content: start;
+}
+
+.wtable .title {
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding-top: 5px;
+    cursor: default;
+}
+
+.wtable .wbutton.low-level {
+    font-size: .7rem;
+    height: 27px;
+    margin: 0 -0.7rem;
+    padding: 0 0.7rem;
+    letter-spacing: 0;
+}
+
+.wtable .winput.low-level {
+    height: 27px;
+}
+
+.wtable .winput.low-level span {
+    padding: 7px 10px 11px;
+    opacity: 0.8;
+}
+
+.wtable .winput.low-level.has-value span {
+    font-size: 0px;
+    opacity: 0;
+    padding: 5px 10px 0;
+}
+
+.wtable .winput.low-level.inline {
+    height: 13px;
+    margin: 0 -0.6rem;
+    padding: 7px 8px;
+}
+
+.wtable .wbutton.low-level:focus {
+    z-index: 2;
+}
+
+.wtable .wbutton.low-level .icon-suffix {
+    margin-right: -9px;
+}
+
+
+.wtable .wbutton.low-level .icon-suffix .webgen-icon {
+    font-size: 1rem;
+}
+
+:is(.wtable .wbutton.low-level, .wbutton.low-level) ul {
+    top: 1.7rem;
+    bottom: unset;
+    max-height: 15rem;
+    overflow: auto;
+}
+
+.wtable .winput.low-level.inline {
+    padding: 7px 13px;
+}
+
+.wtable .winput.low-level.inline input {
+    font-size: .7rem;
+}
+
+/**
+*/
+
+.artists-list {
+    display: flex;
+    margin-right: 0.9rem;
+}
+
+.artists-list :is(.profile-picture, .wiconbutton) {
+    border: 3px solid white;
+    margin-right: -0.9rem;
+    height: 27px;
+    width: 27px;
+    border-radius: 8px;
+}
+
+/**
+*/
+
+
+.light-mode {
+    --color-critical-hue: 360deg;
+    --color-critical-saturation: 86%;
+    --color-critical-lightness: 65%;
+    --color-critical-font: #333333;
+    --color-colored-hue: 227deg;
+    --color-colored-saturation: 85%;
+    --color-colored-lightness: 65%;
+    --color-colored-font: #FFFFFF;
+    --color-grayscaled-hue: 0deg;
+    --color-grayscaled-saturation: 0%;
+    --color-grayscaled-lightness: 15%;
+    --color-grayscaled-font: #ffffff;
+    --color-disabled-hue: 0deg;
+    --color-disabled-saturation: 0%;
+    --color-disabled-lightness: 75%;
+    --color-disabled-font: #A0A0A0;
+    --box-shadow: 0px 4px 8px 0px rgb(0 0 0 / 15%);
+    --background-color: hsla(0, 0%, 90%, 1);
+    --on-background-text: black;
+    --background-card: hsla(0, 0%, 100%, 1);
+    --on-card-text: #2d2d2d;
+    --on-card-subtext: #646464;
+    --on-card-background: rgb(255, 255, 255);
+    --text-red: #f81919;
+    --color-grayscaled-inline-font: black;
+}

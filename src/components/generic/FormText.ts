@@ -3,7 +3,7 @@ import { ButtonStyle, changeClassAtIndex, Color, PlainText } from "../../webgen.
 import { createElement } from "../Components.ts";
 import { InputForm, speicalSyles } from "./FormInputs.ts";
 
-export type TextInputMode = "text" | "email" | "password" | "url";
+export type TextInputMode = "text" | "email" | "password" | "url" | "date";
 export type InputDataMode = "live" | "blur";
 
 export class TextInputComponent<Value extends string> extends InputForm<Value> {

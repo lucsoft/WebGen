@@ -4,7 +4,8 @@ import { Card } from "./Card.ts";
 import { Icon } from "./Icon.ts";
 import { PlainText } from "./PlainText.ts";
 import { Grid } from "./Stacks.ts";
-export type ColumEntry<Data, Entry = keyof Data> = [ id: string | Entry, size: string, render: (data: Data, index: number) => Component ];
+import '../../css/table.webgen.static.css';
+export type ColumEntry<Data> = [ id: string, size: string, render: (data: Data, index: number) => Component ];
 
 export class TableComponent<Data> extends Component {
     hasDelete = false;
@@ -18,10 +19,11 @@ export class TableComponent<Data> extends Component {
         this.refresh();
     }
 
-    setDelete(action: (entry: Data) => void | Promise<void>) {
+    setDelete(action: (entry: Data, index: number) => void | Promise<void>) {
+        const index = this.#columns.length;
         this.#columns.push([ "", "max-content",
             (data) => Icon("delete").onClick(async () => {
-                await action(data);
+                await action(data, index);
                 this.refresh();
             })
         ]);
