@@ -63,10 +63,11 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
     }
 }
 
-export class InlineTextInput<Value extends string> extends TextInputComponent<Value> {
-    constructor(type: TextInputMode, label: string, mode: InputDataMode) {
-        super(type, label, mode);
+export class InlineTextComponent<Value extends string> extends TextInputComponent<Value> {
+    constructor(type: TextInputMode, mode: InputDataMode) {
+        super(type, "", mode);
         this.wrapper.classList.add("inline", "has-value", "justify-content-space");
+        this.wrapper.children[ 0 ].remove();
     }
 }
 
@@ -78,3 +79,12 @@ export class InlineTextInput<Value extends string> extends TextInputComponent<Va
  * @param mode Changes how updates work. live emits an update event on keypress. blur when the input loses focus
  */
 export const TextInput = (type: TextInputMode, label: string, mode: InputDataMode = "live") => new TextInputComponent(type, label, mode);
+
+
+/**
+ * The Simple InlineTextInput.
+ *
+ * @param type defines the HTMLInputType
+ * @param mode Changes how updates work. live emits an update event on keypress. blur when the input loses focus
+ */
+export const InlineTextInput = (type: TextInputMode, mode: InputDataMode = "live") => new InlineTextComponent(type, mode);
