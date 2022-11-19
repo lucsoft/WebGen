@@ -6,8 +6,9 @@ import { changeClassAtIndex } from "../Helper.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import '../../css/input.webgen.static.css';
 
-const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
+export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
 export abstract class InputForm<Type> extends ColoredComponent {
     protected formData: FormData | null = null;
@@ -33,7 +34,6 @@ export abstract class InputForm<Type> extends ColoredComponent {
         return this;
     }
 }
-
 export class DropDownInputComponent<Value extends [ value: string, index: number ]> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");

@@ -39,7 +39,8 @@
     padding: 0px 0 6px 10px;
 }
 
-.winput input:focus, .winput:focus {
+.winput input:focus,
+.winput:focus {
     outline: none;
 }
 
@@ -74,4 +75,21 @@
     --background-color-s: var(--color-disabled-saturation);
     --background-color-l: var(--color-disabled-lightness);
     --font-color: var(--color-disabled-font);
+}
+
+.winput.inline {
+    background: var(--font-color);
+}
+
+.winput.inline input {
+    font-weight: bold;
+    font-size: 13.8px;
+    opacity: 1;
+    padding: 7px 13px;
+    color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
+}
+
+.winput.inline:focus-within {
+    box-shadow: none;
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }

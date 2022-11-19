@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, Input, loginCard, modernCard, noteCard, richCard, SupportedThemes, Tab, PlainText, Vertical, View, WebGen, BootstrapIcons, CommonIconType, IconButton, DropDown, Spacer, DialogData, Card } from "../src/webgen.ts";
+import { Button, ButtonStyle, Grid, Checkbox, Color, defaultCard, Dialog, Horizontal, TextInput, loginCard, modernCard, noteCard, richCard, SupportedThemes, Tab, PlainText, Vertical, View, WebGen, BootstrapIcons, CommonIconType, IconButton, Spacer, DialogData, Card, DropDownInput, TextInputComponent } from "../src/webgen.ts";
 
 const web = WebGen({
     icon: new BootstrapIcons(),
@@ -21,12 +21,12 @@ type ViewOptions = {
 };
 
 const themeNaming = [ "light", "gray", "dark", "blur", "auto", "auto (dark)", "auto (light)" ];
-const themeArray = [ SupportedThemes.light, SupportedThemes.gray, SupportedThemes.dark, SupportedThemes.blur, SupportedThemes.auto, SupportedThemes.autoDark, SupportedThemes.autoLight ]
+const themeArray = [ SupportedThemes.light, SupportedThemes.gray, SupportedThemes.dark, SupportedThemes.blur, SupportedThemes.auto, SupportedThemes.autoDark, SupportedThemes.autoLight ];
 const color = [ Color.Disabled, Color.Grayscaled, Color.Colored, Color.Critical ];
 const style = [ ButtonStyle.Inline, ButtonStyle.Secondary, ButtonStyle.Normal, ButtonStyle.Progress, ButtonStyle.Spinner ];
 const themeArrayWithActions = themeArray.map((x, i): [ displayName: string, action: () => void ] => [ themeNaming[ i ], () => web.theme.updateTheme(x) ]);
 
-const dialog = (globalThis as typeof globalThis & { dialog: DialogData }).dialog = Dialog(() => PlainText("This is a nice test"))
+const dialog = (globalThis as typeof globalThis & { dialog: DialogData; }).dialog = Dialog(() => PlainText("This is a nice test"))
     .allowUserClose()
     .addButton("Direct", 'close')
     .addButton("Fuction", () => 'close', Color.Critical, ButtonStyle.Secondary)
@@ -37,14 +37,17 @@ View(() => Horizontal(
     Spacer(),
     Grid(Button("test"), Button("textdasds")).setDynamicColumns(15),
     Spacer()
-)).appendOn(document.body)
+)).appendOn(document.body);
 
 View<ViewOptions>(({ use: draw, state, update }) => {
-
+    draw(Horizontal(
+        PlainText("Input"),
+        TextInput("text", "Lower").onChange(alert)
+    ));
     if (state.showDialog === true) {
         dialog
             .onClose(() => update({ showDialog: false }))
-            .open()
+            .open();
     }
     draw(Horizontal(
         Tab({
@@ -67,7 +70,7 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                 .setColor(color)
                 .setStyle(style, 25)
                 .onClick((_, { setStyle }) => {
-                    if (style === ButtonStyle.Progress) setStyle(ButtonStyle.Progress, Math.random() * (100 - 0))
+                    if (style === ButtonStyle.Progress) setStyle(ButtonStyle.Progress, Math.random() * (100 - 0));
                 })),
                 Checkbox(false)
                     .setColor(color),
@@ -75,7 +78,7 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                     .setColor(color)
             ).setGap("19px"))
         )
-            .setGap("19px")
+            .setGap("19px");
 
     }
 
@@ -113,13 +116,9 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                         IconButton(CommonIconType.Download).onClick(() => update({ showDialog: true }))
                     ),
                     Horizontal(
-                        Input({ placeholder: "Some Value" }),
+                        TextInput("text", "Some Value"),
                         Spacer(),
-                        DropDown({
-                            text: themeNaming[ themeArray.indexOf(web.theme.getTheme()) ],
-                            dropdown: themeArrayWithActions,
-                            selectedOn: () => update({})
-                        })
+                        DropDownInput(themeNaming[ themeArray.indexOf(web.theme.getTheme()) ], themeArrayWithActions.map(([ display ]) => display))
                     ),
                     Horizontal(
                         PlainText("Example Actions"),
@@ -164,12 +163,12 @@ View<ViewOptions>(({ use: draw, state, update }) => {
                 title: PlainText('Hello Developers'),
                 icon: "👨‍💻"
             }))
-        ).setDynamicColumns(14))
+        ).setDynamicColumns(14).setGap("1rem"));
     }
 
 })
     .appendOn(document.body)
-    .setMaxWidth("80rem")
+    .setMaxWidth("80rem");
 
 function getThemeID(): number {
     const indexTheme = themeArray.indexOf(web.theme.getTheme());
