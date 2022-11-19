@@ -9,6 +9,10 @@
     width: 100%;
 }
 
+.wimage .loading-wheel {
+    z-index: -1;
+}
+
 .wimage.loading {
     background-color: rgba(98, 98, 98, 0.2);
 }

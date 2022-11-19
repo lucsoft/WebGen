@@ -15,14 +15,16 @@ export class ImageComponent extends Component {
         this.alt = alt;
         this.wrapper.classList.add("wimage");
         if (typeof data == "string") {
-            this.wrapper.append(this.renderImage(data));
+            this.wrapper.classList.add("loading");
+            this.wrapper.append(this.renderLoading());
+            this.wrapper.append(this.renderImage(data, true));
         }
         else if (data.type == "direct") {
             this.wrapper.classList.add("loading");
             this.wrapper.append(this.renderLoading());
             data.source().then(x => {
                 this.wrapper.classList.remove("loading");
-                this.wrapper.children[ 0 ].replaceWith(this.renderImage(URL.createObjectURL(x)));
+                this.wrapper.children[ 0 ].replaceWith(this.renderImage(URL.createObjectURL(x), true));
             });
         } else if (data.type == "loading") {
             this.wrapper.classList.add("loading");
@@ -66,11 +68,16 @@ export class ImageComponent extends Component {
     private renderLoading() {
         return loadingWheel() as Element as HTMLElement;
     }
-    private renderImage(source: string) {
+    private renderImage(source: string, removeLoading = false) {
         const img = createElement("img");
         img.style.width = "100%";
         img.src = source;
         img.alt = this.alt;
+        if (removeLoading)
+            img.onload = () => {
+                this.wrapper.classList.remove("loading");
+                this.wrapper.querySelector(".loading-wheel")?.remove();
+            };
         return img;
     }
 }

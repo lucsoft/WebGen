@@ -9,6 +9,7 @@ const blobImage = await fetch(image)
 const url = URL.createObjectURL(blobImage);
 document.body.append(
     Grid(
+        Image(image, "A cat with a backpack."),
         Image({
             type: "direct", source: () => fetch(image)
                 .then(x => x.blob())
@@ -27,7 +28,7 @@ document.body.append(
                 filename: "cute_cat.png",
                 percentage: ((state.counter ?? 0) % 1000) / 10
             }, "A cat with a backpack."));
-            setTimeout(() => update({ counter: (state.counter ?? 0) + 28 }), 30);
+            setTimeout(() => update({ counter: (state.counter ?? 0) + 52 }), 100);
         }).addClass("test").asComponent(),
         Image({
             type: "waiting-upload",
