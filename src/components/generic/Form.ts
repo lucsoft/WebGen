@@ -24,10 +24,9 @@ export class FormComponent extends Component {
         this.wrapper.addEventListener('submit', (data) => {
             data.preventDefault();
             button.setStyle(ButtonStyle.Spinner);
-            console.log("test");
 
             Promise.resolve(action(new FormData(data.target as HTMLFormElement))).finally(() => {
-                setTimeout(() => button.setStyle(ButtonStyle.Normal), 1000)
+                setTimeout(() => button.setStyle(ButtonStyle.Normal), 1000);
             });
         });
         this.wrapper.action = "#";

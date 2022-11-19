@@ -4,5 +4,6 @@ serve({
     port: 8100,
     pages: {
         "index": "demo/index.ts",
+        "wizard/index": "demo/wizard.ts",
     }
-})
+});

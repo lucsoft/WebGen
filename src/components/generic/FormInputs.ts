@@ -7,25 +7,31 @@ import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import '../../css/input.webgen.static.css';
+import { DataSource, DataSourceKey, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
 export abstract class InputForm<Type> extends ColoredComponent {
-    protected formData: FormData | null = null;
-    protected key: string | null = null;
+    protected data: ReactiveProxy<DataSource> | null = null;
+
+    protected key: DataSourceKey | null = null;
 
     setValue(value: Type) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
+
         return this;
     }
-    abstract saveData(data: Type): string | Blob;
+    abstract saveData(data: Type): string | undefined;
     abstract parseData(data: FormDataEntryValue): Type;
 
-    syncFormData(formData: FormData, key: string) {
-        this.formData = formData;
+    sync<Data extends DataSource>(data: ReactiveProxy<Data>, key: keyof Data) {
+        this.data = data;
         this.key = key;
-        if (formData.has(key))
-            this.setValue(this.parseData(formData.get(key)!));
+        if (Object.hasOwn(data, key))
+            this.setValue(this.parseData(data[ key ]));
+        data.$on(key, (value) => this.setValue(value));
+        // @ts-ignore Problem is we want a clean key not a key wrapped in reactiveproxy
+        this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<Type>>event).detail);
         return this;
     }
 
@@ -34,7 +40,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
         return this;
     }
 }
-export class DropDownInputComponent<Value extends [ value: string, index: number ]> extends InputForm<Value> {
+export class DropDownInputComponent<Value extends [ value: string, index: number ] | undefined> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");
     #dropdown: string[];
@@ -48,11 +54,8 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         this.text.innerText = label;
         this.wrapper.append(this.text);
         this.addEventListener("update", (event) => {
-            const [ value ] = (<CustomEvent<Value>>event).detail;
-            this.text.innerText = value;
-            if (this.formData && this.key)
-                this.formData.set(this.key, this.saveData((<CustomEvent>event).detail));
-
+            const data = (<CustomEvent<Value>>event).detail;
+            this.text.innerText = data?.[ 0 ] ?? label;
         });
         this.wrapper.classList.add("isList");
         this.wrapper.addEventListener("click", () => {
@@ -96,11 +99,13 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         changeClassAtIndex(this.wrapper, color, 1);
         return this;
     }
-    parseData(data: FormDataEntryValue): Value {
+    // deno-lint-ignore no-explicit-any
+    parseData(data: any): Value {
+        if (data == undefined) return <Value>undefined;
         return <Value>[ data.toString(), this.#dropdown.findIndex(([ value ]) => value == data) ];
     }
-    saveData([ text ]: Value) {
-        return text;
+    saveData(data: Value) {
+        return data?.[ 0 ];
     }
 }
 

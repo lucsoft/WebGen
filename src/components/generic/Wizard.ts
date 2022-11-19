@@ -6,15 +6,14 @@ import { CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.140.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
-import { delay } from "https://deno.land/std@0.140.0/async/delay.ts";
 import { PlainText } from "./PlainText.ts";
-import { extendedFromEntries } from "../Helper.ts";
+import { DataSource, r, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
 
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
-    PageData: () => FormData[],
-    PageValid: () => validator.SafeParseError<unknown> | true,
+    PageData: () => ReactiveProxy<any>[],
+    PageValid: () => Promise<validator.SafeParseReturnType<any, any>>,
     Cancel: () => void,
     Next: () => Promise<void>,
     Back: () => void,
@@ -22,110 +21,81 @@ export type WizardActions = {
 };
 
 export type WizardSettings = {
-    cancelAction: (() => void) | string,
-    hideCancelButton?: () => boolean,
+    cancelAction?: (() => void) | string,
     buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
-    submitAction: (pages: { data: FormData; }[]) => Promise<void> | void;
-    nextAction?: (pages: { data: FormData; }[], pageId: number) => Promise<void> | void;
+    submitAction: (pages: { data: validator.SafeParseSuccess<any>; }[]) => Promise<void> | void;
 };
 export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
     return (data: unknown) => validation(validator).safeParse(data);
 }
 
-export type Validator = (data: unknown) => validator.SafeParseReturnType<unknown, unknown>;
+export type Validator = (data: unknown) => Promise<validator.SafeParseReturnType<unknown, unknown>>;
 
-type NewType = (formData: FormData) => Component[];
+type PageData<Data extends DataSource> = (data: ReactiveProxy<Data>) => Component[];
 
-export class PageComponent {
-    private formData = new FormData();
-    private proxyFormData;
-    private validators = new Set<Validator>();
-    private renderComponents: NewType;
+export class PageComponent<Data extends DataSource> {
+    private proxyFormData: ReactiveProxy<Data>;
+    private validator?: Validator;
+    private renderComponents: PageData<Data>;
     requestValidatorRun = () => { };
     #autoSpacer = true;
-    constructor(renderComponents: NewType) {
+    constructor(data: Data, renderComponents: PageData<Data>) {
         this.renderComponents = renderComponents;
-        this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
-    }
-
-    private getProxyHandler(): ProxyHandler<any> {
-        return {
-            get: (target: any, property: any) => {
-                if (!(property in target))
-                    return undefined;
-                if ([ "set", "append", "delete" ].includes(property)) {
-                    try {
-                        this.requestValidatorRun();
-                    } catch (_) {
-                        // Yes
-                    }
-                }
-                const value = target[ property ];
-                return typeof value == "function"
-                    ? (...args: any) => value.apply(target, args)
-                    : value;
-            }
-        };
-    }
-
-    setDefaultValues(data: FormData | Record<string, string | undefined>) {
-        if (data instanceof FormData)
-            this.formData = data;
-        else {
-            for (const [ key, value ] of Object.entries(data)) {
-                if (value != undefined)
-                    this.formData.append(key, value);
-            }
+        this.proxyFormData = r(data);
+        for (const iterator of Object.keys(data)) {
+            this.proxyFormData.$on(iterator, () => {
+                this.requestValidatorRun();
+            });
         }
-        this.proxyFormData = new Proxy(this.formData, this.getProxyHandler());
-        return this;
     }
+
     getComponents() {
         return [ ...this.renderComponents(this.proxyFormData), ...(this.#autoSpacer ? [ Spacer() ] : []) ];
     }
-    addValidator<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
-        this.validators.add((data) => validation(validator).safeParse(data));
+    setValidator<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
+        this.validator = (data) => validation(validator).safeParseAsync(data);
         return this;
     }
     disableAutoSpacerAtBottom() {
         this.#autoSpacer = false;
         return this;
     }
-    getValidators() {
-        return Array.from(this.validators.values());
+    getValidator() {
+        return this.validator;
     }
 
     getFormData() {
-        return this.formData;
+        return this.proxyFormData;
     }
 }
 /**
- * Pages are Strict Layout Views, mostly only used by a Wizard
+ * Pages only update via a page change from a wizard or components itself via events
  *
  * Upsides:
  *  - Inputs have a simple way to sync there data in a Page
  *  - Simpler work for a Wizard as it only cares about the data
- *  - Supports Validators. Validators can suport the FormData
+ *  - Supports Validators. Validators parse the Data used in validators
  *
  * Downside:
- *  - Pages are not design to have dynamic layouts. (Use a Wizard)
- *  - Components can't listen on changes. They only reflect on errors.
+ *  - Pages are by design not dynamic. (Use a Wizard or a View)
  */
-export const Page = (comp: (formData: FormData) => Component[]) => new PageComponent(comp);
-
+export const Page = <Data extends DataSource>(data: Data, comp: PageData<Data>) => new PageComponent(data, comp);
+const ANY_VALIDATOR = () => validator.any().safeParseAsync({});
 export class WizardComponent extends Component {
-    private pages: PageComponent[] = [];
+    private pages: PageComponent<any>[] = [];
     private settings: WizardSettings | null = null;
     private pageId = 0;
+    private loading = false;
     private view = View(() => {
         const { Back, Cancel, Next, Submit, PageValid } = this.getActions();
-        const footer = View<{ alreadyClicked: boolean; }>(({ update, state }) => {
+        const footer = View<{ isValid: validator.SafeParseReturnType<any, any>; }>(({ update, state }) => {
             assert(this.settings);
+            this.loading = false;
             const firstPage = this.pageId === 0;
             const btnAr = this.settings.buttonArrangement;
             const lastPage = this.pageId === this.pages.length - 1;
-            const pageValid = PageValid() === true;
-            const cancel = firstPage && !(this.settings.hideCancelButton?.())
+            const isValid = !state.isValid || state.isValid.success;
+            const cancel = firstPage && this.settings.cancelAction
                 ? Button("Cancel")
                     .setJustify("center")
                     .setStyle(ButtonStyle.Secondary)
@@ -140,19 +110,29 @@ export class WizardComponent extends Component {
             const next = !lastPage && this.pages.length != 1 ?
                 Button("Next")
                     .setJustify("center")
-                    .onClick(() => { update({ alreadyClicked: true }); })
-                    .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
-                    .onClick(Next)
+                    .setColor(isValid ? Color.Grayscaled : Color.Disabled)
+                    .onPromiseClick(async () => {
+                        if (this.loading) return;
+                        this.loading = true;
+                        update({ isValid: await PageValid() });
+                        if (state.isValid?.success != true) return;
+                        await Next();
+                    })
                 : null;
             const submit = lastPage ?
                 Button("Submit")
                     .setJustify("center")
-                    .onClick(() => { update({ alreadyClicked: true }); })
-                    .setColor(pageValid ? Color.Grayscaled : Color.Disabled)
-                    .onPromiseClick(Submit)
+                    .setColor(isValid ? Color.Grayscaled : Color.Disabled)
+                    .onPromiseClick(async () => {
+                        if (this.loading) return;
+                        this.loading = true;
+                        update({ isValid: await PageValid() });
+                        if (state.isValid?.success != true) return;
+                        await Submit();
+                    })
                 : null;
-            const errorMessage = state.alreadyClicked && pageValid !== true ?
-                CenterV(PlainText((PageValid() as validator.SafeParseError<unknown>).error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null;
+            const errorMessage = state.isValid && state.isValid?.success !== true ?
+                CenterV(PlainText(state.isValid.error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null;
 
             let footer: Component | null = null;
             if (btnAr === "flex-start")
@@ -163,7 +143,9 @@ export class WizardComponent extends Component {
                 footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit);
             else if (typeof btnAr === "function")
                 footer = btnAr(this.getActions());
-            this.pages[ this.pageId ].requestValidatorRun = () => setTimeout(() => update({ alreadyClicked: false }), 10);
+            this.pages[ this.pageId ].requestValidatorRun = () => {
+                update({ isValid: undefined });
+            };
             return footer?.addClass("footer");
         }).asComponent();
         return Vertical(
@@ -171,7 +153,7 @@ export class WizardComponent extends Component {
             footer
         ).addClass("wwizard");
     });
-    constructor(settings: WizardSettings, pages: (actions: WizardActions) => PageComponent[]) {
+    constructor(settings: WizardSettings, pages: (actions: WizardActions) => PageComponent<any>[]) {
         super();
         this.wrapper.classList;
         this.settings = settings;
@@ -183,6 +165,7 @@ export class WizardComponent extends Component {
         assert(this.settings);
         const actions = <WizardActions>{
             Cancel: () => {
+                if (!this.settings?.cancelAction) return;
                 if (typeof this.settings?.cancelAction == "string")
                     location.href = this.settings?.cancelAction;
                 else this.settings?.cancelAction();
@@ -191,26 +174,20 @@ export class WizardComponent extends Component {
                 this.pageId--;
                 this.view.viewOptions().update({});
             },
-            Next: async () => {
-                assert(actions.PageValid());
-                this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
+            Next: () => {
                 this.pageId++;
-                await delay(10);
                 this.view.viewOptions().update({});
-
             },
             Submit: async () => {
-                assert(actions.PageValid());
-                this.settings?.nextAction?.(this.pages.map(x => ({ data: x.getFormData() })), this.pageId);
-                await this.settings?.submitAction(this.pages.map(x => ({ data: x.getFormData() })));
+                const data = await Promise.all(this.pages.map(x => (x.getValidator() ?? ANY_VALIDATOR)(x.getFormData())));
+                await this.settings?.submitAction(data.map(data => ({ data: <validator.SafeParseSuccess<any>>data })));
             },
-            PageValid: () => {
+            PageValid: async () => {
                 const current = this.pages[ this.pageId ];
                 const pageData = current.getFormData();
-                const response = current.getValidators()
-                    .map(validator => validator(extendedFromEntries(Array.from(pageData.entries()))))
-                    .find(validator => !validator.success) ?? true;
-                return response;
+                const validator: Validator = current.getValidator() ?? ANY_VALIDATOR;
+
+                return await validator(pageData);
             },
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,
@@ -222,4 +199,4 @@ export class WizardComponent extends Component {
     }
 }
 
-export const Wizard = (settings: WizardSettings, pages: (actions: WizardActions) => PageComponent[]) => new WizardComponent(settings, pages);
+export const Wizard = (settings: WizardSettings, pages: (actions: WizardActions) => PageComponent<any>[]) => new WizardComponent(settings, pages);

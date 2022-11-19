@@ -32,9 +32,9 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
             }
         };
         if (mode == "live") {
-            this.input.onchange = () => this.setValue(this.parseData(this.input.value));
+            this.input.onkeyup = () => this.setValue(this.parseData(this.input.value));
         } else {
-            this.input.onblur = () => {
+            this.input.onchange = () => {
                 if (this.input.value === "") {
                     this.wrapper.classList.remove("has-value");
                     this.input.blur();
@@ -63,4 +63,11 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
     }
 }
 
+/**
+ * The Simple TextInput.
+ *
+ * @param type defines the HTMLInputType
+ * @param label Shows as fullsize when inputs is empty and gets smaller when value gets filled/is filled
+ * @param mode Changes how updates work. live emits an update event on keypress. blur when the input loses focus
+ */
 export const TextInput = (type: TextInputMode, label: string, mode: InputDataMode = "live") => new TextInputComponent(type, label, mode);
