@@ -5,5 +5,6 @@ serve({
     pages: {
         "index": "demo/index.ts",
         "wizard/index": "demo/wizard.ts",
+        "image/index": "demo/image.ts",
     }
 });

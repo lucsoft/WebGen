@@ -1,0 +1,62 @@
+.wimage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.3rem;
+}
+
+.wimage img {
+    display: block;
+    width: 100%;
+}
+
+.wimage.loading {
+    background-color: rgba(98, 98, 98, 0.2);
+}
+
+.wimage .dark-layer,
+.wimage .overlay,
+.wimage .progress,
+.wimage .background {
+    position: absolute;
+}
+
+.wimage .dark-layer,
+.wimage .overlay,
+.wimage .progress {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.wimage .dark-layer {
+    background-color: rgb(0 0 0 / 50%);
+}
+
+.wimage .overlay {
+    mix-blend-mode: difference;
+    font-weight: 900;
+    padding: 0 1rem;
+}
+
+.wimage .overlay .small {
+    font-size: 0.7rem;
+    min-height: 13px;
+}
+
+.wimage .overlay .mid {
+    font-size: 1.0625rem;
+}
+
+.wimage .overlay .big {
+    font-size: 2.3rem;
+}
+
+.wimage .background {
+    filter: grayscale(1);
+}
+
+.wimage .progress {
+    overflow: hidden;
+}

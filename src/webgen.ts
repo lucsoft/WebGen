@@ -31,6 +31,7 @@ export * from "./components/generic/Wizard.ts";
 export * from "./components/generic/ReCache.ts";
 export * from "./components/generic/MediaQuery.ts";
 export * from "./components/generic/Table.ts";
+export * from "./components/generic/Image.ts";
 export * from './components/light-components/loadingWheel.ts';
 export * from './types.ts';
 export * from './lib/icons/BootstrapIcons.ts';
