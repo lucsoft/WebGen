@@ -36,8 +36,8 @@ export class TableComponent<Data> extends Component {
             Grid(
                 ...this.#columns.map(([ id ]) => PlainText(id.toString()).addClass("title")),
 
-                ...this.#data.map((x): Component[] => [
-                    ...this.#columns.map(([ _id, _size, render ], index) => render(x, index))
+                ...this.#data.map((x, index): Component[] => [
+                    ...this.#columns.map(([ _id, _size, render ]) => render(x, index))
                 ]).flat(),
             )
                 .setAlign("center")
