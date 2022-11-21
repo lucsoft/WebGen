@@ -194,10 +194,11 @@ export class WizardComponent extends Component {
             },
             PageValid: async () => {
                 const current = this.pages[ this.pageId ];
-                const pageData = current.getFormData();
+                const pageData = JSON.parse(JSON.stringify(current.getFormData()));
                 const validator: Validator = current.getValidator() ?? ANY_VALIDATOR;
-
-                return await validator(JSON.parse(JSON.stringify(pageData)));
+                const data = await validator(JSON.stringify(pageData));
+                console.debug("PageValid", "Input:", pageData, "Validator:", data);
+                return data;
             },
             ResponseData: () => {
                 return Promise.all(this.pages.map(x => {
