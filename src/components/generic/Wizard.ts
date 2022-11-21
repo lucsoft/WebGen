@@ -26,7 +26,7 @@ export type WizardSettings = {
     buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
     buttonAlignment?: "bottom" | "top";
     submitAction: (pages: { data: validator.SafeParseSuccess<any>; }[]) => Promise<void> | void;
-    onNextPage: (data: WizardActions) => Promise<void>;
+    onNextPage?: (data: WizardActions) => Promise<void>;
 };
 export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
     return (data: unknown) => validation(validator).safeParse(data);
@@ -184,7 +184,7 @@ export class WizardComponent extends Component {
                 this.view.viewOptions().update({});
             },
             Next: async () => {
-                await this.settings?.onNextPage(actions);
+                await this.settings?.onNextPage?.(actions);
                 this.pageId++;
                 this.view.viewOptions().update({});
             },
