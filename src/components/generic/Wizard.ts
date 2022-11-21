@@ -13,6 +13,7 @@ export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
     PageData: () => StateHandler<any>[],
+    ResponseData: () => Promise<validator.SafeParseReturnType<any, any>[]>,
     PageValid: () => Promise<validator.SafeParseReturnType<any, any>>,
     Cancel: () => void,
     Next: () => Promise<void>,
@@ -25,6 +26,7 @@ export type WizardSettings = {
     buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
     buttonAlignment?: "bottom" | "top";
     submitAction: (pages: { data: validator.SafeParseSuccess<any>; }[]) => Promise<void> | void;
+    onNextPage: (data: WizardActions) => Promise<void>;
 };
 export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
     return (data: unknown) => validation(validator).safeParse(data);
@@ -181,7 +183,8 @@ export class WizardComponent extends Component {
                 this.pageId--;
                 this.view.viewOptions().update({});
             },
-            Next: () => {
+            Next: async () => {
+                await this.settings?.onNextPage(actions);
                 this.pageId++;
                 this.view.viewOptions().update({});
             },
@@ -194,7 +197,15 @@ export class WizardComponent extends Component {
                 const pageData = current.getFormData();
                 const validator: Validator = current.getValidator() ?? ANY_VALIDATOR;
 
-                return await validator(pageData);
+                return await validator(JSON.parse(JSON.stringify(pageData)));
+            },
+            ResponseData: () => {
+                return Promise.all(this.pages.map(x => {
+                    const pageData = x.getFormData();
+                    const validator: Validator = x.getValidator() ?? ANY_VALIDATOR;
+
+                    return validator(JSON.parse(JSON.stringify(pageData)));
+                }));
             },
             PageID: () => this.pageId,
             PageSize: () => this.pages.length,
