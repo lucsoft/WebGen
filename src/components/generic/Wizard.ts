@@ -118,7 +118,7 @@ export class WizardComponent extends Component {
                         if (this.loading) return;
                         this.loading = true;
                         const isValid = await PageValid();
-                        if (state.isValid?.success != true) return update({ isValid });
+                        if (isValid.success != true) return update({ isValid });
                         await Next();
                         update({ isValid });
                     })
@@ -131,7 +131,7 @@ export class WizardComponent extends Component {
                         if (this.loading) return;
                         this.loading = true;
                         const isValid = await PageValid();
-                        if (state.isValid?.success != true) return update({ isValid });
+                        if (isValid.success != true) return update({ isValid });
                         await Submit();
                         update({ isValid });
                     })
@@ -199,7 +199,11 @@ export class WizardComponent extends Component {
                 const pageData = JSON.parse(JSON.stringify(current.getFormData()));
                 const validator: Validator = current.getValidator() ?? ANY_VALIDATOR;
                 const data = await validator(pageData);
-                console.debug("PageValid", "Input:", pageData, "Validator:", data);
+                console.debug("Page Input:", pageData);
+                if (data.success)
+                    console.debug("Page Result:", data.data);
+                else
+                    console.debug("Page Error:", data.error);
                 return data;
             },
             ResponseData: () => {
