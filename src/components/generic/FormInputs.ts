@@ -15,6 +15,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
     protected data: ReactiveProxy<DataSource> | null = null;
 
     protected key: DataSourceKey | null = null;
+    protected valueRender = (data: Type) => this.saveData(data);
 
     setValue(value: Type | undefined) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
@@ -30,12 +31,15 @@ export abstract class InputForm<Type> extends ColoredComponent {
         this.key = key;
         if (Object.hasOwn(data, key))
             this.setValue(this.parseData(data[ key ]));
-        data.$on(key, (value) => this.setValue(value));
+        data.$on(key, (value) => this.setValue(this.parseData(value)));
         // @ts-ignore Problem is we want a clean key not a key wrapped in reactiveproxy
-        this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<Type>>event).detail);
+        this.addEventListener("update", (event) => data[ key ] = this.saveData((<CustomEvent<Type>>event).detail));
         return this;
     }
-
+    setValueRender(action: (data: Type) => string | undefined) {
+        this.valueRender = action;
+        return this;
+    }
     onChange(action: (data: Type) => void) {
         this.addEventListener("update", (data) => action((<CustomEvent<Type>>data).detail));
         return this;
@@ -56,7 +60,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         this.wrapper.append(this.text);
         this.addEventListener("update", (event) => {
             const data = (<CustomEvent<Value>>event).detail;
-            this.text.innerText = data?.[ 0 ] ?? label;
+            this.text.innerText = this.valueRender(data) ?? label;
         });
         this.wrapper.classList.add("isList");
         this.wrapper.addEventListener("click", () => {

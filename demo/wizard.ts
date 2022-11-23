@@ -23,6 +23,7 @@ const wizard = Wizard({
                 TextInput("text", "Input", "live")
                     .sync(data, "text"),
                 DropDownInput("Selection", [ "wow", "mew" ])
+                    .setValueRender((x) => x?.[ 0 ].toUpperCase())
                     .sync(data, "select"),
                 Button("Add hi to text input")
                     .onClick(_ => data.text += " hi"),
