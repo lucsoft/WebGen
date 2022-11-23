@@ -117,9 +117,10 @@ export class WizardComponent extends Component {
                     .onPromiseClick(async () => {
                         if (this.loading) return;
                         this.loading = true;
-                        update({ isValid: await PageValid() });
-                        if (state.isValid?.success != true) return;
+                        const isValid = await PageValid();
+                        if (state.isValid?.success != true) return update({ isValid });
                         await Next();
+                        update({ isValid });
                     })
                 : null;
             const submit = lastPage ?
@@ -129,9 +130,10 @@ export class WizardComponent extends Component {
                     .onPromiseClick(async () => {
                         if (this.loading) return;
                         this.loading = true;
-                        update({ isValid: await PageValid() });
-                        if (state.isValid?.success != true) return;
+                        const isValid = await PageValid();
+                        if (state.isValid?.success != true) return update({ isValid });
                         await Submit();
+                        update({ isValid });
                     })
                 : null;
             const errorMessage = state.isValid && state.isValid?.success !== true ?
