@@ -196,7 +196,7 @@ export class WizardComponent extends Component {
                 const current = this.pages[ this.pageId ];
                 const pageData = JSON.parse(JSON.stringify(current.getFormData()));
                 const validator: Validator = current.getValidator() ?? ANY_VALIDATOR;
-                const data = await validator(JSON.stringify(pageData));
+                const data = await validator(pageData);
                 console.debug("PageValid", "Input:", pageData, "Validator:", data);
                 return data;
             },
