@@ -20,9 +20,8 @@ export class TableComponent<Data> extends Component {
     }
 
     setDelete(action: (entry: Data, index: number) => void | Promise<void>) {
-        const index = this.#columns.length;
         this.#columns.push([ "", "max-content",
-            (data) => Icon("delete").onClick(async () => {
+            (data, index) => Icon("delete").onClick(async () => {
                 await action(data, index);
                 this.refresh();
             })
