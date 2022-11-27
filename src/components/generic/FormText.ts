@@ -36,8 +36,8 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
                 this.wrapper.classList.remove("has-value");
             }
         };
-        if (mode == "live") {
-            this.input.onkeyup = () => this.setValue(this.parseData(this.input.value));
+        if (mode == "live" || type == "date") {
+            this.input.oninput = () => this.setValue(this.parseData(this.input.value));
         } else {
             this.input.onchange = () => {
                 this.setValue(this.parseData(this.input.value));
