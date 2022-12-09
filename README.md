@@ -32,7 +32,7 @@ serve({
 ```
 
 ```
-deno run -A --no-check serve.ts
+deno run -A serve.ts
 ```
 
 Done! Have fun! More docs will follow
