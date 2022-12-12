@@ -136,8 +136,14 @@ export class WizardComponent extends Component {
                         update({ isValid });
                     })
                 : null;
-            const errorMessage = state.isValid && state.isValid?.success !== true ?
-                CenterV(PlainText(state.isValid.error.errors.map(x => x.message).join(", ")).addClass("error-message").setMargin("0 0.5rem 0 0")) : null;
+
+            const errorMessage = state.isValid && state.isValid?.success !== true
+                ? CenterV(
+                    PlainText(getErrorMessage(state))
+                        .addClass("error-message")
+                        .setMargin("0 0.5rem 0 0")
+                )
+                : null;
 
             let footer: Component | null = null;
             if (btnAr === "flex-start")
@@ -225,3 +231,13 @@ export class WizardComponent extends Component {
 }
 
 export const Wizard = (settings: WizardSettings, pages: (actions: WizardActions) => PageComponent<any>[]) => new WizardComponent(settings, pages);
+
+function getErrorMessage(state: Partial<{ isValid: validator.SafeParseReturnType<any, any>; }>): string {
+    if (!(state.isValid && state.isValid?.success !== true)) return "";
+    const selc = state.isValid.error.errors.find(x => x.code == "custom") ?? state.isValid.error.errors.find(x => x.message != "Required") ?? state.isValid.error.errors[ 0 ];
+
+    // UpperCase and if number box it.
+    const path = selc.path.map(x => typeof x == "number" ? `[${x}]` : x.replace(/^./, str => str.toUpperCase())).join("");
+
+    return `${path}: ${selc.message}`;
+}

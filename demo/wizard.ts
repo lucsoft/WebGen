@@ -12,25 +12,27 @@ const wizard = Wizard({
     buttonArrangement: "space-between",
 }, () => [
     Page({
-        text: <string | undefined>undefined,
+        input: <string | undefined>undefined,
         select: undefined
     }, (data) => [
         PlainText("Page 1"),
-        PlainText("Input (ondraw): " + data.text),
-        Reactive(data, "text", () => PlainText("Input (reactive): " + data.text)),
+        PlainText("Input (ondraw): " + data.input),
+        Reactive(data, "input", () => PlainText("Input (reactive): " + data.input)),
         Center(
             Vertical(
                 TextInput("text", "Input", "live")
-                    .sync(data, "text"),
+                    .sync(data, "input"),
                 DropDownInput("Selection", [ "wow", "mew" ])
                     .setValueRender((x) => x?.[ 0 ].toUpperCase())
                     .sync(data, "select"),
                 Button("Add hi to text input")
-                    .onClick(_ => data.text += " hi"),
+                    .onClick(_ => data.input += " hi"),
             ).setGap("1rem")
         ).setMargin("5rem 0 0 0")
     ]).setValidator((e) => e.object({
-        text: e.string().refine(x => x.startsWith("wow"), { message: "Input: Should start with wow" })
+        input: e.string().optional().refine(x => x && x.startsWith("wow"), { message: "should start with wow" }),
+        das: e.string(),
+        a: e.string()
     }).refine(async x => {
         await delay(1000);
         return x;

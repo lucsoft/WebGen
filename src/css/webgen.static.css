@@ -21,5 +21,10 @@
 
 .error-message {
     color: red;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+
+    background-color: rgb(46, 0, 0);
+    font-weight: bold;
+    padding: 0.65rem 0.8rem;
+    border-radius: 12px;
 }
