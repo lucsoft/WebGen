@@ -232,7 +232,7 @@ export class WizardComponent extends Component {
 
 export const Wizard = (settings: WizardSettings, pages: (actions: WizardActions) => PageComponent<any>[]) => new WizardComponent(settings, pages);
 
-function getErrorMessage(state: Partial<{ isValid: validator.SafeParseReturnType<any, any>; }>): string {
+export function getErrorMessage(state: Partial<{ isValid: validator.SafeParseReturnType<any, any>; }>): string {
     if (!(state.isValid && state.isValid?.success !== true)) return "";
     const selc = state.isValid.error.errors.find(x => x.code == "custom" && x.message != "Invalid input") ?? state.isValid.error.errors.find(x => x.message != "Required") ?? state.isValid.error.errors[ 0 ];
 
