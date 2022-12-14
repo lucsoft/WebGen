@@ -1,4 +1,4 @@
-import { ReactiveProxy, r, type DataSource } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
+import { ReactiveProxy, r, type DataSource } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/3e34fcfc964c8c/src/index.ts";
 import { Component } from "./webgen.ts";
 export type StateData = DataSource;
 export type StateHandler<data extends StateData> = ReactiveProxy<data>;

@@ -1,4 +1,4 @@
-import { delay } from "https://deno.land/std@0.165.0/async/delay.ts";
+import { delay } from "https://deno.land/std@0.167.0/async/delay.ts";
 import { Button, TextInput, PlainText, View, WebGen, DropDownInput, Wizard, Page, Vertical, Horizontal, Center, Reactive } from "../src/webgen.ts";
 
 WebGen();

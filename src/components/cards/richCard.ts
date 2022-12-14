@@ -6,7 +6,7 @@ import { Horizontal, Spacer, Vertical } from "../generic/Stacks.ts";
 import { Button } from "../generic/Button.ts";
 import { PlainText } from "../generic/PlainText.ts";
 import { headless } from "./headlessCard.ts";
-import { _format } from "https://deno.land/std@0.152.0/path/_util.ts";
+import { _format } from "https://deno.land/std@0.167.0/path/_util.ts";
 
 function getStateFromData(variant: ButtonStyle | undefined, options: RichCardOptions, index: number): ButtonStyle {
     return variant ?? (options.buttons?.length == 1 ? ButtonStyle.Normal : (index == 1 ? ButtonStyle.Normal : ButtonStyle.Inline));
