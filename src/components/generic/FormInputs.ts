@@ -7,7 +7,7 @@ import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import '../../css/input.webgen.static.css';
-import { DataSource, DataSourceKey, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/1599e06c3abb88c7bfbd7fffab264199d641e25b/src/index.ts";
+import { DataSource, DataSourceKey, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/abcdb75/src/index.ts";
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
