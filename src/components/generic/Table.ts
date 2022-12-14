@@ -1,5 +1,4 @@
 import { Component } from "../../types.ts";
-import { headless } from "../cards/headlessCard.ts";
 import { Card } from "./Card.ts";
 import { Icon } from "./Icon.ts";
 import { PlainText } from "./PlainText.ts";
@@ -31,7 +30,7 @@ export class TableComponent<Data> extends Component {
     }
 
     refresh() {
-        const data = Card(headless(
+        const data = Card(
             Grid(
                 ...this.#columns.map(([ id ]) => PlainText(id.toString()).addClass("title")),
 
@@ -43,7 +42,7 @@ export class TableComponent<Data> extends Component {
                 .setGap("5px 13px")
                 .setWidth("100%")
                 .setRawColumns(`${this.#columns.map(([ _, data = "max-content" ]) => data).join(" ")}`)
-        )).addClass("wtable").draw();
+        ).addClass("wtable").draw();
         this.wrapper = data;
     }
 }

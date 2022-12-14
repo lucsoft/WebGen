@@ -2,19 +2,13 @@ import { Style } from './lib/Style.ts';
 import { SupportedThemes } from './lib/SupportedThemes.ts';
 export { SupportedThemes } from './lib/SupportedThemes.ts';
 import './css/webgen.static.css';
-import './css/elements.css';
 import './css/master.css';
 import './css/modern.css';
+import '../assets/font/font.css';
 import { Icons } from "./lib/icons/none.ts";
 import { ColorDef } from "./types.ts";
 export * from './components/Components.ts';
 export * from './components/Helper.ts';
-export * from './components/cards/defaultCard.ts';
-export * from './components/cards/headlessCard.ts';
-export * from './components/cards/loginCard.ts';
-export * from './components/cards/modernCard.ts';
-export * from './components/cards/noteCard.ts';
-export * from './components/cards/richCard.ts';
 export * from './components/generic/PlainText.ts';
 export * from './components/generic/Tab.ts';
 export * from './components/generic/Form.ts';
@@ -42,7 +36,6 @@ export * from './lib/Color.ts';
 export * from "./State.ts";
 
 export type WebGenOptions = {
-    autoLoadFonts?: boolean,
     updateThemeOnInit?: false,
     colors?: ColorDef,
     icon?: Icons,

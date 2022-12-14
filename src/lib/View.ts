@@ -10,7 +10,7 @@ export class ViewClass<State>
     #render: ViewOptionsFunc<State>;
     #state = {} as State;
     #activeCompnents: Component[] = [];
-    #shell = createElement('article')
+    #shell = createElement('article');
 
     constructor(render: ViewOptionsFunc<State>) {
         this.#render = render;
@@ -23,7 +23,7 @@ export class ViewClass<State>
                 this.#renderFunction();
             },
             use: (comp) => this.#activeCompnents.push(comp)
-        })
+        });
         if (data) this.#activeCompnents.push(data);
         const newShell = createElement('article');
         if (this.#hasMaxWidth) {
@@ -54,7 +54,7 @@ export class ViewClass<State>
                 this.#renderFunction();
             },
             use: (comp) => this.#activeCompnents.push(comp)
-        }
+        };
     }
     addClass(...classes: string[]) {
         this.#cssClasses.push(...classes);

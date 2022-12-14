@@ -3,7 +3,7 @@
     height: 37px;
     display: inline-flex;
     align-items: center;
-    font-weight: bold;
+    font-weight: 630;
     font-size: 13.8px;
     letter-spacing: .02rem;
     border-radius: 5px;
@@ -73,7 +73,8 @@
     transition: background-color 200ms ease;
 }
 
-.wbutton.grayscaled.inline, .wbutton.grayscaled.secondary {
+.wbutton.grayscaled.inline,
+.wbutton.grayscaled.secondary {
     color: var(--color-grayscaled-inline-font, var(--font-color));
 }
 

@@ -1,3 +1,9 @@
-import { CommonCard } from "../../types.ts";
+import { CommonCard, Component } from "../../types.ts";
+import { createElement } from "../Components.ts";
+import { Custom } from "./Custom.ts";
 
-export const Card = (compoent: CommonCard) => compoent.make()
+export const Card = (compoent: Component) => {
+    const card = createElement('card' as 'div');
+    card.append(compoent.draw());
+    return Custom(card);
+};

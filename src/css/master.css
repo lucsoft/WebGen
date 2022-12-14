@@ -1,10 +1,3 @@
-:root {
-    --default-shadow: 0px 7px 28px 0px rgba(0, 0, 0, 0.40);
-    --default-card-color: black;
-    --default-transition-time: 150ms;
-    --default-secondary-color: #474747;
-}
-
 body {
     background: var(--background-color);
     font-family: var(--font);
@@ -33,9 +26,17 @@ html {
 .icon-white {
     filter: contrast(4) invert(1);
 }
-h1, h2, h3, h4, h5, h6, span.themed {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span.themed {
     color: var(--on-background-text);
 }
+
 h2 {
     font-weight: 200;
     text-align: center;
