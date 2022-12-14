@@ -11,7 +11,8 @@ A SwiftUI-like Webframework
 import { PlainText, View, WebGen } from "https://deno.land/x/webgen/mod.ts";
 
 WebGen();
-View(() => PlainText("Hello World!")).appendOn(document.body);
+View(() => PlainText("Hello World!"))
+    .appendOn(document.body);
 ```
 
 ```ts
@@ -20,15 +21,9 @@ import { serve } from "https://deno.land/x/esbuild_serve/mod.ts";
 
 serve({
     pages: {
-        "index": "./mod.ts",
+        "index": "mod.ts",
     },
 });
-```
-
-```html
-<!-- Create a templates/index.html file  -->
-<link rel="stylesheet" href="index.css">
-<script src="index.js"></script>
 ```
 
 ```
