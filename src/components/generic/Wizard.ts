@@ -147,9 +147,9 @@ export class WizardComponent extends Component {
 
             let footer: Component | null = null;
             if (btnAr === "flex-start")
-                footer = Horizontal(cancel, back, errorMessage, next, submit, Spacer());
+                footer = Horizontal(cancel, back, next, submit, Spacer(), errorMessage);
             else if (btnAr === "flex-end")
-                footer = Horizontal(Spacer(), cancel, back, errorMessage, next, submit);
+                footer = Horizontal(errorMessage, Spacer(), cancel, back, next, submit);
             else if (btnAr === "space-between")
                 footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit);
             else if (typeof btnAr === "function")
