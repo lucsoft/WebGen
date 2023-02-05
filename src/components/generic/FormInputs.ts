@@ -38,6 +38,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
     }
     setValueRender(action: (data: Type) => string) {
         this.valueRender = action;
+        this.dispatchEvent(new CustomEvent<Type>("data", {}));
         return this;
     }
     onChange(action: (data: Type) => void) {
@@ -73,14 +74,18 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
                 list.classList.remove('open');
             }
         });
-        dropdown.forEach((displayName, index) => {
-            const entry = createElement("a");
-            entry.tabIndex = 0;
-            entry.onkeydown = accessibilityButton(entry);
-            entry.innerText = this.valueRender([ displayName, index ] as Value) ?? displayName;
-            entry.onclick = () => this.setValue([ displayName, index ] as Value);
-            list.append(entry);
+        this.addEventListener("data", () => {
+            list.innerHTML = "";
+            dropdown.forEach((displayName, index) => {
+                const entry = createElement("a");
+                entry.tabIndex = 0;
+                entry.onkeydown = accessibilityButton(entry);
+                entry.innerText = this.valueRender([ displayName, index ] as Value) ?? displayName;
+                entry.onclick = () => this.setValue([ displayName, index ] as Value);
+                list.append(entry);
+            });
         });
+        this.dispatchEvent(new CustomEvent("data", {}));
         const iconContainer = createElement("div");
         iconContainer.classList.add("icon-suffix");
         iconContainer.append(Icon(CommonIcon(CommonIconType.ArrowDown)).draw());
