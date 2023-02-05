@@ -15,7 +15,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
     protected data: ReactiveProxy<DataSource> | null = null;
 
     protected key: DataSourceKey | null = null;
-    protected valueRender = (data: Type) => this.saveData(data);
+    protected valueRender = (data: Type) => this.saveData(data)!;
 
     setValue(value: Type | undefined) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
@@ -46,7 +46,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
         return this;
     }
 }
-export class DropDownInputComponent<Value extends [ value: string, index: number ] | undefined> extends InputForm<Value> {
+export class DropDownInputComponent<Value extends [ value: string, index: number ]> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");
     #dropdown: string[];
@@ -61,7 +61,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         this.wrapper.append(this.text);
         this.addEventListener("update", (event) => {
             const data = (<CustomEvent<Value>>event).detail;
-            this.text.innerText = this.valueRender(data) ?? label;
+            this.text.innerText = data == undefined ? label : this.valueRender(data);
         });
         this.wrapper.classList.add("isList", "wdropdown");
         this.wrapper.addEventListener("click", () => {
@@ -110,8 +110,8 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         return this;
     }
     // deno-lint-ignore no-explicit-any
-    parseData(data: any): Value {
-        if (data == undefined) return <Value>undefined;
+    parseData(data: any): Value | undefined {
+        if (data == undefined) return undefined;
         return <Value>[ data.toString(), this.#dropdown.findIndex(([ value ]) => value == data) ];
     }
     saveData(data: Value) {

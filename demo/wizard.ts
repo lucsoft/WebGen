@@ -1,5 +1,5 @@
 import { delay } from "https://deno.land/std@0.167.0/async/delay.ts";
-import { Button, TextInput, PlainText, View, WebGen, DropDownInput, Wizard, Page, Vertical, Horizontal, Center, Reactive } from "../src/webgen.ts";
+import { Button, TextInput, PlainText, View, WebGen, DropDownInput, Wizard, Page, Vertical, Center, Reactive } from "../src/webgen.ts";
 
 WebGen();
 
@@ -23,7 +23,7 @@ const wizard = Wizard({
                 TextInput("text", "Input", "live")
                     .sync(data, "input"),
                 DropDownInput("Selection", [ "wow", "mew" ])
-                    .setValueRender((x) => x?.[ 0 ].toUpperCase())
+                    .setValueRender(([ key ]) => key.toUpperCase())
                     .sync(data, "select"),
                 Button("Add hi to text input")
                     .onClick(_ => data.input += " hi"),
