@@ -15,7 +15,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
     protected data: ReactiveProxy<DataSource> | null = null;
 
     protected key: DataSourceKey | null = null;
-    protected valueRender = (data: Type) => this.saveData(data);
+    protected valueRender = (data: Type) => this.saveData(data) ?? `${data}`;
 
     setValue(value: Type | undefined) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
@@ -36,7 +36,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
         this.addEventListener("update", (event) => data[ key ] = this.saveData((<CustomEvent<Type>>event).detail));
         return this;
     }
-    setValueRender(action: (data: Type) => string | undefined) {
+    setValueRender(action: (data: Type) => string) {
         this.valueRender = action;
         return this;
     }
@@ -53,7 +53,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         super();
         this.#dropdown = dropdown;
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
+        this.wrapper.classList.add("wbutton", "wdropdown", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.text.innerText = label;
@@ -77,7 +77,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
             const entry = createElement("a");
             entry.tabIndex = 0;
             entry.onkeydown = accessibilityButton(entry);
-            entry.innerText = displayName;
+            entry.innerText = this.valueRender([ displayName, index ] as Value);
             entry.onclick = () => this.setValue([ displayName, index ] as Value);
             list.append(entry);
         });
