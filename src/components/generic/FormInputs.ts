@@ -15,7 +15,7 @@ export abstract class InputForm<Type> extends ColoredComponent {
     protected data: ReactiveProxy<DataSource> | null = null;
 
     protected key: DataSourceKey | null = null;
-    protected valueRender = (data: Type) => this.saveData(data) ?? `${data}`;
+    protected valueRender = (data: Type) => this.saveData(data);
 
     setValue(value: Type | undefined) {
         this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
@@ -53,7 +53,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         super();
         this.#dropdown = dropdown;
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", "wdropdown", Color.Grayscaled, ButtonStyle.Normal);
+        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.text.innerText = label;
@@ -62,7 +62,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
             const data = (<CustomEvent<Value>>event).detail;
             this.text.innerText = this.valueRender(data) ?? label;
         });
-        this.wrapper.classList.add("isList");
+        this.wrapper.classList.add("isList", "wdropdown");
         this.wrapper.addEventListener("click", () => {
             if (this.wrapper.classList.contains(Color.Disabled)) return;
             if (dropdown) this.wrapper.querySelector('ul')?.classList.toggle("open");
@@ -77,7 +77,7 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
             const entry = createElement("a");
             entry.tabIndex = 0;
             entry.onkeydown = accessibilityButton(entry);
-            entry.innerText = this.valueRender([ displayName, index ] as Value);
+            entry.innerText = this.valueRender([ displayName, index ] as Value) ?? displayName;
             entry.onclick = () => this.setValue([ displayName, index ] as Value);
             list.append(entry);
         });
