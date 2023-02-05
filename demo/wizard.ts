@@ -18,12 +18,13 @@ const wizard = Wizard({
         PlainText("Page 1"),
         PlainText("Input (ondraw): " + data.input),
         Reactive(data, "input", () => PlainText("Input (reactive): " + data.input)),
+        Reactive(data, "select", () => PlainText("Select (reactive): " + data.select)),
         Center(
             Vertical(
                 TextInput("text", "Input", "live")
                     .sync(data, "input"),
                 DropDownInput("Selection", [ "wow", "mew" ])
-                    .setValueRender(([ key ]) => key.toUpperCase())
+                    .setRender((key) => key.toUpperCase())
                     .sync(data, "select"),
                 Button("Add hi to text input")
                     .onClick(_ => data.input += " hi"),

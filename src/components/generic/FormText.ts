@@ -37,10 +37,10 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
             }
         };
         if (mode == "live" || type == "date") {
-            this.input.oninput = () => this.setValue(this.parseData(this.input.value));
+            this.input.oninput = () => this.setValue(this.input.value as Value);
         } else {
             this.input.onchange = () => {
-                this.setValue(this.parseData(this.input.value));
+                this.setValue(this.input.value as Value);
             };
         }
         this.wrapper.append(placeholder, this.input);
@@ -55,13 +55,6 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
         changeClassAtIndex(this.wrapper, color, 1);
         this.input.disabled = color == Color.Disabled;
         return this;
-    }
-    // deno-lint-ignore no-explicit-any
-    parseData(data: any) {
-        return data;
-    }
-    saveData(text: Value) {
-        return text;
     }
 }
 

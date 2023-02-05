@@ -11,48 +11,48 @@ import { DataSource, DataSourceKey, ReactiveProxy } from "https://raw.githubuser
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
-export abstract class InputForm<Type> extends ColoredComponent {
+export abstract class InputForm<StateValue> extends ColoredComponent {
     protected data: ReactiveProxy<DataSource> | null = null;
 
     protected key: DataSourceKey | null = null;
-    protected valueRender = (data: Type) => this.saveData(data)!;
+    protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
 
-    setValue(value: Type | undefined) {
-        this.dispatchEvent(new CustomEvent<Type>("update", { detail: value }));
+    setValue(value: StateValue | undefined) {
+        this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
 
         return this;
     }
-    abstract saveData(data: Type): string | undefined;
-    // deno-lint-ignore no-explicit-any
-    abstract parseData(data: any): Type | undefined;
 
     sync<Data extends DataSource>(data: ReactiveProxy<Data>, key: keyof Data) {
         this.data = data;
         this.key = key;
-        if (Object.hasOwn(data, key))
-            this.setValue(this.parseData(data[ key ]));
-        data.$on(key, (value) => this.setValue(this.parseData(value)));
+
+        // Listen on Input Changes
         // @ts-ignore Problem is we want a clean key not a key wrapped in reactiveproxy
-        this.addEventListener("update", (event) => data[ key ] = this.saveData((<CustomEvent<Type>>event).detail));
+        this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<StateValue>>event).detail);
+
+        // Read State value
+        if (Object.hasOwn(data, key)) this.setValue(data[ key ]);
+
+        // Wait for State changes
+        data.$on(key, (value) => this.setValue(value));
         return this;
     }
-    setValueRender(action: (data: Type) => string) {
+    setRender(action: (data: StateValue) => string) {
         this.valueRender = action;
-        this.dispatchEvent(new CustomEvent<Type>("data", {}));
+        this.dispatchEvent(new CustomEvent<StateValue>("data", {}));
         return this;
     }
-    onChange(action: (data: Type) => void) {
-        this.addEventListener("update", (data) => action((<CustomEvent<Type>>data).detail));
+    onChange(action: (data: StateValue) => void) {
+        this.addEventListener("update", (data) => action((<CustomEvent<StateValue>>data).detail));
         return this;
     }
 }
-export class DropDownInputComponent<Value extends [ value: string, index: number ]> extends InputForm<Value> {
+export class DropDownInputComponent<Value extends string> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");
-    #dropdown: string[];
     constructor(dropdown: string[], label: string) {
         super();
-        this.#dropdown = dropdown;
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
@@ -76,12 +76,12 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         });
         this.addEventListener("data", () => {
             list.innerHTML = "";
-            dropdown.forEach((displayName, index) => {
+            dropdown.forEach((displayName) => {
                 const entry = createElement("a");
                 entry.tabIndex = 0;
                 entry.onkeydown = accessibilityButton(entry);
-                entry.innerText = this.valueRender([ displayName, index ] as Value) ?? displayName;
-                entry.onclick = () => this.setValue([ displayName, index ] as Value);
+                entry.innerText = this.valueRender(displayName as Value);
+                entry.onclick = () => this.setValue(displayName as Value);
                 list.append(entry);
             });
         });
@@ -108,14 +108,6 @@ export class DropDownInputComponent<Value extends [ value: string, index: number
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;
-    }
-    // deno-lint-ignore no-explicit-any
-    parseData(data: any): Value | undefined {
-        if (data == undefined) return undefined;
-        return <Value>[ data.toString(), this.#dropdown.findIndex(([ value ]) => value == data) ];
-    }
-    saveData(data: Value) {
-        return data?.[ 0 ];
     }
 }
 
