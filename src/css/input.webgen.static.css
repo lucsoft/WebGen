@@ -110,3 +110,7 @@
     box-shadow: none;
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
+
+.wdropdown {
+    justify-content: space-between;
+}
