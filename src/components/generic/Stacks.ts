@@ -5,11 +5,11 @@ import { createElement } from "../Components.ts";
 import { Custom } from "./Custom.ts";
 
 class SpacerCompoent extends Component { }
-class AlignComponent extends Component {
+export class AlignComponent extends Component {
     constructor(type: 'horizontal-stack' | 'vertical-stack', components: (Component | null)[]) {
-        super()
+        super();
         this.wrapper.classList.add(type);
-        this.wrapper.append(...dropNullish(...components).map(x => x.draw()))
+        this.wrapper.append(...dropNullish(...components).map(x => x.draw()));
     }
     setMargin(margin?: string) {
         this.wrapper.style.width = margin ? `calc(100% - ${margin} - ${margin})` : "";
@@ -27,8 +27,8 @@ export const Spacer = () => new SpacerCompoent().addClass('spacer');
 export const Horizontal = (...components: ComponentArray) => new AlignComponent("horizontal-stack", components.flat());
 export const Vertical = (...components: ComponentArray) => new AlignComponent("vertical-stack", components.flat());
 class GridComponent extends Component {
-    constructor(components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) {
-        super()
+    constructor(components: (Component | [ settings: { width?: number, heigth?: number; }, element: Component ])[]) {
+        super();
         this.wrapper.classList.add("wggrid");
         this.wrapper.style.display = "grid";
         this.wrapper.append(...components.map(x => {
@@ -40,7 +40,7 @@ class GridComponent extends Component {
                 return ele;
             }
             return x.draw();
-        }))
+        }));
     }
     setGap(gap: string) {
         this.wrapper.style.gap = gap;
@@ -51,7 +51,7 @@ class GridComponent extends Component {
         return this;
     }
     setDynamicColumns(minSize = 6, max = "1fr") {
-        this.wrapper.style.gridTemplateColumns = `repeat(auto-fit,minmax(${minSize}rem,${max}))`
+        this.wrapper.style.gridTemplateColumns = `repeat(auto-fit,minmax(${minSize}rem,${max}))`;
         return this;
     }
     setEvenColumns(count: number, size = "1fr") {
@@ -61,11 +61,11 @@ class GridComponent extends Component {
 }
 
 export function Box(...components: Component[]) {
-    const block = createElement("div")
-    block.append(...components.map(x => x.draw()))
+    const block = createElement("div");
+    block.append(...components.map(x => x.draw()));
     return Custom(block);
 }
-export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number }, element: Component ])[]) => new GridComponent(components);
+export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number; }, element: Component ])[]) => new GridComponent(components);
 /*
 export interface GridComponent extends BaseComponent<GridComponent, HTMLDivElement> {
     setMaxWidth: (maxWidth: string) => GridComponent

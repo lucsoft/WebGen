@@ -2,8 +2,8 @@
 import { ButtonStyle, Component } from "../../types.ts";
 import * as validator from "https://deno.land/x/zod@v3.20.2/mod.ts";
 import { View } from "../../lib/View.ts";
-import { CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
-import { Button } from "./Button.ts";
+import { AlignComponent, CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
+import { Button, ButtonComponent } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.167.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { PlainText } from "./PlainText.ts";
@@ -21,20 +21,32 @@ export type WizardActions = {
     Submit: () => Promise<void>,
 };
 
+type WizardActionButtons = {
+    cancel: ButtonComponent | null;
+    back: ButtonComponent | null;
+    errorMessage: AlignComponent | null;
+    next: ButtonComponent | null;
+    submit: ButtonComponent | null;
+};
+
+export type Validator = (data: unknown) => Promise<validator.SafeParseReturnType<unknown, unknown>>;
+
+type PageData<data extends StateData> = (data: StateHandler<data>) => Component[];
+
+type PageJump = () => 'Next' | 'Back' | number;
+
 export type WizardSettings = {
     cancelAction?: (() => void) | string,
-    buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions) => Component);
+    buttonArrangement?: "space-between" | "flex-start" | "flex-end" | ((actions: WizardActions, components: WizardActionButtons) => Component);
     buttonAlignment?: "bottom" | "top";
     submitAction: (pages: { data: validator.SafeParseSuccess<any>; }[]) => Promise<void> | void;
     onNextPage?: (data: WizardActions) => Promise<void>;
+    onBackPage?: (data: WizardActions) => Promise<void>;
 };
 export function ValidatedDataObject<Data extends validator.ZodType>(validation: (factory: typeof validator) => Data) {
     return (data: unknown) => validation(validator).safeParse(data);
 }
 
-export type Validator = (data: unknown) => Promise<validator.SafeParseReturnType<unknown, unknown>>;
-
-type PageData<data extends StateData> = (data: StateHandler<data>) => Component[];
 
 export class PageComponent<Data extends StateData> {
     private proxyFormData: StateHandler<Data>;
@@ -42,6 +54,8 @@ export class PageComponent<Data extends StateData> {
     private renderComponents: PageData<Data>;
     requestValidatorRun = () => { };
     #autoSpacer = true;
+    nextPage: PageJump = () => "Next";
+    backPage: PageJump = () => "Back";
     constructor(data: Data, renderComponents: PageData<Data>) {
         this.renderComponents = renderComponents;
         this.proxyFormData = State(data);
@@ -69,6 +83,24 @@ export class PageComponent<Data extends StateData> {
 
     getFormData() {
         return this.proxyFormData;
+    }
+
+    getNextPage() {
+        return this.nextPage();
+    }
+
+    setNextPage(type: PageJump) {
+        this.nextPage = type;
+        return this;
+    }
+
+    getBackPage() {
+        return this.backPage();
+    }
+
+    setBackPage(type: PageJump) {
+        this.backPage = type;
+        return this;
     }
 }
 /**
@@ -153,7 +185,7 @@ export class WizardComponent extends Component {
             else if (btnAr === "space-between")
                 footer = Horizontal(cancel, back, Spacer(), errorMessage, next, submit);
             else if (typeof btnAr === "function")
-                footer = btnAr(this.getActions());
+                footer = btnAr(this.getActions(), { cancel, back, errorMessage, next, submit });
             this.pages[ this.pageId ].requestValidatorRun = () => {
                 update({ isValid: undefined });
             };
@@ -178,6 +210,15 @@ export class WizardComponent extends Component {
         this.view.appendOn(this.wrapper);
     }
 
+    jumpPage(type: ReturnType<PageJump>) {
+        if (type == "Back")
+            this.pageId--;
+        else if (type == "Next")
+            this.pageId++;
+        else this.pageId = type;
+        this.view.viewOptions().update({});
+    }
+
     getActions() {
         assert(this.settings);
         const actions = <WizardActions>{
@@ -187,14 +228,13 @@ export class WizardComponent extends Component {
                     location.href = this.settings?.cancelAction;
                 else this.settings?.cancelAction();
             },
-            Back: () => {
-                this.pageId--;
-                this.view.viewOptions().update({});
+            Back: async () => {
+                await this.settings?.onBackPage?.(actions);
+                this.jumpPage(this.pages[ this.pageId ].getBackPage());
             },
             Next: async () => {
                 await this.settings?.onNextPage?.(actions);
-                this.pageId++;
-                this.view.viewOptions().update({});
+                this.jumpPage(this.pages[ this.pageId ].getNextPage());
             },
             Submit: async () => {
                 const data = await Promise.all(this.pages.map(x => (x.getValidator() ?? ANY_VALIDATOR)(x.getFormData())));
