@@ -1,3 +1,8 @@
+
+// polyfill hotfix for safari
+if (document.adoptedStyleSheets.length == 0)
+    document.adoptedStyleSheets = [];
+
 /**
  * Creates a CSSStyleSheet from a tagged templates
  *
@@ -21,6 +26,6 @@ export function css(data: TemplateStringsArray, ...expr: string[]) {
     const merge = data.map((x, i) => x + (expr[ i ] || ''));
 
     const style = new CSSStyleSheet();
-    style.replaceSync(merge.join(""));
+    style.insertRule(merge.join(""));
     return style;
 }
