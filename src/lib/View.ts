@@ -2,7 +2,8 @@ import { createElement } from "../components/Components.ts";
 import type { Component, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import '../css/cards.webgen.static.css';
 import { Custom } from "../components/generic/Custom.ts";
-export class ViewClass<State>
+// deno-lint-ignore ban-types
+export class ViewClass<State extends {}>
 {
     #appendOnElement: HTMLElement | null = null;
     #hasMaxWidth: string | null = null;
@@ -69,7 +70,6 @@ export class ViewClass<State>
     asComponent() {
         const component = createElement("div");
         if (this.#appendOnElement != null) throw new Error("appendOn can only be used once");
-
         this.#appendOnElement = component;
         component.append(this.#shell);
         this.#renderFunction();
@@ -86,4 +86,5 @@ export class ViewClass<State>
     }
 }
 
-export const View = <State>(render: ViewOptionsFunc<State>) => new ViewClass<State>(render);
+// deno-lint-ignore ban-types
+export const View = <State extends {}>(render: ViewOptionsFunc<State>) => new ViewClass<State>(render);

@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/x/esbuild_serve@1.0.1/mod.ts";
+import { serve } from "https://deno.land/x/esbuild_serve@1.2.2/mod.ts";
 
 serve({
     port: 8100,
@@ -6,5 +6,8 @@ serve({
         "index": "demo/index.ts",
         "wizard/index": "demo/wizard.ts",
         "image/index": "demo/image.ts",
-    }
+    },
+    poylfills: [
+        "https://unpkg.com/construct-style-sheets-polyfill"
+    ]
 });
