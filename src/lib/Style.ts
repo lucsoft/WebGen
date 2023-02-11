@@ -14,7 +14,7 @@ export class Style {
         const styleAppendTo = options.defaultElementToHookStylesIn ?? document.documentElement;
         this.options = options;
         this.theme = styleAppendTo;
-        document.adoptedStyleSheets.push(css`:root{ --webgen-primary-color: ${options.primiaryColor ?? "blue"};}`);
+        document.adoptedStyleSheets.push(css`:root{ --webgen-primary-color: ${options.primiaryColor ?? "#5A7BF2"};}`);
         this.mediaQuery.addEventListener('change', e => {
             if (this.current == SupportedThemes.autoDark || this.current == SupportedThemes.autoLight)
                 this.updateTheme(e.matches ? SupportedThemes.autoDark : SupportedThemes.autoLight);
