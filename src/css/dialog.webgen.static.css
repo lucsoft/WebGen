@@ -1,16 +1,17 @@
 @keyframes fadeBackdrop {
     from {
         background-color: rgb(0 0 0 / 0%);
-        backdrop-filter: blur(0px);
     }
+
     to {
-        background-color: rgb(0 0 0 / 80%);
-        backdrop-filter: blur(1px);
+        background-color: rgb(0 0 0 / 85%);
     }
 }
+
 .dialog-backdrop {
     display: none;
 }
+
 .dialog-backdrop.open {
     position: fixed;
     top: 0;
@@ -18,18 +19,17 @@
     right: 0;
     bottom: 0;
     padding: var(--gap);
-    background-color: rgb(0 0 0 / 80%);
-    backdrop-filter: blur(1px);
+    background-color: rgb(0 0 0 / 85%);
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadeBackdrop 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeBackdrop 150ms linear;
 }
 
 @keyframes dialogFlowIn {
     from {
-        transform: translate(0, 2px) scale(0.95);
+        transform: translate(0, 15px) scale(0.98);
         opacity: 0.95;
     }
 }
@@ -43,14 +43,15 @@
     font-family: var(--font);
     animation: dialogFlowIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.dialog > .dialog-title {
+
+.dialog>.dialog-title {
     display: block;
     font-size: 1.8rem;
-    font-weight: 300;
+    font-weight: 400;
     margin: var(--gap);
 }
 
-.dialog > .dialog-content {
+.dialog>.dialog-content {
     display: block;
     margin: calc(var(--gap) / 2) var(--gap);
 }
