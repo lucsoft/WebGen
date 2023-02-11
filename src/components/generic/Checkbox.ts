@@ -8,12 +8,12 @@ import { ButtonStyle, ColoredComponent } from "../../types.ts";
 class CheckboxComponent extends ColoredComponent {
 
     constructor(selected: boolean, icon: string) {
-        super()
+        super();
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wcheckbox", Color.Grayscaled)
+        this.wrapper.classList.add("wcheckbox", Color.Grayscaled);
         if (selected) this.wrapper.classList.add("selected");
-        this.wrapper.append(Icon(icon).draw())
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper)
+        this.wrapper.append(Icon(icon).draw());
+        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
 
     }
     onClick(action: (me: MouseEvent, value: boolean) => void) {
@@ -21,11 +21,11 @@ class CheckboxComponent extends ColoredComponent {
             if (this.wrapper.classList.contains(Color.Disabled)) return;
             const selected = this.wrapper.classList.contains("selected");
             conditionalCSSClass(this.wrapper, !selected, "selected");
-            setTimeout(() => action(me, selected), 300)
-        })
+            setTimeout(() => action(me, selected), 300);
+        });
         return this;
     }
-    setStyle(_style: ButtonStyle): typeof this {
+    setStyle(_style: ButtonStyle): this {
         throw new Error("Method not implemented.");
     }
     setColor(color: Color) {

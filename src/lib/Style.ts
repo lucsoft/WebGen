@@ -2,7 +2,7 @@ import { blur, dark, light } from '../css/themes.ts';
 import { SupportedThemes } from './SupportedThemes.ts';
 import { ColorDef } from "../types.ts";
 import { Color } from "./Color.ts";
-import { WebGenOptions } from "../webgen.ts";
+import { css, WebGenOptions } from "../webgen.ts";
 
 export class Style {
     private theme: HTMLElement;
@@ -14,6 +14,7 @@ export class Style {
         const styleAppendTo = options.defaultElementToHookStylesIn ?? document.documentElement;
         this.options = options;
         this.theme = styleAppendTo;
+        document.adoptedStyleSheets.push(css`:root{ --webgen-primary-color: ${options.primiaryColor ?? "blue"};}`);
         this.mediaQuery.addEventListener('change', e => {
             if (this.current == SupportedThemes.autoDark || this.current == SupportedThemes.autoLight)
                 this.updateTheme(e.matches ? SupportedThemes.autoDark : SupportedThemes.autoLight);
@@ -71,6 +72,7 @@ export class Style {
             if (this.current == theme) return;
             if (theme === SupportedThemes.gray) this.theme.removeAttribute("style");
             this.applyStyles(this.getMapping()[ theme ]!);
+            document.body.setAttribute("data-theme", theme == SupportedThemes.light || theme == SupportedThemes.autoLight ? "light" : "dark");
             this.current = theme;
             this.options.events?.themeChanged?.(theme, this);
         }

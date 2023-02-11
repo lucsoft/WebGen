@@ -1,6 +1,7 @@
 import { Style } from './lib/Style.ts';
 import { SupportedThemes } from './lib/SupportedThemes.ts';
 export { SupportedThemes } from './lib/SupportedThemes.ts';
+import './css/00.colors.css';
 import './css/webgen.static.css';
 import './css/master.css';
 import './css/modern.css';
@@ -23,6 +24,7 @@ export * from './components/generic/Stacks.ts';
 export * from './components/generic/Button.ts';
 export * from "./components/generic/Wizard.ts";
 export * from "./components/generic/ReCache.ts";
+export * from "./components/generic/Layer.ts";
 export * from "./components/generic/MediaQuery.ts";
 export * from "./components/generic/Table.ts";
 export * from "./components/generic/Image.ts";
@@ -38,6 +40,7 @@ export * from "./Components.ts";
 
 export type WebGenOptions = {
     updateThemeOnInit?: false,
+    primiaryColor?: string,
     colors?: ColorDef,
     icon?: Icons,
     events?: {

@@ -1,0 +1,69 @@
+.wlayer {
+    background: var(--layer-background);
+    position: relative;
+}
+
+.wlayer.wlayer0 {
+    --color-overlay: 0%;
+}
+
+.wlayer.wlayer1 {
+    --color-overlay: 5%;
+    --layer-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.wlayer.wlayer2 {
+    --color-overlay: 8%;
+    --layer-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+
+}
+
+.wlayer.wlayer3 {
+    --color-overlay: 11%;
+    --layer-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3);
+
+}
+
+.wlayer.wlayer4 {
+    --color-overlay: 12%;
+    --layer-shadow: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.wlayer.wlayer5 {
+    --color-overlay: 14%;
+    --layer-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wlayer.tint-shadow,
+.wlayer.shadow {
+    box-shadow: var(--layer-shadow, none);
+}
+
+.wlayer.shadow .wlayer-inner {
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: calc(calc(var(--color-overlay, 0%) * 1.8) - 5%);
+}
+
+
+.wlayer.tint-shadow .wlayer-inner,
+.wlayer.tint .wlayer-inner {
+    position: absolute;
+    inset: 0;
+    background: var(--webgen-primary-color);
+    opacity: calc(calc(var(--color-overlay, 0%) * 1.8) - 5%);
+}
+
+[data-theme="light"] .wlayer {
+    color: black;
+}
+
+[data-theme="dark"] .wlayer {
+    --layer-shadow: none;
+}
+
+[data-theme="dark"] .wlayer:is(.tint-shadow, .tint) {
+    /* We don't have any color-mix or lsh functions so we use this hack */
+    box-shadow: 0 0 0 10000rem rgba(255, 255, 255, calc(calc(var(--color-overlay, 0%) * 1.8) - 5%)) inset;
+}

@@ -1,0 +1,11 @@
+:root {
+    --layer-background: #ececec;
+    --layer-color: #000000;
+    --layer-foreground-hue: 102;
+    --layer-foreground-sat: 34%;
+}
+
+[data-theme="dark"] {
+    --layer-background: #141314;
+    --layer-color: #FFFFFF;
+}
