@@ -65,5 +65,5 @@
 
 [data-theme="dark"] .wlayer:is(.tint-shadow, .tint) {
     /* We don't have any color-mix or lsh functions so we use this hack */
-    box-shadow: 0 0 0 10000rem rgba(255, 255, 255, calc(calc(var(--color-overlay, 0%) * 1.8) - 5%)) inset;
+    box-shadow: 0 0 0 10000rem rgba(255, 255, 255, calc(calc(var(--color-overlay, 0%) * 1.7) - 18%)) inset;
 }
