@@ -20,7 +20,7 @@
 
 .wiconbutton:not(.disabled) {
     box-shadow: 0px 0px 0px 0px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
-    transition: box-shadow 250ms ease;
+    transition: box-shadow 250ms var(--jump-ani);
 }
 
 .wiconbutton:focus {
@@ -28,7 +28,7 @@
 }
 
 .wiconbutton:not(.disabled):is(:hover, :focus) {
-    box-shadow: 0px 0px 0px 4px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+    box-shadow: 0px 0px 0px 5px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
 
 .wiconbutton.grayscaled {

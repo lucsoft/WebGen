@@ -70,7 +70,7 @@
 
 .wbutton.inline {
     color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
-    transition: background-color 200ms ease;
+    transition: background-color 250ms var(--jump-ani);
 }
 
 .wbutton.grayscaled.inline,
@@ -88,17 +88,17 @@
 
 .wbutton:not(.disabled).normal {
     box-shadow: 0 0 0 0 hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
-    transition: box-shadow 250ms ease;
+    transition: box-shadow 250ms var(--jump-ani);
 }
 
 .wbutton:not(.disabled).normal:is(:hover, :focus-visible) {
-    box-shadow: 0 0 0 4px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+    box-shadow: 0 0 0 5px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
 }
 
 .wbutton.secondary {
     color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
     background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
-    transition: background-color 200ms ease;
+    transition: background-color 200ms var(--jump-ani);
 }
 
 .wbutton:not(.disabled).secondary:is(:hover, :focus-visible) {
