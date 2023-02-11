@@ -10,7 +10,7 @@ export type ComponentArray = ((Component | null)[] | Component | null)[];
 export type ButtonActions = {
     title: string;
     action: () => void;
-}
+};
 
 export const enum CardTypes {
     Default,
@@ -21,9 +21,9 @@ export const enum CardTypes {
 }
 
 export type CommonCard = {
-    make: () => CustomComponent
-    getSize: () => { width?: number, height?: number }
-}
+    make: () => CustomComponent;
+    getSize: () => { width?: number, height?: number; };
+};
 
 export const enum ButtonStyle {
     Inline = "inline",
@@ -34,7 +34,7 @@ export const enum ButtonStyle {
 }
 
 export abstract class Component extends EventTarget {
-    protected wrapper: HTMLElement = createElement("div")
+    protected wrapper: HTMLElement = createElement("div");
 
     addClass(...classes: string[]) {
         this.wrapper.classList.add(...classes);
@@ -76,6 +76,19 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.justifyItems = type;
         return this;
     }
+    setBorderRadius(value: "none" | "tiny" | "mid" | "large" | "complete") {
+        const map = {
+            "tiny": "0.3rem",
+            "mid": "0.5rem",
+            "large": "0.8rem",
+            "complete": "100rem"
+        };
+
+        //@ts-ignore fail if bad input
+        this.wrapper.style.borderRadius = map[ value ] ?? value;
+
+        return this;
+    }
     setDirection(type: "column" | "row" | "row-reverse" | "column-reverse"): CustomComponent {
         this.wrapper.style.flexDirection = type;
         return this;
@@ -84,21 +97,21 @@ export abstract class Component extends EventTarget {
         return this.wrapper;
     }
     onRightClick(func: (env: MouseEvent) => void) {
-        this.wrapper.addEventListener('contextmenu', (e) => func(e))
+        this.wrapper.addEventListener('contextmenu', (e) => func(e));
         return this;
     }
     onClick(func: (ev: MouseEvent) => void) {
-        this.wrapper.addEventListener('click', func)
+        this.wrapper.addEventListener('click', func);
         return this;
     }
 }
 export abstract class ColoredComponent extends Component {
-    wrapper = createElement("a")
+    wrapper = createElement("a");
     constructor() {
-        super()
+        super();
     }
-    abstract setStyle(style: ButtonStyle): typeof this
-    abstract setColor(color: Color): typeof this
+    abstract setStyle(style: ButtonStyle): this;
+    abstract setColor(color: Color): this;
 }
 
 export type ViewOptions<State> = {
