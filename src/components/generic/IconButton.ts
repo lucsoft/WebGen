@@ -18,8 +18,10 @@ export class IconButtonComponent extends ColoredComponent {
         changeClassAtIndex(this.wrapper, color, 1);
         return this;
     }
-    asLinkButton(url: string) {
+    asLinkButton(url: string, target?: string) {
         this.wrapper.href = url;
+        if (target)
+            this.wrapper.target = target;
         return this;
     }
     setStyle(_style: ButtonStyle): this {

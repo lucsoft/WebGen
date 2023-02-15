@@ -10,16 +10,16 @@ const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
 
 export class ButtonComponent extends ColoredComponent {
-    prog = createElement("div")
+    prog = createElement("div");
     constructor(string: string | Component) {
         super();
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal)
+        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper)
+        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.wrapper.append(typeof string == "string" ? string : string.draw());
     }
-    setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled))
+    setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: ButtonStyle, progress?: number) {
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
         changeClassAtIndex(this.wrapper, style, 2);
@@ -42,8 +42,10 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.style.justifyContent = type;
         return this;
     }
-    asLinkButton(link: string): ButtonComponent {
-        this.wrapper.href = link;
+    asLinkButton(url: string, target?: string) {
+        this.wrapper.href = url;
+        if (target)
+            this.wrapper.target = target;
         return this;
     }
     setGrow(value = 1) {
@@ -53,19 +55,19 @@ export class ButtonComponent extends ColoredComponent {
     onPromiseClick(func: (env: MouseEvent, e: ButtonComponent) => Promise<void>) {
         this.onClick(async (env, e) => {
             const cssclass = this.wrapper.classList.item(2);
-            this.setStyle(ButtonStyle.Spinner)
+            this.setStyle(ButtonStyle.Spinner);
             await func(env, e);
             this.setStyle(cssclass as ButtonStyle);
-        })
+        });
         return this;
     }
     onClick(func: (env: MouseEvent, e: ButtonComponent) => void) {
         if (this.wrapper.classList.contains(Color.Disabled)) return this;
-        this.wrapper.addEventListener('click', (e) => func(e, this))
+        this.wrapper.addEventListener('click', (e) => func(e, this));
         return this;
     }
     setColor(color: Color) {
-        this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color))
+        this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));
         this.wrapper.tabIndex = speicalSyles.includes(this.wrapper.classList[ 3 ] as ButtonStyle) ? -1 : accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;
