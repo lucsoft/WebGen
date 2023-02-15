@@ -14,7 +14,10 @@ export class Style {
         const styleAppendTo = options.defaultElementToHookStylesIn ?? document.documentElement;
         this.options = options;
         this.theme = styleAppendTo;
-        document.adoptedStyleSheets.push(css`:root{ --webgen-primary-color: ${options.primiaryColor ?? "#5A7BF2"};}`);
+        const data = (options.primiaryColor ?? "hsl(200, 50%, 40%)")?.match(/hsl\((?<hue>\d+), (?<saturation>\d+%), .*%\)/);
+        if (!(data && data.groups && data.groups.hue && data.groups.saturation)) throw new Error("Bad Primary Color");
+        document.adoptedStyleSheets.push(css`:root{ --webgen-primary-hue: ${data.groups.hue}; --webgen-primary-sat: ${data.groups.saturation};}`);
+
         this.mediaQuery.addEventListener('change', e => {
             if (this.current == SupportedThemes.autoDark || this.current == SupportedThemes.autoLight)
                 this.updateTheme(e.matches ? SupportedThemes.autoDark : SupportedThemes.autoLight);

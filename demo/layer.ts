@@ -1,7 +1,7 @@
 import { Horizontal, Layer, PlainText, Vertical, View, WebGen } from "../mod.ts";
 
 WebGen({
-    // primiaryColor: "#6750A4",
+    primiaryColor: "hsl(256, 34%, 40%)",
 });
 
 View(() => Horizontal(
@@ -35,7 +35,7 @@ View(() => Horizontal(
             PlainText("Hello World! 0")
                 .setFont(1.5).setPadding("0 .5rem"),
             0
-        )
+        ).setGrow()
     ).setGap("2.5rem").setGrow(),
     Vertical(
         Layer(
@@ -67,7 +67,7 @@ View(() => Horizontal(
             PlainText("Hello World! 0")
                 .setFont(1.5).setPadding("0 .5rem"),
             0, "tint"
-        ),
+        ).setGrow(),
     ).setGap("2.5rem").setGrow(),
     Vertical(
         Layer(
@@ -99,6 +99,6 @@ View(() => Horizontal(
             PlainText("Hello World! 0")
                 .setFont(1.5).setPadding("0 .5rem"),
             0, "tint-shadow"
-        ),
+        ).setGrow(),
     ).setGap("2.5rem").setGrow()
 ).setGap("2.5rem").setPadding("2.5rem")).appendOn(document.body);

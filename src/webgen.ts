@@ -40,7 +40,7 @@ export * from "./Components.ts";
 
 export type WebGenOptions = {
     updateThemeOnInit?: false,
-    primiaryColor?: string,
+    primiaryColor?: `hsl(${number}, ${number}%, 40%)`,
     colors?: ColorDef,
     icon?: Icons,
     events?: {
