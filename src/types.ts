@@ -104,6 +104,11 @@ export abstract class Component extends EventTarget {
         this.wrapper.addEventListener('click', func);
         return this;
     }
+
+    removeFromLayout() {
+        this.wrapper.style.display = "contents";
+        return this;
+    }
 }
 export abstract class ColoredComponent extends Component {
     wrapper = createElement("a");

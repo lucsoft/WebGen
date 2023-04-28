@@ -10,8 +10,8 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
     input = createElement("input");
     constructor(type: TextInputMode, label: string, mode: InputDataMode) {
         super();
-        this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.classList.add("winput", Color.Grayscaled, ButtonStyle.Normal);
+        this.input.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         const placeholder = PlainText(label).draw();
 
         this.input.type = type;
@@ -48,6 +48,14 @@ export class TextInputComponent<Value extends string> extends InputForm<Value> {
     setStyle(style: ButtonStyle) {
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
         changeClassAtIndex(this.wrapper, style, 2);
+        return this;
+    }
+    required() {
+        this.input.required = true;
+        return this;
+    }
+    setAutofill(text: string) {
+        this.input.autocomplete = text;
         return this;
     }
     setColor(color: Color) {

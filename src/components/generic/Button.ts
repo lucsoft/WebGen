@@ -13,8 +13,8 @@ export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
     constructor(string: string | Component) {
         super();
-        this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
+        this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.wrapper.append(typeof string == "string" ? string : string.draw());
