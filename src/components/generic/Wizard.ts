@@ -4,7 +4,7 @@ import * as validator from "https://deno.land/x/zod@v3.21.4/mod.ts";
 import { View } from "../../lib/View.ts";
 import { AlignComponent, CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button, ButtonComponent } from "./Button.ts";
-import { assert } from "https://deno.land/std@0.167.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { PlainText } from "./PlainText.ts";
 import { StateData, State, StateHandler } from "../../State.ts";

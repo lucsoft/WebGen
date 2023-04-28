@@ -1,7 +1,7 @@
 import { Grid, Image, View, WebGen } from "../src/webgen.ts";
 import image from "./test.png";
 import "./image.css";
-import { delay } from "https://deno.land/std@0.167.0/async/delay.ts";
+import { delay } from "https://deno.land/std@0.185.0/async/delay.ts";
 
 WebGen();
 const blobImage = await fetch(image)

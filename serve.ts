@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/x/esbuild_serve@1.2.2/mod.ts";
+import { serve } from "https://deno.land/x/esbuild_serve@1.2.3/mod.ts";
 
 serve({
     port: 8100,
