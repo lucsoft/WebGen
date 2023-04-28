@@ -1,41 +1,25 @@
-import { ButtonStyle, Component } from "../../types.ts";
+import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
-import { Button } from './Button.ts';
-import { Horizontal, Spacer } from './Stacks.ts';
 
-export class FormComponent extends Component {
+export const Form = (ele: Component) => new class extends Component {
     wrapper = createElement("form");
-    constructor(compoents: Record<string, Component>) {
-        super();
 
-        this.wrapper.append(...Object.entries(compoents).map(([ name, component ]) => {
-            const ele = component.draw();
-            ele.querySelector("input")!.name = name;
-            return ele;
-        }));
+    constructor() {
+        super();
+        this.wrapper.append(ele.draw());
     }
-    onSubmit(title: string, action: (data: FormData) => void | Promise<void>) {
-        const button = Button(title).onClick(() => {
-            submit.click();
-        });
+
+    activeSubmitTo(selector: string) {
         const submit = createElement("input");
         submit.type = "submit";
         submit.hidden = true;
-        this.wrapper.addEventListener('submit', (data) => {
-            data.preventDefault();
-            button.setStyle(ButtonStyle.Spinner);
+        submit.onclick = (e) => {
+            e.preventDefault();
+            if (!this.wrapper.reportValidity()) return;
 
-            Promise.resolve(action(new FormData(data.target as HTMLFormElement))).finally(() => {
-                setTimeout(() => button.setStyle(ButtonStyle.Normal), 1000);
-            });
-        });
-        this.wrapper.action = "#";
-        this.wrapper.append(submit, Horizontal(
-            Spacer(),
-            button
-        ).draw());
+            this.wrapper.querySelector<HTMLElement>(selector)?.click();
+        };
+        this.wrapper.append(submit);
         return this;
     }
-}
-
-export const Form = (data: Record<string, Component>) => new FormComponent(data);
+};

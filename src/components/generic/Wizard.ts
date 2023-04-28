@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { ButtonStyle, Component } from "../../types.ts";
-import * as validator from "https://deno.land/x/zod@v3.20.2/mod.ts";
+import * as validator from "https://deno.land/x/zod@v3.21.4/mod.ts";
 import { View } from "../../lib/View.ts";
 import { AlignComponent, CenterV, Horizontal, Spacer, Vertical } from "./Stacks.ts";
 import { Button, ButtonComponent } from "./Button.ts";
