@@ -1,0 +1,76 @@
+.wentry {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    padding: 20px;
+    align-items: center;
+    /* gap: 25px; */
+    box-sizing: border-box;
+    transition: 250ms ease box-shadow;
+    --gap: 25px;
+}
+
+.wentry.small {
+    --gap: 16px;
+    padding: 16px;
+}
+
+.wentry .wlayer-inner {
+    transition: 250ms ease opacity;
+}
+
+.wentry.action {
+    cursor: pointer;
+}
+
+.wentry.action:focus,
+.wentry.action:hover {
+    --color-overlay: 7%;
+    --layer-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wentry .basic-text {
+    grid-template-columns: 100%;
+}
+
+.wentry .loading {
+    position: relative;
+    width: 1.5rem;
+}
+
+.wentry .title {
+    font-size: 35px;
+    font-weight: 700;
+}
+
+.wentry .subtitle {
+    font-size: 20px;
+    font-weight: 650;
+    opacity: 70%;
+}
+
+.wentry.small .title {
+    font-size: 22px;
+}
+
+.wentry.small .subtitle {
+    font-size: 15px;
+}
+
+.wentry .title,
+.wentry .subtitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.wentry .prefix,
+.wentry .suffix {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+[data-theme=dark] .wentry {
+    background: transparent;
+    --color-overlay: 5%;
+    box-shadow: none;
+}
