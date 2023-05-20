@@ -1,6 +1,7 @@
+import { isPointer } from "./State.ts";
 import { createElement } from "./components/Components.ts";
 import { Color } from "./lib/Color.ts";
-import { CustomComponent } from "./webgen.ts";
+import { CustomComponent, Pointable } from "./webgen.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
@@ -36,7 +37,16 @@ export const enum ButtonStyle {
 export abstract class Component extends EventTarget {
     protected wrapper: HTMLElement = createElement("div");
 
-    addClass(...classes: string[]) {
+    addClass(val: Pointable<string>, ...classes: string[]) {
+        if (isPointer(val))
+            val.on((val, oldVal) => {
+                if (typeof oldVal != "string")
+                    this.wrapper.classList.remove(oldVal);
+                this.wrapper.classList.add(val);
+            });
+        else
+            this.wrapper.classList.add(val);
+
         this.wrapper.classList.add(...classes);
         return this;
     }

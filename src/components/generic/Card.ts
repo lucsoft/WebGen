@@ -1,4 +1,4 @@
-import { CommonCard, Component } from "../../types.ts";
+import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { Custom } from "./Custom.ts";
 
