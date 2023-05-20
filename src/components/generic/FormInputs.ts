@@ -28,7 +28,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         return this;
     }
 
-    sync<Data extends StateHandler<unknown>, Key extends KeysMatching<Data, string>>(data: Data, key: Key) {
+    sync<Data extends StateHandler<unknown>, Key extends KeysMatching<Data, StateValue>>(data: Data, key: Key) {
         this.data = data;
         this.key = key;
 

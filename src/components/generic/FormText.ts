@@ -6,7 +6,7 @@ import { InputForm, speicalSyles } from "./FormInputs.ts";
 export type TextInputMode = "text" | "email" | "password" | "url" | "date";
 export type InputDataMode = "live" | "blur";
 
-export class TextInputComponent<Value extends string> extends InputForm<Value> {
+export class TextInputComponent<Value extends string | undefined> extends InputForm<Value> {
     input = createElement("input");
     constructor(type: TextInputMode, label: string, mode: InputDataMode) {
         super();
