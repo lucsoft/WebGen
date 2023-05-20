@@ -53,6 +53,7 @@ h4 {
 
 ::-webkit-scrollbar {
     width: 5px;
+    height: 0;
     margin-left: -5px;
     background: rgba(0, 0, 0, 0);
 }

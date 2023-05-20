@@ -29,6 +29,7 @@ export * from "./components/generic/MediaQuery.ts";
 export * from "./components/generic/Table.ts";
 export * from "./components/generic/Image.ts";
 export * from "./components/generic/Entry.ts";
+export * from "./components/generic/Taglist.ts";
 export * from './components/light-components/loadingWheel.ts';
 export * from './types.ts';
 export * from './lib/icons/BootstrapIcons.ts';

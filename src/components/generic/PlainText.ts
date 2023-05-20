@@ -7,9 +7,9 @@ export const PlainText = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 
     constructor() {
         super();
         if (isPointer(title))
-            title.on((val) => this.wrapper.innerText = val);
+            title.on((val) => this.wrapper.textContent = val);
         else
-            this.wrapper.innerText = title;
+            this.wrapper.textContent = title;
     }
     setFont(size: number, weight = 100) {
         this.wrapper.style.fontSize = `${size}rem`;

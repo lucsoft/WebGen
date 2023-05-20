@@ -7,7 +7,7 @@ import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import '../../css/input.webgen.static.css';
-import { DataSourceKey, Pointable, isPointer, StateHandler, StateData } from "../../State.ts";
+import { DataSourceKey, Pointable, isPointer, StateHandler } from "../../State.ts";
 
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 

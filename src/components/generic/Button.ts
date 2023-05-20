@@ -19,16 +19,19 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         if (isPointer(string))
-            string.on((val, oldVal) => {
-                if (oldVal)
-                    this.wrapper.children.item(this.wrapper.children.length - 1)?.remove();
+            string.on((val) => {
+                Array.from(this.wrapper.childNodes).at(-1)?.remove();
                 this.wrapper.append(typeof val == "string" ? val : val.draw());
             });
         else
             this.wrapper.append(typeof string == "string" ? string : string.draw());
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
-    setStyle(style: ButtonStyle, progress?: number) {
+    setStyle(style: Pointable<ButtonStyle>, progress?: number) {
+        if (isPointer(style)) {
+            style.on((val) => this.setStyle(val));
+            return this;
+        }
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
         changeClassAtIndex(this.wrapper, style, 2);
         if (style === ButtonStyle.Spinner) {
@@ -42,11 +45,11 @@ export class ButtonComponent extends ColoredComponent {
         }
         return this;
     }
-    setAlign(type: "center" | "flex-end" | "flex-start" | "stretch") {
+    setAlign(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.alignContent = type;
         return this;
     }
-    setJustify(type: "center" | "flex-end" | "flex-start" | "stretch") {
+    setJustify(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.justifyContent = type;
         return this;
     }

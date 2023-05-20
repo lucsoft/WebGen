@@ -40,7 +40,7 @@ export abstract class Component extends EventTarget {
     addClass(val: Pointable<string>, ...classes: string[]) {
         if (isPointer(val))
             val.on((val, oldVal) => {
-                if (typeof oldVal != "string")
+                if (oldVal)
                     this.wrapper.classList.remove(oldVal);
                 this.wrapper.classList.add(val);
             });
@@ -78,11 +78,11 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.flexGrow = value.toString();
         return this;
     }
-    setAlign(type: "center" | "flex-end" | "flex-start" | "stretch") {
+    setAlign(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.alignItems = type;
         return this;
     }
-    setJustify(type: "center" | "flex-end" | "flex-start" | "stretch") {
+    setJustify(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.justifyItems = type;
         return this;
     }

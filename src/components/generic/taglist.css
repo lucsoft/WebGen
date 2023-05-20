@@ -1,0 +1,54 @@
+.wtags {
+    display: grid;
+    position: relative;
+    width: 100%;
+}
+
+.wtags .items {
+    display: grid;
+    grid-auto-flow: column;
+    gap: calc(var(--gap) / 2);
+    overflow: auto;
+    padding: 5px;
+    margin: -5px;
+    justify-content: start;
+}
+
+.wtags .wbutton {
+    border-radius: 100rem;
+}
+
+.wtags .move .wiconbutton {
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+    color: var(--layer-color);
+    margin: -5px;
+    padding: 5px;
+    --outside-color: var(--layer-background);
+    transition: transfrom 250ms var(--jump-ani);
+}
+
+.wtags .move .wiconbutton.hidden {
+    display: none;
+}
+
+.wtags .move .wiconbutton:hover {
+    box-shadow: none;
+}
+
+.wtags .move .wiconbutton:hover span {
+    transform: translate(var(--offset, 0));
+}
+
+.wtags .move .wiconbutton:nth-child(1) {
+    left: 0;
+    --offset: -2px;
+    background: linear-gradient(89.33deg, var(--outside-color) 0.58%, rgba(0, 16, 27, 0) 99.44%)
+}
+
+.wtags .move .wiconbutton:nth-child(2) {
+    right: 0;
+    --offset: 2px;
+    background: linear-gradient(270deg, var(--outside-color) 0.01%, rgba(0, 16, 27, 0) 100%);
+}

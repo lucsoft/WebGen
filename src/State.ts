@@ -105,6 +105,7 @@ export interface DependencyProps {
 export type Pointer<T> = {
     type: "pointer",
     value: () => T,
+    setValue: (val: any) => void,
     readonly on: (c: ObserverCallback) => void;
 };
 
@@ -247,9 +248,12 @@ function _state<T>(
             if (typeof p === "string" && p.startsWith("$")) return <Pointer<T>>{
                 type: "pointer",
                 value: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
+                setValue: (val) => {
+                    proxy[ p.replace("$", "") as keyof typeof proxy ] = val;
+                },
                 on: (c) => {
-                    $on(p.replace("$", ""), c);
                     c(proxy[ p.replace("$", "") as keyof typeof proxy ]);
+                    $on(p.replace("$", ""), c);
                 }
             };
             const value = Reflect.get(...args);
@@ -463,8 +467,8 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
 }
 
 
-export function refMap<oldT extends string, newType extends string>(data: Pointer<oldT>, val: (val: oldT) => newType) {
-    const state = State({ val: data.value() as string });
-    state.$val.on((newVal) => state.val = val(newVal as oldT));
-    return state.$val as Pointer<newType>;
+export function refMap<oldT, newT>(data: Pointer<oldT>, val: (val: oldT) => newT) {
+    const state = State({ val: data.value() as newT | oldT });
+    data.on((newVal) => state.val = val(newVal as oldT) as typeof state.val);
+    return state.$val as Pointer<newT>;
 }
