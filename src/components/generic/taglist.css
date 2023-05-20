@@ -25,6 +25,7 @@
     color: var(--layer-color);
     margin: -5px;
     padding: 5px;
+    border-radius: 0;
     --outside-color: var(--layer-background);
     transition: transfrom 250ms var(--jump-ani);
 }
