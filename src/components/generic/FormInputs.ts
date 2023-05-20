@@ -33,8 +33,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         this.key = key;
 
         // Listen on Input Changes
-        // @ts-ignore Problem is we want a clean key not a key wrapped in purereactiveproxy
-        this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<StateValue>>event).detail);
+        this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<Data[ Key ]>>event).detail);
 
         // Read State value
         if (Object.hasOwn(data, key)) this.setValue(data[ key ] as Pointable<StateValue>);
