@@ -4,6 +4,7 @@ import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import { Pointable, isPointer } from "../../State.ts";
 export class IconButtonComponent extends ColoredComponent {
     constructor(icon: CommonIconType | string, label: string) {
         super();
@@ -13,7 +14,11 @@ export class IconButtonComponent extends ColoredComponent {
         );
         this.wrapper.ariaLabel = label;
     }
-    setColor(color: Color) {
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.on(() => this.setColor(color));
+            return this;
+        }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;

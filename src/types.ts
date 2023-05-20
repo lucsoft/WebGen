@@ -125,8 +125,8 @@ export abstract class ColoredComponent extends Component {
     constructor() {
         super();
     }
-    abstract setStyle(style: ButtonStyle): this;
-    abstract setColor(color: Color): this;
+    abstract setStyle(style: Pointable<ButtonStyle>): this;
+    abstract setColor(color: Pointable<Color>): this;
 }
 
 export type ViewOptions<State> = {

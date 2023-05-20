@@ -77,7 +77,11 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.addEventListener('click', (e) => func(e, this));
         return this;
     }
-    setColor(color: Color) {
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.on(() => this.setColor(color));
+            return this;
+        }
         this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));
         this.wrapper.tabIndex = speicalSyles.includes(this.wrapper.classList[ 3 ] as ButtonStyle) ? -1 : accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);

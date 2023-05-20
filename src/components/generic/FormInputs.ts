@@ -108,7 +108,11 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         }
         return this;
     }
-    setColor(color: Color) {
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.on(() => this.setColor(color));
+            return this;
+        }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;

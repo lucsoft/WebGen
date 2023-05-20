@@ -4,6 +4,7 @@ import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import { Pointable, isPointer } from "../../State.ts";
 
 class CheckboxComponent extends ColoredComponent {
 
@@ -28,7 +29,11 @@ class CheckboxComponent extends ColoredComponent {
     setStyle(_style: ButtonStyle): this {
         throw new Error("Method not implemented.");
     }
-    setColor(color: Color) {
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.on(() => this.setColor(color));
+            return this;
+        }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         return this;

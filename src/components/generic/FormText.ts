@@ -1,5 +1,5 @@
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { ButtonStyle, changeClassAtIndex, Color, PlainText } from "../../webgen.ts";
+import { ButtonStyle, changeClassAtIndex, Color, isPointer, PlainText, Pointable } from "../../webgen.ts";
 import { createElement } from "../Components.ts";
 import { InputForm, speicalSyles } from "./FormInputs.ts";
 
@@ -58,7 +58,11 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
         this.input.autocomplete = text;
         return this;
     }
-    setColor(color: Color) {
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.on(() => this.setColor(color));
+            return this;
+        }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
         changeClassAtIndex(this.wrapper, color, 1);
         this.input.disabled = color == Color.Disabled;
