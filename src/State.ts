@@ -429,11 +429,11 @@ export const Reactive = <Data extends StateData, Key extends keyof Data>(data: S
 /**
  * Creates a Pointer<string> from a tagged templates
  *
- * ref`Hello World` => a pointer of Hello World
+ * ref\`Hello World\` => a pointer of Hello World
  *
- * ref`Hello ${state.user}` => a Pointer of Hello and the static value of user
+ * ref\`Hello ${state.user}\` => a Pointer of Hello and the static value of user
  *
- * ref`Hello ${state.$user}` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
+ * ref\`Hello ${state.$user}\` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
  */
 export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
     const empty = Symbol("empty");
