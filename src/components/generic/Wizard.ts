@@ -7,12 +7,12 @@ import { Button, ButtonComponent } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
 import { PlainText } from "./PlainText.ts";
-import { StateData, State, EditableStateHandler } from "../../State.ts";
+import { StateData, State, StateHandler } from "../../State.ts";
 
 export type WizardActions = {
     PageID: () => number,
     PageSize: () => number,
-    PageData: () => EditableStateHandler<any>[],
+    PageData: () => StateHandler<any>[],
     ResponseData: () => Promise<validator.SafeParseReturnType<any, any>[]>,
     PageValid: () => Promise<validator.SafeParseReturnType<any, any>>,
     Cancel: () => void,
@@ -31,7 +31,7 @@ type WizardActionButtons = {
 
 export type Validator = (data: unknown) => Promise<validator.SafeParseReturnType<unknown, unknown>>;
 
-type PageData<data extends StateData> = (data: EditableStateHandler<data>) => Component[];
+type PageData<data extends StateData> = (data: StateHandler<data>) => Component[];
 
 type PageJump = () => 'Next' | 'Back' | number;
 
@@ -49,7 +49,7 @@ export function ValidatedDataObject<Data extends validator.ZodType>(validation: 
 
 
 export class PageComponent<Data extends StateData> {
-    private proxyFormData: EditableStateHandler<Data>;
+    private proxyFormData: StateHandler<Data>;
     private validator?: Validator;
     private renderComponents: PageData<Data>;
     requestValidatorRun = () => { };

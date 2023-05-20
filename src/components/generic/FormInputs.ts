@@ -7,12 +7,14 @@ import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import '../../css/input.webgen.static.css';
-import { StateData, EditableStateHandler, DataSourceKey, Pointable, isPointer } from "../../State.ts";
+import { DataSourceKey, Pointable, isPointer, StateHandler, StateData } from "../../State.ts";
+
+type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
 export abstract class InputForm<StateValue> extends ColoredComponent {
-    protected data: EditableStateHandler<StateData> | null = null;
+    protected data: StateHandler<unknown> | null = null;
 
     protected key: DataSourceKey | null = null;
     protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
@@ -26,7 +28,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         return this;
     }
 
-    sync<Data extends StateData>(data: EditableStateHandler<Data>, key: keyof Data) {
+    sync<Data extends StateHandler<unknown>, Key extends KeysMatching<Data, string>>(data: Data, key: Key) {
         this.data = data;
         this.key = key;
 
@@ -35,7 +37,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<StateValue>>event).detail);
 
         // Read State value
-        if (Object.hasOwn(data, key)) this.setValue(data[ key ]);
+        if (Object.hasOwn(data, key)) this.setValue(data[ key ] as Pointable<StateValue>);
 
         // Wait for State changes
         data.$on(key, (value) => this.setValue(value));
