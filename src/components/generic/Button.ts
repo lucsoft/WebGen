@@ -79,7 +79,7 @@ export class ButtonComponent extends ColoredComponent {
     }
     setColor(color: Pointable<Color>) {
         if (isPointer(color)) {
-            color.on(() => this.setColor(color));
+            color.on((val) => this.setColor(val));
             return this;
         }
         this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));
