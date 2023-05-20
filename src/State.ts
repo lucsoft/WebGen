@@ -7,7 +7,8 @@
 */
 // deno-lint-ignore-file no-explicit-any
 
-import { Component } from "./webgen.ts";
+import { Component } from "./types.ts";
+
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
     return (
@@ -103,7 +104,7 @@ export interface DependencyProps {
 
 export type Pointer<T> = {
     type: "pointer",
-    value: T,
+    value: () => T,
     readonly on: (c: ObserverCallback) => void;
 };
 
@@ -246,10 +247,14 @@ function _state<T>(
             if (Reflect.has(depProps, p)) return Reflect.get(depProps, p);
             if (typeof p === "string" && p.startsWith("$")) return <Pointer<T>>{
                 type: "pointer",
-                value: proxy[ p.replace("$", "") as keyof typeof proxy ],
-                on: (c) => $on(p.replace("$", ""), c)
+                value: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
+                on: (c) => {
+                    $on(p.replace("$", ""), c);
+                    c(proxy[ p.replace("$", "") as keyof typeof proxy ]);
+                }
             };
             const value = Reflect.get(...args);
+
             // For any existing dependency collectors that are active, add this
             // property to their observed properties.
             addDep(proxy as StateHandler<StateData>, p);
@@ -419,3 +424,41 @@ export class ReactiveComponent<Data extends StateData, Key extends keyof Data> e
 }
 
 export const Reactive = <Data extends StateData, Key extends keyof Data>(data: StateHandler<Data>, key: Key, draw: () => Component) => new ReactiveComponent(data, key, draw);
+
+
+/**
+ * Creates a Pointer<string> from a tagged templates
+ *
+ * ref`Hello World` => a pointer of Hello World
+ *
+ * ref`Hello ${state.user}` => a Pointer of Hello and the static value of user
+ *
+ * ref`Hello ${state.$user}` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
+ */
+export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
+    const empty = Symbol("empty");
+    const merge = data.map((x, i) => [ x, expr[ i ] ?? empty ]).flat();
+
+    const state = State({
+        val: ""
+    });
+
+    function update() {
+        let list = "";
+        for (const iterator of merge) {
+            if (<any>iterator === empty) continue;
+            if (isPointer(iterator))
+                list += iterator.value();
+            else
+                list += iterator;
+        }
+        state.val = list;
+    }
+
+    for (const iterator of merge) {
+        if (isPointer(iterator))
+            iterator.on(update);
+    }
+    update();
+    return state.$val;
+}

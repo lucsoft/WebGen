@@ -1,7 +1,7 @@
-import { isPointer } from "./State.ts";
+import { Pointable, isPointer } from "./State.ts";
 import { createElement } from "./components/Components.ts";
+import { CustomComponent } from "./components/generic/Custom.ts";
 import { Color } from "./lib/Color.ts";
-import { CustomComponent, Pointable } from "./webgen.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
