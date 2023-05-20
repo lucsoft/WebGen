@@ -1,4 +1,4 @@
-import { Reactive, State } from "../../State.ts";
+import { Pointable, Reactive, State } from "../../State.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
@@ -9,7 +9,12 @@ import { PlainText } from "./PlainText.ts";
 import { Grid, CenterV, Box } from "./Stacks.ts";
 import '../../css/entry.webgen.static.css';
 
-export const Entry = (content: Component | { title: string, subtitle?: string; }) => new class extends Component {
+type BasicLabel = {
+    title: Pointable<string>;
+    subtitle?: Pointable<string>;
+};
+
+export const Entry = (content: Component | BasicLabel) => new class extends Component {
     prefix = createElement("div");
     suffix = createElement("div");
     state = State({
@@ -31,7 +36,7 @@ export const Entry = (content: Component | { title: string, subtitle?: string; }
         this.wrapper.append(this.suffix);
     }
 
-    private basicContent(content: { title: string, subtitle?: string; }): Component {
+    private basicContent(content: BasicLabel): Component {
         return Grid(...(content.subtitle
             ? [
                 PlainText(content.title).addClass("title"),

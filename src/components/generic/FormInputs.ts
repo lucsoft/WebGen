@@ -7,28 +7,31 @@ import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import '../../css/input.webgen.static.css';
-import { DataSource, DataSourceKey, ReactiveProxy } from "https://raw.githubusercontent.com/justin-schroeder/arrow-js/abcdb75/src/index.ts";
+import { StateData, EditableStateHandler, DataSourceKey, Pointable, isPointer } from "../../State.ts";
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 
 export abstract class InputForm<StateValue> extends ColoredComponent {
-    protected data: ReactiveProxy<DataSource> | null = null;
+    protected data: EditableStateHandler<StateData> | null = null;
 
     protected key: DataSourceKey | null = null;
     protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
 
-    setValue(value: StateValue | undefined) {
-        this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
+    setValue(value: Pointable<StateValue> | undefined) {
+        if (isPointer(value))
+            value.on((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
+        else
+            this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
 
         return this;
     }
 
-    sync<Data extends DataSource>(data: ReactiveProxy<Data>, key: keyof Data) {
+    sync<Data extends StateData>(data: EditableStateHandler<Data>, key: keyof Data) {
         this.data = data;
         this.key = key;
 
         // Listen on Input Changes
-        // @ts-ignore Problem is we want a clean key not a key wrapped in reactiveproxy
+        // @ts-ignore Problem is we want a clean key not a key wrapped in purereactiveproxy
         this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<StateValue>>event).detail);
 
         // Read State value

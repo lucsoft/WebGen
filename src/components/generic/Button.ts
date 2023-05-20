@@ -5,19 +5,27 @@ import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { Pointable, isPointer } from "../../State.ts";
 
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
 
 export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
-    constructor(string: string | Component) {
+    constructor(string: Pointable<string | Component>) {
         super();
         this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-        this.wrapper.append(typeof string == "string" ? string : string.draw());
+        if (isPointer(string))
+            string.on((val, oldVal) => {
+                if (oldVal)
+                    this.wrapper.children.item(this.wrapper.children.length - 1)?.remove();
+                this.wrapper.append(typeof val == "string" ? val : val.draw());
+            });
+        else
+            this.wrapper.append(typeof string == "string" ? string : string.draw());
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: ButtonStyle, progress?: number) {
@@ -73,4 +81,4 @@ export class ButtonComponent extends ColoredComponent {
         return this;
     }
 }
-export const Button = (string: string | Component) => new ButtonComponent(string);
+export const Button = (string: Pointable<string | Component>) => new ButtonComponent(string);

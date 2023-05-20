@@ -10,7 +10,7 @@
 import { Component } from "./types.ts";
 
 
-export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
+export function isState<T = StateData>(obj: unknown): obj is EditableStateHandler<T> {
     return (
         typeof obj === 'object' &&
         obj !== null &&
@@ -52,9 +52,9 @@ export type DataSourceArray<T> = Array<unknown> & T;
  * A reactive proxy object.
  */
 export type ProxyDataSource<T> = {
-    [ K in keyof T ]: StateHandler<T[ K ]> | T[ K ]
+    [ K in keyof T ]: EditableStateHandler<T[ K ]> | T[ K ]
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<StateHandler<T[ K ]> | T[ K ]>;
+        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<EditableStateHandler<T[ K ]> | T[ K ]>;
     };
 
 /**
@@ -110,19 +110,20 @@ export type Pointer<T> = {
 
 export type Pointable<T> = T | Pointer<T>;
 
+export type StateHandler<T> = {
+    [ K in keyof T ]: T[ K ] extends StateData ? EditableStateHandler<T[ K ]> : T[ K ];
+} & {
+        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<T[ K ] extends StateData ? EditableStateHandler<T[ K ]> : T[ K ]>;
+    } & DependencyProps;
+
 /**
  * A reactive proxy object.
  */
-export type StateHandler<T> = {
-    [ K in keyof T ]: T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ];
-} & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
-    } &
-    DependencyProps;
+export type EditableStateHandler<T> = StateHandler<T> & StateData;
 
 type ReactiveProxyParent = [
     property: DataSourceKey,
-    parent: StateHandler<StateData>
+    parent: EditableStateHandler<StateData>
 ];
 
 interface ReactiveProxyState {
@@ -142,7 +143,7 @@ type ReactiveProxyPropertyObservers = Map<ObserverCallback, Set<DataSourceKey>>;
 
 type ReactiveProxyDependencyCollector = Map<
     symbol,
-    Map<StateHandler<StateData>, Set<DataSourceKey>>
+    Map<EditableStateHandler<StateData>, Set<DataSourceKey>>
 >;
 
 /**
@@ -160,9 +161,9 @@ const dependencyCollector: ReactiveProxyDependencyCollector = new Map();
 function _state<T>(
     data: T,
     state: ReactiveProxyState = {}
-): StateHandler<T> {
+): EditableStateHandler<T> {
     // If this is already reactive or a non object, just return it.
-    if (isState<T>(data) || typeof data !== 'object') return data as StateHandler<T>;
+    if (isState<T>(data) || typeof data !== 'object') return data as EditableStateHandler<T>;
     // This is the observer registry itself, with properties as keys and callbacks as watchers.
     const observers: ReactiveProxyObservers = state.o || new Map();
     // This is a reverse map of observers with callbacks as keys and properties that callback is watching as values.
@@ -257,14 +258,14 @@ function _state<T>(
 
             // For any existing dependency collectors that are active, add this
             // property to their observed properties.
-            addDep(proxy as StateHandler<StateData>, p);
+            addDep(proxy as EditableStateHandler<StateData>, p);
 
             // We have special handling of array operations to prevent O(n^2) issues.
             if (isArray && p in Array.prototype) {
                 return arrayOperation(
                     p as string,
                     proxySource as DataSourceArray<T>,
-                    proxy as StateHandler<StateData>,
+                    proxy as EditableStateHandler<StateData>,
                     value
                 );
             }
@@ -278,12 +279,12 @@ function _state<T>(
                 return Reflect.set(depProps, property, value);
             }
             if (value && isState<T>(old)) {
-                const o: StateHandler<T> = old;
+                const o: EditableStateHandler<T> = old;
                 // We're assigning an object (array or pojo probably), so we want to be
                 // reactive, but if we already have a reactive object in this
                 // property, then we need to replace it and transfer the state of deps.
                 const oldState = o._st();
-                const newR = isState(value) ? reactiveMerge(value, o as StateHandler<StateData>) : _state(value, oldState);
+                const newR = isState(value) ? reactiveMerge(value, o as EditableStateHandler<StateData>) : _state(value, oldState);
                 Reflect.set(
                     target,
                     property,
@@ -316,7 +317,7 @@ function _state<T>(
             }
             return didSet;
         },
-    }) as StateHandler<T>;
+    }) as EditableStateHandler<T>;
 
     if (state.p) proxy._p = state.p;
     // Before we return the proxy object, quickly map through the children
@@ -330,10 +331,10 @@ function _state<T>(
 
 /**
  * Add a property to the tracked reactive properties.
- * @param  {StateHandler} proxy
+ * @param  {EditableStateHandler} proxy
  * @param  {DataSourceKey} property
  */
-function addDep(proxy: StateHandler<StateData>, property: DataSourceKey) {
+function addDep(proxy: EditableStateHandler<StateData>, property: DataSourceKey) {
     dependencyCollector.forEach((tracker) => {
         let properties = tracker.get(proxy);
         if (!properties) {
@@ -347,7 +348,7 @@ function addDep(proxy: StateHandler<StateData>, property: DataSourceKey) {
 function arrayOperation(
     op: string,
     arr: Array<unknown>,
-    proxy: StateHandler<StateData>,
+    proxy: EditableStateHandler<StateData>,
     native: unknown
 ) {
     const synthetic = (...args: any[]) => {
@@ -385,14 +386,14 @@ function arrayOperation(
 /**
  * Given two reactive proxies, merge the important state attributes from the
  * source into the target.
- * @param  {StateHandler} reactiveTarget
- * @param  {StateHandler} reactiveSource
+ * @param  {EditableStateHandler} reactiveTarget
+ * @param  {EditableStateHandler} reactiveSource
  * @returns ReactiveProxy
  */
 function reactiveMerge(
-    reactiveTarget: StateHandler<StateData>,
-    reactiveSource: StateHandler<StateData>
-): StateHandler<StateData> {
+    reactiveTarget: EditableStateHandler<StateData>,
+    reactiveSource: EditableStateHandler<StateData>
+): EditableStateHandler<StateData> {
     const state = reactiveSource._st();
     if (state.o) {
         state.o.forEach((callbacks, property) => {
@@ -408,11 +409,11 @@ function reactiveMerge(
 }
 
 
-export const State = <T>(data: T) => _state<T>(data);
+export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
 
 export class ReactiveComponent<Data extends StateData, Key extends keyof Data> extends Component {
 
-    constructor(data: StateHandler<Data>, key: Key, draw: () => Component) {
+    constructor(data: EditableStateHandler<Data>, key: Key, draw: () => Component) {
         super();
         data.$on(key, () => {
             // @ts-ignore Ignore
@@ -423,7 +424,7 @@ export class ReactiveComponent<Data extends StateData, Key extends keyof Data> e
     }
 }
 
-export const Reactive = <Data extends StateData, Key extends keyof Data>(data: StateHandler<Data>, key: Key, draw: () => Component) => new ReactiveComponent(data, key, draw);
+export const Reactive = <Data extends StateData, Key extends keyof Data>(data: EditableStateHandler<Data>, key: Key, draw: () => Component) => new ReactiveComponent(data, key, draw);
 
 
 /**
