@@ -1,4 +1,4 @@
-import { Pointable, isPointer } from "../../State.ts";
+import { Pointable, Pointer } from "../../State.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 
@@ -6,8 +6,8 @@ export const PlainText = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 
     wrapper = createElement(type);
     constructor() {
         super();
-        if (isPointer(title))
-            title.on((val) => this.wrapper.textContent = val);
+        if (title instanceof Pointer)
+            title.listen((val) => this.wrapper.textContent = val);
         else
             this.wrapper.textContent = title;
     }

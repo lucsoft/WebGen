@@ -1,7 +1,7 @@
-import { Pointable, isPointer } from "./State.ts";
 import { createElement } from "./components/Components.ts";
 import { CustomComponent } from "./components/generic/Custom.ts";
 import { Color } from "./lib/Color.ts";
+import { Pointable, Pointer } from "./State.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
@@ -38,8 +38,8 @@ export abstract class Component extends EventTarget {
     protected wrapper: HTMLElement = createElement("div");
 
     addClass(val: Pointable<string>, ...classes: string[]) {
-        if (isPointer(val))
-            val.on((val, oldVal) => {
+        if (val instanceof Pointer)
+            val.listen((val, oldVal) => {
                 if (oldVal)
                     this.wrapper.classList.remove(oldVal);
                 this.wrapper.classList.add(val);

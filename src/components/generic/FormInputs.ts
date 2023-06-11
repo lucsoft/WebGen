@@ -1,13 +1,13 @@
+import '../../css/input.webgen.static.css';
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { Color } from "../../lib/Color.ts";
+import { DataSourceKey, Pointable, Pointer, StateHandler } from "../../State.ts";
 import { ButtonStyle, ColoredComponent, Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
-import '../../css/input.webgen.static.css';
-import { DataSourceKey, Pointable, isPointer, StateHandler } from "../../State.ts";
 
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
@@ -20,8 +20,8 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
     protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
 
     setValue(value: Pointable<StateValue> | undefined) {
-        if (isPointer(value))
-            value.on((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
+        if (value instanceof Pointer)
+            value.listen((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
         else
             this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
 
@@ -109,8 +109,8 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         return this;
     }
     setColor(color: Pointable<Color>) {
-        if (isPointer(color)) {
-            color.on((val) => this.setColor(val));
+        if (color instanceof Pointer) {
+            color.listen((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);

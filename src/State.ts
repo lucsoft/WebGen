@@ -19,16 +19,6 @@ export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
     );
 }
 
-
-export function isPointer<T>(obj: unknown): obj is Pointer<T> {
-    return (
-        typeof obj === 'object' &&
-        obj !== null &&
-        'type' in obj &&
-        'on' in obj &&
-        obj.type === 'pointer'
-    );
-}
 /**
  * Available types of keys for a reactive object.
  */
@@ -102,12 +92,53 @@ export interface DependencyProps {
     _p?: ReactiveProxyParent;
 }
 
-export type Pointer<T> = {
-    type: "pointer",
-    value: () => T,
-    setValue: (val: any) => void,
-    readonly on: (c: ObserverCallback) => void;
-};
+
+interface PointerConn {
+    state: StateHandler<unknown>,
+    key: string;
+}
+export class Pointer<Type> {
+
+    #val: PointerConn;
+    constructor(refObject: PointerConn) {
+        this.#val = refObject;
+    }
+
+    getValue(): Type {
+        // @ts-ignore typing.
+        return this.#val.state[ this.#val.key ];
+    }
+
+    setValue(val: Type) {
+        // @ts-ignore typing.
+        this.#val.state[ this.#val.key ] = val;
+    }
+
+
+    listen(c: (val: Type, oldVal?: Type) => void) {
+        const key = this.#val.key;
+        // @ts-ignore typing.
+        c(this.#val.state[ key ]);
+        this.#val.state.$on(key, c);
+    }
+
+    map<NewType>(mapper: (val: Type) => NewType): Pointer<NewType> {
+        const state = State({ val: this.getValue() });
+        this.listen((newVal) => state.val = mapper(newVal as Type) as typeof state.val);
+        return state.$val as Pointer<NewType>;
+    }
+
+    static of<T>(val: T | Pointer<T>): Pointer<T> {
+        if (val instanceof Pointer)
+            return val;
+        return new Pointer({
+            key: "key",
+            state: State({
+                key: val
+            })
+        });
+    }
+}
 
 export type Pointable<T> = T | Pointer<T>;
 
@@ -245,17 +276,11 @@ function _state<T>(
             // For properties of the DependencyProps type, return their values from
             // the depProps instead of the target.
             if (Reflect.has(depProps, p)) return Reflect.get(depProps, p);
-            if (typeof p === "string" && p.startsWith("$")) return <Pointer<T>>{
-                type: "pointer",
-                value: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
-                setValue: (val) => {
-                    proxy[ p.replace("$", "") as keyof typeof proxy ] = val;
-                },
-                on: (c) => {
-                    c(proxy[ p.replace("$", "") as keyof typeof proxy ]);
-                    $on(p.replace("$", ""), c);
-                }
-            };
+
+            if (typeof p === "string" && p.startsWith("$")) return new Pointer<T>({
+                key: p.replace("$", ""),
+                state: proxy
+            });
             const value = Reflect.get(...args);
 
             // For any existing dependency collectors that are active, add this
@@ -450,8 +475,8 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
         let list = "";
         for (const iterator of merge) {
             if (<any>iterator === empty) continue;
-            if (isPointer(iterator))
-                list += iterator.value();
+            if (iterator instanceof Pointer)
+                list += iterator.getValue();
             else
                 list += iterator;
         }
@@ -459,16 +484,9 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
     }
 
     for (const iterator of merge) {
-        if (isPointer(iterator))
-            iterator.on(update);
+        if (iterator instanceof Pointer)
+            iterator.listen(update);
     }
     update();
     return state.$val;
-}
-
-
-export function refMap<oldT, newT>(data: Pointer<oldT>, val: (val: oldT) => newT) {
-    const state = State({ val: data.value() as newT | oldT });
-    data.on((newVal) => state.val = val(newVal as oldT) as typeof state.val);
-    return state.$val as Pointer<newT>;
 }
