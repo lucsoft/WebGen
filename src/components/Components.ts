@@ -1,3 +1,5 @@
+import { asPointer } from "../State.ts";
+
 export const createElement: <K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions) => HTMLElementTagNameMap[ K ]
     = <K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions) => window.document.createElement(tagName, options);
 
@@ -24,3 +26,7 @@ export function custom(type: keyof HTMLElementTagNameMap, message: undefined | s
         span.append(message);
     return span;
 }
+
+const mobileQuery = matchMedia("(max-width: 750px)");
+export const isMobile = asPointer(mobileQuery.matches);
+mobileQuery.addEventListener("change", () => isMobile.setValue(mobileQuery.matches));

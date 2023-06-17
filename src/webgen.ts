@@ -39,7 +39,7 @@ export * from './lib/Dialog.ts';
 export * from './lib/Color.ts';
 export * from "./State.ts";
 export * from "./Components.ts";
-
+export * from "./KeyValue.ts";
 export type WebGenOptions = {
     updateThemeOnInit?: false,
     primiaryColor?: `hsl(${number}, ${number}%, 40%)`,
