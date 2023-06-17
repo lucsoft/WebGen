@@ -149,6 +149,7 @@ export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
         setValue: (val) => {
             const oldval = _val;
             _val = val;
+            if (oldval === _val) return;
             for (const iterator of list) {
                 iterator(val, oldval);
             }
