@@ -1,4 +1,4 @@
-import { Pointable, Pointer, State } from "../../State.ts";
+import { Pointable, Pointer, State, refMap } from "../../State.ts";
 import { Color } from "../../lib/Color.ts";
 import { Component, ButtonStyle } from "../../types.ts";
 import { createElement } from "../Components.ts";
@@ -26,7 +26,7 @@ export const Taglist = (list: Pointable<string>[], selected: Pointer<number>) =>
             Button(x)
                 .setColor(Color.Colored)
                 .onClick(() => selected.setValue(i))
-                .setStyle(selected.map(index => index == i ? ButtonStyle.Normal : ButtonStyle.Secondary))
+                .setStyle(refMap(selected, index => index == i ? ButtonStyle.Normal : ButtonStyle.Secondary))
                 .draw()
         ));
 
@@ -36,10 +36,10 @@ export const Taglist = (list: Pointable<string>[], selected: Pointer<number>) =>
                     left: 0 - this.wrapper.clientWidth / 2,
                     behavior: "smooth"
                 }))
-                .addClass(state.$left.map(val => val ? "show" : "hidden"))
+                .addClass(refMap(state.$left, val => val ? "show" : "hidden"))
                 .draw(),
             IconButton("arrow_forward_ios", "go forward in tag list")
-                .addClass(state.$right.map(val => val ? "show" : "hidden"))
+                .addClass(refMap(state.$right, val => val ? "show" : "hidden"))
                 .onClick(() => this.items.scrollBy({
                     left: this.wrapper.clientWidth / 2,
                     behavior: "smooth"

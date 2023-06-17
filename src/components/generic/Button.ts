@@ -1,11 +1,11 @@
-import '../../css/buttons.webgen.static.css';
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { Color } from "../../lib/Color.ts";
-import { Pointable, Pointer } from "../../State.ts";
-import { ButtonStyle, ColoredComponent, Component } from "../../types.ts";
+import { ColoredComponent, ButtonStyle, Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
-import { changeClassAtIndex } from "../Helper.ts";
+import '../../css/buttons.webgen.static.css';
 import { loadingWheel } from "../light-components/loadingWheel.ts";
+import { changeClassAtIndex } from "../Helper.ts";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
+import { Pointable, isPointer } from "../../State.ts";
 
 const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
 const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disabled, color ][ enabled ? "values" : "reverse" ]() as [ Color, Color ];
@@ -18,8 +18,8 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-        if (string instanceof Pointer)
-            string.listen((val) => {
+        if (isPointer(string))
+            string.on((val) => {
                 Array.from(this.wrapper.childNodes).at(-1)?.remove();
                 this.wrapper.append(typeof val == "string" ? val : val.draw());
             });
@@ -28,8 +28,8 @@ export class ButtonComponent extends ColoredComponent {
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: Pointable<ButtonStyle>, progress?: number) {
-        if (style instanceof Pointer) {
-            style.listen((val) => this.setStyle(val));
+        if (isPointer(style)) {
+            style.on((val) => this.setStyle(val));
             return this;
         }
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
@@ -78,8 +78,8 @@ export class ButtonComponent extends ColoredComponent {
         return this;
     }
     setColor(color: Pointable<Color>) {
-        if (color instanceof Pointer) {
-            color.listen((val) => this.setColor(val));
+        if (isPointer(color)) {
+            color.on((val) => this.setColor(val));
             return this;
         }
         this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));

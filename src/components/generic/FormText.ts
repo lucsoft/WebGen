@@ -1,6 +1,5 @@
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { Pointer } from "../../State.ts";
-import { ButtonStyle, changeClassAtIndex, Color, PlainText, Pointable } from "../../webgen.ts";
+import { ButtonStyle, changeClassAtIndex, Color, isPointer, PlainText, Pointable } from "../../webgen.ts";
 import { createElement } from "../Components.ts";
 import { InputForm, speicalSyles } from "./FormInputs.ts";
 
@@ -60,8 +59,8 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
         return this;
     }
     setColor(color: Pointable<Color>) {
-        if (color instanceof Pointer) {
-            color.listen((val) => this.setColor(val));
+        if (isPointer(color)) {
+            color.on((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);

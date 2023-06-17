@@ -1,10 +1,10 @@
-import '../../css/checkbox.webgen.static.css';
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { Color } from "../../lib/Color.ts";
-import { Pointable, Pointer } from "../../State.ts";
-import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import '../../css/checkbox.webgen.static.css';
 import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
+import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import { Pointable, isPointer } from "../../State.ts";
 
 class CheckboxComponent extends ColoredComponent {
 
@@ -30,8 +30,8 @@ class CheckboxComponent extends ColoredComponent {
         throw new Error("Method not implemented.");
     }
     setColor(color: Pointable<Color>) {
-        if (color instanceof Pointer) {
-            color.listen((val) => this.setColor(val));
+        if (isPointer(color)) {
+            color.on((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
