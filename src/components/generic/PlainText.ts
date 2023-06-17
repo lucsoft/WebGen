@@ -7,7 +7,7 @@ export const PlainText = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 
     constructor() {
         super();
         if (isPointer(title))
-            title.on((val) => this.wrapper.textContent = val);
+            title.listen((val) => this.wrapper.textContent = val);
         else
             this.wrapper.textContent = title;
     }

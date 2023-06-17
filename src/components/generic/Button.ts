@@ -19,7 +19,7 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         if (isPointer(string))
-            string.on((val) => {
+            string.listen((val) => {
                 Array.from(this.wrapper.childNodes).at(-1)?.remove();
                 this.wrapper.append(typeof val == "string" ? val : val.draw());
             });
@@ -29,7 +29,7 @@ export class ButtonComponent extends ColoredComponent {
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: Pointable<ButtonStyle>, progress?: number) {
         if (isPointer(style)) {
-            style.on((val) => this.setStyle(val));
+            style.listen((val) => this.setStyle(val));
             return this;
         }
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
@@ -79,7 +79,7 @@ export class ButtonComponent extends ColoredComponent {
     }
     setColor(color: Pointable<Color>) {
         if (isPointer(color)) {
-            color.on((val) => this.setColor(val));
+            color.listen((val) => this.setColor(val));
             return this;
         }
         this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));

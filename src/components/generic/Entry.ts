@@ -1,3 +1,4 @@
+import '../../css/entry.webgen.static.css';
 import { Pointable, Reactive, State } from "../../State.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
@@ -6,8 +7,7 @@ import { Custom } from "./Custom.ts";
 import { Icon } from "./Icon.ts";
 import { Layer } from "./Layer.ts";
 import { PlainText } from "./PlainText.ts";
-import { Grid, CenterV, Box } from "./Stacks.ts";
-import '../../css/entry.webgen.static.css';
+import { Box, CenterV, Grid } from "./Stacks.ts";
 
 type BasicLabel = {
     title: Pointable<string>;

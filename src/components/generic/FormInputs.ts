@@ -21,7 +21,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
 
     setValue(value: Pointable<StateValue> | undefined) {
         if (isPointer(value))
-            value.on((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
+            value.listen((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
         else
             this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
 
@@ -110,7 +110,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
     }
     setColor(color: Pointable<Color>) {
         if (isPointer(color)) {
-            color.on((val) => this.setColor(val));
+            color.listen((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);

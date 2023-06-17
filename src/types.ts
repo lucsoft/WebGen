@@ -39,7 +39,7 @@ export abstract class Component extends EventTarget {
 
     addClass(val: Pointable<string>, ...classes: string[]) {
         if (isPointer(val))
-            val.on((val, oldVal) => {
+            val.listen((val, oldVal) => {
                 if (oldVal)
                     this.wrapper.classList.remove(oldVal);
                 this.wrapper.classList.add(val);

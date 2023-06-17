@@ -25,7 +25,7 @@ export function isPointer<T>(obj: unknown): obj is Pointer<T> {
         typeof obj === 'object' &&
         obj !== null &&
         'type' in obj &&
-        'on' in obj &&
+        'listen' in obj &&
         obj.type === 'pointer'
     );
 }
@@ -102,12 +102,80 @@ export interface DependencyProps {
     _p?: ReactiveProxyParent;
 }
 
+/**
+ * Interface representing a pointer.
+ */
 export type Pointer<T> = {
     type: "pointer",
-    value: () => T,
+    /**
+ * Retrieves the current value of the pointer.
+ * @returns The current value of the pointer.
+ */
+    getValue: () => T,
+    /**
+     * Sets the value of the pointer.
+     * @param val The new value to be set.
+     */
     setValue: (val: any) => void,
-    readonly on: (c: ObserverCallback) => void;
+    /**
+ * Maps the pointer using a mapping function.
+ * @param map The mapping function to be applied to the pointer's value.
+ * @returns The converted pointer.
+ */
+    map: <NewType> (mapper: (val: T) => NewType) => Pointer<NewType>;
+    /**
+ * Adds a callback function to be called when the pointer's value changes.
+ * @param c The callback function to be added.
+ */
+    readonly listen: (c: ObserverCallback) => void;
 };
+
+/**
+ * Converts a value or pointer to a pointer.
+ *
+ * A pointer is a special object that allows you to track and modify a value.
+ * It provides methods to set and retrieve the value, as well as additional
+ * functionality to convert and listen for value changes.
+ * @param value The value or pointer to be converted.
+ * @returns The converted pointer.
+ */
+export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
+    if (isPointer(value))
+        return value;
+    let _val = value;
+    const list = new Set<ObserverCallback>();
+    return <Pointer<T>>{
+        type: "pointer",
+        setValue: (val) => {
+            const oldval = _val;
+            _val = val;
+            for (const iterator of list) {
+                iterator(val, oldval);
+            }
+        },
+        getValue: () => _val,
+        map: (map) => {
+            const pointer = asPointer(map(_val));
+            list.add((val) => {
+                pointer.setValue(map(val));
+            });
+            return pointer;
+        },
+        listen: (callback) => {
+            list.add(callback);
+            callback(_val);
+        }
+    };
+}
+
+export function statePointer<T>(value: T | Pointer<T>): Pointer<StateHandler<T> | T> {
+    if (isPointer(value))
+        return value;
+    const state = State({
+        key: value
+    });
+    return state.$key as Pointer<StateHandler<T>>;
+}
 
 export type Pointable<T> = T | Pointer<T>;
 
@@ -247,13 +315,27 @@ function _state<T>(
             if (Reflect.has(depProps, p)) return Reflect.get(depProps, p);
             if (typeof p === "string" && p.startsWith("$")) return <Pointer<T>>{
                 type: "pointer",
-                value: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
+                getValue: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
                 setValue: (val) => {
                     proxy[ p.replace("$", "") as keyof typeof proxy ] = val;
                 },
-                on: (c) => {
-                    c(proxy[ p.replace("$", "") as keyof typeof proxy ]);
-                    $on(p.replace("$", ""), c);
+                map: <newT>(map: (val: T) => newT) => {
+                    const key = p.replace("$", "") as any;
+                    // @ts-ignore TODO: fix typing
+                    const state = State({ val: proxy[ key ] });
+                    const c = (newVal: T) => state.val = map(newVal);
+                    // @ts-ignore TODO: fix typing
+                    c(proxy[ key ] as T);
+                    // @ts-ignore TODO: fix typing
+                    $on(key, (val, oldVal) => c(val, oldVal));
+                    // @ts-ignore TODO: fix typing
+                    return state.$val;
+                },
+                listen: (c) => {
+                    const key = p.replace("$", "") as any;
+                    // @ts-ignore TODO: fix typing
+                    c(proxy[ key ]);
+                    $on(p.replace("$", ""), (val, oldVal) => c(val, oldVal));
                 }
             };
             const value = Reflect.get(...args);
@@ -451,7 +533,7 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
         for (const iterator of merge) {
             if (<any>iterator === empty) continue;
             if (isPointer(iterator))
-                list += iterator.value();
+                list += iterator.getValue();
             else
                 list += iterator;
         }
@@ -460,15 +542,8 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
 
     for (const iterator of merge) {
         if (isPointer(iterator))
-            iterator.on(update);
+            iterator.listen(update);
     }
     update();
     return state.$val;
-}
-
-
-export function refMap<oldT, newT>(data: Pointer<oldT>, val: (val: oldT) => newT) {
-    const state = State({ val: data.value() as newT | oldT });
-    data.on((newVal) => state.val = val(newVal as oldT) as typeof state.val);
-    return state.$val as Pointer<newT>;
 }

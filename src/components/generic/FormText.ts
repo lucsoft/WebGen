@@ -60,7 +60,7 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
     }
     setColor(color: Pointable<Color>) {
         if (isPointer(color)) {
-            color.on((val) => this.setColor(val));
+            color.listen((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);

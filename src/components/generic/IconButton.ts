@@ -16,7 +16,7 @@ export class IconButtonComponent extends ColoredComponent {
     }
     setColor(color: Pointable<Color>) {
         if (isPointer(color)) {
-            color.on((val) => this.setColor(val));
+            color.listen((val) => this.setColor(val));
             return this;
         }
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
