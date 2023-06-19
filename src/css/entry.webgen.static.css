@@ -68,6 +68,8 @@
 .wentry .suffix {
     display: grid;
     grid-auto-flow: column;
+    align-items: center;
+    gap: 0.8rem;
 }
 
 [data-theme=dark] .wentry {

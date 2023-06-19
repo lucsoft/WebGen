@@ -14,18 +14,22 @@ type BasicLabel = {
     subtitle?: Pointable<string>;
 };
 
-export const Entry = (content: Component | BasicLabel) => new class extends Component {
+export const Entry = (content: Component | BasicLabel) => new EntryComponent(content);
+
+export const BasicLabel = (content: BasicLabel) => EntryComponent.basicContent(content);
+
+export class EntryComponent extends Component {
     prefix = createElement("div");
     suffix = createElement("div");
     state = State({
         isLoading: false
     });
 
-    constructor() {
+    constructor(content: Component | BasicLabel) {
         super();
         this.wrapper = Layer(content instanceof Component
             ? content
-            : this.basicContent(content),
+            : BasicLabel(content),
             2,
             "shadow"
         ).addClass("wentry").setBorderRadius("large").draw();
@@ -36,7 +40,7 @@ export const Entry = (content: Component | BasicLabel) => new class extends Comp
         this.wrapper.append(this.suffix);
     }
 
-    private basicContent(content: BasicLabel): Component {
+    static basicContent(content: BasicLabel): Component {
         return Grid(...(content.subtitle
             ? [
                 PlainText(content.title).addClass("title"),
@@ -81,4 +85,4 @@ export const Entry = (content: Component | BasicLabel) => new class extends Comp
         };
         return this;
     }
-};
+}
