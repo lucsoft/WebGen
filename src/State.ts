@@ -244,6 +244,8 @@ function _state<T>(
     const proxySource: ProxyDataSource<T> = isArray ? [] : Object.create(data, {});
     for (const property in data) {
         const entry = data[ property ];
+        if (entry instanceof HTMLElement)
+            throw new Error("Cannot set a HTMLElement in an State Object");
 
         if (typeof entry === 'object' && entry !== null) {
             proxySource[ property ] = (!isState(entry) ? _state(entry) : entry) as ProxyDataSource<T>[ typeof property ];
@@ -323,14 +325,14 @@ function _state<T>(
                 map: <newT>(map: (val: T) => newT) => {
                     const key = p.replace("$", "") as any;
                     // @ts-ignore TODO: fix typing
-                    const state = State({ val: proxy[ key ] });
-                    const c = (newVal: T) => state.val = map(newVal);
+                    const pointer = asPointer(proxy[ key ]);
+                    const c = (newVal: T) => pointer.setValue(map(newVal));
                     // @ts-ignore TODO: fix typing
                     c(proxy[ key ] as T);
                     // @ts-ignore TODO: fix typing
                     $on(key, (val, oldVal) => c(val, oldVal));
                     // @ts-ignore TODO: fix typing
-                    return state.$val;
+                    return pointer;
                 },
                 listen: (c) => {
                     const key = p.replace("$", "") as any;
