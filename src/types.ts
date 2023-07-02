@@ -1,7 +1,7 @@
-import { Pointable, isPointer } from "./State.ts";
 import { createElement } from "./components/Components.ts";
 import { CustomComponent } from "./components/generic/Custom.ts";
 import { Color } from "./lib/Color.ts";
+import { isPointer, Pointable } from "./State.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
@@ -48,6 +48,10 @@ export abstract class Component extends EventTarget {
             this.wrapper.classList.add(val);
 
         this.wrapper.classList.add(...classes);
+        return this;
+    }
+    setAttribute(key: string, value = "") {
+        this.wrapper.setAttribute(key, value);
         return this;
     }
     setPadding(size: string) {
