@@ -1,8 +1,7 @@
-import { Pointable, isPointer } from "../../State.ts";
+import { isPointer, Pointable } from "../../State.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
-
-export const PlainText = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 | 6}` | `span` = "span") => new class extends Component {
+export const Label = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 | 6}` | `span` = "span") => new class extends Component {
     wrapper = createElement(type);
     constructor() {
         super();
@@ -16,4 +15,12 @@ export const PlainText = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 
         this.wrapper.style.fontWeight = weight.toString();
         return this;
     }
+    setAlign(type: "center" | "end" | "start") {
+        this.wrapper.style.textAlign = type;
+        return this;
+    }
 };
+/**
+ * @deprecated Please use `Label` instead.
+ * */
+export const PlainText = Label;

@@ -1,4 +1,4 @@
-import { Box, Component, createElement, Custom, loadingWheel, PlainText, Spacer, Vertical } from "../../webgen.ts";
+import { Box, Component, createElement, Custom, loadingWheel, Label, Spacer, Vertical } from "../../webgen.ts";
 import '../../css/image.webgen.static.css';
 export type AdvancedImage =
     | { type: "direct", source: () => Promise<Blob>; }
@@ -37,11 +37,11 @@ export class ImageComponent extends Component {
             progress.style.height = `${data.percentage.toFixed(1)}%`;
             const overlay = Vertical(
                 Spacer(),
-                PlainText(data.text ?? "Uploading...").addClass("small"),
+                Label(data.text ?? "Uploading...").addClass("small"),
                 Spacer(),
-                PlainText(`${data.percentage.toFixed(1)}%`).addClass("big"),
+                Label(`${data.percentage.toFixed(1)}%`).addClass("big"),
                 Spacer(),
-                PlainText(data.filename).addClass("small"),
+                Label(data.filename).addClass("small"),
                 Spacer()
             ).addClass("overlay").draw();
             const darkLayer = Box().addClass("dark-layer").draw();
@@ -54,11 +54,11 @@ export class ImageComponent extends Component {
             progress.style.height = `100%`;
             const overlay = Vertical(
                 Spacer(),
-                PlainText(" ").addClass("small"),
+                Label(" ").addClass("small"),
                 Spacer(),
-                PlainText(data.text ?? "Finishing Upload...").addClass("mid"),
+                Label(data.text ?? "Finishing Upload...").addClass("mid"),
                 Spacer(),
-                PlainText(data.filename).addClass("small"),
+                Label(data.filename).addClass("small"),
                 Spacer()
             ).addClass("overlay").draw();
             const darkLayer = Box().addClass("dark-layer").draw();

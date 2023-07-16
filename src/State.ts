@@ -7,7 +7,9 @@
 */
 // deno-lint-ignore-file no-explicit-any
 
+import { HeavyReRender } from "./components/generic/HeavyReRender.ts";
 import { Component } from "./types.ts";
+import { Box, Custom } from "./webgen.ts";
 
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
@@ -128,7 +130,13 @@ export type Pointer<T> = {
  * @param c The callback function to be added.
  */
     readonly listen: (c: ObserverCallback) => void;
-};
+} & (T extends Component ? {
+    /**
+     * Creates an internal HeavyReRender. Do not use this for large DOM updates (as it could effect performance on low end devices).
+     */
+    readonly asRefComponent: () => Component;
+    // deno-lint-ignore ban-types
+} : {});
 
 /**
  * Converts a value or pointer to a pointer.
@@ -165,6 +173,19 @@ export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
         listen: (callback) => {
             list.add(callback);
             callback(_val);
+        },
+        asRefComponent: () => {
+            if (!(_val instanceof Component)) {
+                throw new Error("asRefComponent called on a non component pointer.");
+            }
+            console.debug("asRefComponent got constructed");
+            const wrapper = Box().draw();
+            wrapper.append(_val.draw());
+            list.add(val => {
+                wrapper.textContent = '';
+                wrapper.append(val.draw());
+            });
+            return Custom(wrapper);
         }
     };
 }
@@ -498,21 +519,6 @@ function reactiveMerge(
 
 export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
 
-export class ReactiveComponent<Data extends StateData, Key extends keyof Data> extends Component {
-
-    constructor(data: StateHandler<Data>, key: Key, draw: () => Component) {
-        super();
-        data.$on(key, () => {
-            // @ts-ignore Ignore
-            this.wrapper.children[ 0 ].replaceWith(draw(data[ key ]).draw());
-        });
-        // @ts-ignore Ignore
-        this.wrapper.append(draw(data[ key ]).draw());
-    }
-}
-
-export const Reactive = <Data extends StateData, Key extends keyof Data>(data: StateHandler<Data>, key: Key, draw: () => Component) => new ReactiveComponent(data, key, draw);
-
 
 /**
  * Creates a Pointer<string> from a tagged templates
@@ -523,7 +529,7 @@ export const Reactive = <Data extends StateData, Key extends keyof Data>(data: S
  *
  * ref\`Hello ${state.$user}\` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
  */
-export function ref(data: TemplateStringsArray, ...expr: Pointable<string>[]) {
+export function ref(data: TemplateStringsArray, ...expr: Pointable<string | number | boolean>[]) {
     const empty = Symbol("empty");
     const merge = data.map((x, i) => [ x, expr[ i ] ?? empty ]).flat();
 

@@ -1,12 +1,12 @@
 import '../../css/entry.webgen.static.css';
-import { Pointable, Reactive, State } from "../../State.ts";
+import { Pointable, State } from "../../State.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { Icon } from "./Icon.ts";
+import { Label } from "./Label.ts";
 import { Layer } from "./Layer.ts";
-import { PlainText } from "./PlainText.ts";
 import { Box, CenterV, Grid } from "./Stacks.ts";
 
 type BasicLabel = {
@@ -43,11 +43,11 @@ export class EntryComponent extends Component {
     static basicContent(content: BasicLabel): Component {
         return Grid(...(content.subtitle
             ? [
-                PlainText(content.title).addClass("title"),
-                PlainText(content.subtitle).addClass("subtitle")
+                Label(content.title).addClass("title"),
+                Label(content.subtitle).addClass("subtitle")
             ]
             : [
-                PlainText(content.title).addClass("title")
+                Label(content.title).addClass("title")
             ])
         ).addClass("basic-text");
     }
@@ -73,10 +73,10 @@ export class EntryComponent extends Component {
         this.wrapper.classList.add("action");
 
         const item = CenterV(Icon("arrow_forward_ios")).draw();
-        const actionIcon = Reactive(this.state, "isLoading", () =>
+        const actionIcon = this.state.$isLoading.map(() =>
             this.state.isLoading ? Box(Custom(loadingWheel() as Element as HTMLElement)).addClass("loading")
                 : Custom(item)
-        ).addClass("action-item");
+        ).asRefComponent().addClass("action-item");
         this.suffix.append(actionIcon.draw());
 
         this.wrapper.onclick = (ev) => {

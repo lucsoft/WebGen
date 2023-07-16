@@ -1,7 +1,7 @@
 import { Component } from "../../types.ts";
 import { custom } from "../Components.ts";
 import { Custom } from "./Custom.ts";
-import { PlainText } from "./PlainText.ts";
+import { Label } from "./Label.ts";
 
 export const Symbol = (icon: string, ...classList: string[]): Component => {
     const webgenIcon: string = (globalThis as (typeof globalThis & { WEBGEN_ICON: string; })).WEBGEN_ICON;
@@ -11,7 +11,7 @@ export const Symbol = (icon: string, ...classList: string[]): Component => {
         case "bootstrap":
             return Custom(custom("span", undefined, "bi", `bi-${icon}`, "webgen-icon", ...classList));
         default:
-            return PlainText("");
+            return Label("");
     }
 };
 
@@ -23,7 +23,7 @@ export const Icon = (icon: string, ...classList: string[]): Component => {
         case "bootstrap":
             return Custom(custom("span", undefined, "bi", `bi-${icon}`, "webgen-icon", ...classList));
         default:
-            return PlainText("");
+            return Label("");
     }
 };
 

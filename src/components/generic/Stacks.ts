@@ -1,7 +1,7 @@
-import { Component, ComponentArray } from "../../types.ts";
 import '../../css/stack.webgen.static.css';
-import { dropNullish } from "../Helper.ts";
+import { Component, ComponentArray } from "../../types.ts";
 import { createElement } from "../Components.ts";
+import { dropNullish } from "../Helper.ts";
 import { Custom } from "./Custom.ts";
 
 class SpacerCompoent extends Component { }
@@ -16,7 +16,7 @@ export class AlignComponent extends Component {
         this.wrapper.style.margin = margin ?? "";
         return this;
     }
-    setGap(gap: string): AlignComponent {
+    setGap(gap = "var(--gap)"): AlignComponent {
         this.wrapper.style.gap = gap;
         return this;
     }
@@ -42,7 +42,7 @@ class GridComponent extends Component {
             return x.draw();
         }));
     }
-    setGap(gap: string) {
+    setGap(gap = "var(--gap)") {
         this.wrapper.style.gap = gap;
         return this;
     }

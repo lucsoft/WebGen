@@ -134,8 +134,17 @@ export abstract class ColoredComponent extends Component {
 }
 
 export type ViewOptions<State> = {
+    /**
+     * @deprecated
+     */
     use: (comp: Component) => void;
+    /**
+     * @deprecated
+     */
     state: Partial<State>;
+    /**
+     * @deprecated
+     */
     update: (data: Partial<State>) => void;
 };
 

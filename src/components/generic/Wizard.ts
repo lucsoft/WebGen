@@ -6,7 +6,7 @@ import { AlignComponent, CenterV, Horizontal, Spacer, Vertical } from "./Stacks.
 import { Button, ButtonComponent } from "./Button.ts";
 import { assert } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 import { Color } from "../../lib/Color.ts";
-import { PlainText } from "./PlainText.ts";
+import { Label } from "./Label.ts";
 import { StateData, State, StateHandler } from "../../State.ts";
 
 export type WizardActions = {
@@ -171,7 +171,7 @@ export class WizardComponent extends Component {
 
             const errorMessage = state.isValid && state.isValid?.success !== true
                 ? CenterV(
-                    PlainText(getErrorMessage(state))
+                    Label(getErrorMessage(state))
                         .addClass("error-message")
                         .setMargin("0 0.5rem 0 0")
                 )

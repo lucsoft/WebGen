@@ -37,27 +37,27 @@
     width: 1.5rem;
 }
 
-.wentry .title {
+.basic-text .title {
     font-size: 35px;
     font-weight: 700;
 }
 
-.wentry .subtitle {
+.basic-text .subtitle {
     font-size: 20px;
     font-weight: 650;
     opacity: 70%;
 }
 
-.wentry.small .title {
+.basic-text.small .title {
     font-size: 22px;
 }
 
-.wentry.small .subtitle {
+.basic-text.small .subtitle {
     font-size: 15px;
 }
 
-.wentry .title,
-.wentry .subtitle {
+.basic-text .title,
+.basic-text .subtitle {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

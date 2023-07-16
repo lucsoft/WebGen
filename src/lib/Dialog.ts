@@ -1,11 +1,12 @@
 import { custom } from "../components/Components.ts";
 import { Button } from "../components/generic/Button.ts";
 import { Horizontal, Spacer } from "../components/generic/Stacks.ts";
-import { PlainText } from "../components/generic/PlainText.ts";
+import { Label } from "../components/generic/Label.ts";
 import "../css/dialog.webgen.static.css";
 import { ButtonStyle, ViewOptions, ViewOptionsFunc } from "../types.ts";
 import { Color } from "./Color.ts";
 import { View } from "./View.ts";
+import { asPointer } from "../webgen.ts";
 
 type DialogeFinal = void | undefined | "close" | "remove";
 
@@ -98,7 +99,7 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
             if (firstRun) {
                 if (title) {
                     dialog.prepend(
-                        PlainText(title).addClass("dialog-title").draw(),
+                        Label(title).addClass("dialog-title").draw(),
                     );
                 }
                 if (buttons.length > 0) {
@@ -173,3 +174,6 @@ export function Dialog<State>(render: ViewOptionsFunc<State>): DialogData {
         }
     }
 }
+
+const t = asPointer("Test");
+t.map(it => Label(it)).asRefComponent();

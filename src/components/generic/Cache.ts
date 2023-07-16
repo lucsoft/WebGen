@@ -9,7 +9,7 @@ export const GLOBAL_CACHE = new Map<string, {
     render: Component;
 }>();
 
-export function ReCache<Data>(cacheId: string, loader: () => Promise<Data>, render: (type: "cache" | "loaded", data: undefined | Data) => Component) {
+export function Cache<Data>(cacheId: string, loader: (() => Promise<Data>) | undefined, render: (type: "cache" | "loaded", data: undefined | Data) => Component) {
     if (!GLOBAL_CACHE.has(cacheId)) {
         const shell = createElement("div");
         GLOBAL_CACHE.set(cacheId, {
@@ -17,7 +17,7 @@ export function ReCache<Data>(cacheId: string, loader: () => Promise<Data>, rend
         });
 
         shell.append(render("cache", undefined).draw());
-        loader()
+        loader?.()
             .then(x => render("loaded", x))
             .then(x => x.draw())
             .then(x => shell.children[ 0 ].replaceWith(x));

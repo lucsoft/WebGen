@@ -1,5 +1,5 @@
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { ButtonStyle, changeClassAtIndex, Color, isPointer, PlainText, Pointable } from "../../webgen.ts";
+import { ButtonStyle, changeClassAtIndex, Color, isPointer, Label, Pointable } from "../../webgen.ts";
 import { createElement } from "../Components.ts";
 import { InputForm, speicalSyles } from "./FormInputs.ts";
 
@@ -12,7 +12,7 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
         super();
         this.wrapper.classList.add("winput", Color.Grayscaled, ButtonStyle.Normal);
         this.input.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        const placeholder = PlainText(label).draw();
+        const placeholder = Label(label).draw();
 
         this.input.type = type;
         this.addEventListener("update", (event) => {
