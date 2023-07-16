@@ -1,5 +1,5 @@
 import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { ButtonStyle, changeClassAtIndex, Color, isPointer, Label, Pointable } from "../../webgen.ts";
+import { ButtonStyle, changeClassAtIndex, Color, Label } from "../../webgen.ts";
 import { createElement } from "../Components.ts";
 import { InputForm, speicalSyles } from "./FormInputs.ts";
 
@@ -10,7 +10,7 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
     input = createElement("input");
     constructor(type: TextInputMode, label: string, mode: InputDataMode) {
         super();
-        this.wrapper.classList.add("winput", Color.Grayscaled, ButtonStyle.Normal);
+        this.wrapper.classList.add("winput", ButtonStyle.Normal);
         this.input.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         const placeholder = Label(label).draw();
 
@@ -44,6 +44,9 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
             };
         }
         this.wrapper.append(placeholder, this.input);
+
+        this.color.map(it => it == Color.Disabled)
+            .listen(val => this.input.disabled = val);
     }
     setStyle(style: ButtonStyle) {
         this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
@@ -56,16 +59,6 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
     }
     setAutofill(text: string) {
         this.input.autocomplete = text;
-        return this;
-    }
-    setColor(color: Pointable<Color>) {
-        if (isPointer(color)) {
-            color.listen((val) => this.setColor(val));
-            return this;
-        }
-        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
-        changeClassAtIndex(this.wrapper, color, 1);
-        this.input.disabled = color == Color.Disabled;
         return this;
     }
 }

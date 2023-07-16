@@ -5,6 +5,9 @@ export const conditionalCSSClass = (element: HTMLElement, condition: boolean | u
 
 export const dropNullish = (...components: (Component | null | undefined)[]) => components.filter(x => x) as Component[];
 
+/**
+ * @deprecated
+ */
 export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
 
 import { groupBy } from "https://deno.land/std@0.185.0/collections/group_by.ts";
@@ -38,7 +41,7 @@ export function extendedFromEntries(data: [ key: string, value: FormDataEntryVal
     };
 }
 
-export async function KeyValueStore(map: Map<string, Blob>): Promise<void> {
+export function KeyValueStore(map: Map<string, Blob>): Promise<void> {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('myDatabase', 1);
 

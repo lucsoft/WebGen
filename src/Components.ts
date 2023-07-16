@@ -1,5 +1,3 @@
-import { Component } from "./webgen.ts";
-
 // polyfill hotfix for safari
 if (document.adoptedStyleSheets.length == 0)
     document.adoptedStyleSheets = [];
@@ -29,8 +27,4 @@ export function css(data: TemplateStringsArray, ...expr: string[]) {
     const style = new CSSStyleSheet();
     style.replaceSync(merge.join(""));
     return style;
-}
-
-export function Switch<type extends string>(source: type, data: { [ key in type ]: Component; }) {
-    return data[ source ];
 }

@@ -1,13 +1,13 @@
+import '../../css/input.webgen.static.css';
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
 import { Color } from "../../lib/Color.ts";
+import { DataSourceKey, isPointer, Pointable, StateHandler } from "../../State.ts";
 import { ButtonStyle, ColoredComponent, Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
-import '../../css/input.webgen.static.css';
-import { DataSourceKey, Pointable, isPointer, StateHandler } from "../../State.ts";
 
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
@@ -58,7 +58,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
     constructor(dropdown: string[], label: string) {
         super();
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", Color.Grayscaled, ButtonStyle.Normal);
+        this.wrapper.classList.add("wbutton", ButtonStyle.Normal);
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.text.innerText = label;
@@ -69,7 +69,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         });
         this.wrapper.classList.add("isList", "wdropdown");
         this.wrapper.addEventListener("click", () => {
-            if (this.wrapper.classList.contains(Color.Disabled)) return;
+            if (this.color.getValue() == Color.Disabled) return;
             if (dropdown) this.wrapper.querySelector('ul')?.classList.toggle("open");
         });
         const list = createElement("ul");
@@ -106,15 +106,6 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
             this.prog.style.width = `${progress.toString()}%`;
             this.wrapper.append(this.prog);
         }
-        return this;
-    }
-    setColor(color: Pointable<Color>) {
-        if (isPointer(color)) {
-            color.listen((val) => this.setColor(val));
-            return this;
-        }
-        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
-        changeClassAtIndex(this.wrapper, color, 1);
         return this;
     }
 }

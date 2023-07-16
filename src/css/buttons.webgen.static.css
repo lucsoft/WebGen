@@ -20,7 +20,7 @@
     z-index: 1;
 }
 
-.wbutton:active {
+.wbutton:not(.disabled):active {
     transform: translate(0, 3%);
 }
 

@@ -1,42 +1,31 @@
-import { Color } from "../../lib/Color.ts";
 import '../../css/checkbox.webgen.static.css';
-import { changeClassAtIndex, conditionalCSSClass } from "../Helper.ts";
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { Color } from "../../lib/Color.ts";
 import { ButtonStyle, ColoredComponent } from "../../types.ts";
-import { Pointable, isPointer } from "../../State.ts";
+import { conditionalCSSClass } from "../Helper.ts";
+import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 
 class CheckboxComponent extends ColoredComponent {
 
     constructor(selected: boolean, icon: string) {
         super();
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wcheckbox", Color.Grayscaled);
+        this.wrapper.classList.add("wcheckbox");
         if (selected) this.wrapper.classList.add("selected");
         this.wrapper.append(Icon(icon).draw());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-
     }
     onClick(action: (me: MouseEvent, value: boolean) => void) {
         this.wrapper.addEventListener('click', (me) => {
             if (this.wrapper.classList.contains(Color.Disabled)) return;
             const selected = this.wrapper.classList.contains("selected");
             conditionalCSSClass(this.wrapper, !selected, "selected");
-            setTimeout(() => action(me, selected), 300);
+            action(me, selected);
         });
         return this;
     }
     setStyle(_style: ButtonStyle): this {
         throw new Error("Method not implemented.");
-    }
-    setColor(color: Pointable<Color>) {
-        if (isPointer(color)) {
-            color.listen((val) => this.setColor(val));
-            return this;
-        }
-        this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(color);
-        changeClassAtIndex(this.wrapper, color, 1);
-        return this;
     }
 
 }

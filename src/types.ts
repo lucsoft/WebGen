@@ -1,7 +1,8 @@
 import { createElement } from "./components/Components.ts";
 import { CustomComponent } from "./components/generic/Custom.ts";
+import { accessibilityDisableTabOnDisabled } from "./lib/Accessibility.ts";
 import { Color } from "./lib/Color.ts";
-import { isPointer, Pointable } from "./State.ts";
+import { asPointer, isPointer, Pointable } from "./State.ts";
 
 export type WebGenGlobalThis = (typeof globalThis & {
     WEBGEN_ICON: string;
@@ -125,12 +126,25 @@ export abstract class Component extends EventTarget {
     }
 }
 export abstract class ColoredComponent extends Component {
+    color = asPointer(Color.Grayscaled);
     wrapper = createElement("a");
     constructor() {
         super();
+        this.color.listen((val) => {
+            this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(val);
+        });
+
+        this.addClass(this.color);
     }
     abstract setStyle(style: Pointable<ButtonStyle>): this;
-    abstract setColor(color: Pointable<Color>): this;
+    setColor(color: Pointable<Color>) {
+        if (isPointer(color)) {
+            color.listen((val) => this.setColor(val));
+            return this;
+        }
+        this.color.setValue(color);
+        return this;
+    }
 }
 
 export type ViewOptions<State> = {

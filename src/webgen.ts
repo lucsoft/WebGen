@@ -25,6 +25,7 @@ export * from './components/generic/Label.ts';
 export * from "./components/generic/Layer.ts";
 export * from "./components/generic/MediaQuery.ts";
 export * from './components/generic/Stacks.ts';
+export * from './components/generic/Switch.ts';
 export * from './components/generic/Tab.ts';
 export * from "./components/generic/Table.ts";
 export * from "./components/generic/Taglist.ts";
@@ -41,6 +42,7 @@ export { SupportedThemes } from './lib/SupportedThemes.ts';
 export * from './lib/View.ts';
 export * from "./State.ts";
 export * from './types.ts';
+
 export type WebGenOptions = {
     updateThemeOnInit?: false,
     primiaryColor?: `hsl(${number}, ${number}%, 40%)`,

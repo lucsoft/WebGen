@@ -1,0 +1,129 @@
+.wswitch {
+    display: grid;
+    --ball-size: 21px;
+    grid-template-columns: calc(var(--ball-size));
+    transition: grid-template-columns 250ms ease, box-shadow 250ms var(--jump-ani);
+    justify-items: end;
+    width: 74px;
+    height: 37px;
+    padding: 8px;
+    border-radius: 45px;
+    background: hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 100%);
+    cursor: pointer;
+    box-sizing: border-box;
+    user-select: none;
+    box-shadow: 0px 0px 0px 0px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+
+}
+
+.wswitch:not(.loading):not(.disabled):active {
+    transform: translate(0, 3%);
+}
+
+.wswitch:focus {
+    outline: none;
+}
+
+.wswitch.selected {
+    grid-template-columns: 100%;
+}
+
+.wswitch:not(.disabled):not(.loading):is(:hover, :focus) {
+    box-shadow: 0px 0px 0px 5px hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
+}
+
+.wswitch.loading {
+    cursor: default;
+    --ball-size: 33px;
+}
+
+.wswitch .check-icon {
+    display: block;
+    font-size: 1rem;
+}
+
+.wswitch.selected:not(.loading) .check-icon {
+    animation: fadeIn 200ms;
+}
+
+@keyframes fadeInLoadingWheel {
+    0% {
+        opacity: 0%;
+    }
+
+    50% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0%;
+    }
+}
+
+.wswitch:not(.loading) .load-element .loading-wheel {
+    display: none;
+}
+
+.wswitch .load-element .loading-wheel {
+    width: 32px;
+}
+
+.wswitch .load-element {
+    position: absolute;
+}
+
+.wswitch.loading .load-element {
+    animation: fadeInLoadingWheel 450ms;
+}
+
+.wswitch>div {
+    background-color: var(--font-color);
+    width: var(--ball-size);
+    height: 100%;
+    border-radius: 100px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    transition:
+        width 250ms ease;
+}
+
+
+.wswitch:is(.unselected, .selected.loading) .check-icon {
+    display: none;
+}
+
+.wswitch.grayscaled {
+    --background-color-h: var(--color-grayscaled-hue);
+    --background-color-s: var(--color-grayscaled-saturation);
+    --background-color-l: var(--color-grayscaled-lightness);
+    --font-color: var(--color-grayscaled-font);
+}
+
+.wswitch.colored {
+    --background-color-h: var(--color-colored-hue);
+    --background-color-s: var(--color-colored-saturation);
+    --background-color-l: var(--color-colored-lightness);
+    --font-color: var(--color-colored-font);
+}
+
+.wswitch.critical {
+    --background-color-h: var(--color-critical-hue);
+    --background-color-s: var(--color-critical-saturation);
+    --background-color-l: var(--color-critical-lightness);
+    --font-color: var(--color-critical-font);
+}
+
+.wswitch.disabled {
+    cursor: default;
+    --background-color-h: var(--color-disabled-hue);
+    --background-color-s: var(--color-disabled-saturation);
+    --background-color-l: var(--color-disabled-lightness);
+    --font-color: var(--color-disabled-font);
+}

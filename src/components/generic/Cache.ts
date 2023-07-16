@@ -12,6 +12,7 @@ export const GLOBAL_CACHE = new Map<string, {
 export function Cache<Data>(cacheId: string, loader: (() => Promise<Data>) | undefined, render: (type: "cache" | "loaded", data: undefined | Data) => Component) {
     if (!GLOBAL_CACHE.has(cacheId)) {
         const shell = createElement("div");
+        shell.style.display = "contents";
         GLOBAL_CACHE.set(cacheId, {
             render: Custom(shell)
         });

@@ -7,10 +7,8 @@
 */
 // deno-lint-ignore-file no-explicit-any
 
-import { HeavyReRender } from "./components/generic/HeavyReRender.ts";
 import { Component } from "./types.ts";
 import { Box, Custom } from "./webgen.ts";
-
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
     return (
