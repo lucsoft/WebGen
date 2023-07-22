@@ -16,7 +16,6 @@ export * from "./components/generic/Cache.ts";
 export * from './components/generic/Card.ts';
 export * from './components/generic/Checkbox.ts';
 export * from './components/generic/Custom.ts';
-export * from "./components/generic/Entry.ts";
 export * from './components/generic/Form.ts';
 export * from "./components/generic/FormInputs.ts";
 export * from './components/generic/FormText.ts';
@@ -41,6 +40,7 @@ export * from './lib/icons/BootstrapIcons.ts';
 export * from './lib/icons/MaterialIcons.ts';
 export * from './types.ts';
 
+export * from "./components/generic/Entry.ts";
 export type WebGenOptions = {
     updateThemeOnInit?: false,
     primiaryColor?: `hsl(${number}, ${number}%, 40%)`,
