@@ -1,9 +1,9 @@
+import { MIcon } from "webgen/src/webgen.ts";
+import '../../css/table.webgen.static.css';
 import { Component } from "../../types.ts";
 import { Card } from "./Card.ts";
-import { Icon } from "./Icon.ts";
 import { Label } from "./Label.ts";
 import { Grid } from "./Stacks.ts";
-import '../../css/table.webgen.static.css';
 export type ColumEntry<Data> = [ id: string, size: string, render: (data: Data, index: number) => Component ];
 
 export class TableComponent<Data> extends Component {
@@ -18,9 +18,9 @@ export class TableComponent<Data> extends Component {
         this.refresh();
     }
 
-    setDelete(action: (entry: Data, index: number) => void | Promise<void>) {
+    setDelete(action: (entry: Data, index: number) => void | Promise<void>, icon = MIcon("delete")) {
         this.#columns.push([ "", "max-content",
-            (data, index) => Icon("delete").onClick(async () => {
+            (data, index) => icon.onClick(async () => {
                 await action(data, index);
                 this.refresh();
             })

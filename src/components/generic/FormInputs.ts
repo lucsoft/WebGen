@@ -3,11 +3,11 @@ import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../li
 import { Color } from "../../lib/Color.ts";
 import { DataSourceKey, isPointer, Pointable, StateHandler } from "../../State.ts";
 import { ButtonStyle, ColoredComponent, Component } from "../../types.ts";
+import { MIcon } from '../../webgen.ts';
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
-import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
@@ -55,7 +55,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
 export class DropDownInputComponent<Value extends string> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");
-    constructor(dropdown: string[], label: string) {
+    constructor(dropdown: string[], label: string, icon = MIcon("keyboard_arrow_down")) {
         super();
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.classList.add("wbutton", ButtonStyle.Normal);
@@ -92,7 +92,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         this.dispatchEvent(new CustomEvent("data", {}));
         const iconContainer = createElement("div");
         iconContainer.classList.add("icon-suffix");
-        iconContainer.append(Icon(CommonIcon(CommonIconType.ArrowDown)).draw());
+        iconContainer.append(icon.draw());
         this.wrapper.append(list, iconContainer);
     }
     setStyle(style: ButtonStyle, progress?: number) {

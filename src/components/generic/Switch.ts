@@ -3,15 +3,15 @@ import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../../li
 import { Color } from "../../lib/Color.ts";
 import { asPointer, Pointable, Pointer } from "../../State.ts";
 import { ButtonStyle, ColoredComponent } from "../../types.ts";
+import { MIcon } from "../../webgen.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
-import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
 import { Box } from "./Stacks.ts";
 
 class SwitchComponent extends ColoredComponent {
     loading = asPointer(false);
     selected: Pointer<boolean>;
-    constructor(selected: Pointer<boolean>) {
+    constructor(selected: Pointer<boolean>, icon = MIcon("check")) {
         super();
         this.selected = selected;
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
@@ -19,7 +19,7 @@ class SwitchComponent extends ColoredComponent {
         this.addClass(this.loading.map(it => it ? 'loading' : 'non-loading'));
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.wrapper.append(Box(
-            Icon(CommonIcon(CommonIconType.Done)).addClass("check-icon"),
+            icon.addClass("check-icon"),
             Box(Custom(loadingWheel() as Element as HTMLElement)).addClass("load-element", "loading")
         )
             .draw()

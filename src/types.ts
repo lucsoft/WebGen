@@ -4,9 +4,6 @@ import { accessibilityDisableTabOnDisabled } from "./lib/Accessibility.ts";
 import { Color } from "./lib/Color.ts";
 import { asPointer, isPointer, Pointable } from "./State.ts";
 
-export type WebGenGlobalThis = (typeof globalThis & {
-    WEBGEN_ICON: string;
-});
 export type ComponentArray = ((Component | null)[] | Component | null)[];
 
 export type ButtonActions = {
@@ -21,11 +18,6 @@ export const enum CardTypes {
     Rich,
     Headless
 }
-
-export type CommonCard = {
-    make: () => CustomComponent;
-    getSize: () => { width?: number, height?: number; };
-};
 
 export const enum ButtonStyle {
     Inline = "inline",

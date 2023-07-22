@@ -66,39 +66,3 @@ export function Box(...components: Component[]) {
     return Custom(block);
 }
 export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number; }, element: Component ])[]) => new GridComponent(components);
-/*
-export interface GridComponent extends BaseComponent<GridComponent, HTMLDivElement> {
-    setMaxWidth: (maxWidth: string) => GridComponent
-    setMinColumnWidth: (width: string) => GridComponent
-    setGap: (gap: string) => GridComponent
-}
-export const Grid = (...cardArray: CommonCard[]) => {
-    const element = createElement("grid" as "div");
-    element.append(...cardArray.map(x => {
-        const card = x.make();
-        const { height, width } = x.getSize();
-        if (height && height > 0) card.style.gridRow = `span ${height}`;
-        if (width && width > 0) card.style.gridColumn = `span calc(${width})`;
-        return card
-    }))
-    const settings: GridComponent = {
-        draw: () => element,
-        addClass: (...classes: string[]) => {
-            element.classList.add(...classes);
-            return settings;
-        },
-        setMaxWidth: (maxWidth: string) => {
-            element.style.setProperty('--max-width', maxWidth)
-            return settings;
-        },
-        setMinColumnWidth: (width: string) => {
-            element.style.setProperty('--card-min-width', width)
-            return settings;
-        },
-        setGap: (gap: string) => {
-            element.style.setProperty('--gap', gap)
-            return settings;
-        }
-    };
-    return settings;
-}*/

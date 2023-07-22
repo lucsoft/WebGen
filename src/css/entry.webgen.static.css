@@ -48,10 +48,12 @@
     opacity: 70%;
 }
 
+.wentry.small .title,
 .basic-text.small .title {
     font-size: 22px;
 }
 
+.wentry.small .subtitle,
 .basic-text.small .subtitle {
     font-size: 15px;
 }

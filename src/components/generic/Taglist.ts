@@ -1,12 +1,13 @@
-import { Color } from "../../lib/Color.ts";
+import { MIcon } from "webgen/src/webgen.ts";
 import { Pointable, Pointer, State } from "../../State.ts";
+import { Color } from "../../lib/Color.ts";
 import { ButtonStyle, Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { Button } from "./Button.ts";
 import { IconButton } from "./IconButton.ts";
 import './taglist.css';
 
-export const Taglist = (list: Pointable<string>[], selected: Pointer<number>) => new class extends Component {
+export const Taglist = (list: Pointable<string>[], selected: Pointer<number>, icon = { forward: MIcon("arrow_back_ios_new"), backwards: MIcon("arrow_forward_ios") }) => new class extends Component {
     items = createElement("div");
     move = createElement("div");
 
@@ -31,14 +32,14 @@ export const Taglist = (list: Pointable<string>[], selected: Pointer<number>) =>
         ));
 
         this.move.append(
-            IconButton("arrow_back_ios_new", "go backwards in tag list")
+            IconButton(icon.forward, "go backwards in tag list")
                 .onClick(() => this.items.scrollBy({
                     left: 0 - this.wrapper.clientWidth / 2,
                     behavior: "smooth"
                 }))
                 .addClass(state.$left.map(val => val ? "show" : "hidden"))
                 .draw(),
-            IconButton("arrow_forward_ios", "go forward in tag list")
+            IconButton(icon.backwards, "go forward in tag list")
                 .addClass(state.$right.map(val => val ? "show" : "hidden"))
                 .onClick(() => this.items.scrollBy({
                     left: this.wrapper.clientWidth / 2,

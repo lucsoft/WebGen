@@ -1,10 +1,10 @@
-import '../../css/entry.webgen.static.css';
 import { Pointable, State } from "../../State.ts";
+import '../../css/entry.webgen.static.css';
+import { MIcon } from "../../lib/icons/MaterialIcons.ts";
 import { Component } from "../../types.ts";
 import { createElement } from "../Components.ts";
 import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
-import { Icon } from "./Icon.ts";
 import { Label } from "./Label.ts";
 import { Layer } from "./Layer.ts";
 import { Box, CenterV, Grid } from "./Stacks.ts";
@@ -62,17 +62,17 @@ export class EntryComponent extends Component {
         this.prefix.style.marginRight = "var(--gap)";
         return this;
     }
-    onClick(func: (ev: MouseEvent) => void): this {
+    onClick(func: (ev: MouseEvent) => void, icon = MIcon("arrow_forward_ios")): this {
         this.onPromiseClick(async (e) => {
             await func(e);
-        });
+        }, icon);
         return this;
     }
 
-    onPromiseClick(func: (ev: MouseEvent) => Promise<void>): this {
+    onPromiseClick(func: (ev: MouseEvent) => Promise<void>, icon = MIcon("arrow_forward_ios")): this {
         this.wrapper.classList.add("action");
 
-        const item = CenterV(Icon("arrow_forward_ios")).draw();
+        const item = CenterV(icon).draw();
         const actionIcon = this.state.$isLoading.map(() =>
             this.state.isLoading ? Box(Custom(loadingWheel() as Element as HTMLElement)).addClass("loading")
                 : Custom(item)

@@ -1,10 +1,20 @@
-import { WebGenGlobalThis } from "../../types.ts";
-import { Icons } from "./none.ts";
-import 'https://cdn.jsdelivr.net/npm/material-icons@1.10.3/iconfont/round.css';
+import { asPointer, Component, lazyInit, Pointable } from "../../webgen.ts";
 
-export class MaterialIcons extends Icons {
-    constructor() {
+const iconSet = {
+    outlined: lazyInit(() => import("https://cdn.jsdelivr.net/npm/material-icons@1.13.8/iconfont/outlined.css")),
+    filled: lazyInit(() => import("https://cdn.jsdelivr.net/npm/material-icons@1.13.8/iconfont/filled.css")),
+    round: lazyInit(() => import("https://cdn.jsdelivr.net/npm/material-icons@1.13.8/iconfont/round.css")),
+    sharp: lazyInit(() => import("https://cdn.jsdelivr.net/npm/material-icons@1.13.8/iconfont/sharp.css")),
+    "two-tone": lazyInit(() => import("https://cdn.jsdelivr.net/npm/material-icons@1.13.8/iconfont/two-tone.css")),
+};
+export class MaterialIconComponent extends Component {
+    constructor(name: Pointable<string>, type: Pointable<"outlined" | "filled" | "round" | "sharp" | "two-tone">) {
         super();
-        (globalThis as WebGenGlobalThis).WEBGEN_ICON = "material";
+        asPointer(name).listen(val => this.wrapper.innerText = val);
+        asPointer(type).listen((val: keyof typeof iconSet) => iconSet[ val ]());
+        this.addClass(asPointer(type).map(it => it == "filled" ? "material-icons" : "material-icons-" + it), "wicon");
     }
 }
+
+export const MaterialIcon = (name: Pointable<string>, type: Pointable<"outlined" | "filled" | "round" | "sharp" | "two-tone"> = "round") => new MaterialIconComponent(name, type);
+export const MIcon = MaterialIcon;

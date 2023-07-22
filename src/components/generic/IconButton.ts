@@ -1,12 +1,12 @@
 import "../../css/iconbutton.webgen.static.css";
 import { ButtonStyle, ColoredComponent } from "../../types.ts";
-import { CommonIcon, CommonIconType, Icon } from "./Icon.ts";
+import { Component } from "../../webgen.ts";
 export class IconButtonComponent extends ColoredComponent {
-    constructor(icon: CommonIconType | string, label: string) {
+    constructor(icon: Component, label: string) {
         super();
         this.wrapper.classList.add("wiconbutton");
         this.wrapper.append(
-            Icon(typeof icon == "number" ? CommonIcon(icon) : icon).draw(),
+            icon.draw(),
         );
         this.wrapper.ariaLabel = label;
     }
@@ -20,5 +20,5 @@ export class IconButtonComponent extends ColoredComponent {
         throw new Error("Method not implemented.");
     }
 }
-export const IconButton = (icon: CommonIconType | string, label: string) =>
-    new IconButtonComponent(icon, label);
+
+export const IconButton = (icon: Component, label: string) => new IconButtonComponent(icon, label);
