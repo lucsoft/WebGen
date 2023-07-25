@@ -18,9 +18,9 @@ export class TableComponent<Data> extends Component {
         this.refresh();
     }
 
-    setDelete(action: (entry: Data, index: number) => void | Promise<void>, icon = MIcon("delete")) {
+    setDelete(action: (entry: Data, index: number) => void | Promise<void>, icon = () => MIcon("delete")) {
         this.#columns.push([ "", "max-content",
-            (data, index) => icon.onClick(async () => {
+            (data, index) => icon().onClick(async () => {
                 await action(data, index);
                 this.refresh();
             })
