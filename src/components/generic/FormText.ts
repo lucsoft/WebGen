@@ -1,7 +1,6 @@
-import { accessibilityDisableTabOnDisabled } from "../../lib/Accessibility.ts";
-import { ButtonStyle, changeClassAtIndex, Color, Label } from "../../webgen.ts";
+import { ButtonStyle, Color, Label } from "../../webgen.ts";
 import { createElement } from "../Components.ts";
-import { InputForm, speicalSyles } from "./FormInputs.ts";
+import { InputForm } from "./FormInputs.ts";
 
 export type TextInputMode = "text" | "email" | "password" | "url" | "date";
 export type InputDataMode = "live" | "blur";
@@ -11,7 +10,6 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
     constructor(type: TextInputMode, label: string, mode: InputDataMode) {
         super();
         this.wrapper.classList.add("winput", ButtonStyle.Normal);
-        this.input.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         const placeholder = Label(label).draw();
 
         this.input.type = type;
@@ -47,10 +45,9 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
 
         this.color.map(it => it == Color.Disabled)
             .listen(val => this.input.disabled = val);
+        this.wrapper.tabIndex = -1;
     }
-    setStyle(style: ButtonStyle) {
-        this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
-        changeClassAtIndex(this.wrapper, style, 2);
+    setStyle(_style: ButtonStyle) {
         return this;
     }
     required() {
