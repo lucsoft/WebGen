@@ -10,7 +10,7 @@ export const dropNullish = (...components: (Component | null | undefined)[]) => 
  */
 export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
 
-import { groupBy } from "https://deno.land/std@0.185.0/collections/group_by.ts";
+import { groupBy } from "https://deno.land/std@0.202.0/collections/group_by.ts";
 
 /**
  * fromEntries can't handle duplicates
