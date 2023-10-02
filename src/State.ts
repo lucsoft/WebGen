@@ -188,6 +188,22 @@ export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
     };
 }
 
+
+export function refMerge<PointerRecord extends Record<string, Pointer<unknown>>>(data: PointerRecord): Pointer<{ [ P in keyof PointerRecord ]: ReturnType<PointerRecord[ P ][ "getValue" ]> }> {
+    const loadData = () => Object.fromEntries(Object.entries(data).map(([ key, value ]) => [ key, value.getValue() ])) as { [ P in keyof PointerRecord ]: ReturnType<PointerRecord[ P ][ "getValue" ]> };
+
+    const internalValue = asPointer(loadData());
+    for (const iterator of Object.values(data)) {
+        let firstTime = true;
+        iterator.listen(() => {
+            if (firstTime)
+                return firstTime = false;
+            internalValue.setValue(loadData());
+        });
+    }
+    return internalValue;
+}
+
 export function statePointer<T>(value: T | Pointer<T>): Pointer<StateHandler<T> | T> {
     if (isPointer(value))
         return value;
