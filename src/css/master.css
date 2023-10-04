@@ -5,6 +5,9 @@ body {
     font-weight: 300;
     margin: 0;
     overflow-x: hidden;
+
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
 }
 
 html {
@@ -25,30 +28,6 @@ html {
 
 .icon-white {
     filter: contrast(4) invert(1);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span.themed {
-    color: var(--on-background-text);
-}
-
-h2 {
-    font-weight: 200;
-    text-align: center;
-    font-size: 3rem;
-    margin-top: 0;
-}
-
-h4 {
-    font-weight: 300;
-    margin-top: -2rem;
-    text-align: center;
-    font-size: 1.4rem;
 }
 
 ::-webkit-scrollbar {

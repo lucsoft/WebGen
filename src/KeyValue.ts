@@ -1,3 +1,45 @@
+export function KeyValueStore(map: Map<string, Blob>): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('myDatabase', 1);
+
+        request.onerror = () => {
+            reject(new Error('Failed to open IndexedDB'));
+        };
+
+        // deno-lint-ignore no-explicit-any
+        request.onupgradeneeded = (event: any) => {
+            const db = event.target.result;
+
+            if (!db.objectStoreNames.contains('myStore')) {
+                db.createObjectStore('myStore');
+            }
+        };
+
+        // deno-lint-ignore no-explicit-any
+        request.onsuccess = (event: any) => {
+            const db = event.target.result;
+            const transaction = db.transaction([ 'myStore' ], 'readwrite');
+            const store = transaction.objectStore('myStore');
+
+            map.forEach((value, key) => {
+                const request = store.put(value, key);
+
+                request.onerror = () => {
+                    reject(new Error(`Failed to store value with key: ${key}`));
+                };
+            });
+
+            transaction.oncomplete = () => {
+                resolve();
+            };
+
+            transaction.onerror = () => {
+                reject(new Error('Transaction failed'));
+            };
+        };
+    });
+}
+
 export async function createKeyValue<T>(collectionName: string) {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
         const request = indexedDB.open("webgen-keyval");
