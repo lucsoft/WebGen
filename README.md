@@ -8,11 +8,12 @@ A SwiftUI-like Webframework
 
 ```ts
 // Create a mod.ts file
-import { PlainText, View, WebGen } from "https://deno.land/x/webgen/mod.ts";
+import { Label, Body, WebGen } from "https://deno.land/x/webgen/mod.ts";
 
 WebGen();
-View(() => PlainText("Hello World!"))
-    .appendOn(document.body);
+Body(
+    Label("Hello World!")
+);
 ```
 
 ```ts
