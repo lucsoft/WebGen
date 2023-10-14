@@ -28,16 +28,16 @@ export const Spacer = () => new SpacerCompoent().addClass('spacer');
 export const Horizontal = (...components: ComponentArray) => new AlignComponent("horizontal-stack", components.flat());
 export const Vertical = (...components: ComponentArray) => new AlignComponent("vertical-stack", components.flat());
 class GridComponent extends Component {
-    constructor(components: (Component | [ settings: { width?: number, heigth?: number; }, element: Component ])[]) {
+    constructor(components: (Component | [ settings: { width?: number, height?: number; }, element: Component ])[]) {
         super();
         this.wrapper.classList.add("wggrid");
         this.wrapper.style.display = "grid";
         this.wrapper.append(...components.map(x => {
             if (Array.isArray(x)) {
-                const { width, heigth } = x[ 0 ];
+                const { width, height } = x[ 0 ];
                 const ele = x[ 1 ].draw();
                 if (width) ele.style.gridColumn = `${width} span`;
-                if (heigth) ele.style.gridRow = `${heigth} span`;
+                if (height) ele.style.gridRow = `${height} span`;
                 return ele;
             }
             return x.draw();
@@ -66,4 +66,4 @@ export function Box(...components: Component[]) {
     block.append(...components.map(x => x.draw()));
     return Custom(block);
 }
-export const Grid = (...components: (Component | [ settings: { width?: number, heigth?: number; }, element: Component ])[]) => new GridComponent(components);
+export const Grid = (...components: (Component | [ settings: { width?: number, height?: number; }, element: Component ])[]) => new GridComponent(components);
