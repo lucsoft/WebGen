@@ -1,0 +1,25 @@
+name: Update Deno Dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Human: 12am every day
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+      - name: Update dependencies
+        run: deno run -A https://den.ooo/updater -b
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update dependencies
+          branch: master
