@@ -4,3 +4,4 @@ new-version.js
 .DS_Store
 .vscode
 node_modules
+deno.lock

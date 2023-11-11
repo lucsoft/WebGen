@@ -7,7 +7,7 @@
 */
 // deno-lint-ignore-file no-explicit-any
 
-import { Component } from "./types.ts";
+import { Component } from "./Component.ts";
 import { Box, Custom } from "./webgen.ts";
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
