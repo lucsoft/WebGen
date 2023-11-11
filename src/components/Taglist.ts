@@ -1,8 +1,8 @@
-import { MIcon } from "webgen/src/webgen.ts";
+import { Component, MIcon } from "webgen/src/webgen.ts";
 import { Color } from "../Color.ts";
 import { createElement } from "../Components.ts";
 import { Pointable, Pointer, State } from "../State.ts";
-import { ButtonStyle, Component } from "../types.ts";
+import { ButtonStyle } from "../types.ts";
 import { Button } from "./Button.ts";
 import { IconButton } from "./IconButton.ts";
 import './taglist.css';

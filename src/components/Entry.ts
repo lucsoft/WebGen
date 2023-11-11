@@ -2,12 +2,12 @@ import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
 import { Pointable, State } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
-import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { Custom } from "./Custom.ts";
 import './Entry.css';
 import { Label } from "./Label.ts";
 import { Layer } from "./Layer.ts";
 import { Box, CenterV, Grid } from "./Stacks.ts";
+import { loadingWheel } from "./light-components/loadingWheel.ts";
 
 type BasicLabel = {
     title: Pointable<string>;

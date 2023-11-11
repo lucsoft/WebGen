@@ -63,6 +63,10 @@ export type ProxyDataSource<T> = {
 export interface ObserverCallback {
     (value?: any, oldValue?: any): void;
 }
+
+export interface PointerEvent<Type> {
+    (value: Type, oldValue?: any): void;
+}
 /**
  * A controller interface for a reactive proxy object’s dependencies.
  */
@@ -127,7 +131,7 @@ export type Pointer<T> = {
  * Adds a callback function to be called when the pointer's value changes.
  * @param c The callback function to be added.
  */
-    readonly listen: (c: ObserverCallback) => void;
+    readonly listen: (c: PointerEvent<T>) => void;
 } & (T extends Component ? {
     /**
      * Creates an internal HeavyReRender. Do not use this for large DOM updates (as it could effect performance on low end devices).
@@ -148,7 +152,7 @@ export type Pointer<T> = {
 export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
     if (isPointer(value))
         return value;
-    let _val = value;
+    let _val: T = value;
     const list = new Set<ObserverCallback>();
     return <Pointer<T>>{
         type: "pointer",
@@ -202,15 +206,6 @@ export function refMerge<PointerRecord extends Record<string, Pointer<unknown>>>
         });
     }
     return internalValue;
-}
-
-export function statePointer<T>(value: T | Pointer<T>): Pointer<StateHandler<T> | T> {
-    if (isPointer(value))
-        return value;
-    const state = State({
-        key: value
-    });
-    return state.$key as Pointer<StateHandler<T>>;
 }
 
 export type Pointable<T> = T | Pointer<T>;
@@ -355,6 +350,7 @@ function _state<T>(
                 type: "pointer",
                 getValue: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
                 setValue: (val) => {
+                    // @ts-ignore TODO: fix typing
                     proxy[ p.replace("$", "") as keyof typeof proxy ] = val;
                 },
                 map: <newT>(map: (val: T) => newT) => {
@@ -543,7 +539,7 @@ export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
  *
  * ref\`Hello ${state.$user}\` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
  */
-export function ref(data: TemplateStringsArray, ...expr: Pointable<string | number | boolean>[]) {
+export function ref(data: TemplateStringsArray, ...expr: Pointable<any>[]) {
     const empty = Symbol("empty");
     const merge = data.map((x, i) => [ x, expr[ i ] ?? empty ]).flat();
 

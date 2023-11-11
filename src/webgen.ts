@@ -14,8 +14,10 @@ export * from './components/Button.ts';
 export * from "./components/Cache.ts";
 export * from './components/Card.ts';
 export * from './components/Checkbox.ts';
+export * from "./components/Content.ts";
 export * from './components/Custom.ts';
 export * from './components/Entry.ts';
+export * from "./components/Flow.ts";
 export * from './components/Form.ts';
 export * from "./components/FormInputs.ts";
 export * from './components/FormText.ts';
@@ -31,7 +33,6 @@ export * from './components/Tab.ts';
 export * from "./components/Table.ts";
 export * from "./components/Taglist.ts";
 export * from "./components/Wizard.ts";
-export * from './Dialog.ts';
 export * from './Helper.ts';
 export * from './icons/BootstrapIcons.ts';
 export * from './icons/MaterialIcons.ts';
@@ -43,6 +44,9 @@ export { SupportedThemes } from './SupportedThemes.ts';
 export * from './types.ts';
 
 export * from "./components/Entry.ts";
+
+import './TextSizes.css';
+
 export type WebGenOptions = {
     updateThemeOnInit?: false,
     primiaryColor?: `hsl(${number}, ${number}%, 40%)`,
