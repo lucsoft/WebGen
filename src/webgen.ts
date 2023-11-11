@@ -8,6 +8,7 @@ import { SupportedThemes } from './SupportedThemes.ts';
 import { ColorDef } from "./types.ts";
 export * from './Body.ts';
 export * from './Color.ts';
+export * from "./Component.ts";
 export * from "./Components.ts";
 export * from './components/Button.ts';
 export * from "./components/Cache.ts";
