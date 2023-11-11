@@ -1,0 +1,5 @@
+.wlabel {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-weight: 400;
+}

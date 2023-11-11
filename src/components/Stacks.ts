@@ -1,9 +1,9 @@
-import '../../css/stack.webgen.static.css';
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
 import { dropNullish } from "../Helper.ts";
 import { ComponentArray } from "../types.ts";
 import { Custom } from "./Custom.ts";
+import './Stacks.css';
 
 class SpacerCompoent extends Component { }
 export class AlignComponent extends Component {

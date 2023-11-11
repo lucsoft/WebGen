@@ -1,14 +1,14 @@
-import { MIcon, asPointer } from '../../webgen.ts';
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
-import { DataSourceKey, Pointable, StateHandler, isPointer } from "../State.ts";
-import { loadingWheel } from "../light-components/loadingWheel.ts";
+import { DataSourceKey, Pointable, StateHandler, asPointer, isPointer } from "../State.ts";
+import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import { Custom } from "./Custom.ts";
 import './FormInput.css';
+import { loadingWheel } from "./light-components/loadingWheel.ts";
 
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 

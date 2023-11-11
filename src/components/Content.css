@@ -1,0 +1,16 @@
+.wcontent {
+    display: grid;
+}
+
+.full-width-section {
+    display: grid;
+    grid-template-columns: inherit;
+}
+
+.blue-bg {
+    background-color: #1e90ff;
+}
+
+.wflow>*>* {
+    margin-top: var(--flow-spacing, 1rem);
+}

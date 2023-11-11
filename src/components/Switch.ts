@@ -1,9 +1,8 @@
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Pointable, Pointer, asPointer } from "../State.ts";
-import { loadingWheel } from "../light-components/loadingWheel.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
-import { MIcon } from "../webgen.ts";
+import { MIcon, loadingWheel } from "../webgen.ts";
 import { Custom } from "./Custom.ts";
 import { Box } from "./Stacks.ts";
 import "./Switch.css";
