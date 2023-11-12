@@ -86,6 +86,11 @@ export class ImageComponent extends Component {
         this.addClass("resize-to-box");
         return this;
     }
+
+    setAspectRatio(ratio: string) {
+        this.wrapper.style.aspectRatio = ratio;
+        return this;
+    }
 }
 
 export const Image = (data: string | AdvancedImage, alt: string) => new ImageComponent(data, alt);
