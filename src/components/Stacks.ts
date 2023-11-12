@@ -59,6 +59,21 @@ class GridComponent extends Component {
         this.wrapper.style.gridTemplateColumns = (`${size} `).repeat(count);
         return this;
     }
+
+    setAutoRow(row: string) {
+        this.wrapper.style.gridAutoRows = row;
+        return this;
+    }
+
+    setAutoColumn(column: string) {
+        this.wrapper.style.gridAutoColumns = column;
+        return this;
+    }
+
+    setDirection(type: "column" | "row" | "row-reverse" | "column-reverse") {
+        this.wrapper.style.gridAutoFlow = type;
+        return this;
+    }
 }
 
 export function Box(...components: Component[]) {
