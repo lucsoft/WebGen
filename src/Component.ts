@@ -37,6 +37,10 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.width = size;
         return this;
     }
+    setHeight(size: string) {
+        this.wrapper.style.height = size;
+        return this;
+    }
     setMargin(size: string) {
         this.wrapper.style.margin = size;
         return this;
