@@ -64,3 +64,8 @@
 .wimage .progress {
     overflow: hidden;
 }
+
+.wimage.resize-to-box img {
+    object-fit: cover;
+    height: 100%;
+}

@@ -81,6 +81,11 @@ export class ImageComponent extends Component {
             };
         return img;
     }
+
+    resizeToBox() {
+        this.addClass("resize-to-box");
+        return this;
+    }
 }
 
 export const Image = (data: string | AdvancedImage, alt: string) => new ImageComponent(data, alt);
