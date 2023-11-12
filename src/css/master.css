@@ -1,7 +1,7 @@
 body {
     background: var(--background-color);
     font-family: var(--font);
-    color: white;
+    color: var(--on-background-text);
     font-weight: 300;
     margin: 0;
     overflow-x: hidden;
