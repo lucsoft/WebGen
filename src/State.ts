@@ -65,7 +65,7 @@ export interface ObserverCallback {
 }
 
 export interface PointerEvent<Type> {
-    (value: Type, oldValue?: any): void;
+    (value: Type, oldValue?: Type): void;
 }
 /**
  * A controller interface for a reactive proxy object’s dependencies.
