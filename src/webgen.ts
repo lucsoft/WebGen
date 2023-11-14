@@ -27,6 +27,8 @@ export * from './components/Label.ts';
 export * from "./components/Layer.ts";
 export * from './components/light-components/loadingWheel.ts';
 export * from "./components/MediaQuery.ts";
+export * from "./components/Scrollable.ts";
+export * from './components/Sheet.ts';
 export * from './components/Stacks.ts';
 export * from './components/Switch.ts';
 export * from './components/Tab.ts';
