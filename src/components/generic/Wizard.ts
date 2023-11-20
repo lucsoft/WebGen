@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { assert } from "https://deno.land/std@0.202.0/assert/mod.ts";
-import * as validator from "https://deno.land/x/zod@v3.22.2/mod.ts";
+import * as validator from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import { State, StateData, StateHandler } from "../../State.ts";
 import { Color } from "../../lib/Color.ts";
 import { View } from "../../lib/View.ts";
