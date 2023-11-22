@@ -1,6 +1,13 @@
-import { retry } from "https://deno.land/std@0.202.0/async/retry.ts";
-import { deferred } from "https://deno.land/std@0.207.0/async/deferred.ts";
+import { assert } from "https://deno.land/std@0.202.0/assert/assert.ts";
+import { Deferred, deferred } from "https://deno.land/std@0.202.0/async/deferred.ts";
+import { delay } from "https://deno.land/std@0.202.0/async/delay.ts";
+import { pooledMap } from "https://deno.land/std@0.202.0/async/pool.ts";
+import { MINUTE } from "https://deno.land/std@0.202.0/datetime/constants.ts";
+import { SchedulerPriority, createScheduler } from "./extended/scheduler.ts";
 import { Pointer, asPointer } from "./src/State.ts";
+export * from "./extended/scheduler.ts";
+export * from "./extended/stableRequests.ts";
+export * from "./extended/stableWebSockets.ts";
 
 export interface PaginationObject<T> {
     reset: () => void;
@@ -54,71 +61,93 @@ export function createCachedLoader<T extends object>(source: PaginationObject<T>
     };
 }
 
-export type WebSocketContext = {
-    send: (data: string | ArrayBufferLike | Blob | ArrayBufferView) => void;
-    close: () => void;
-};
+export interface Task {
+    priority: SchedulerPriority,
+    request: Request,
+    completed: Deferred<Response>,
+}
 
-export async function createStableWebSocket(connection: {
-    url: string,
-    protocol?: string | string[];
-}, events: {
-    onReconnect?: () => void;
-    onMessage?: (message: string | ArrayBuffer) => void;
-}): Promise<WebSocketContext> {
-    let socket: WebSocket | undefined = undefined;
-    let close = false;
-    const pooledMessages: (string | ArrayBufferLike | Blob | ArrayBufferView)[] = [];
-    function send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
-        pooledMessages.push(data);
-    }
-    const socketFirstTimeConnected = deferred<void>();
-    console.debug(connection.url, "start");
-    (async () => {
-        try {
-            while (!close) {
-                await retry(async () => {
-                    const socketClosed = deferred<void>();
-                    const websocket = new WebSocket(connection.url, connection.protocol);
-                    socket = websocket;
-                    let activePool: undefined | number;
-                    websocket.addEventListener("open", () => {
-                        console.debug(connection.url, "connected");
-                        activePool = setInterval(() => {
-                            if (pooledMessages.length > 0) {
-                                websocket.send(pooledMessages.shift()!);
-                            }
-                        }, 10);
-                        events.onReconnect?.();
-                        socketFirstTimeConnected.resolve();
-                    }, { once: true });
+export enum ThrottleStrategy {
+    Static,
+    Dynamic
+}
 
-                    websocket.addEventListener("close", () => {
-                        console.debug(connection.url, "close");
-                        clearInterval(activePool);
-                        socketClosed.reject();
-                    }, { once: true });
+export type ThrottledPipelineOptions = (
+    | { strategy: ThrottleStrategy.Dynamic; }
+    | { strategy: ThrottleStrategy.Static; throughputPerMinute: number; })
+    & { curve?: number; concurrency?: number; };
 
-                    websocket.addEventListener("error", (error) => {
-                        console.debug(connection.url, "error", error);
-                    });
+export function createThrottledPipeline(options: ThrottledPipelineOptions) {
+    const tasks = createScheduler<Task>();
 
-                    websocket.addEventListener("message", (message) => {
-                        events.onMessage?.(message.data);
-                    });
-                    await socketClosed;
-                });
-            }
-        } catch (error) {
-            console.error("Bad State", error);
+    let nextReset = Date.now();
+    let remaining = options.strategy === ThrottleStrategy.Static ? options.throughputPerMinute : 0;
+    if (options.strategy === ThrottleStrategy.Static)
+        setInterval(() => {
+            nextReset = Date.now();
+            remaining = options.strategy === ThrottleStrategy.Static ? options.throughputPerMinute : 0;
+        }, 1 * MINUTE);
+
+
+    let lastHeader: Headers | undefined = undefined;
+
+    const throttler = new class ThrottledStream extends TransformStream<Task, Task> {
+        constructor() {
+            super({
+                transform: async (task, controller) => {
+                    const curve = options.curve ?? 1.5;
+
+                    if (options.strategy === ThrottleStrategy.Dynamic) {
+                        const headers = lastHeader;
+                        if (headers) {
+                            const limit = Number(headers.get("X-Ratelimit-Limit") ?? headers.get("X-Rate-Limit-Limit")); // How many requests we can make in this minute
+                            const remaining = Number(headers.get("X-Ratelimit-Remaining") ?? headers.get("X-Rate-Limit-Remaining")); // How many requests we have left in this minute
+                            const reset = Number(headers.get("X-Ratelimit-Reset") ?? headers.get("X-Rate-Limit-Reset")); // How many seconds until the ratelimit resets
+                            assert(!isNaN(limit) || !isNaN(remaining) || !isNaN(reset), "Ratelimit headers are not numbers");
+
+                            await delay(Math.pow((1 - (remaining / limit)), curve) * reset * 1000);
+                        }
+                    } else {
+                        const reset = (Date.now() - nextReset) / 1000;
+                        await delay(Math.pow((1 - (remaining / options.throughputPerMinute)), curve) * reset * 1000);
+                        remaining--;
+                    }
+                    controller.enqueue(task);
+                }
+            });
         }
-    })();
-    await socketFirstTimeConnected;
+
+
+    };
+
+    const sourceStream = tasks.scheduler
+        .pipeThrough(throttler);
+
+    pooledMap(options.concurrency ?? 1,
+        sourceStream,
+        async (task) => {
+            try {
+                const response = await fetch(task.request, {
+                    mode: options.strategy === ThrottleStrategy.Dynamic ? "no-cors" : "cors"
+                });
+                task.completed.resolve(response);
+                lastHeader = response.headers;
+            } catch (error) {
+                task.completed.reject(error);
+            }
+        }
+    );
+
     return {
-        send,
-        close: () => {
-            close = true;
-            socket?.close();
+        fetch: (priority: SchedulerPriority, request: Request | string) => {
+            const completed = deferred<Response>();
+            const requestObj = typeof request === "string" ? new Request(request) : request;
+            tasks.add({
+                priority,
+                request: requestObj,
+                completed
+            });
+            return completed;
         }
     };
 }
