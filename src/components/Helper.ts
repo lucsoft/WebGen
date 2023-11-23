@@ -81,7 +81,7 @@ export function KeyValueStore(map: Map<string, Blob>): Promise<void> {
     });
 }
 
-export const lazyInit = <T>(fn: () => Promise<T>) => {
-    let prom: Promise<T> = undefined!;
+export const lazyInit = <T>(fn: () => T) => {
+    let prom: T = undefined!;
     return () => prom = (prom || fn());
 };
