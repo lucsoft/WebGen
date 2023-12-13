@@ -30,7 +30,6 @@ export class ContentComponent extends Component {
             } else {
                 const item = element.draw();
                 item.style.gridColumn = "content";
-                console.log(item, item.style);
                 this.wrapper.append(item);
             }
         }
