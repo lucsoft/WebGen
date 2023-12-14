@@ -1,5 +1,3 @@
-import { asPointer } from "./State.ts";
+import { mediaQueryPointer } from "./webgen.ts";
 
-const mobileQuery = matchMedia("(max-width: 750px)");
-export const isMobile = asPointer(mobileQuery.matches);
-mobileQuery.addEventListener("change", () => isMobile.setValue(mobileQuery.matches));
+export const isMobile = mediaQueryPointer("(max-width: 750px)");

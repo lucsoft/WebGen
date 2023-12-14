@@ -26,13 +26,13 @@ class SheetComponent extends Component {
 class SheetsComponent extends Component {
     private readonly sheets: Pointer<SheetComponent[]> = asPointer([]);
 
-    constructor(component: Component) {
+    constructor(component: Component, private readonly mobileTrigger: Pointer<boolean> = isMobile) {
         super();
         this.onClick(() => {
             this.remove(this.sheets.getValue().at(-1)!);
         });
         this.addClass("wstacking-sheets");
-        this.addClass(isMobile.map(it => it ? "mobile-variant" : "desktop-variant"));
+        this.addClass(mobileTrigger.map(it => it ? "mobile-variant" : "desktop-variant"));
 
         this.add(new SheetComponent(asPointer(0), component));
     }
@@ -52,7 +52,7 @@ class SheetsComponent extends Component {
 
         sheet.addClass(refMerge({ sheets: this.sheets }).map(({ sheets }) => (sheets.length - 1) > 0 ? "background" : "no-background"));
 
-        isMobile.map(mobile => {
+        this.mobileTrigger.map(mobile => {
             element.style.setProperty("--sheet-index", `${index > 0 && !mobile ? index - 1 : index}`);
         });
 
