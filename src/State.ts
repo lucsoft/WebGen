@@ -529,6 +529,24 @@ function reactiveMerge(
 
 export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
 
+/**
+ * Shorthand for:
+ * ```ts
+ * const data = State({
+ *     val: "Hello World",
+ *     date: new Date()
+ * });
+ *
+ * return refMerge({
+ *    val: data.$val,
+ *    date: data.$date
+ * });
+ * ```
+ */
+export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Pointer<T> {
+    const keys = Object.keys(data);
+    return refMerge(Object.fromEntries(keys.map(key => ([ key, data[ ("$" + key) as unknown as keyof T ] ]) as any))) as Pointer<T>;
+}
 
 /**
  * Creates a Pointer<string> from a tagged templates
