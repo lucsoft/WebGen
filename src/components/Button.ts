@@ -70,10 +70,10 @@ export class ButtonComponent extends ColoredComponent {
     }
     onPromiseClick(func: (env: MouseEvent, e: ButtonComponent) => Promise<void>) {
         this.onClick(async (env, e) => {
-            const cssclass = this.wrapper.classList.item(2);
+            const styleBefore = this.style.getValue();
             this.setStyle(ButtonStyle.Spinner);
             await func(env, e);
-            this.setStyle(cssclass as ButtonStyle);
+            this.setStyle(styleBefore);
         });
         return this;
     }
