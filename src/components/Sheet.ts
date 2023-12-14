@@ -4,7 +4,7 @@ import { Pointer, asPointer, refMerge } from "../State.ts";
 import { isMobile } from "../mobileQuery.ts";
 import './Sheet.css';
 
-class SheetComponent extends Component {
+export class SheetComponent extends Component {
 
     constructor(public readonly offset: Pointer<number>, public readonly kind: Component) {
         super();
@@ -23,7 +23,7 @@ class SheetComponent extends Component {
     }
 }
 
-class SheetsComponent extends Component {
+export class SheetsComponent extends Component {
     private readonly sheets: Pointer<SheetComponent[]> = asPointer([]);
 
     constructor(component: Component, private readonly mobileTrigger: Pointer<boolean>) {
