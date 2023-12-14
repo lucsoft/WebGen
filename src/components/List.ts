@@ -1,7 +1,7 @@
-import { Component } from "../Component.ts";
-import { Pointer } from "../State.ts";
-import { Custom } from "./Custom.ts";
-import { Box } from "./Stacks.ts";
+import { Component } from '../Component.ts';
+import { Pointer } from '../State.ts';
+import { Custom } from './Custom.ts';
+import { Box } from './Stacks.ts';
 
 declare global {
     interface Document {
@@ -14,7 +14,7 @@ declare global {
 }
 
 // TODO turn this into a proper component, add it to webgen and opt-in to View Transitions API
-export function List<T, Key extends string>(list: Pointer<T[]>, keyFunc: (data: T) => Key, renderFunc: (data: T) => Component) {
+export function List<T, Key extends string>(list: Pointer<T[]>, keyFunc: (data: T) => Key, renderFunc: (data: T) => Component): Component {
     const container: HTMLElement = Box().draw();
 
     list.listen((newValue: T[] = [], oldValue: T[] = []) => {

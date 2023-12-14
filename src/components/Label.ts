@@ -1,7 +1,9 @@
-import { Component } from "../Component.ts";
-import { createElement } from "../Components.ts";
-import { isPointer, Pointable } from "../State.ts";
 import './Label.css';
+
+import { Component } from '../Component.ts';
+import { createElement } from '../Components.ts';
+import { isPointer, Pointable } from '../State.ts';
+
 export const Label = (title: Pointable<string>, type: `h${1 | 2 | 3 | 4 | 5 | 6}` | `span` = "span") => new class extends Component {
     wrapper = createElement(type);
     constructor() {
