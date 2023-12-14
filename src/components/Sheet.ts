@@ -26,7 +26,7 @@ class SheetComponent extends Component {
 class SheetsComponent extends Component {
     private readonly sheets: Pointer<SheetComponent[]> = asPointer([]);
 
-    constructor(component: Component, private readonly mobileTrigger: Pointer<boolean> = isMobile) {
+    constructor(component: Component, private readonly mobileTrigger: Pointer<boolean>) {
         super();
         this.onClick(() => {
             this.remove(this.sheets.getValue().at(-1)!);
@@ -99,6 +99,6 @@ class SheetsComponent extends Component {
     }
 }
 
-export const Sheets = (sheet: Component) => new SheetsComponent(sheet);
+export const Sheets = (sheet: Component, mobileTrigger: Pointer<boolean> = isMobile) => new SheetsComponent(sheet, mobileTrigger);
 
 export const Sheet = (content: Component) => new SheetComponent(asPointer(0), content);
