@@ -81,4 +81,9 @@ export function Box(...components: Component[]) {
     block.append(...components.map(x => x.draw()));
     return Custom(block);
 }
+
+export function Empty() {
+    return Box().removeFromLayout();
+}
+
 export const Grid = (...components: (Component | [ settings: { width?: number, height?: number; }, element: Component ])[]) => new GridComponent(components);

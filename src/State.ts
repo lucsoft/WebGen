@@ -8,7 +8,7 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { Component } from "./Component.ts";
-import { Box, Custom } from "./webgen.ts";
+import { Custom, Empty } from "./webgen.ts";
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
     return (
@@ -181,7 +181,7 @@ export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
                 throw new Error("asRefComponent called on a non component pointer.");
             }
             console.debug("asRefComponent got constructed");
-            const wrapper = Box().draw();
+            const wrapper = Empty().draw();
             wrapper.append(_val.draw());
             list.add(val => {
                 wrapper.textContent = '';

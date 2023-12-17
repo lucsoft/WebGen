@@ -40,6 +40,7 @@ export * from './Helper.ts';
 export * from './icons/BootstrapIcons.ts';
 export * from './icons/MaterialIcons.ts';
 export * from "./KeyValue.ts";
+export * from "./lazyInit.ts";
 export * from "./mobileQuery.ts";
 export * from "./State.ts";
 export * from './Style.ts';
