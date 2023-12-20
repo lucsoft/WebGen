@@ -33,7 +33,7 @@ export class EntryComponent extends Component {
             2,
             "shadow"
         ).addClass("wentry").setBorderRadius("large").draw();
-
+        this.wrapper.setAttribute("aria-role", "button");
         this.prefix.classList.add("prefix");
         this.wrapper.prepend(this.prefix);
         this.suffix.classList.add("suffix");

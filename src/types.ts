@@ -31,7 +31,7 @@ export type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl
 export type FontWeight = | 'thin' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
 export abstract class ColoredComponent extends Component {
     color = asPointer(Color.Grayscaled);
-    wrapper = createElement("a");
+    wrapper: HTMLElement = createElement("a");
     constructor() {
         super();
         this.color.listen((val) => {

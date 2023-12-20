@@ -1,4 +1,6 @@
 .wbutton {
+    border: none;
+    font-family: var(--font);
     padding: 0 16px 0;
     height: 37px;
     display: inline-flex;

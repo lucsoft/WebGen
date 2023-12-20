@@ -13,8 +13,15 @@ const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disa
 export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
     style = asPointer(ButtonStyle.Normal);
+    wrapper: HTMLElement = createElement("button");
+
     constructor(string: Pointable<string | Component>) {
         super();
+        this.color.listen((val) => {
+            this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(val);
+        });
+
+        this.addClass(this.color);
         this.wrapper.classList.add("wbutton", ButtonStyle.Normal);
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
@@ -58,12 +65,6 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.style.justifyContent = type;
         return this;
     }
-    asLinkButton(url: string, target?: string) {
-        this.wrapper.href = url;
-        if (target)
-            this.wrapper.target = target;
-        return this;
-    }
     setGrow(value = 1) {
         this.wrapper.style.flexGrow = value.toString();
         return this;
@@ -83,4 +84,17 @@ export class ButtonComponent extends ColoredComponent {
         return this;
     }
 }
+export class LinkButtonComponent extends ButtonComponent {
+    wrapper = createElement("a");
+
+    constructor(title: Pointable<string | Component>, url: string, target?: string) {
+        super(title);
+        this.wrapper.href = url;
+        if (target)
+            this.wrapper.target = target;
+    }
+}
+
+
 export const Button = (string: Pointable<string | Component>) => new ButtonComponent(string);
+export const LinkButton = (string: Pointable<string | Component>, url: string, target?: string) => new LinkButtonComponent(string, url, target);
