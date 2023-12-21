@@ -31,9 +31,8 @@ export type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl
 export type FontWeight = | 'thin' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
 export abstract class ColoredComponent extends Component {
     color = asPointer(Color.Grayscaled);
-    wrapper: HTMLElement = createElement("a");
-    constructor() {
-        super();
+    constructor(wrapper: HTMLElement = createElement("a")) {
+        super(wrapper);
         this.color.listen((val) => {
             this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(val);
         });

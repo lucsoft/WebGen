@@ -2,7 +2,9 @@ import { createElement } from "./Components.ts";
 import { Pointable, isPointer } from "./State.ts";
 import { FontWeight, TextSize } from "./types.ts";
 export abstract class Component extends EventTarget {
-    protected wrapper: HTMLElement = createElement("div");
+    constructor(protected wrapper: HTMLElement = createElement("div")) {
+        super();
+    }
 
     addClass<stringy extends string>(val: Pointable<stringy>, ...classes: string[]) {
         if (isPointer(val))

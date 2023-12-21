@@ -13,10 +13,9 @@ const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disa
 export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
     style = asPointer(ButtonStyle.Normal);
-    wrapper: HTMLElement = createElement("button");
 
-    constructor(string: Pointable<string | Component>) {
-        super();
+    constructor(string: Pointable<string | Component>, wrapper: HTMLElement = createElement("button")) {
+        super(wrapper);
         this.color.listen((val) => {
             this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(val);
         });
@@ -85,13 +84,13 @@ export class ButtonComponent extends ColoredComponent {
     }
 }
 export class LinkButtonComponent extends ButtonComponent {
-    wrapper = createElement("a");
-
     constructor(title: Pointable<string | Component>, url: string, target?: string) {
-        super(title);
-        this.wrapper.href = url;
-        if (target)
-            this.wrapper.target = target;
+        super(title, createElement("a"));
+        if (this.wrapper instanceof HTMLAnchorElement) {
+            this.wrapper.href = url;
+            if (target)
+                this.wrapper.target = target;
+        }
     }
 }
 
