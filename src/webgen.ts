@@ -45,6 +45,7 @@ export * from "./mobileQuery.ts";
 export * from "./State.ts";
 export * from './Style.ts';
 export { SupportedThemes } from './SupportedThemes.ts';
+export * from './Validate.ts';
 
 export * from './types.ts';
 
