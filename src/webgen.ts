@@ -35,7 +35,6 @@ export * from './components/Switch.ts';
 export * from './components/Tab.ts';
 export * from "./components/Table.ts";
 export * from "./components/Taglist.ts";
-export * from "./components/Wizard.ts";
 export * from './Helper.ts';
 export * from './icons/BootstrapIcons.ts';
 export * from './icons/MaterialIcons.ts';
