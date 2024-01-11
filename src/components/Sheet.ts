@@ -5,6 +5,8 @@ import { isMobile } from "../mobileQuery.ts";
 import './Sheet.css';
 
 export class SheetComponent extends Component {
+    onClose = asPointer<() => void>(() => { });
+    canClose = asPointer<boolean>(true);
 
     constructor(public readonly offset: Pointer<number>, public readonly kind: Component) {
         super();
@@ -21,6 +23,16 @@ export class SheetComponent extends Component {
         this.wrapper.style.setProperty("--sheet-desktop-height", size);
         return this;
     }
+
+    setOnClose(onClose: () => void): this {
+        this.onClose.setValue(onClose);
+        return this;
+    }
+
+    setCanClose(canClose: Pointer<boolean>): this {
+        canClose.listen(it => this.canClose.setValue(it));
+        return this;
+    }
 }
 
 export class SheetsComponent extends Component {
@@ -29,7 +41,11 @@ export class SheetsComponent extends Component {
     constructor(component: Component, private readonly mobileTrigger: Pointer<boolean>) {
         super();
         this.onClick(() => {
-            this.remove(this.sheets.getValue().at(-1)!);
+            const sheet = this.sheets.getValue().at(-1)!;
+            if (!sheet.canClose.getValue())
+                return;
+            sheet.onClose.getValue()();
+            this.remove(sheet);
         });
         this.addClass("wstacking-sheets");
         this.addClass(mobileTrigger.map(it => it ? "mobile-variant" : "desktop-variant"));
@@ -73,7 +89,6 @@ export class SheetsComponent extends Component {
     }
 
     async remove(sheet: SheetComponent) {
-        // find index
         const index = this.sheets.getValue().indexOf(sheet);
         const animationEnded = deferred();
 
