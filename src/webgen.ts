@@ -30,6 +30,7 @@ export * from './components/List.ts';
 export * from "./components/MediaQuery.ts";
 export * from "./components/Scrollable.ts";
 export * from './components/Sheet.ts';
+export * from "./components/SheetDialog.ts";
 export * from './components/Stacks.ts';
 export * from './components/Switch.ts';
 export * from './components/Tab.ts';
