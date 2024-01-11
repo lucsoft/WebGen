@@ -130,10 +130,29 @@ export async function createKeyValue<T>(collectionName: string) {
         });
     };
 
+    // Delete a key from the map
+    const remove = (key: string) => {
+        return new Promise<void>((resolve, reject) => {
+            const transaction = db.transaction([ collectionName ], "readwrite");
+            const store = transaction.objectStore(collectionName);
+
+            const request = store.delete(key);
+
+            request.onerror = () => {
+                reject(new Error("Error deleting key from IndexedDB"));
+            };
+
+            request.onsuccess = () => {
+                resolve();
+            };
+        });
+    };
+
     return {
         set,
         get,
         has,
-        clear
+        clear,
+        remove
     };
 }
