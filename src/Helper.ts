@@ -8,8 +8,10 @@ export const dropNullish = (...components: (Component | null | undefined)[]) => 
  */
 export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
 
+import { deferred } from "https://deno.land/std@0.206.0/async/deferred.ts";
 import { groupBy } from "https://deno.land/std@0.206.0/collections/group_by.ts";
 import { Component } from "./Component.ts";
+import { createElement } from "./Components.ts";
 
 /**
  * fromEntries can't handle duplicates
@@ -38,4 +40,19 @@ export function extendedFromEntries(data: [ key: string, value: FormDataEntryVal
     return {
         ...Object.fromEntries(pureEntries)
     };
+}
+
+export async function createFilePicker(accept: string): Promise<File> {
+    const fileSignal = deferred<File>();
+    const input = createElement("input");
+    input.type = "file";
+    input.hidden = true;
+    input.accept = accept;
+
+    input.addEventListener("change", () => {
+        fileSignal.resolve(Array.from(input.files ?? [])[ 0 ]!);
+    });
+
+    input.showPicker();
+    return await fileSignal;
 }
