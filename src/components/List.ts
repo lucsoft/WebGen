@@ -49,3 +49,7 @@ export function List<T, Key extends string>(list: Pointer<T[]>, keyFunc: (data: 
 
     return Custom(container).removeFromLayout();
 }
+
+export function Items<T>(list: Pointer<T[]>, renderFunc: (data: T) => Component): Component {
+    return list.map(list => Box(...list.map(renderFunc)).removeFromLayout()).asRefComponent();
+}
