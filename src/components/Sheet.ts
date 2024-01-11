@@ -35,10 +35,10 @@ export class SheetComponent extends Component {
     }
 }
 
-export class SheetsComponent extends Component {
+export class SheetsStackComponent extends Component {
     private readonly sheets: Pointer<SheetComponent[]> = asPointer([]);
 
-    constructor(component: Component, private readonly mobileTrigger: Pointer<boolean>) {
+    constructor(private readonly mobileTrigger: Pointer<boolean>) {
         super();
         this.onClick(() => {
             const sheet = this.sheets.getValue().at(-1)!;
@@ -49,8 +49,6 @@ export class SheetsComponent extends Component {
         });
         this.addClass("wstacking-sheets");
         this.addClass(mobileTrigger.map(it => it ? "mobile-variant" : "desktop-variant"));
-
-        this.add(new SheetComponent(asPointer(0), component));
     }
 
     add(sheet: SheetComponent) {
@@ -88,6 +86,10 @@ export class SheetsComponent extends Component {
         return this;
     }
 
+    setDefault(component: Component) {
+        this.add(new SheetComponent(asPointer(0), component));
+    }
+
     async remove(sheet: SheetComponent) {
         const index = this.sheets.getValue().indexOf(sheet);
         const animationEnded = deferred();
@@ -114,6 +116,6 @@ export class SheetsComponent extends Component {
     }
 }
 
-export const Sheets = (sheet: Component, mobileTrigger: Pointer<boolean> = isMobile) => new SheetsComponent(sheet, mobileTrigger);
+export const SheetsStack = (mobileTrigger: Pointer<boolean> = isMobile) => new SheetsStackComponent(mobileTrigger);
 
 export const Sheet = (content: Component) => new SheetComponent(asPointer(0), content);
