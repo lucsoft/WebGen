@@ -47,6 +47,7 @@ export type Route<Path extends UrlPath, Search extends zod.ZodRawShape, BaseSear
     groups: StateHandler<Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>>,
     search: StateHandler<zod.infer<zod.ZodObject<BaseSearch & Search>>>,
     navigate: (groups: Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>, options?: NavigationNavigateOptions) => NavigationResult,
+    location: (groups: Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>) => void,
     createRoute: <NewBase extends UrlPath, NewSearch extends zod.ZodRawShape>(options: RouteOptions<NewBase, NewSearch>) => Route<NewBase, NewSearch, Search, TrimTrailingSlash<Path>>,
 };
 
@@ -122,6 +123,10 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
         navigate: (groups, options) => {
             const filledRoute = cleanedUpPath.split("/").map(x => x.startsWith(":") ? groups[ x.replace(/^:/, "") as keyof typeof groups ] : x).join("/");
             return navigation.navigate(filledRoute, options);
+        },
+        location: (groups) => {
+            const filledRoute = cleanedUpPath.split("/").map(x => x.startsWith(":") ? groups[ x.replace(/^:/, "") as keyof typeof groups ] : x).join("/");
+            location.href = filledRoute;
         },
         createRoute: (newOptions) =>
             createRoute({
