@@ -1,7 +1,7 @@
 import { Component } from '../Component.ts';
 import { Pointer } from '../State.ts';
+import { Box } from './Box.ts';
 import { Custom } from './Custom.ts';
-import { Box } from './Stacks.ts';
 
 declare global {
     interface Document {

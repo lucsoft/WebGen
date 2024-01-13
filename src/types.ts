@@ -2,7 +2,7 @@ import { accessibilityDisableTabOnDisabled } from "./Accessibility.ts";
 import { Color } from "./Color.ts";
 import { Component } from "./Component.ts";
 import { createElement } from "./Components.ts";
-import { asPointer, isPointer, Pointable } from "./State.ts";
+import { asRef, Pointable } from "./State.ts";
 
 export type ComponentArray = ((Component | null)[] | Component | null)[];
 
@@ -30,7 +30,7 @@ export const enum ButtonStyle {
 export type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
 export type FontWeight = | 'thin' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
 export abstract class ColoredComponent extends Component {
-    color = asPointer(Color.Grayscaled);
+    color = asRef(Color.Grayscaled);
     constructor(wrapper: HTMLElement = createElement("a")) {
         super(wrapper);
         this.color.listen((val) => {
@@ -41,11 +41,7 @@ export abstract class ColoredComponent extends Component {
     }
     abstract setStyle(style: Pointable<ButtonStyle>): this;
     setColor(color: Pointable<Color>) {
-        if (isPointer(color)) {
-            color.listen((val) => this.setColor(val));
-            return this;
-        }
-        this.color.setValue(color);
+        asRef(color).listen((val) => this.color.setValue(val));
         return this;
     }
 }

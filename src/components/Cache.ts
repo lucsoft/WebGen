@@ -1,7 +1,7 @@
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
+import { Box } from "./Box.ts";
 import { Custom } from "./Custom.ts";
-import { Box } from "./Stacks.ts";
 
 export const GLOBAL_CACHE = new Map<string, {
     // deno-lint-ignore no-explicit-any

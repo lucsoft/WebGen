@@ -1,5 +1,5 @@
 // polyfill hotfix for safari
-if (document.adoptedStyleSheets.length == 0)
+if ('document' in globalThis && document?.adoptedStyleSheets?.length === 0)
     document.adoptedStyleSheets = [];
 
 /**

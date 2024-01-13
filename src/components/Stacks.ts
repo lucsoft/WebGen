@@ -1,8 +1,6 @@
 import { Component } from "../Component.ts";
-import { createElement } from "../Components.ts";
 import { dropNullish } from "../Helper.ts";
 import { ComponentArray } from "../types.ts";
-import { Custom } from "./Custom.ts";
 import './Stacks.css';
 
 class SpacerCompoent extends Component { }
@@ -74,16 +72,6 @@ class GridComponent extends Component {
         this.wrapper.style.gridAutoFlow = type;
         return this;
     }
-}
-
-export function Box(...components: Component[]) {
-    const block = createElement("div");
-    block.append(...components.map(x => x.draw()));
-    return Custom(block);
-}
-
-export function Empty() {
-    return Box().removeFromLayout();
 }
 
 export const Grid = (...components: (Component | [ settings: { width?: number, height?: number; }, element: Component ])[]) => new GridComponent(components);

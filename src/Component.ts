@@ -1,5 +1,5 @@
 import { createElement } from "./Components.ts";
-import { Pointable, isPointer } from "./State.ts";
+import { Pointable, asRef } from "./State.ts";
 import { FontWeight, TextSize } from "./types.ts";
 export abstract class Component extends EventTarget {
     constructor(protected wrapper: HTMLElement = createElement("div")) {
@@ -7,14 +7,11 @@ export abstract class Component extends EventTarget {
     }
 
     addClass<stringy extends string>(val: Pointable<stringy>, ...classes: string[]) {
-        if (isPointer(val))
-            val.listen((val, oldVal) => {
-                if (oldVal)
-                    this.wrapper.classList.remove(oldVal);
-                this.wrapper.classList.add(val);
-            });
-        else
+        asRef(val).listen((val, oldVal) => {
+            if (oldVal)
+                this.wrapper.classList.remove(oldVal);
             this.wrapper.classList.add(val);
+        });
 
         this.wrapper.classList.add(...classes);
         return this;

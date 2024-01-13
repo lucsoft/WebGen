@@ -1,5 +1,6 @@
 import { Component } from "./Component.ts";
-import { Custom, createElement } from "./webgen.ts";
+import { createElement } from "./Components.ts";
+import { Custom } from "./components/Custom.ts";
 
 export const Body = (component: Component) => {
     const item = createElement('article');

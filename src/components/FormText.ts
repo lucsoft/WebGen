@@ -1,6 +1,8 @@
+import { Color } from "../Color.ts";
 import { createElement } from "../Components.ts";
-import { ButtonStyle, Color, Label } from "../webgen.ts";
+import { ButtonStyle } from "../types.ts";
 import { InputForm } from "./FormInputs.ts";
+import { Label } from "./Label.ts";
 
 export type TextInputMode = "text" | "email" | "password" | "url" | "date";
 export type InputDataMode = "live" | "blur";
@@ -54,7 +56,7 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
         this.input.required = true;
         return this;
     }
-    setAutofill(text: string) {
+    setAutofill(text: AutoFill) {
         this.input.autocomplete = text;
         return this;
     }

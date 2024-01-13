@@ -1,12 +1,11 @@
 import { Component } from "../Component.ts";
-import { Pointable, asPointer } from "../State.ts";
-import { Pointer } from "../webgen.ts";
+import { Pointable, Pointer, asRef } from "../State.ts";
 import { Label } from "./Label.ts";
 import { Sheet, SheetsStackComponent } from "./Sheet.ts";
 import { Grid } from "./Stacks.ts";
 
 export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Pointable<string>, ...content: Component[]) {
-    const isOpen = asPointer(false);
+    const isOpen = asRef(false);
 
     const sheet = Sheet(
         Grid(

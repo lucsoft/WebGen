@@ -1,14 +1,15 @@
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
-import { Pointable, Pointer, asPointer } from "../State.ts";
+import { Pointable, Pointer, asRef } from "../State.ts";
+import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
-import { MIcon, loadingWheel } from "../webgen.ts";
+import { Box } from "./Box.ts";
 import { Custom } from "./Custom.ts";
-import { Box } from "./Stacks.ts";
 import "./Switch.css";
+import { loadingWheel } from "./light-components/loadingWheel.ts";
 
 class SwitchComponent extends ColoredComponent {
-    loading = asPointer(false);
+    loading = asRef(false);
     selected: Pointer<boolean>;
     constructor(selected: Pointer<boolean>, icon = MIcon("check")) {
         super();

@@ -1,5 +1,5 @@
 import { Component } from "../Component.ts";
-import { Pointable, asPointer } from "../State.ts";
+import { Pointable, asRef } from "../State.ts";
 import { lazyInit } from "../lazyInit.ts";
 
 const iconSet = {
@@ -12,9 +12,9 @@ const iconSet = {
 export class MaterialIconComponent extends Component {
     constructor(name: Pointable<string>, type: Pointable<"outlined" | "filled" | "round" | "sharp" | "two-tone">) {
         super();
-        asPointer(name).listen(val => this.wrapper.innerText = val);
-        asPointer(type).listen((val: keyof typeof iconSet) => iconSet[ val ]());
-        this.addClass(asPointer(type).map(it => it == "filled" ? "material-icons" : "material-icons-" + it), "wicon");
+        asRef(name).listen(val => this.wrapper.innerText = val);
+        asRef(type).listen((val: keyof typeof iconSet) => iconSet[ val ]());
+        this.addClass(asRef(type).map(it => it == "filled" ? "material-icons" : "material-icons-" + it), "wicon");
     }
 }
 

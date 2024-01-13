@@ -1,11 +1,11 @@
 import 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css';
 import { Component } from "../Component.ts";
-import { asPointer, Pointable } from "../State.ts";
+import { asRef, Pointable } from "../State.ts";
 
 export class BootstrapIconComponent extends Component {
     constructor(name: Pointable<string>) {
         super();
-        this.addClass(asPointer(name).map(it => `bi-${it}`), "bi", "wicon");
+        this.addClass(asRef(name).map(it => `bi-${it}`), "bi", "wicon");
     }
 }
 

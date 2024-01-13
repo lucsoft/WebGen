@@ -1,12 +1,12 @@
 import { deferred } from "https://deno.land/std@0.206.0/async/deferred.ts";
 import { Component } from "../Component.ts";
-import { Pointer, asPointer, refMerge } from "../State.ts";
+import { Pointer, asRef } from "../State.ts";
 import { isMobile } from "../mobileQuery.ts";
 import './Sheet.css';
 
 export class SheetComponent extends Component {
-    onClose = asPointer<() => void>(() => { });
-    canClose = asPointer<boolean>(true);
+    onClose = asRef<() => void>(() => { });
+    canClose = asRef<boolean>(true);
 
     constructor(public readonly offset: Pointer<number>, public readonly kind: Component) {
         super();
@@ -36,7 +36,7 @@ export class SheetComponent extends Component {
 }
 
 export class SheetsStackComponent extends Component {
-    private readonly sheets: Pointer<SheetComponent[]> = asPointer([]);
+    private readonly sheets = asRef<SheetComponent[]>([]);
 
     constructor(private readonly mobileTrigger: Pointer<boolean>) {
         super();
@@ -52,7 +52,7 @@ export class SheetsStackComponent extends Component {
     }
 
     add(sheet: SheetComponent) {
-        this.sheets.setValue([ ...this.sheets.getValue(), sheet ]);
+        this.sheets.addItem(sheet);
         const index = this.sheets.getValue().length - 1;
 
         const element = sheet.draw();
@@ -64,7 +64,7 @@ export class SheetsStackComponent extends Component {
         sheet.addClass(sheetVisible.map(it => it ? "shown" : "hidden"));
         sheet.addClass(sheetOnTop.map(it => it ? "on-top" : "not-on-top"));
 
-        sheet.addClass(refMerge({ sheets: this.sheets }).map(({ sheets }) => (sheets.length - 1) > 0 ? "background" : "no-background"));
+        sheet.addClass(this.sheets.map((sheets) => (sheets.length - 1) > 0 ? "background" : "no-background"));
 
         this.mobileTrigger.map(mobile => {
             element.style.setProperty("--sheet-index", `${index > 0 && !mobile ? index - 1 : index}`);
@@ -87,7 +87,7 @@ export class SheetsStackComponent extends Component {
     }
 
     setDefault(component: Component) {
-        this.add(new SheetComponent(asPointer(0), component));
+        this.add(new SheetComponent(asRef(0), component));
     }
 
     async remove(sheet: SheetComponent) {
@@ -118,4 +118,4 @@ export class SheetsStackComponent extends Component {
 
 export const SheetsStack = (mobileTrigger: Pointer<boolean> = isMobile) => new SheetsStackComponent(mobileTrigger);
 
-export const Sheet = (content: Component) => new SheetComponent(asPointer(0), content);
+export const Sheet = (content: Component) => new SheetComponent(asRef(0), content);

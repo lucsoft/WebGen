@@ -1,6 +1,11 @@
 import { Component } from "../Component.ts";
-import { Box, Custom, Label, Spacer, Vertical, createElement, loadingWheel } from "../webgen.ts";
+import { createElement } from "../Components.ts";
+import { Box } from "./Box.ts";
+import { Custom } from "./Custom.ts";
 import './Image.css';
+import { Label } from "./Label.ts";
+import { Spacer, Vertical } from "./Stacks.ts";
+import { loadingWheel } from "./light-components/loadingWheel.ts";
 export type AdvancedImage =
     | { type: "direct", source: () => Promise<Blob>; }
     | { type: "loading"; }

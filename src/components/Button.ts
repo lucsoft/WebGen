@@ -2,7 +2,7 @@ import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Acces
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { Pointable, asPointer, isPointer } from "../State.ts";
+import { Pointable, asRef, isRef } from "../State.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import './Button.css';
 import { loadingWheel } from "./light-components/loadingWheel.ts";
@@ -12,7 +12,7 @@ const enableTuple = (enabled: boolean, color = Color.Grayscaled) => [ Color.Disa
 
 export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
-    style = asPointer(ButtonStyle.Normal);
+    style = asRef(ButtonStyle.Normal);
 
     constructor(string: Pointable<string | Component>, wrapper: HTMLElement = createElement("button")) {
         super(wrapper);
@@ -25,7 +25,7 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
         this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-        if (isPointer(string))
+        if (isRef(string))
             string.listen((val) => {
                 Array.from(this.wrapper.childNodes).at(-1)?.remove();
                 this.wrapper.append(typeof val == "string" ? val : val.draw());
@@ -41,7 +41,7 @@ export class ButtonComponent extends ColoredComponent {
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: Pointable<ButtonStyle>, progress?: Pointable<number>) {
-        if (isPointer(style)) {
+        if (isRef(style)) {
             style.listen((val) => this.setStyle(val));
             return this;
         }
@@ -49,7 +49,7 @@ export class ButtonComponent extends ColoredComponent {
         this.style.setValue(style);
         if (progress !== undefined && style === ButtonStyle.Progress) {
             this.prog.classList.add("progress");
-            asPointer(progress).listen(progress => {
+            asRef(progress).listen(progress => {
                 this.prog.style.width = `${progress.toString()}%`;
             });
             this.wrapper.append(this.prog);

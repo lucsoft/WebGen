@@ -1,5 +1,5 @@
 /**
- * This is ArrowJS but i added scuffed pointers to it.
+ * This is ArrowJS but i added scuffed refs to it.
  *
  * Its hacked together some values hard castings would be nicer if it could be removed.
  *
@@ -8,7 +8,8 @@
 // deno-lint-ignore-file no-explicit-any
 
 import { Component } from "./Component.ts";
-import { Custom, Empty } from "./webgen.ts";
+import { Custom } from "./components/Custom.ts";
+import { Empty } from "./components/Empty.ts";
 
 export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
     return (
@@ -20,13 +21,11 @@ export function isState<T = StateData>(obj: unknown): obj is StateHandler<T> {
 }
 
 
-export function isPointer<T>(obj: unknown): obj is Pointer<T> {
+export function isRef<T>(obj: unknown): obj is Reference<T> {
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        'type' in obj &&
-        'listen' in obj &&
-        obj.type === 'pointer'
+        'listen' in obj
     );
 }
 /**
@@ -106,57 +105,59 @@ export interface DependencyProps {
     _p?: ReactiveProxyParent;
 }
 
+export interface RefEvent<Type> {
+    (value: Type, oldValue?: Type): void;
+}
+
 /**
- * Interface representing a pointer.
+ * Interface representing a Ref.
  */
-export type Pointer<T> = {
-    type: "pointer",
+export type Reference<T> = {
     /**
- * Retrieves the current value of the pointer.
- * @returns The current value of the pointer.
- */
+     * Retrieves the current value of the Ref.
+     * @returns The current value of the Ref.
+     */
     getValue: () => T,
     /**
-     * Sets the value of the pointer.
+     * Sets the value of the Ref.
      * @param val The new value to be set.
      */
-    setValue: (val: any) => void,
+    setValue: (val: T) => void,
     /**
- * Maps the pointer using a mapping function.
- * @param map The mapping function to be applied to the pointer's value.
- * @returns The converted pointer.
- */
-    map: <NewType> (mapper: (val: T) => NewType) => Pointer<NewType>;
+     * Maps the Ref using a mapping function.
+     * @param map The mapping function to be applied to the Ref's value.
+     * @returns The converted Ref.
+     */
+    map: <NewType> (mapper: (val: T) => NewType) => Reference<NewType>;
     /**
- * Adds a callback function to be called when the pointer's value changes.
- * @param c The callback function to be added.
- */
-    readonly listen: (c: PointerEvent<T>) => void;
+     * Adds a callback function to be called when the Ref's value changes.
+     * @param c The callback function to be added.
+     */
+    readonly listen: (c: RefEvent<T>) => void;
 } & (T extends Component ? {
     /**
      * Creates an internal HeavyReRender. Do not use this for large DOM updates (as it could effect performance on low end devices).
      */
     readonly asRefComponent: () => Component;
     // deno-lint-ignore ban-types
-} : {});
+} : {})  & (T extends (infer G)[] ? { readonly addItem: (item: G) => void, readonly removeItem: (item: G) => void; } : {});
 
 /**
- * Converts a value or pointer to a pointer.
+ * Converts a value or Ref to a Ref.
  *
- * A pointer is a special object that allows you to track and modify a value.
+ * A Ref is a special object that allows you to track and modify a value.
  * It provides methods to set and retrieve the value, as well as additional
  * functionality to convert and listen for value changes.
- * @param value The value or pointer to be converted.
- * @returns The converted pointer.
+ * @param value The value or Ref to be converted.
+ * @returns The converted Ref.
  */
-export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
-    if (isPointer(value))
-        return value;
-    let _val: T = value;
-    const list = new Set<ObserverCallback>();
-    return <Pointer<T>>{
-        type: "pointer",
-        setValue: (val) => {
+export function asRef<T>(value: T | Reference<T>): Reference<T> {
+    if (isRef(value))
+        return value as Reference<T>;
+    let _val: T = value as T;
+    const list = new Set<RefEvent<T>>();
+    return {
+        setValue: (val: T) => {
             const oldval = _val;
             _val = val;
             if (oldval === _val) return;
@@ -165,38 +166,53 @@ export function asPointer<T>(value: T | Pointer<T>): Pointer<T> {
             }
         },
         getValue: () => _val,
-        map: (map) => {
-            const pointer = asPointer(map(_val));
+        map: <E>(map: (val: T) => E) => {
+            const Ref = asRef(map(_val));
             list.add((val) => {
-                pointer.setValue(map(val));
+                Ref.setValue(map(val));
             });
-            return pointer;
+            return Ref;
         },
-        listen: (callback) => {
+        listen: (callback: RefEvent<T>) => {
             list.add(callback);
             callback(_val);
         },
         asRefComponent: () => {
             if (!(_val instanceof Component)) {
-                throw new Error("asRefComponent called on a non component pointer.");
+                throw new Error("asRefComponent called on a non component Ref.");
             }
             console.debug("asRefComponent got constructed");
             const wrapper = Empty().draw();
             wrapper.append(_val.draw());
             list.add(val => {
                 wrapper.textContent = '';
-                wrapper.append(val.draw());
+                wrapper.append((<Component>val).draw());
             });
             return Custom(wrapper);
+        },
+        addItem: (item: T) => {
+            if (!Array.isArray(_val)) {
+                throw new Error("addItem called on a non array Ref.");
+            }
+            _val.push(item);
+            list.forEach(it => it(_val));
+        },
+        removeItem: (item: T) => {
+            if (!Array.isArray(_val)) {
+                throw new Error("addItem called on a non array Ref.");
+            }
+            const index = _val.indexOf(item);
+            if (index === -1) return;
+            _val.splice(index, 1);
+            list.forEach(it => it(_val));
         }
-    };
+    } as unknown as Reference<T>;
 }
 
+export function refMerge<RefRecord extends Record<string, Reference<any>>>(data: RefRecord): Reference<{ [ P in keyof RefRecord ]: ReturnType<RefRecord[ P ][ "getValue" ]> }> {
+    const loadData = () => Object.fromEntries(Object.entries(data).map(([ key, value ]) => [ key, value.getValue() ])) as { [ P in keyof RefRecord ]: ReturnType<RefRecord[ P ][ "getValue" ]> };
 
-export function refMerge<PointerRecord extends Record<string, Pointer<unknown>>>(data: PointerRecord): Pointer<{ [ P in keyof PointerRecord ]: ReturnType<PointerRecord[ P ][ "getValue" ]> }> {
-    const loadData = () => Object.fromEntries(Object.entries(data).map(([ key, value ]) => [ key, value.getValue() ])) as { [ P in keyof PointerRecord ]: ReturnType<PointerRecord[ P ][ "getValue" ]> };
-
-    const internalValue = asPointer(loadData());
+    const internalValue = asRef(loadData());
     for (const iterator of Object.values(data)) {
         let firstTime = true;
         iterator.listen(() => {
@@ -208,7 +224,7 @@ export function refMerge<PointerRecord extends Record<string, Pointer<unknown>>>
     return internalValue;
 }
 
-export type Pointable<T> = T | Pointer<T>;
+export type Referenceable<T> = T | Reference<T>;
 
 /**
  * A reactive proxy object.
@@ -216,7 +232,7 @@ export type Pointable<T> = T | Pointer<T>;
 export type StateHandler<T> = {
     [ K in keyof T ]: T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ];
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
+        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
     } & DependencyProps;
 
 type ReactiveProxyParent = [
@@ -274,7 +290,7 @@ function _state<T>(
     const proxySource: ProxyDataSource<T> = isArray ? [] : Object.create(data, {});
     for (const property in data) {
         const entry = data[ property ];
-        if (entry instanceof HTMLElement)
+        if ('HTMLElement' in globalThis && entry instanceof HTMLElement)
             throw new Error("Cannot set a HTMLElement in an State Object");
 
         if (typeof entry === 'object' && entry !== null) {
@@ -346,8 +362,7 @@ function _state<T>(
             // For properties of the DependencyProps type, return their values from
             // the depProps instead of the target.
             if (Reflect.has(depProps, p)) return Reflect.get(depProps, p);
-            if (typeof p === "string" && p.startsWith("$")) return <Pointer<T>>{
-                type: "pointer",
+            if (typeof p === "string" && p.startsWith("$")) return <Reference<T[]>>{
                 getValue: () => proxy[ p.replace("$", "") as keyof typeof proxy ],
                 setValue: (val) => {
                     // @ts-ignore TODO: fix typing
@@ -356,7 +371,7 @@ function _state<T>(
                 map: <newT>(map: (val: T) => newT) => {
                     const key = p.replace("$", "") as any;
                     // @ts-ignore TODO: fix typing
-                    const pointer = asPointer(proxy[ key ]);
+                    const pointer = asRef(proxy[ key ]);
                     const c = (newVal: T) => pointer.setValue(map(newVal));
                     // @ts-ignore TODO: fix typing
                     c(proxy[ key ] as T);
@@ -370,20 +385,36 @@ function _state<T>(
                     // @ts-ignore TODO: fix typing
                     c(proxy[ key ]);
                     $on(p.replace("$", ""), (val, oldVal) => c(val, oldVal));
+                },
+                addItem: (item) => {
+                    if (!Array.isArray(proxy[ p.replace("$", "") as keyof typeof proxy ])) {
+                        throw new Error("addItem called on a non array Ref.");
+                    }
+                    // @ts-ignore TODO: fix typing
+                    proxy[ p.replace("$", "") as keyof typeof proxy ].push(item);
+                },
+                removeItem: (item) => {
+                    if (!Array.isArray(proxy[ p.replace("$", "") as keyof typeof proxy ])) {
+                        throw new Error("addItem called on a non array Ref.");
+                    }
+                    const index = (<T[]>proxy[ p.replace("$", "") as keyof typeof proxy ]).indexOf(item);
+                    if (index === -1) return;
+                    // @ts-ignore TODO: fix typing
+                    proxy[ p.replace("$", "") as keyof typeof proxy ].splice(index, 1);
                 }
             };
             const value = Reflect.get(...args);
 
             // For any existing dependency collectors that are active, add this
             // property to their observed properties.
-            addDep(proxy as StateHandler<StateData>, p);
+            addDep(proxy as unknown as StateHandler<StateData>, p);
 
             // We have special handling of array operations to prevent O(n^2) issues.
             if (isArray && p in Array.prototype) {
                 return arrayOperation(
                     p as string,
                     proxySource as DataSourceArray<T>,
-                    proxy as StateHandler<StateData>,
+                    proxy as unknown as StateHandler<StateData>,
                     value
                 );
             }
@@ -402,7 +433,7 @@ function _state<T>(
                 // reactive, but if we already have a reactive object in this
                 // property, then we need to replace it and transfer the state of deps.
                 const oldState = o._st();
-                const newR = isState(value) ? reactiveMerge(value, o as StateHandler<StateData>) : _state(value, oldState);
+                const newR = isState(value) ? reactiveMerge(value, o as unknown as StateHandler<StateData>) : _state(value, oldState);
                 Reflect.set(
                     target,
                     property,
@@ -527,7 +558,7 @@ function reactiveMerge(
 }
 
 
-export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
+export const asState = <T>(data: T) => _state<T>(data) as StateHandler<T>;
 
 /**
  * Shorthand for:
@@ -543,25 +574,25 @@ export const State = <T>(data: T) => _state<T>(data) as StateHandler<T>;
  * });
  * ```
  */
-export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Pointer<T> {
+export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Reference<T> {
     const keys = Object.keys(data);
-    return refMerge(Object.fromEntries(keys.map(key => ([ key, data[ ("$" + key) as unknown as keyof T ] ]) as any))) as Pointer<T>;
+    return refMerge(Object.fromEntries(keys.map(key => ([ key, data[ ("$" + key) as unknown as keyof T ] ]) as any))) as Reference<T>;
 }
 
 /**
- * Creates a Pointer<string> from a tagged templates
+ * Creates a Reference<string> from a tagged templates
  *
- * ref\`Hello World\` => a pointer of Hello World
+ * ref\`Hello World\` => a Reference of Hello World
  *
- * ref\`Hello ${state.user}\` => a Pointer of Hello and the static value of user
+ * ref\`Hello ${state.user}\` => a Reference of Hello and the static value of user
  *
- * ref\`Hello ${state.$user}\` => a Pointer of Hello and the current value of user (pointer reacts on pointer)
+ * ref\`Hello ${state.$user}\` => a Reference of Hello and the current value of user (Reference reacts on Reference)
  */
-export function ref(data: TemplateStringsArray, ...expr: Pointable<any>[]) {
+export function ref(data: TemplateStringsArray, ...expr: Referenceable<any>[]) {
     const empty = Symbol("empty");
     const merge = data.map((x, i) => [ x, expr[ i ] ?? empty ]).flat();
 
-    const state = State({
+    const state = asState({
         val: ""
     });
 
@@ -569,7 +600,7 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<any>[]) {
         let list = "";
         for (const iterator of merge) {
             if (<any>iterator === empty) continue;
-            if (isPointer(iterator))
+            if (isRef(iterator))
                 list += iterator.getValue();
             else
                 list += iterator;
@@ -578,9 +609,29 @@ export function ref(data: TemplateStringsArray, ...expr: Pointable<any>[]) {
     }
 
     for (const iterator of merge) {
-        if (isPointer(iterator))
+        if (isRef(iterator))
             iterator.listen(update);
     }
     update();
     return state.$val;
 }
+
+/**
+ * @deprecated use `asRef`
+ */
+export const asPointer = asRef;
+
+/**
+ * @deprecated use `Reference`
+ */
+export type Pointer<T> = Reference<T>;
+
+/**
+ * @deprecated use `asState`
+ */
+export const State = asState;
+
+/**
+ * @deprecated use `Referenceable`
+ */
+export type Pointable<T> = Referenceable<T>;

@@ -1,8 +1,9 @@
 import { Color } from "./Color.ts";
+import { css } from "./Components.ts";
 import { SupportedThemes } from './SupportedThemes.ts';
 import { blur, dark, light } from './css/themes.ts';
 import { ColorDef } from "./types.ts";
-import { WebGenOptions, css } from "./webgen.ts";
+import { WebGenOptions } from "./webgen.ts";
 
 export class Style {
     private theme: HTMLElement;

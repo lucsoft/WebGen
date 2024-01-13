@@ -3,7 +3,7 @@ import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
 import { changeClassAtIndex } from "../Helper.ts";
-import { DataSourceKey, Pointable, StateHandler, asPointer, isPointer } from "../State.ts";
+import { DataSourceKey, Pointable, StateHandler, asRef, isRef } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import { Custom } from "./Custom.ts";
@@ -21,10 +21,10 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
     protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
 
     setValue(value: Pointable<StateValue> | undefined) {
-        if (isPointer(value))
+        if (isRef(value))
             value.listen((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
         else
-            this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: asPointer(value).getValue() }));
+            this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: asRef(value).getValue() }));
 
         return this;
     }
