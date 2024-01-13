@@ -72,7 +72,11 @@ export class ButtonComponent extends ColoredComponent {
         this.onClick(async (env, e) => {
             const styleBefore = this.style.getValue();
             this.setStyle(ButtonStyle.Spinner);
-            await func(env, e);
+            try {
+                await func(env, e);
+            } catch (error) {
+                console.error(error);
+            }
             this.setStyle(styleBefore);
         });
         return this;
