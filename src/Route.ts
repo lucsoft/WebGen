@@ -67,9 +67,10 @@ NavigationRegistry.addItem({
         const route = routeList.find(route => route.pattern.test(url));
         if (route) {
             event.intercept({
-                handler: () => route.intercept(route.pattern.exec(url)!)
+                handler: () => route.intercept(route.pattern.exec(url)!).finally(() => {
+                    activeRouteUrl.setValue(url.toString());
+                })
             });
-            activeRouteUrl.setValue(url.toString());
         }
     }
 });
@@ -98,9 +99,9 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
                 if (value === undefined) return;
                 groups[ key as keyof typeof groups ] = value;
             }
-            active.setValue(true);
             await lazyInitActive();
             await options.events?.onActive?.();
+            active.setValue(true);
         }
     };
     RouteRegistry.addItem(routeEntry);
