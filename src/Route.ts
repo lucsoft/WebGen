@@ -1,7 +1,7 @@
 import { sortBy } from "https://deno.land/std@0.212.0/collections/sort_by.ts";
 import { zod } from "../zod.ts";
 import { NavigationRegistry } from "./Navigation.ts";
-import { Reference, StateHandler, asRef, asState } from "./State.ts";
+import { Reference, Refable, StateHandler, asRef, asState } from "./State.ts";
 import { lazyInit } from "./lazyInit.ts";
 
 type Split<S extends string, D extends string> =
@@ -20,6 +20,7 @@ type TrimTrailingSlash<T extends string> = T extends `${infer U}/` ? U : T;
 type RouteOptions<Path extends string, T extends zod.ZodRawShape> = {
     path: Path;
     search?: T;
+    inAccessible?: Refable<boolean>;
     events?: {
         onLazyInit?: () => void | Promise<void>;
         onActive?: () => void | Promise<void>;
@@ -30,6 +31,7 @@ type RouteOptions<Path extends string, T extends zod.ZodRawShape> = {
 type RouteEntry = {
     pattern: URLPattern;
     patternUrl: string;
+    inAccessible?: Reference<boolean>;
     intercept: (result: URLPatternResult) => Promise<void>;
 };
 
@@ -58,14 +60,14 @@ type EmptyObject = {};
 
 export const RouteRegistry = asRef<RouteEntry[]>([]);
 export const activeRouteUrl = asRef<string>(location.href);
-export const activeRoute = activeRouteUrl.map(url => sortBy(RouteRegistry.getValue(), it => it.pattern.pathname).reverse().find(route => route.pattern.test(url)));
+export const getRouteList = () => sortBy(RouteRegistry.getValue(), it => it.pattern.pathname).reverse();
+export const getBestRouteFromUrl = (url: string | URL) => getRouteList().filter(x => x.inAccessible?.getValue() !== false).find(route => route.pattern.test(url));
+export const activeRoute = activeRouteUrl.map(url => getBestRouteFromUrl(url));
 
 NavigationRegistry.addItem({
     weight: 0,
     intercept: (url, event) => {
-        const routeList = sortBy(RouteRegistry.getValue(), it => it.pattern.pathname).reverse();
-
-        const route = routeList.find(route => route.pattern.test(url));
+        const route = getBestRouteFromUrl(url);
         if (route) {
             event.intercept({
                 handler: () => route.intercept(route.pattern.exec(url)!).finally(() => {
@@ -95,6 +97,7 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
     const routeEntry = <RouteEntry>{
         pattern,
         patternUrl: cleanedUpPath,
+        inAccessible: options.inAccessible,
         intercept: async (patternResult) => {
             for (const [ key, value ] of Object.entries(patternResult.pathname.groups)) {
                 if (value === undefined) return;
@@ -139,7 +142,7 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
 
 export function StartRouting() {
     const url = location.href;
-    const route = sortBy(RouteRegistry.getValue(), it => it.pattern.pathname).reverse().find(route => route.pattern.test(url));
+    const route = getBestRouteFromUrl(url);
     activeRoute.setValue(route);
     if (!route) return;
     route?.intercept(route.pattern.exec(url)!);

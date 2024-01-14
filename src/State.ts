@@ -224,7 +224,7 @@ export function refMerge<RefRecord extends Record<string, Reference<any>>>(data:
     return internalValue;
 }
 
-export type Referenceable<T> = T | Reference<T>;
+export type Refable<T> = T | Reference<T>;
 
 /**
  * A reactive proxy object.
@@ -588,7 +588,7 @@ export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Reference<T> 
  *
  * ref\`Hello ${state.$user}\` => a Reference of Hello and the current value of user (Reference reacts on Reference)
  */
-export function ref(data: TemplateStringsArray, ...expr: Referenceable<any>[]) {
+export function ref(data: TemplateStringsArray, ...expr: Refable<any>[]) {
     const empty = Symbol("empty");
     const merge = data.map((x, i) => [ x, expr[ i ] ?? empty ]).flat();
 
@@ -632,6 +632,6 @@ export type Pointer<T> = Reference<T>;
 export const State = asState;
 
 /**
- * @deprecated use `Referenceable`
+ * @deprecated use `Refable`
  */
-export type Pointable<T> = Referenceable<T>;
+export type Pointable<T> = Refable<T>;
