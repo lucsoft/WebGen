@@ -2,7 +2,7 @@ import { accessibilityDisableTabOnDisabled } from "./Accessibility.ts";
 import { Color } from "./Color.ts";
 import { Component } from "./Component.ts";
 import { createElement } from "./Components.ts";
-import { asRef, Pointable } from "./State.ts";
+import { asRef, Refable } from "./State.ts";
 
 export type ComponentArray = ((Component | null)[] | Component | null)[];
 
@@ -39,8 +39,8 @@ export abstract class ColoredComponent extends Component {
 
         this.addClass(this.color);
     }
-    abstract setStyle(style: Pointable<ButtonStyle>): this;
-    setColor(color: Pointable<Color>) {
+    abstract setStyle(style: Refable<ButtonStyle>): this;
+    setColor(color: Refable<Color>) {
         asRef(color).listen((val) => this.color.setValue(val));
         return this;
     }

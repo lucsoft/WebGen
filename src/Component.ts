@@ -1,12 +1,12 @@
 import { createElement } from "./Components.ts";
-import { Pointable, asRef } from "./State.ts";
+import { Refable, asRef } from "./State.ts";
 import { FontWeight, TextSize } from "./types.ts";
 export abstract class Component extends EventTarget {
     constructor(protected wrapper: HTMLElement = createElement("div")) {
         super();
     }
 
-    addClass<stringy extends string>(val: Pointable<stringy>, ...classes: string[]) {
+    addClass<stringy extends string>(val: Refable<stringy>, ...classes: string[]) {
         asRef(val).listen((val, oldVal) => {
             if (oldVal)
                 this.wrapper.classList.remove(oldVal);

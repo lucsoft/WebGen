@@ -4,6 +4,7 @@
             "indentWidth": 4
         }
     },
+    "lock": false,
     "compilerOptions": {
         "lib": [
             "dom",

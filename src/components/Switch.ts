@@ -1,6 +1,6 @@
 import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
-import { Pointable, Pointer, asRef } from "../State.ts";
+import { Refable, Reference, asRef } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import { Box } from "./Box.ts";
@@ -10,8 +10,8 @@ import { loadingWheel } from "./light-components/loadingWheel.ts";
 
 class SwitchComponent extends ColoredComponent {
     loading = asRef(false);
-    selected: Pointer<boolean>;
-    constructor(selected: Pointer<boolean>, icon = MIcon("check")) {
+    selected: Reference<boolean>;
+    constructor(selected: Reference<boolean>, icon = MIcon("check")) {
         super();
         this.selected = selected;
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
@@ -25,7 +25,7 @@ class SwitchComponent extends ColoredComponent {
             .draw()
         );
     }
-    onClick(action: (me: MouseEvent, pointer: Pointer<boolean>) => void) {
+    onClick(action: (me: MouseEvent, pointer: Reference<boolean>) => void) {
         this.wrapper.addEventListener('click', (me) => {
             if (this.color.getValue() == Color.Disabled) return;
             action(me, this.selected);
@@ -33,7 +33,7 @@ class SwitchComponent extends ColoredComponent {
         return this;
     }
 
-    onPromiseClick(action: (me: MouseEvent, pointer: Pointer<boolean>) => Promise<void>) {
+    onPromiseClick(action: (me: MouseEvent, pointer: Reference<boolean>) => Promise<void>) {
         this.onClick((me, p) => {
             if (this.loading.getValue()) return;
             this.loading.setValue(true);
@@ -45,9 +45,9 @@ class SwitchComponent extends ColoredComponent {
         return this;
     }
 
-    setStyle(_style: Pointable<ButtonStyle>): this {
+    setStyle(_style: Refable<ButtonStyle>): this {
         throw new Error("Method not implemented.");
     }
 }
 
-export const Switch = (selected: Pointer<boolean>) => new SwitchComponent(selected);
+export const Switch = (selected: Reference<boolean>) => new SwitchComponent(selected);

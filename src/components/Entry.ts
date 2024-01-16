@@ -1,6 +1,6 @@
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { Pointable, State } from "../State.ts";
+import { Refable, asState } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
 import { Box } from "./Box.ts";
 import { Custom } from "./Custom.ts";
@@ -11,8 +11,8 @@ import { CenterV, Grid } from "./Stacks.ts";
 import { loadingWheel } from "./light-components/loadingWheel.ts";
 
 type BasicLabel = {
-    title: Pointable<string>;
-    subtitle?: Pointable<string>;
+    title: Refable<string>;
+    subtitle?: Refable<string>;
 };
 
 export const Entry = (content: Component | BasicLabel) => new EntryComponent(content);
@@ -22,7 +22,7 @@ export const BasicLabel = (content: BasicLabel) => EntryComponent.basicContent(c
 export class EntryComponent extends Component {
     prefix = createElement("div");
     suffix = createElement("div");
-    state = State({
+    state = asState({
         isLoading: false
     });
 

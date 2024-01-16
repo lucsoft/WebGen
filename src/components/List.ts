@@ -1,5 +1,5 @@
 import { Component } from '../Component.ts';
-import { Pointer } from '../State.ts';
+import { Reference } from '../State.ts';
 import { Box } from './Box.ts';
 import { Custom } from './Custom.ts';
 
@@ -14,7 +14,7 @@ declare global {
 }
 
 // TODO turn this into a proper component, add it to webgen and opt-in to View Transitions API
-export function List<T, Key extends string>(list: Pointer<T[]>, keyFunc: (data: T) => Key, renderFunc: (data: T) => Component): Component {
+export function List<T, Key extends string>(list: Reference<T[]>, keyFunc: (data: T) => Key, renderFunc: (data: T) => Component): Component {
     const container: HTMLElement = Box().draw();
 
     list.listen((newValue: T[] = [], oldValue: T[] = []) => {
@@ -50,6 +50,6 @@ export function List<T, Key extends string>(list: Pointer<T[]>, keyFunc: (data: 
     return Custom(container).removeFromLayout();
 }
 
-export function Items<T>(list: Pointer<T[]>, renderFunc: (data: T) => Component): Component {
+export function Items<T>(list: Reference<T[]>, renderFunc: (data: T) => Component): Component {
     return list.map(list => Box(...list.map(renderFunc)).removeFromLayout()).asRefComponent();
 }
