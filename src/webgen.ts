@@ -17,7 +17,6 @@ export * from './components/Card.ts';
 export * from './components/Checkbox.ts';
 export * from "./components/Content.ts";
 export * from './components/Custom.ts';
-export * from './components/Empty.ts';
 export * from './components/Entry.ts';
 export * from "./components/Flow.ts";
 export * from './components/Form.ts';
