@@ -1,5 +1,5 @@
-import { deferred } from "https://deno.land/std@0.202.0/async/deferred.ts";
-import { retry } from "https://deno.land/std@0.202.0/async/retry.ts";
+import { deferred } from "https://deno.land/std@0.212.0/async/deferred.ts";
+import { retry } from "https://deno.land/std@0.212.0/async/retry.ts";
 
 
 export type WebSocketContext = {

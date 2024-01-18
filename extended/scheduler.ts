@@ -1,5 +1,5 @@
-import { deferred } from "https://deno.land/std@0.202.0/async/deferred.ts";
-import { sortBy } from "https://deno.land/std@0.202.0/collections/sort_by.ts";
+import { deferred } from "https://deno.land/std@0.212.0/async/deferred.ts";
+import { sortBy } from "https://deno.land/std@0.212.0/collections/sort_by.ts";
 
 
 export enum SchedulerPriority {
