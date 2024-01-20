@@ -16,8 +16,14 @@ export abstract class Component extends EventTarget {
         this.wrapper.classList.add(...classes);
         return this;
     }
-    setAttribute(key: string, value = "") {
-        this.wrapper.setAttribute(key, value);
+    setAttribute(key: string, value: Refable<string | undefined> = "") {
+        asRef(value).listen((val) => {
+            if(val === undefined) {
+                this.wrapper.removeAttribute(key);
+                return;
+            }
+            this.wrapper.setAttribute(key, val);
+        });
         return this;
     }
     setPadding(size: string) {
