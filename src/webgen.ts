@@ -58,7 +58,7 @@ import './TextSizes.css';
 
 export type WebGenOptions = {
     updateThemeOnInit?: false,
-    primiaryColor?: `hsl(${number}, ${number}%, 40%)`,
+    primaryColor?: `hsl(${number}, ${number}%, 40%)`,
     colors?: ColorDef,
     events?: {
         "themeChanged"?: (data: SupportedThemes, options: Style) => void;

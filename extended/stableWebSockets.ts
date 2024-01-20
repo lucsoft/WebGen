@@ -1,6 +1,4 @@
-import { deferred } from "https://deno.land/std@0.202.0/async/deferred.ts";
-import { retry } from "https://deno.land/std@0.202.0/async/retry.ts";
-
+import { retry } from "https://deno.land/std@0.212.0/async/retry.ts";
 
 export type WebSocketContext = {
     send: (data: string | ArrayBufferLike | Blob | ArrayBufferView) => void;
@@ -20,13 +18,13 @@ export async function createStableWebSocket(connection: {
     function send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
         pooledMessages.push(data);
     }
-    const socketFirstTimeConnected = deferred<void>();
+    const socketFirstTimeConnected = Promise.withResolvers<void>();
     console.debug(connection.url, "start");
     (async () => {
         try {
             while (!close) {
                 await retry(async () => {
-                    const socketClosed = deferred<void>();
+                    const socketClosed = Promise.withResolvers<void>();
                     const websocket = new WebSocket(connection.url, connection.protocol);
                     socket = websocket;
                     let activePool: undefined | number;
@@ -54,14 +52,14 @@ export async function createStableWebSocket(connection: {
                     websocket.addEventListener("message", (message) => {
                         events.onMessage?.(message.data);
                     });
-                    await socketClosed;
+                    await socketClosed.promise;
                 });
             }
         } catch (error) {
             console.error("Bad State", error);
         }
     })();
-    await socketFirstTimeConnected;
+    await socketFirstTimeConnected.promise;
     return {
         send,
         close: () => {

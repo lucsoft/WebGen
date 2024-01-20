@@ -1,6 +1,5 @@
-import { deferred } from "https://deno.land/std@0.206.0/async/deferred.ts";
 import { Component } from "../Component.ts";
-import { Pointer, asRef } from "../State.ts";
+import { Reference, asRef } from "../State.ts";
 import { isMobile } from "../mobileQuery.ts";
 import './Sheet.css';
 
@@ -8,7 +7,7 @@ export class SheetComponent extends Component {
     onClose = asRef<() => void>(() => { });
     canClose = asRef<boolean>(true);
 
-    constructor(public readonly offset: Pointer<number>, public readonly kind: Component) {
+    constructor(public readonly offset: Reference<number>, public readonly kind: Component) {
         super();
         this.addClass("wsheet");
         this.wrapper.append(kind.draw());
@@ -29,7 +28,7 @@ export class SheetComponent extends Component {
         return this;
     }
 
-    setCanClose(canClose: Pointer<boolean>): this {
+    setCanClose(canClose: Reference<boolean>): this {
         canClose.listen(it => this.canClose.setValue(it));
         return this;
     }
@@ -38,7 +37,7 @@ export class SheetComponent extends Component {
 export class SheetsStackComponent extends Component {
     private readonly sheets = asRef<SheetComponent[]>([]);
 
-    constructor(private readonly mobileTrigger: Pointer<boolean>) {
+    constructor(private readonly mobileTrigger: Reference<boolean>) {
         super();
         this.onClick(() => {
             const sheet = this.sheets.getValue().at(-1)!;
@@ -92,7 +91,7 @@ export class SheetsStackComponent extends Component {
 
     async remove(sheet: SheetComponent) {
         const index = this.sheets.getValue().indexOf(sheet);
-        const animationEnded = deferred();
+        const animationEnded = Promise.withResolvers<void>();
 
         this.wrapper.children[ index ].addEventListener("animationend", () => animationEnded.resolve());
 
@@ -116,6 +115,6 @@ export class SheetsStackComponent extends Component {
     }
 }
 
-export const SheetsStack = (mobileTrigger: Pointer<boolean> = isMobile) => new SheetsStackComponent(mobileTrigger);
+export const SheetsStack = (mobileTrigger: Reference<boolean> = isMobile) => new SheetsStackComponent(mobileTrigger);
 
 export const Sheet = (content: Component) => new SheetComponent(asRef(0), content);

@@ -53,7 +53,7 @@ export type DataSourceArray<T> = Array<unknown> & T;
 export type ProxyDataSource<T> = {
     [ K in keyof T ]: StateHandler<T[ K ]> | T[ K ]
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Pointer<StateHandler<T[ K ]> | T[ K ]>;
+        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<StateHandler<T[ K ]> | T[ K ]>;
     };
 
 /**
@@ -140,7 +140,7 @@ export type Reference<T> = {
      */
     readonly asRefComponent: () => Component;
     // deno-lint-ignore ban-types
-} : {})  & (T extends (infer G)[] ? { readonly addItem: (item: G) => void, readonly removeItem: (item: G) => void; } : {});
+} : {}) & (T extends (infer G)[] ? { readonly addItem: (item: G) => void, readonly removeItem: (item: G) => void; } : {});
 
 /**
  * Converts a value or Ref to a Ref.
@@ -615,23 +615,3 @@ export function ref(data: TemplateStringsArray, ...expr: Refable<any>[]) {
     update();
     return state.$val;
 }
-
-/**
- * @deprecated use `asRef`
- */
-export const asPointer = asRef;
-
-/**
- * @deprecated use `Reference`
- */
-export type Pointer<T> = Reference<T>;
-
-/**
- * @deprecated use `asState`
- */
-export const State = asState;
-
-/**
- * @deprecated use `Refable`
- */
-export type Pointable<T> = Refable<T>;

@@ -8,8 +8,6 @@ export const dropNullish = (...components: (Component | null | undefined)[]) => 
  */
 export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
 
-import { deferred } from "https://deno.land/std@0.206.0/async/deferred.ts";
-import { groupBy } from "https://deno.land/std@0.206.0/collections/group_by.ts";
 import { Component } from "./Component.ts";
 import { createElement } from "./Components.ts";
 
@@ -30,7 +28,7 @@ import { createElement } from "./Components.ts";
  *  }
  */
 export function extendedFromEntries(data: [ key: string, value: FormDataEntryValue ][]) {
-    const entries = Object.entries(groupBy(data, ([ key ]) => key)) as [ key: string, value: [ key: string, value: FormDataEntryValue ][] ][];
+    const entries = Object.entries(Object.groupBy(data, ([ key ]) => key)) as [ key: string, value: [ key: string, value: FormDataEntryValue ][] ][];
     const pureEntries = entries.map(([ key, value ]) => {
         const values = value.map(([ _, data ]) => data);
         if (values.length == 1)
@@ -43,7 +41,7 @@ export function extendedFromEntries(data: [ key: string, value: FormDataEntryVal
 }
 
 export async function createFilePicker(accept: string): Promise<File> {
-    const fileSignal = deferred<File>();
+    const fileSignal = Promise.withResolvers<File>();
     const input = createElement("input");
     input.type = "file";
     input.hidden = true;
@@ -54,5 +52,5 @@ export async function createFilePicker(accept: string): Promise<File> {
     });
 
     input.showPicker();
-    return await fileSignal;
+    return await fileSignal.promise;
 }

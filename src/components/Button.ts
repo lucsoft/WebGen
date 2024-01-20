@@ -2,7 +2,7 @@ import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Acces
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { Pointable, asRef, isRef } from "../State.ts";
+import { Refable, asRef, isRef } from "../State.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import './Button.css';
 import { loadingWheel } from "./light-components/loadingWheel.ts";
@@ -14,7 +14,7 @@ export class ButtonComponent extends ColoredComponent {
     prog = createElement("div");
     style = asRef(ButtonStyle.Normal);
 
-    constructor(string: Pointable<string | Component>, wrapper: HTMLElement = createElement("button")) {
+    constructor(string: Refable<string | Component>, wrapper: HTMLElement = createElement("button")) {
         super(wrapper);
         this.color.listen((val) => {
             this.wrapper.tabIndex = accessibilityDisableTabOnDisabled(val);
@@ -40,7 +40,7 @@ export class ButtonComponent extends ColoredComponent {
         this.addClass(this.style.map(it => it == ButtonStyle.Spinner ? "loading" : "non-loading"));
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
-    setStyle(style: Pointable<ButtonStyle>, progress?: Pointable<number>) {
+    setStyle(style: Refable<ButtonStyle>, progress?: Refable<number>) {
         if (isRef(style)) {
             style.listen((val) => this.setStyle(val));
             return this;
@@ -88,7 +88,7 @@ export class ButtonComponent extends ColoredComponent {
     }
 }
 export class LinkButtonComponent extends ButtonComponent {
-    constructor(title: Pointable<string | Component>, url: string, target?: string) {
+    constructor(title: Refable<string | Component>, url: string, target?: string) {
         super(title, createElement("a"));
         if (this.wrapper instanceof HTMLAnchorElement) {
             this.wrapper.href = url;
@@ -99,5 +99,5 @@ export class LinkButtonComponent extends ButtonComponent {
 }
 
 
-export const Button = (string: Pointable<string | Component>) => new ButtonComponent(string);
-export const LinkButton = (string: Pointable<string | Component>, url: string, target?: string) => new LinkButtonComponent(string, url, target);
+export const Button = (string: Refable<string | Component>) => new ButtonComponent(string);
+export const LinkButton = (string: Refable<string | Component>, url: string, target?: string) => new LinkButtonComponent(string, url, target);

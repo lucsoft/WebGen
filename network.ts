@@ -1,10 +1,9 @@
-import { assert } from "https://deno.land/std@0.202.0/assert/assert.ts";
-import { Deferred, deferred } from "https://deno.land/std@0.202.0/async/deferred.ts";
-import { delay } from "https://deno.land/std@0.202.0/async/delay.ts";
-import { pooledMap } from "https://deno.land/std@0.202.0/async/pool.ts";
-import { MINUTE } from "https://deno.land/std@0.202.0/datetime/constants.ts";
+import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
+import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
+import { pooledMap } from "https://deno.land/std@0.212.0/async/pool.ts";
+import { MINUTE } from "https://deno.land/std@0.212.0/datetime/constants.ts";
 import { SchedulerPriority, createScheduler } from "./extended/scheduler.ts";
-import { Pointer, asPointer } from "./src/State.ts";
+import { Reference, asRef } from "./src/State.ts";
 export * from "./extended/scheduler.ts";
 export * from "./extended/stableRequests.ts";
 export * from "./extended/stableWebSockets.ts";
@@ -15,8 +14,8 @@ export interface PaginationObject<T> {
 }
 
 export interface CachedPages<T extends object> extends PaginationObject<T> {
-    items: Pointer<T[]>;
-    hasMore: Pointer<boolean>;
+    items: Reference<T[]>;
+    hasMore: Reference<boolean>;
 }
 
 export function createIndexPaginationLoader<T extends object>(options: {
@@ -42,8 +41,8 @@ export function createIndexPaginationLoader<T extends object>(options: {
 }
 
 export function createCachedLoader<T extends object>(source: PaginationObject<T>): CachedPages<T> {
-    const items = asPointer<T[]>([]);
-    const hasMore = asPointer<boolean>(true);
+    const items = asRef<T[]>([]);
+    const hasMore = asRef<boolean>(true);
     return {
         items,
         hasMore,
@@ -59,6 +58,13 @@ export function createCachedLoader<T extends object>(source: PaginationObject<T>
             return response;
         }
     };
+}
+
+interface Deferred<T> {
+    promise: Promise<T>;
+    resolve(value?: T | PromiseLike<T>): void;
+    // deno-lint-ignore no-explicit-any
+    reject(reason?: any): void;
 }
 
 export interface Task {
@@ -140,7 +146,7 @@ export function createThrottledPipeline(options: ThrottledPipelineOptions) {
 
     return {
         fetch: (priority: SchedulerPriority, request: Request | string) => {
-            const completed = deferred<Response>();
+            const completed = Promise.withResolvers<Response>();
             const requestObj = typeof request === "string" ? new Request(request) : request;
             tasks.add({
                 priority,

@@ -1,20 +1,20 @@
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { Pointable, Pointer, State } from "../State.ts";
+import { Refable, Reference, asState } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle } from "../types.ts";
 import { Button } from "./Button.ts";
 import { IconButton } from "./IconButton.ts";
 import './taglist.css';
 
-export const Taglist = (list: Pointable<string>[], selected: Pointer<number>, icon = { forward: MIcon("arrow_back_ios_new"), backwards: MIcon("arrow_forward_ios") }) => new class extends Component {
+export const Taglist = (list: Refable<string>[], selected: Reference<number>, icon = { forward: MIcon("arrow_back_ios_new"), backwards: MIcon("arrow_forward_ios") }) => new class extends Component {
     items = createElement("div");
     move = createElement("div");
 
     constructor() {
         super();
-        const state = State({
+        const state = asState({
             left: false,
             right: false
         });

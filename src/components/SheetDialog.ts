@@ -1,10 +1,10 @@
 import { Component } from "../Component.ts";
-import { Pointable, Pointer, asRef } from "../State.ts";
+import { Refable, Reference, asRef } from "../State.ts";
 import { Label } from "./Label.ts";
 import { Sheet, SheetsStackComponent } from "./Sheet.ts";
 import { Grid } from "./Stacks.ts";
 
-export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Pointable<string>, ...content: Component[]) {
+export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Refable<string>, ...content: Component[]) {
     const isOpen = asRef(false);
 
     const sheet = Sheet(
@@ -37,6 +37,6 @@ export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Pointabl
         close: () => isOpen.setValue(false),
         setId: (id: string) => sheet.setId(id),
         setOnClose: (onClose: () => void) => sheet.setOnClose(onClose),
-        setCanClose: (pointer: Pointer<boolean>) => sheet.setCanClose(pointer),
+        setCanClose: (pointer: Reference<boolean>) => sheet.setCanClose(pointer),
     };
 }
