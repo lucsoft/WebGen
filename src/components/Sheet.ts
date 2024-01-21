@@ -97,7 +97,7 @@ export class SheetsStackComponent extends Component {
 
         this.sheets.setValue(this.sheets.getValue().filter(it => it !== sheet));
 
-        await animationEnded;
+        await animationEnded.promise;
 
         this.wrapper.children[ index ].remove();
 

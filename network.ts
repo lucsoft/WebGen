@@ -153,7 +153,7 @@ export function createThrottledPipeline(options: ThrottledPipelineOptions) {
                 request: requestObj,
                 completed
             });
-            return completed;
+            return completed.promise;
         }
     };
 }
