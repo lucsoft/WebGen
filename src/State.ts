@@ -140,7 +140,11 @@ export type Reference<T> = {
      */
     readonly asRefComponent: () => Component;
     // deno-lint-ignore ban-types
-} : {}) & (T extends (infer G)[] ? { readonly addItem: (item: G) => void, readonly removeItem: (item: G) => void; } : {});
+} : {}) & (T extends (infer G)[] ? {
+    readonly addItem: (item: G) => void,
+    readonly removeItem: (item: G) => void;
+    // deno-lint-ignore ban-types
+} : {});
 
 /**
  * Converts a value or Ref to a Ref.
@@ -156,6 +160,7 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
         return value as Reference<T>;
     let _val: T = value as T;
     const list = new Set<RefEvent<T>>();
+
     return {
         setValue: (val: T) => {
             const oldval = _val;
