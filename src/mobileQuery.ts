@@ -1,3 +1,3 @@
-import { mediaQueryPointer } from "./components/MediaQuery.ts";
+import { mediaQueryRef } from "./components/MediaQuery.ts";
 
-export const isMobile = mediaQueryPointer("(max-width: 750px)");
+export const isMobile = mediaQueryRef("(max-width: 750px)");

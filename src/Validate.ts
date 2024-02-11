@@ -11,11 +11,11 @@ export function getErrorMessage(state: zod.ZodError): string {
 }
 
 export function Validate<T extends StateData, E extends zod.ZodRawShape>(data: StateHandler<T>, validator: zod.ZodObject<E>) {
-    const formPointer = listenOnInitalStateKeys(data);
+    const formState = listenOnInitalStateKeys(data);
 
     const error = asRef<zod.ZodError | undefined>(undefined);
 
-    formPointer.listen(() => error.setValue(undefined));
+    formState.listen(() => error.setValue(undefined));
 
     return {
         data,

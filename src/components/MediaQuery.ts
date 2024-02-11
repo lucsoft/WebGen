@@ -15,7 +15,7 @@ export function MediaQuery(query: string, view: (matches: boolean) => Component)
     return Custom(holder);
 }
 
-export function mediaQueryPointer(matchString: string) {
+export function mediaQueryRef(matchString: string) {
     const query = matchMedia(matchString);
     const pointer = asRef(query.matches);
     query.addEventListener("change", ({ matches }) => pointer.setValue(matches), { passive: true });
