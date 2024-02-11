@@ -16,9 +16,13 @@ export abstract class Component extends EventTarget {
         this.wrapper.classList.add(...classes);
         return this;
     }
+    setAnchorName(name: string) {
+        this.setAttribute("anchor", name);
+        return this;
+    }
     setAttribute(key: string, value: Refable<string | undefined> = "") {
         asRef(value).listen((val) => {
-            if(val === undefined) {
+            if (val === undefined) {
                 this.wrapper.removeAttribute(key);
                 return;
             }
