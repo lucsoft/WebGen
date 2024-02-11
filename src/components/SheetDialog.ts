@@ -31,12 +31,15 @@ export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Refable<
             sheetRegistry.remove(sheet);
     });
 
+    sheet.setOnClose(() => {
+        isOpen.setValue(false);
+    });
 
     return {
         open: () => isOpen.setValue(true),
         close: () => isOpen.setValue(false),
         setId: (id: string) => sheet.setId(id),
-        setOnClose: (onClose: () => void) => sheet.setOnClose(onClose),
+        setOnClose: (onClose: () => void) => isOpen.listen(onClose),
         setCanClose: (pointer: Reference<boolean>) => sheet.setCanClose(pointer),
     };
 }
