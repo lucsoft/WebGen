@@ -1,7 +1,7 @@
 import { sortBy } from "https://deno.land/std@0.212.0/collections/sort_by.ts";
 import { zod } from "../zod.ts";
 import { NavigationRegistry } from "./Navigation.ts";
-import { Reference, Refable, StateHandler, asRef, asState } from "./State.ts";
+import { Refable, Reference, StateHandler, asRef, asState, listenOnInitalStateKeys } from "./State.ts";
 import { lazyInit } from "./lazyInit.ts";
 
 type Split<S extends string, D extends string> =
@@ -49,7 +49,6 @@ export type Route<Path extends UrlPath, Search extends zod.ZodRawShape, BaseSear
     groups: StateHandler<Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>>,
     search: StateHandler<zod.infer<zod.ZodObject<BaseSearch & Search>>>,
     navigate: (groups: Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>, options?: NavigationNavigateOptions) => NavigationResult,
-    location: (groups: Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>) => void,
     createRoute: <NewBase extends UrlPath, NewSearch extends zod.ZodRawShape>(options: RouteOptions<NewBase, NewSearch>) => Route<NewBase, NewSearch, Search, TrimTrailingSlash<Path>>,
 };
 
@@ -92,6 +91,11 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
             .map(x => [ x, "" ] as const))
     ) as StateHandler<Record<string, string>>;
 
+    const search = asState(Object.fromEntries(
+        Object.entries(options.search ?? {})
+            .map(([ key ]) => [ key, undefined ] as const)
+    ) as Partial<Search>);
+
     const lazyInitActive = lazyInit(options.events?.onLazyInit ?? (() => { }));
     const active = asRef(false);
     const routeEntry = <RouteEntry>{
@@ -103,11 +107,23 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
                 if (value === undefined) return;
                 groups[ key as keyof typeof groups ] = value;
             }
+            const searchParams = new URLSearchParams(patternResult.search.input);
+            for (const key of Object.keys(options.search ?? {})) {
+                const parsing = options.search?.[ key as keyof typeof options.search ]?.safeParse(searchParams.get(key));
+                if (parsing?.success)
+                    search[ key as keyof typeof search ] = parsing.data;
+                else {
+                    console.debug("Failed to parse", key, parsing?.error);
+                    return;
+                };
+            }
             await lazyInitActive();
             await options.events?.onActive?.();
             active.setValue(true);
         }
     };
+
+
     RouteRegistry.addItem(routeEntry);
 
     activeRoute
@@ -118,18 +134,44 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
                 options.events?.onInactive?.();
             }
         });
+
+    listenOnInitalStateKeys(search).listen(change => {
+        if (!active.getValue())
+            return;
+        const url = new URL(location.href);
+
+        Object.entries(change)
+            .forEach(([ key, value ]) => {
+                url.searchParams.set(key, value.toString());
+            });
+
+        if (new URL(location.href).toString() !== url.toString())
+            navigation.navigate(url.toString());
+    });
+
+    listenOnInitalStateKeys(groups).listen(change => {
+        if (!active.getValue())
+            return;
+
+        const filledRoute = new URL(createURLFromGroups(cleanedUpPath, change), location.origin);
+
+        Object.entries(search)
+            .forEach(([ key, value ]) => {
+                if (value != undefined)
+                    filledRoute.searchParams.set(key, `${value}`);
+            });
+
+        if (new URL(location.href).toString() !== filledRoute.toString())
+            navigation.navigate(filledRoute.toString());
+    });
+
     return {
         active,
-        segments: undefined!,
         groups: groups as unknown,
-        search: undefined!,
+        search,
         navigate: (groups, options) => {
-            const filledRoute = cleanedUpPath.split("/").map(x => x.startsWith(":") ? groups[ x.replace(/^:/, "") as keyof typeof groups ] : x).join("/");
+            const filledRoute = createURLFromGroups(cleanedUpPath, groups);
             return navigation.navigate(filledRoute, options);
-        },
-        location: (groups) => {
-            const filledRoute = cleanedUpPath.split("/").map(x => x.startsWith(":") ? groups[ x.replace(/^:/, "") as keyof typeof groups ] : x).join("/");
-            location.href = filledRoute;
         },
         createRoute: (newOptions) =>
             createRoute({
@@ -139,6 +181,10 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
     } as Route<Path, Search, BaseSearch, BasePath>;
 }
 
+
+function createURLFromGroups(cleanedUpPath: string, groups: EmptyObject) {
+    return cleanedUpPath.split("/").map(x => x.startsWith(":") ? groups[ x.replace(/^:/, "") as keyof typeof groups ] : x).join("/");
+}
 
 export function StartRouting() {
     const url = location.href;
