@@ -18,31 +18,8 @@
     background-color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
 }
 
-.wbutton.isList {
-    z-index: 1;
-}
-
 .wbutton:not(.disabled):active {
     transform: translate(0, 3%);
-}
-
-.wbutton ul {
-    position: absolute;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    bottom: 2.8rem;
-    width: max-content;
-    z-index: 10;
-    font-weight: 400;
-    margin: 0;
-    box-shadow: var(--box-shadow);
-    padding: 0.5rem 0;
-    background: var(--on-card-background);
-    color: var(--on-card-text);
-    border-radius: 7px;
-    box-shadow: 0 0 0 0 hsla(var(--background-color-h), var(--background-color-s), var(--background-color-l), 25%);
-
 }
 
 .wbutton .icon-suffix {
@@ -52,20 +29,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.wbutton ul a {
-    padding: 0.2rem 0.6rem;
-    font-size: 1rem;
-    font-weight: 400;
-}
-
-.wbutton ul a:hover {
-    background: rgba(255, 255, 255, 10%);
-}
-
-.wbutton ul:not(.open) {
-    display: none;
 }
 
 .wbutton.normal {

@@ -1,4 +1,4 @@
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
+import { accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { conditionalCSSClass } from "../Helper.ts";
@@ -14,7 +14,6 @@ class CheckboxComponent extends ColoredComponent {
         this.wrapper.classList.add("wcheckbox");
         if (selected) this.wrapper.classList.add("selected");
         this.wrapper.append(icon.draw());
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
     }
     onClick(action: (me: MouseEvent, value: boolean) => void) {
         this.wrapper.addEventListener('click', (me) => {

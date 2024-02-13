@@ -16,7 +16,11 @@ export abstract class Component extends EventTarget {
         this.wrapper.classList.add(...classes);
         return this;
     }
-    setAnchorName(name: string) {
+    setAnchorName(name?: string) {
+        if (name == undefined) {
+            this.wrapper.removeAttribute("anchor");
+            return this;
+        }
         this.setAttribute("anchor", name);
         return this;
     }

@@ -1,8 +1,8 @@
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
+import { accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { Refable, asRef, isRef } from "../State.ts";
+import { Refable, asRef } from "../State.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
 import './Button.css';
 import { loadingWheel } from "./light-components/loadingWheel.ts";
@@ -24,14 +24,11 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.classList.add("wbutton", ButtonStyle.Normal);
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-        if (isRef(string))
-            string.listen((val) => {
-                Array.from(this.wrapper.childNodes).at(-1)?.remove();
-                this.wrapper.append(typeof val == "string" ? val : val.draw());
-            });
-        else
-            this.wrapper.append(typeof string == "string" ? string : string.draw());
+        const element = createElement("div");
+        this.wrapper.append(element);
+        asRef(string).listen((val) => {
+            element.replaceChildren(typeof val == "string" ? val : val.draw());
+        });
         this.color.listen(color => {
             // this.setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled, color));
             this.wrapper.tabIndex = speicalSyles.includes(this.wrapper.classList[ 3 ] as ButtonStyle) ? -1 : accessibilityDisableTabOnDisabled(color);
@@ -41,19 +38,17 @@ export class ButtonComponent extends ColoredComponent {
     }
     setEnabled = (enabled: boolean) => this.wrapper.classList.replace(...enableTuple(enabled));
     setStyle(style: Refable<ButtonStyle>, progress?: Refable<number>) {
-        if (isRef(style)) {
-            style.listen((val) => this.setStyle(val));
-            return this;
-        }
-        this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
-        this.style.setValue(style);
-        if (progress !== undefined && style === ButtonStyle.Progress) {
-            this.prog.classList.add("progress");
-            asRef(progress).listen(progress => {
-                this.prog.style.width = `${progress.toString()}%`;
-            });
-            this.wrapper.append(this.prog);
-        }
+        asRef(style).listen((style) => {
+            this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
+            this.style.setValue(style);
+            if (progress !== undefined && style === ButtonStyle.Progress) {
+                this.prog.classList.add("progress");
+                asRef(progress).listen(progress => {
+                    this.prog.style.width = `${progress.toString()}%`;
+                });
+                this.wrapper.append(this.prog);
+            }
+        });
         return this;
     }
     setAlignContent(type: "center" | "end" | "start" | "stretch") {
@@ -99,5 +94,5 @@ export class LinkButtonComponent extends ButtonComponent {
 }
 
 
-export const Button = (string: Refable<string | Component>) => new ButtonComponent(string);
+export const Button = <T extends string | Component>(string: Refable<T>) => new ButtonComponent(string as string | Component);
 export const LinkButton = (string: Refable<string | Component>, url: string, target?: string) => new LinkButtonComponent(string, url, target);

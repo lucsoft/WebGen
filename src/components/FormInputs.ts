@@ -1,15 +1,18 @@
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { changeClassAtIndex } from "../Helper.ts";
 import { DataSourceKey, Refable, StateHandler, asRef, isRef } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
+import { Box } from "./Box.ts";
+import { Button, ButtonComponent } from "./Button.ts";
 import { Custom } from "./Custom.ts";
+import './DropDown.css';
 import './FormInput.css';
-import { loadingWheel } from "./light-components/loadingWheel.ts";
-
+import { Layer } from "./Layer.ts";
+import { Items } from "./List.ts";
+import { Popover } from "./Popover.ts";
+import { Grid } from "./Stacks.ts";
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
@@ -53,60 +56,62 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         return this;
     }
 }
+
+const content = asRef(Box());
+const dropDownPopover = Popover(Layer(
+    content.asRefComponent(),
+    5
+).setBorderRadius("mid").addClass("wdropdown-outer-layer"))
+    .pullingAnchorPositioning("--wdropdown-default", (rect, style) => {
+        style.top = `max(-5px, ${rect.bottom}px)`;
+        style.left = `${rect.left}px`;
+        style.minWidth = `${rect.width}px`;
+        style.bottom = "var(--gap)";
+    });
+
 export class DropDownInputComponent<Value extends string> extends InputForm<Value> {
     prog = createElement("div");
     text = createElement("span");
-    constructor(dropdown: string[], label: string, icon = MIcon("keyboard_arrow_down")) {
+    button: ButtonComponent;
+    constructor(dropdown: Refable<string[]>, label: Refable<string | Component>, icon = MIcon("keyboard_arrow_down")) {
         super();
-        this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
-        this.wrapper.classList.add("wbutton", ButtonStyle.Normal);
-        this.wrapper.append(loadingWheel());
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
-        this.text.innerText = label;
-        this.wrapper.append(this.text);
+
+        const text = asRef(label);
+        this.button = Button(text).addSuffix(icon);
+
+        this.wrapper.innerHTML = "";
+        this.color.setValue(Color.Disabled);
+        this.wrapper.append(this.button.draw());
+        this.wrapper.classList.add("wdropdown");
+
         this.addEventListener("update", (event) => {
             const data = (<CustomEvent<Value>>event).detail;
-            this.text.innerText = data == undefined ? label : this.valueRender(data);
+            text.setValue(data == undefined ? asRef(label).getValue() : this.valueRender(data));
+            dropDownPopover.hidePopover();
         });
-        this.wrapper.classList.add("isList", "wdropdown");
-        this.wrapper.addEventListener("click", () => {
-            if (this.color.getValue() == Color.Disabled) return;
-            if (dropdown) this.wrapper.querySelector('ul')?.classList.toggle("open");
+
+        this.button.onClick(() => {
+            this.wrapper.append(dropDownPopover.draw());
+            dropDownPopover.showPopover();
+            this.button.setAnchorName("--wdropdown-default");
+            content.setValue(Grid(
+                Items(asRef(dropdown), item =>
+                    Button(item)
+                        .setStyle(ButtonStyle.Inline)
+                        .onClick(() => {
+                            this.setValue(item as Value);
+                        })
+                )
+            )
+                .addClass("wdropdown-content")
+                .setDirection("row")
+                .setGap("5px")
+                .setPadding("5px")
+            );
         });
-        const list = createElement("ul");
-        document.addEventListener('click', (e) => {
-            if (!this.wrapper.contains(e.target as Node)) {
-                list.classList.remove('open');
-            }
-        });
-        this.addEventListener("data", () => {
-            list.innerHTML = "";
-            dropdown.forEach((displayName) => {
-                const entry = createElement("a");
-                entry.tabIndex = 0;
-                entry.onkeydown = accessibilityButton(entry);
-                entry.innerText = this.valueRender(displayName as Value);
-                entry.onclick = () => this.setValue(displayName as Value);
-                list.append(entry);
-            });
-        });
-        this.dispatchEvent(new CustomEvent("data", {}));
-        const iconContainer = createElement("div");
-        iconContainer.classList.add("icon-suffix");
-        iconContainer.append(icon.draw());
-        this.wrapper.append(list, iconContainer);
     }
     setStyle(style: ButtonStyle, progress?: number) {
-        this.wrapper.tabIndex = speicalSyles.includes(style) ? -1 : accessibilityDisableTabOnDisabled();
-        changeClassAtIndex(this.wrapper, style, 2);
-        if (style === ButtonStyle.Spinner) {
-            this.wrapper.classList.add("loading");
-        }
-        if (progress !== undefined && style === ButtonStyle.Progress) {
-            this.prog.classList.add("progress");
-            this.prog.style.width = `${progress.toString()}%`;
-            this.wrapper.append(this.prog);
-        }
+        this.button.setStyle(style, progress);
         return this;
     }
 }

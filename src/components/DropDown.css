@@ -1,0 +1,16 @@
+.wdropdown-content {
+    box-sizing: border-box;
+    max-height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.wdropdown-outer-layer {
+    max-height: 100%;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.wdropdown .wbutton {
+    gap: 10px;
+}

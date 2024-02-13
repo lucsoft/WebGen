@@ -1,4 +1,5 @@
 import { Component } from "../Component.ts";
+import "./Popover.css";
 
 export const Popover = (content: Component) => new class extends Component {
     constructor() {
@@ -8,22 +9,31 @@ export const Popover = (content: Component) => new class extends Component {
         this.setAttribute("popover");
     }
 
-    protected showPopover() {
-        this.wrapper.showPopover();
+    public showPopover() {
+        try {
+            this.wrapper.showPopover();
+        } catch {
+            //
+        }
         return this;
     };
 
-    protected hidePopover() {
-        this.wrapper.hidePopover();
+    public hidePopover() {
+        try {
+            this.wrapper.hidePopover();
+        } catch {
+            console.log("Failed to hide popover");
+            //
+        }
         return this;
     };
 
-    protected togglePopover(force: boolean) {
+    public togglePopover(force: boolean) {
         this.wrapper.togglePopover(force);
         return this;
     };
 
-    protected pullingAnchorPositioning(anchorName: `--${string}`, positioning: (rect: DOMRect, style: CSSStyleDeclaration) => void, interval = 20) {
+    public pullingAnchorPositioning(anchorName: `--${string}`, positioning: (rect: DOMRect, style: CSSStyleDeclaration) => void, interval = 20) {
         setInterval(() => {
             const anchor = document.querySelector(`[anchor="${anchorName}"]`);
             if (!anchor) return;

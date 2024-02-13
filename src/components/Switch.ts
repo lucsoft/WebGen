@@ -1,4 +1,4 @@
-import { accessibilityButton, accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
+import { accessibilityDisableTabOnDisabled } from "../Accessibility.ts";
 import { Color } from "../Color.ts";
 import { Refable, Reference, asRef } from "../State.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
@@ -17,7 +17,6 @@ class SwitchComponent extends ColoredComponent {
         this.wrapper.tabIndex = accessibilityDisableTabOnDisabled();
         this.addClass(selected.map(it => it ? "selected" : "unselected"), "wswitch", Color.Grayscaled);
         this.addClass(this.loading.map(it => it ? 'loading' : 'non-loading'));
-        this.wrapper.onkeydown = accessibilityButton(this.wrapper);
         this.wrapper.append(Box(
             icon.addClass("check-icon"),
             Box(Custom(loadingWheel() as Element as HTMLElement)).addClass("load-element", "loading")
