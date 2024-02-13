@@ -15,7 +15,7 @@ export const Label = (title: Refable<string>, type: `h${1 | 2 | 3 | 4 | 5 | 6}` 
             this.wrapper.textContent = title;
     }
 
-    setAlign(type: "center" | "end" | "start") {
+    setTextAlign(type: "center" | "end" | "start") {
         this.wrapper.style.textAlign = type;
         return this;
     }

@@ -62,12 +62,28 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.flexGrow = value.toString();
         return this;
     }
-    setAlign(type: "center" | "end" | "start" | "stretch") {
+    setAlignItems(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.alignItems = type;
         return this;
     }
-    setJustify(type: "center" | "end" | "start" | "stretch") {
+    setAlignContent(type: "center" | "end" | "start" | "stretch") {
+        this.wrapper.style.alignContent = type;
+        return this;
+    }
+    setAlignSelf(type: "center" | "end" | "start" | "stretch") {
+        this.wrapper.style.alignSelf = type;
+        return this;
+    }
+    setJustifyItems(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.justifyItems = type;
+        return this;
+    }
+    setJustifyContent(type: "center" | "end" | "start" | "stretch") {
+        this.wrapper.style.justifyContent = type;
+        return this;
+    }
+    setJustifySelf(type: "center" | "end" | "start" | "stretch") {
+        this.wrapper.style.justifySelf = type;
         return this;
     }
     setBorderRadius(value: "none" | "tiny" | "mid" | "large" | "complete") {

@@ -38,7 +38,7 @@ export class TableComponent<Data> extends Component {
                     ...this.#columns.map(([ _id, _size, render ]) => render(x, index))
                 ]).flat(),
             )
-                .setAlign("center")
+                .setAlignItems("center")
                 .setGap("5px 13px")
                 .setWidth("100%")
                 .setRawColumns(`${this.#columns.map(([ _, data = "max-content" ]) => data).join(" ")}`)

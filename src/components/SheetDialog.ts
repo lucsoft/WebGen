@@ -15,12 +15,13 @@ export function SheetDialog(sheetRegistry: SheetsStackComponent, title: Refable<
                     .setTextSize("3xl")
                     .setFontWeight("bold")
             )
-                .setAlign("end")
+                .setAlignItems("end")
                 .setHeight("80px"),
             ...content
         )
             .setGap()
             .setMargin("15px")
+            .setAlignContent("start")
     );
 
 

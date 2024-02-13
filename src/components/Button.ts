@@ -56,11 +56,11 @@ export class ButtonComponent extends ColoredComponent {
         }
         return this;
     }
-    setAlign(type: "center" | "end" | "start" | "stretch") {
+    setAlignContent(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.alignContent = type;
         return this;
     }
-    setJustify(type: "center" | "end" | "start" | "stretch") {
+    setJustifyContent(type: "center" | "end" | "start" | "stretch") {
         this.wrapper.style.justifyContent = type;
         return this;
     }
