@@ -96,7 +96,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
             dropDownPopover.showPopover();
             content.setValue(Grid(
                 Items(asRef(dropdown), item =>
-                    Button(item)
+                    Button(this.valueRender(item as Value))
                         .setStyle(ButtonStyle.Inline)
                         .onClick(() => {
                             this.setValue(item as Value);
