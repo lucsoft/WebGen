@@ -91,9 +91,9 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         });
 
         this.button.onClick(() => {
-            this.wrapper.append(dropDownPopover.draw());
-            dropDownPopover.showPopover();
+            dropDownPopover.clearAnchors("--wdropdown-default");
             this.button.setAnchorName("--wdropdown-default");
+            dropDownPopover.showPopover();
             content.setValue(Grid(
                 Items(asRef(dropdown), item =>
                     Button(item)
