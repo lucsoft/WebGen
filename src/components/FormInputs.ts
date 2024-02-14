@@ -77,7 +77,10 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         super();
 
         const text = asRef(label);
-        this.button = Button(text).addSuffix(icon);
+        this.button = Button(text)
+            .setWidth("100%")
+            .setJustifyContent("space-between")
+            .addSuffix(icon);
 
         this.wrapper.innerHTML = "";
         this.color.setValue(Color.Disabled);
@@ -91,6 +94,10 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         });
 
         this.button.onClick(() => {
+            if (dropDownPopover.isOpen()) {
+                dropDownPopover.hidePopover();
+                return;
+            }
             dropDownPopover.clearAnchors("--wdropdown-default");
             this.button.setAnchorName("--wdropdown-default");
             dropDownPopover.showPopover();

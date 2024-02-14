@@ -34,6 +34,10 @@ export const Popover = (content: Component) => new class extends Component {
         return this;
     };
 
+    public isOpen() {
+        return this.wrapper.matches(':popover-open');
+    }
+
     public clearAnchors(anchorName: `--${string}`) {
         const anchors = document.querySelectorAll(`[anchor="${anchorName}"]`);
         anchors.forEach(anchor => anchor.removeAttribute("anchor"));

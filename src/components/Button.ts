@@ -51,11 +51,11 @@ export class ButtonComponent extends ColoredComponent {
         });
         return this;
     }
-    setAlignContent(type: "center" | "end" | "start" | "stretch") {
+    setAlignContent(type: "center" | "end" | "start" | "stretch" | "space-around" | "space-between" | "space-evenly") {
         this.wrapper.style.alignContent = type;
         return this;
     }
-    setJustifyContent(type: "center" | "end" | "start" | "stretch") {
+    setJustifyContent(type: "center" | "end" | "start" | "stretch" | "space-around" | "space-between" | "space-evenly") {
         this.wrapper.style.justifyContent = type;
         return this;
     }
