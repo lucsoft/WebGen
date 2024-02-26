@@ -1,4 +1,4 @@
-import { sortBy } from "https://deno.land/std@0.212.0/collections/sort_by.ts";
+import { sortBy } from "https://deno.land/std@0.217.0/collections/sort_by.ts";
 
 export enum SchedulerPriority {
     Low = 2,

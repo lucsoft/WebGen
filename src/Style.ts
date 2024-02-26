@@ -8,7 +8,7 @@ import { WebGenOptions } from "./webgen.ts";
 export class Style {
     private theme: HTMLElement;
     private current: SupportedThemes = SupportedThemes.gray;
-    private mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    private mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
     private options: WebGenOptions;
 
     constructor(options: WebGenOptions) {

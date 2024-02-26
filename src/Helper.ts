@@ -3,11 +3,6 @@ export const conditionalCSSClass = (element: HTMLElement, condition: boolean | u
 
 export const dropNullish = (...components: (Component | null | undefined)[]) => components.filter(x => x) as Component[];
 
-/**
- * @deprecated
- */
-export const changeClassAtIndex = (component: HTMLElement, newString: string, index: number) => component.classList.replace(component.classList[ index ], newString);
-
 import { Component } from "./Component.ts";
 import { createElement } from "./Components.ts";
 

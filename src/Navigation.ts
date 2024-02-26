@@ -1,5 +1,5 @@
 /// <reference types="https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/dom-navigation/index.d.ts" />
-import { sortBy } from "https://deno.land/std@0.212.0/collections/mod.ts";
+import { sortBy } from "https://deno.land/std@0.217.0/collections/mod.ts";
 import { asRef } from "./State.ts";
 
 declare global {
