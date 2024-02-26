@@ -123,7 +123,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
     }
 }
 
-export const DropDownInput = (label: string, list: string[]) => new DropDownInputComponent(list, label);
+export const DropDownInput = (label: string, list: Refable<string[]>) => new DropDownInputComponent(list, label);
 
 export function DropAreaInput(draw: Component, formats: string[], onData?: (data: { blob: Blob, file: File, url: string; }[]) => void) {
     const shell = createElement("div");
