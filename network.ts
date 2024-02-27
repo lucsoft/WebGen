@@ -1,7 +1,7 @@
-import { assert } from "https://deno.land/std@0.212.0/assert/assert.ts";
-import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
-import { pooledMap } from "https://deno.land/std@0.212.0/async/pool.ts";
-import { MINUTE } from "https://deno.land/std@0.212.0/datetime/constants.ts";
+import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
+import { delay } from "https://deno.land/std@0.217.0/async/delay.ts";
+import { pooledMap } from "https://deno.land/std@0.217.0/async/pool.ts";
+import { MINUTE } from "https://deno.land/std@0.217.0/datetime/constants.ts";
 import { SchedulerPriority, createScheduler } from "./extended/scheduler.ts";
 import { Reference, asRef } from "./src/State.ts";
 export * from "./extended/scheduler.ts";
