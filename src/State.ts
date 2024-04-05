@@ -143,6 +143,7 @@ export type Reference<T> = {
 } : {}) & (T extends (infer G)[] ? {
     readonly addItem: (item: G) => void,
     readonly removeItem: (item: G) => void;
+    readonly updateItem: (item: G, newItem: G) => void;
     // deno-lint-ignore ban-types
 } : {});
 
@@ -209,6 +210,15 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             const index = _val.indexOf(item);
             if (index === -1) return;
             _val.splice(index, 1);
+            list.forEach(it => it(_val));
+        },
+        updateItem: (item: T, newItem: T) => {
+            if (!Array.isArray(_val)) {
+                throw new Error("updateItem called on a non array Ref.");
+            }
+            const index = _val.indexOf(item);
+            if (index === -1) return;
+            _val[ index ] = newItem;
             list.forEach(it => it(_val));
         }
     } as unknown as Reference<T>;
