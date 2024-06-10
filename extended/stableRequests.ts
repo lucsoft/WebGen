@@ -1,5 +1,5 @@
-import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import { retry } from "https://deno.land/std@0.217.0/async/retry.ts";
+import { assert } from "jsr:@std/assert@0.226.0";
+import { retry } from "jsr:@std/async@0.224.2";
 
 export type StableRequest = {
     request: Request;

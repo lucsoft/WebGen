@@ -1,4 +1,4 @@
-import { sortBy } from "https://deno.land/std@0.217.0/collections/sort_by.ts";
+import { sortBy } from "jsr:@std/collections@0.224.2";
 import { zod } from "../zod.ts";
 import { NavigationRegistry } from "./Navigation.ts";
 import { Refable, Reference, StateHandler, asRef, asState, listenOnInitalStateKeys } from "./State.ts";

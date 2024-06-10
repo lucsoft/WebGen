@@ -1,4 +1,4 @@
-import { retry } from "https://deno.land/std@0.217.0/async/retry.ts";
+import { retry } from "jsr:@std/async@0.224.1";
 
 export type WebSocketContext = {
     send: (data: string | ArrayBufferLike | Blob | ArrayBufferView) => void;
