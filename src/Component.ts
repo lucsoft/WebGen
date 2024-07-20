@@ -1,6 +1,10 @@
 import { createElement } from "./Components.ts";
 import { Refable, asRef } from "./State.ts";
 import { FontWeight, TextSize } from "./types.ts";
+
+export type ContentDistribution = 'space-between' | 'space-around' | 'space-evenly' | 'stretch';
+export type ContentPosition = 'center' | 'start' | 'end' | 'flex-start' | 'flex-end';
+
 export abstract class Component extends EventTarget {
     constructor(protected wrapper: HTMLElement = createElement("div")) {
         super();
@@ -70,7 +74,7 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.alignItems = type;
         return this;
     }
-    setAlignContent(type: "center" | "end" | "start" | "stretch") {
+    setAlignContent(type: "normal" | ContentDistribution | ContentPosition) {
         this.wrapper.style.alignContent = type;
         return this;
     }
@@ -82,7 +86,7 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.justifyItems = type;
         return this;
     }
-    setJustifyContent(type: "center" | "end" | "start" | "stretch") {
+    setJustifyContent(type: "normal" | ContentDistribution | ContentPosition) {
         this.wrapper.style.justifyContent = type;
         return this;
     }
