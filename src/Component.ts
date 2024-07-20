@@ -54,8 +54,24 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.width = size;
         return this;
     }
+    setMinWidth(size: string) {
+        this.wrapper.style.minWidth = size;
+        return this;
+    }
+    setMaxWidth(size: string) {
+        this.wrapper.style.maxWidth = size;
+        return this;
+    }
     setHeight(size: string) {
         this.wrapper.style.height = size;
+        return this;
+    }
+    setMinHeight(size: string) {
+        this.wrapper.style.minHeight = size;
+        return this;
+    }
+    setMaxHeight(size: string) {
+        this.wrapper.style.maxHeight = size;
         return this;
     }
     setMargin(size: string) {
