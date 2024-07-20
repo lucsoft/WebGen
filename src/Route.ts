@@ -2,7 +2,7 @@ import { sortBy } from "jsr:@std/collections@0.224.2";
 import { zod } from "../zod.ts";
 import { NavigationRegistry } from "./Navigation.ts";
 import { Refable, Reference, StateHandler, asRef, asState, listenOnInitalStateKeys } from "./State.ts";
-import { lazyInit } from "./lazyInit.ts";
+import { lazy } from "./lazy.ts";
 
 type Split<S extends string, D extends string> =
     string extends S ? string[] :
@@ -96,7 +96,7 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
             .map(([ key ]) => [ key, undefined ] as const)
     ) as Partial<Search>);
 
-    const lazyInitActive = lazyInit(options.events?.onLazyInit ?? (() => { }));
+    const lazyInitActive = lazy(options.events?.onLazyInit ?? (() => { }));
     const active = asRef(false);
     const routeEntry = <RouteEntry>{
         pattern,

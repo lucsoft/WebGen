@@ -41,7 +41,7 @@ export * from './Helper.ts';
 export * from './icons/BootstrapIcons.ts';
 export * from './icons/MaterialIcons.ts';
 export * from "./KeyValue.ts";
-export * from "./lazyInit.ts";
+export * from "./lazy.ts";
 export * from "./mobileQuery.ts";
 export * from "./Navigation.ts";
 export * from "./Route.ts";
