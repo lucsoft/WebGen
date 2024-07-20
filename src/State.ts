@@ -145,6 +145,9 @@ export type Reference<T> = {
     readonly removeItem: (item: G) => void;
     readonly updateItem: (item: G, newItem: G) => void;
     // deno-lint-ignore ban-types
+} : {}) & (T extends boolean ? {
+    readonly toggle: () => void
+    // deno-lint-ignore ban-types
 } : {});
 
 /**
@@ -220,6 +223,15 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             if (index === -1) return;
             _val[ index ] = newItem;
             list.forEach(it => it(_val));
+        },
+        toggle: () => {
+            if (typeof _val !== "boolean") {
+                throw new Error("toggle called on a non boolean Ref.");
+            }
+            _val = !_val as T;
+            for (const iterator of list) {
+                iterator(_val as T, !_val as T);
+            }
         }
     } as unknown as Reference<T>;
 }
