@@ -34,24 +34,10 @@
     --layer-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
 }
 
-.wlayer:is(.shadow, .tint-shadow) {
+.wlayer:is(.shadow) {
     box-shadow: var(--layer-shadow, none);
 }
 
-.wlayer.shadow .wlayer-inner {
-    position: absolute;
-    inset: 0;
-    background: white;
-    opacity: calc(calc(var(--color-overlay, 0%) * 1.8) - 5%);
-}
-
-
-.wlayer:is(.tint-shadow, .tint) .wlayer-inner {
-    position: absolute;
-    inset: 0;
-    background: hsl(var(--webgen-primary-hue), var(--webgen-primary-sat), 40%);
-    opacity: calc(calc(var(--color-overlay, 0%) * 1.8) - 5%);
-}
 
 [data-theme="light"] .wlayer {
     color: black;
@@ -59,8 +45,4 @@
 
 [data-theme="dark"] .wlayer {
     --layer-shadow: none;
-}
-
-[data-theme="dark"] .wlayer:is(.tint-shadow, .tint) .wlayer-inner {
-    background: hsl(var(--webgen-primary-hue), var(--webgen-primary-sat), 80%);
 }
