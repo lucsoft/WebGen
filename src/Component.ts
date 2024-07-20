@@ -1,5 +1,5 @@
 import { createElement } from "./Components.ts";
-import { Refable, asRef } from "./State.ts";
+import { Refable, asRef, ref } from "./State.ts";
 import { FontWeight, TextSize } from "./types.ts";
 
 export type ContentDistribution = 'space-between' | 'space-around' | 'space-evenly' | 'stretch';
@@ -10,14 +10,22 @@ export abstract class Component extends EventTarget {
         super();
     }
 
-    addClass<stringy extends string>(val: Refable<stringy>, ...classes: string[]) {
-        asRef(val).listen((val, oldVal) => {
+    addClass<stringy extends string | undefined>(val: Refable<stringy>, ...classes: string[]) {
+        asRef(val).listen((newVal, oldVal) => {
             if (oldVal)
                 this.wrapper.classList.remove(oldVal);
-            this.wrapper.classList.add(val);
+            if (newVal)
+                this.wrapper.classList.add(newVal);
         });
 
         this.wrapper.classList.add(...classes);
+        return this;
+    }
+    setCssStyle<stringy extends string>(key: keyof Omit<HTMLElement[ "style" ], 'length' | 'parentRule'>, value: Refable<stringy>) {
+        asRef(value).listen((val) => {
+            // deno-lint-ignore no-explicit-any
+            this.wrapper.style[ key as any ] = val;
+        });
         return this;
     }
     setAnchorName(name?: string) {
@@ -38,8 +46,8 @@ export abstract class Component extends EventTarget {
         });
         return this;
     }
-    setPadding(size: string) {
-        this.wrapper.style.padding = size;
+    setPadding(size: Refable<string>) {
+        this.setCssStyle("padding", size);
         return this;
     }
     addPrefix(component: Component) {
@@ -50,67 +58,71 @@ export abstract class Component extends EventTarget {
         this.wrapper.append(component.draw());
         return this;
     }
-    setWidth(size: string) {
-        this.wrapper.style.width = size;
+    setWidth(size: Refable<string>) {
+        this.setCssStyle("width", size);
         return this;
     }
-    setMinWidth(size: string) {
-        this.wrapper.style.minWidth = size;
+    setMinWidth(size: Refable<string>) {
+        this.setCssStyle("minWidth", size);
         return this;
     }
-    setMaxWidth(size: string) {
-        this.wrapper.style.maxWidth = size;
+    setMaxWidth(size: Refable<string>) {
+        this.setCssStyle("maxWidth", size);
         return this;
     }
-    setHeight(size: string) {
-        this.wrapper.style.height = size;
+    setHeight(size: Refable<string>) {
+        this.setCssStyle("height", size);
         return this;
     }
-    setMinHeight(size: string) {
-        this.wrapper.style.minHeight = size;
+    setMinHeight(size: Refable<string>) {
+        this.setCssStyle("minHeight", size);
         return this;
     }
-    setMaxHeight(size: string) {
-        this.wrapper.style.maxHeight = size;
+    setMaxHeight(size: Refable<string>) {
+        this.setCssStyle("maxHeight", size);
         return this;
     }
-    setMargin(size: string) {
-        this.wrapper.style.margin = size;
+    setMargin(size: Refable<string>) {
+        this.setCssStyle("margin", size);
         return this;
     }
     setId(id: string) {
         this.wrapper.id = id;
         return this;
     }
-    setGrow(value = 1) {
-        this.wrapper.style.flexGrow = value.toString();
+    setGrow(value: Refable<number> = 1) {
+        this.setCssStyle("flexGrow", asRef(value).map(it => it.toString()));
         return this;
     }
-    setAlignItems(type: "center" | "end" | "start" | "stretch") {
-        this.wrapper.style.alignItems = type;
+    setAlignItems(type: Refable<"center" | "end" | "start" | "stretch">) {
+        this.setCssStyle("alignItems", type);
         return this;
     }
-    setAlignContent(type: "normal" | ContentDistribution | ContentPosition) {
-        this.wrapper.style.alignContent = type;
+    setAlignContent(type: Refable<"normal" | ContentDistribution | ContentPosition>) {
+        this.setCssStyle("alignContent", type);
         return this;
     }
-    setAlignSelf(type: "center" | "end" | "start" | "stretch") {
-        this.wrapper.style.alignSelf = type;
+    setAlignSelf(type: Refable<"center" | "end" | "start" | "stretch">) {
+        this.setCssStyle("alignSelf", type);
         return this;
     }
-    setJustifyItems(type: "center" | "end" | "start" | "stretch") {
-        this.wrapper.style.justifyItems = type;
+    setJustifyItems(type: Refable<"center" | "end" | "start" | "stretch">) {
+        this.setCssStyle("justifyItems", type);
         return this;
     }
-    setJustifyContent(type: "normal" | ContentDistribution | ContentPosition) {
-        this.wrapper.style.justifyContent = type;
+    setJustifyContent(type: Refable<"normal" | ContentDistribution | ContentPosition>) {
+        this.setCssStyle("justifyContent", type);
         return this;
     }
-    setJustifySelf(type: "center" | "end" | "start" | "stretch") {
-        this.wrapper.style.justifySelf = type;
+    setJustifySelf(type: Refable<"center" | "end" | "start" | "stretch">) {
+        this.setCssStyle("justifySelf", type);
         return this;
     }
-    setBorderRadius(value: "none" | "tiny" | "mid" | "large" | "complete") {
+    setShadow(size: Refable<'0' | '1' | '2' | '3' | '4' | '5'>) {
+        this.addClass(asRef(size).map(it => it === '0' ? undefined : `shadow-${it}`));
+        return this;
+    }
+    setBorderRadius(value: Refable<"none" | "tiny" | "mid" | "large" | "complete" | string>) {
         const map = {
             "tiny": "0.3rem",
             "mid": "0.5rem",
@@ -119,24 +131,24 @@ export abstract class Component extends EventTarget {
         };
 
         //@ts-ignore fail if bad input
-        this.wrapper.style.borderRadius = map[ value ] ?? value;
+        this.setCssStyle("borderRadius", value.map(it => map[ it ] ?? it));
 
         return this;
     }
-    setTextSize(size: TextSize) {
-        this.addClass(`text-${size}`);
+    setTextSize(size: Refable<TextSize>) {
+        this.addClass(ref`text-${size}`);
         return this;
     }
-    setFontWeight(weight: FontWeight) {
-        this.addClass(`font-${weight}`);
+    setFontWeight(weight: Refable<FontWeight>) {
+        this.addClass(ref`font-${weight}`);
         return this;
     }
-    setDirection(type: "column" | "row" | "row-reverse" | "column-reverse") {
-        this.wrapper.style.flexDirection = type;
+    setDirection(type: Refable<"column" | "row" | "row-reverse" | "column-reverse">) {
+        this.setCssStyle("flexDirection", type);
         return this;
     }
-    setMixBlendMode(blendMode: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity') {
-        this.wrapper.style.mixBlendMode = blendMode;
+    setMixBlendMode(blendMode: Refable<'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity'>) {
+        this.setCssStyle("mixBlendMode", blendMode);
         return this;
     }
     draw() {
