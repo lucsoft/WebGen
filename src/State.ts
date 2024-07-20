@@ -416,6 +416,15 @@ function _state<T>(
                     if (index === -1) return;
                     // @ts-ignore TODO: fix typing
                     proxy[ p.replace("$", "") as keyof typeof proxy ].splice(index, 1);
+                },
+                updateItem: (oldItem, newItem) => {
+                    if (!Array.isArray(proxy[ p.replace("$", "") as keyof typeof proxy ])) {
+                        throw new Error("updateItem called on a non array Ref.");
+                    }
+                    const index = (<T[]>proxy[ p.replace("$", "") as keyof typeof proxy ]).indexOf(oldItem);
+                    if (index === -1) return;
+                    // @ts-ignore TODO: fix typing
+                    proxy[ p.replace("$", "") as keyof typeof proxy ][ index ] = newItem;
                 }
             };
             const value = Reflect.get(...args);
