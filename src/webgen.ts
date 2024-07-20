@@ -54,6 +54,7 @@ export * from './types.ts';
 
 export * from './components/Entry.ts';
 
+import './Shadow.css';
 import './TextSizes.css';
 
 export type WebGenOptions = {
