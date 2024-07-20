@@ -122,8 +122,14 @@ export abstract class Component extends EventTarget {
         this.wrapper.addEventListener('contextmenu', (e) => func(e));
         return this;
     }
-    onClick(func: (ev: MouseEvent) => void) {
+    onClick(func: (ev: UIEvent) => void) {
         this.wrapper.addEventListener('click', func);
+        this.wrapper.addEventListener('keydown', (me) => {
+            if (me.key == 'Enter' || me.key == ' ') {
+                me.preventDefault();
+                func(me);
+            }
+        });
         return this;
     }
     removeFromLayout() {
