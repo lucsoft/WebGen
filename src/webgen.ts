@@ -80,3 +80,12 @@ export const WebGen = (options: WebGenOptions = {}) => {
         theme
     };
 };
+
+
+export const animate = (callback: () => void) => {
+    if ('startViewTransition' in document) {
+        document.startViewTransition(() => callback());
+    } else {
+        callback();
+    }
+};

@@ -28,6 +28,10 @@ export abstract class Component extends EventTarget {
         });
         return this;
     }
+    setViewTransitionName(name: Refable<string>) {
+        this.setCssStyle("viewTransitionName" as "display", name);
+        return this;
+    }
     setAnchorName(name?: string) {
         if (name == undefined) {
             this.wrapper.removeAttribute("anchor");
@@ -131,7 +135,7 @@ export abstract class Component extends EventTarget {
         };
 
         //@ts-ignore fail if bad input
-        this.setCssStyle("borderRadius", value.map(it => map[ it ] ?? it));
+        this.setCssStyle("borderRadius", asRef(value).map(it => map[ it ] ?? it));
 
         return this;
     }
