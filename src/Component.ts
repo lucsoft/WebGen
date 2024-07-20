@@ -119,6 +119,10 @@ export abstract class Component extends EventTarget {
         this.wrapper.style.flexDirection = type;
         return this;
     }
+    setMixBlendMode(blendMode: 'normal' | 'multiply' | 'screen' | 'overlay' | 'darken' | 'lighten' | 'color-dodge' | 'color-burn' | 'hard-light' | 'soft-light' | 'difference' | 'exclusion' | 'hue' | 'saturation' | 'color' | 'luminosity') {
+        this.wrapper.style.mixBlendMode = blendMode;
+        return this;
+    }
     draw() {
         return this.wrapper;
     }
