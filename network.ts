@@ -3,9 +3,6 @@ import { delay, pooledMap } from "jsr:@std/async@0.224.2";
 import { MINUTE } from "jsr:@std/datetime@0.224.1";
 import { SchedulerPriority, createScheduler } from "./extended/scheduler.ts";
 import { Reference, asRef } from "./src/State.ts";
-export * from "./extended/scheduler.ts";
-export * from "./extended/stableRequests.ts";
-export * from "./extended/stableWebSockets.ts";
 
 export interface PaginationObject<T> {
     reset: () => void;
