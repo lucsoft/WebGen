@@ -20,6 +20,7 @@ export * from './components/Custom.ts';
 export * from './components/Empty.ts';
 export * from "./components/Flow.ts";
 export * from './components/Form.ts';
+export * from './components/FormDropDownInput.ts';
 export * from "./components/FormInputs.ts";
 export * from './components/FormText.ts';
 export * from './components/IconButton.ts';
