@@ -65,6 +65,14 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
         asRef(text).listen(val => this.input.placeholder = val);
         return this;
     }
+    onKeyPressed(action: (event: KeyboardEvent) => void) {
+        this.input.addEventListener("keydown", (event) => action(event));
+        return this;
+    }
+    focus() {
+        this.input.focus();
+        return this;
+    }
 }
 
 export class InlineTextComponent<Value extends string> extends TextInputComponent<Value> {
