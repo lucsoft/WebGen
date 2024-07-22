@@ -15,6 +15,10 @@
     gap: 10px;
 }
 
+[data-theme="light"] .wdropdown-outer-layer {
+    background: #FAFAFA;
+}
+
 [data-theme="dark"] .wdropdown-outer-layer {
     background: #3E3E3E;
 }
