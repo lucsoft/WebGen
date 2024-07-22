@@ -23,6 +23,10 @@
     background: #3E3E3E;
 }
 
+.wdropdown-content .wbutton {
+    padding: 10px 12px;
+}
+
 .wdropdown-content .wdropdown-action {
     height: 28px;
     font-size: 11px;
