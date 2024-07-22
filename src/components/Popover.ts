@@ -1,13 +1,22 @@
 import { Component } from "../Component.ts";
+import { asRef } from "../State.ts";
 import "./Popover.css";
 
 export const Popover = (content: Component) => new class extends Component {
+
+    #isOpen = asRef(false);
+
     constructor() {
         super();
         this.addClass("wpopover");
         this.wrapper.append(content.draw());
         this.setAttribute("popover");
         document.body.append(this.draw());
+
+        this.wrapper.addEventListener("toggle", (event) => {
+            this.#isOpen.setValue((<ToggleEvent>event).newState === "open");
+        });
+
     }
 
     public showPopover() {
@@ -35,7 +44,7 @@ export const Popover = (content: Component) => new class extends Component {
     };
 
     public isOpen() {
-        return this.wrapper.matches(':popover-open');
+        return this.#isOpen.getValue();
     }
 
     public clearAnchors(anchorName: `--${string}`) {
