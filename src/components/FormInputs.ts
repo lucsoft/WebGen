@@ -1,18 +1,9 @@
-import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { DataSourceKey, Refable, StateHandler, asRef, isRef } from "../State.ts";
-import { MIcon } from "../icons/MaterialIcons.ts";
+import { DataSourceKey, Reference, StateHandler } from "../State.ts";
 import { ButtonStyle, ColoredComponent } from "../types.ts";
-import { Box } from "./Box.ts";
-import { Button, ButtonComponent } from "./Button.ts";
 import { Custom } from "./Custom.ts";
-import './DropDown.css';
 import './FormInput.css';
-import { Layer } from "./Layer.ts";
-import { Items } from "./List.ts";
-import { Popover } from "./Popover.ts";
-import { Grid } from "./Stacks.ts";
 type KeysMatching<T, V> = { [ K in keyof T ]-?: T[ K ] extends V ? K : never }[ keyof T ];
 
 export const speicalSyles = [ ButtonStyle.Spinner, ButtonStyle.Progress ];
@@ -23,12 +14,21 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
     protected key: DataSourceKey | null = null;
     protected valueRender = (data: StateValue) => `${data}` || JSON.stringify(data);
 
-    setValue(value: Refable<StateValue> | undefined) {
-        if (isRef(value))
-            value.listen((val) => this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: val })));
-        else
-            this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: asRef(value).getValue() }));
+    protected setValue(value: StateValue) {
+        this.dispatchEvent(new CustomEvent<StateValue>("update", { detail: value }));
+        return this;
+    }
 
+    ref<T extends StateValue | undefined>(from: Reference<T>) {
+        this.setValue(from.getValue() as StateValue);
+        let first = true;
+        from.listen((val) => {
+            if (!first) {
+                this.setValue(val as StateValue);
+            }
+            first = false;
+        });
+        this.addEventListener("update", (event) => from.setValue((<CustomEvent>event).detail));
         return this;
     }
 
@@ -40,7 +40,7 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         this.addEventListener("update", (event) => data[ key ] = (<CustomEvent<Data[ Key ]>>event).detail);
 
         // Read State value
-        if (Object.hasOwn(data, key)) this.setValue(data[ key ] as Refable<StateValue>);
+        if (Object.hasOwn(data, key)) this.setValue(data[ key ] as StateValue);
 
         // Wait for State changes
         data.$on(key, (value) => this.setValue(value));
@@ -56,74 +56,6 @@ export abstract class InputForm<StateValue> extends ColoredComponent {
         return this;
     }
 }
-
-const content = asRef(Box());
-const dropDownPopover = Popover(Layer(
-    content.asRefComponent(),
-    5
-).setBorderRadius("mid").addClass("wdropdown-outer-layer"))
-    .pullingAnchorPositioning("--wdropdown-default", (rect, style) => {
-        style.top = `max(-5px, ${rect.bottom}px)`;
-        style.left = `${rect.left}px`;
-        style.minWidth = `${rect.width}px`;
-        style.bottom = "var(--gap)";
-    });
-
-export class DropDownInputComponent<Value extends string> extends InputForm<Value> {
-    prog = createElement("div");
-    text = createElement("span");
-    button: ButtonComponent;
-    constructor(dropdown: Refable<string[]>, label: Refable<string | Component>, icon = MIcon("keyboard_arrow_down")) {
-        super();
-
-        const text = asRef(label);
-        this.button = Button(text)
-            .setWidth("100%")
-            .setJustifyContent("space-between")
-            .addSuffix(icon);
-
-        this.wrapper.innerHTML = "";
-        this.color.setValue(Color.Disabled);
-        this.wrapper.append(this.button.draw());
-        this.wrapper.classList.add("wdropdown");
-
-        this.addEventListener("update", (event) => {
-            const data = (<CustomEvent<Value>>event).detail;
-            text.setValue(data == undefined ? asRef(label).getValue() : this.valueRender(data));
-            dropDownPopover.hidePopover();
-        });
-
-        this.button.onClick(() => {
-            if (dropDownPopover.isOpen()) {
-                dropDownPopover.hidePopover();
-                return;
-            }
-            dropDownPopover.clearAnchors("--wdropdown-default");
-            this.button.setAnchorName("--wdropdown-default");
-            dropDownPopover.showPopover();
-            content.setValue(Grid(
-                Items(asRef(dropdown), item =>
-                    Button(this.valueRender(item as Value))
-                        .setStyle(ButtonStyle.Inline)
-                        .onClick(() => {
-                            this.setValue(item as Value);
-                        })
-                )
-            )
-                .addClass("wdropdown-content")
-                .setDirection("row")
-                .setGap("5px")
-                .setPadding("5px")
-            );
-        });
-    }
-    setStyle(style: ButtonStyle, progress?: number) {
-        this.button.setStyle(style, progress);
-        return this;
-    }
-}
-
-export const DropDownInput = (label: string, list: Refable<string[]>) => new DropDownInputComponent(list, label);
 
 export function DropAreaInput(draw: Component, formats: string[], onData?: (data: { blob: Blob, file: File, url: string; }[]) => void) {
     const shell = createElement("div");
