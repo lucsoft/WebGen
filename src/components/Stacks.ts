@@ -10,11 +10,6 @@ export class AlignComponent extends Component {
         this.wrapper.classList.add(type);
         this.wrapper.append(...dropNullish(...components).map(x => x.draw()));
     }
-    setMargin(margin?: string) {
-        this.wrapper.style.width = margin ? `calc(100% - ${margin} - ${margin})` : "";
-        this.wrapper.style.margin = margin ?? "";
-        return this;
-    }
     setGap(gap = "var(--gap)"): AlignComponent {
         this.wrapper.style.gap = gap;
         return this;

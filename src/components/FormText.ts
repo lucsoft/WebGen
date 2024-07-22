@@ -1,5 +1,6 @@
 import { Color } from "../Color.ts";
 import { createElement } from "../Components.ts";
+import { asRef, Refable } from "../State.ts";
 import { ButtonStyle } from "../types.ts";
 import { InputForm } from "./FormInputs.ts";
 import { Label } from "./Label.ts";
@@ -58,6 +59,10 @@ export class TextInputComponent<Value extends string | undefined> extends InputF
     }
     setAutofill(text: AutoFill) {
         this.input.autocomplete = text;
+        return this;
+    }
+    setPlaceholder(text: Refable<string>) {
+        asRef(text).listen(val => this.input.placeholder = val);
         return this;
     }
 }
