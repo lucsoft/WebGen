@@ -25,7 +25,7 @@ class GridComponent extends Component {
         super();
         this.wrapper.classList.add("wggrid");
         this.wrapper.style.display = "grid";
-        this.wrapper.append(...components.map(x => {
+        components.map(x => {
             if (Array.isArray(x)) {
                 const { width, height } = x[ 0 ];
                 const ele = x[ 1 ].draw();
@@ -34,7 +34,7 @@ class GridComponent extends Component {
                 return ele;
             }
             return x.draw();
-        }));
+        }).forEach(item => this.wrapper.append(item));
     }
     setGap(gap = "var(--gap)") {
         this.wrapper.style.gap = gap;
