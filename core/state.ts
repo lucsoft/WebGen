@@ -33,8 +33,9 @@ export class WriteSignal<T> extends Signal.State<T> implements Reference<T> {
         this.set(val);
     }
     listen(c: RefEvent<T>): { unlisten: () => void; } {
-        let oldValue = this.get();
+        let oldValue = undefined as T;
         return listen(() => {
+            if (oldValue === this.get()) return;
             c(this.get(), oldValue);
             oldValue = this.get();
         });
@@ -46,6 +47,36 @@ export class WriteSignal<T> extends Signal.State<T> implements Reference<T> {
     }
 }
 
+export class ArrayWriteSignal<T extends D[], D> extends WriteSignal<T> {
+
+    constructor(initValue: T, options?: Signal.Options<T>) {
+        super(initValue, options);
+    }
+
+    get value(): Readonly<T> {
+        return super.get();
+    }
+
+    set value(value: T) {
+        super.setValue(value);
+    }
+
+    getValue(): Readonly<T> {
+        return super.getValue();
+    }
+    get(): Readonly<T> {
+        return super.get();
+    }
+    addItem(item: D) {
+        console.log("Adding", item, this.value);
+        this.value = [ ...this.value, item ] as T;
+    }
+    removeItem(item: D) {
+        console.log("Removing", item);
+        this.value = this.value.filter(it => it !== item) as T;
+    }
+}
+
 export class ReadSignal<T> extends Signal.Computed<T> implements Reference<T> {
     getValue(): T {
         return this.get();
@@ -54,8 +85,9 @@ export class ReadSignal<T> extends Signal.Computed<T> implements Reference<T> {
         return this.get();
     }
     listen(c: RefEvent<T>): { unlisten: () => void; } {
-        let oldValue = this.get();
+        let oldValue = undefined as T;
         return listen(() => {
+            if (oldValue === this.get()) return;
             c(this.get(), oldValue);
             oldValue = this.get();
         });
@@ -74,43 +106,54 @@ let pending = false;
 const watcher = new Signal.subtle.Watcher(() => {
     if (!pending) {
         pending = true;
-        queueMicrotask(() => {
-            pending = false;
-            for (const s of watcher.getPending()) s.get();
-            watcher.watch();
-        });
+        let countOfRepeats = 0;
+
+        const triggerUpdate = () => {
+            queueMicrotask(() => {
+                for (const s of watcher.getPending()) s.get();
+                watcher.watch();
+                if (countOfRepeats > 1000) {
+                    console.error("Infinite Loop Detected");
+                    return;
+                }
+                if (watcher.getPending().length > 0) {
+                    countOfRepeats++;
+                    triggerUpdate();
+                } else {
+                    pending = false;
+                    if (countOfRepeats > 10) {
+                        console.warn("Large Waterfall of Updates Detected! Count:", countOfRepeats);
+                        return;
+                    }
+                }
+            });
+        };
+        triggerUpdate();
     }
 });
 
 export function listen(callback: () => void): { unlisten: () => void; } {
     WEBGEN_LISTEN_COUNT++;
-    if (WEBGEN_LISTEN_COUNT % 100 === 0) {
+    if (WEBGEN_LISTEN_COUNT % 1000 === 0) {
         console.debug("Leaking Listener? Found:", WEBGEN_LISTEN_COUNT);
     }
-    let destructor: (() => void) | void;
-    const computed = new Signal.Computed(() => { destructor?.(); destructor = callback(); });
+    const computed = new Signal.Computed(() => { callback(); });
     watcher.watch(computed);
     computed.get();
     return {
         unlisten: () => {
             WEBGEN_LISTEN_COUNT--;
-            destructor?.();
             watcher.unwatch(computed);
         }
     };
 }
 
-/**
- * Converts a value or Ref to a Ref.
- *
- * A Ref is a special object that allows you to track and modify a value.
- * It provides methods to set and retrieve the value, as well as additional
- * functionality to convert and listen for value changes.
- * @param value The value or Ref to be converted.
- * @returns The converted Ref.
- */
 export function asRef<T>(initValue: T, options?: Signal.Options<T>): WriteSignal<T> {
     return new WriteSignal(initValue, options);
+}
+
+export function asRefArray<T>(initValue: T[], options?: Signal.Options<T[]>): ArrayWriteSignal<T[], T> {
+    return new ArrayWriteSignal(initValue, options);
 }
 
 export function alwaysRef<T>(value: Refable<T>): Reference<T> {
