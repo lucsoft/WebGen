@@ -25,6 +25,7 @@ export class ButtonComponent extends ColoredComponent {
         this.wrapper.tabIndex = speicalSyles.includes(ButtonStyle.Normal) ? -1 : accessibilityDisableTabOnDisabled();
         this.wrapper.append(loadingWheel());
         const element = createElement("div");
+        element.classList.add("content");
         this.wrapper.append(element);
         asRef(string).listen((val) => {
             element.replaceChildren(typeof val == "string" ? val : val.draw());

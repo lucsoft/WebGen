@@ -18,6 +18,11 @@
     background-color: hsl(var(--background-color-h), var(--background-color-s), var(--background-color-l));
 }
 
+.wbutton .content {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .wbutton:not(.disabled):active {
     transform: translate(0, 3%);
 }
