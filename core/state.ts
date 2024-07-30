@@ -68,11 +68,9 @@ export class ArrayWriteSignal<T extends D[], D> extends WriteSignal<T> {
         return super.get();
     }
     addItem(item: D) {
-        console.log("Adding", item, this.value);
         this.value = [ ...this.value, item ] as T;
     }
     removeItem(item: D) {
-        console.log("Removing", item);
         this.value = this.value.filter(it => it !== item) as T;
     }
 }

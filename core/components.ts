@@ -1,4 +1,5 @@
 
+import { FontWeight, TextSize } from "../src/types.ts";
 import { alwaysRef, asRef, asRefArray, listen, Refable, Reference } from "./state.ts";
 
 // deno-lint-ignore prefer-const
@@ -17,7 +18,8 @@ export function asWebGenComponent(value: string) {
 
 export class HTMLComponent extends HTMLElement {
     #listener = new Set<{ listen: () => void, unlisten: () => void; }>();
-    private textSize = asRef(asRef("") as Reference<string>);
+    private textSize = asRef(undefined) as Reference<TextSize | undefined>;
+    private fontWeight = asRef(undefined) as Reference<FontWeight | undefined>;
     private cssClassList = asRefArray<string>([]);
 
     #addWatch(obj: () => { unlisten: () => void; }) {
@@ -34,8 +36,11 @@ export class HTMLComponent extends HTMLElement {
     protected useListener<T>(ref: Reference<T>, callback: (newValue: T, oldValue?: T) => void) {
         this.#addWatch(() => ref.listen(callback));
     }
-    protected addListen(obj: () => void) {
-        this.#addWatch(() => listen(obj));
+    protected addListen<T>(obj: (oldValue?: T) => T) {
+        let oldValue: T | undefined = undefined;
+        this.#addWatch(() => listen(() => {
+            oldValue = obj(oldValue);
+        }));
     }
     protected connectedCallback() {
         this.#listener.forEach(listener => listener.listen());
@@ -45,7 +50,20 @@ export class HTMLComponent extends HTMLElement {
     }
     constructor() {
         super();
-        this.addListen(() => this.style.fontSize = this.textSize.value.value);
+        this.addListen((oldVal) => {
+            const newValue = this.textSize.value;
+            if (oldVal === newValue) return;
+            this.classList.remove(`text-${oldVal}`);
+            this.classList.add(`text-${newValue}`);
+            return this.textSize.value;
+        });
+        this.addListen((oldVal) => {
+            const newValue = this.fontWeight.value;
+            if (oldVal === newValue) return;
+            this.classList.remove(`font-${oldVal}`);
+            this.classList.add(`font-${newValue}`);
+            return this.fontWeight.value;
+        });
         this.useListener(this.cssClassList, (newList, oldList) => {
             const deletedItems = (oldList ?? []).filter(it => !newList.includes(it));
             const addedItems = (newList ?? []).filter(it => !(oldList ?? []).includes(it));
@@ -56,12 +74,12 @@ export class HTMLComponent extends HTMLElement {
     make() {
         const obj = {
             draw: () => this,
-            setTextSize: (value: Refable<string> | string) => { this.textSize.value = alwaysRef(value); return obj; },
+            setTextSize: (value: Refable<TextSize>) => { this.textSize = alwaysRef(value); return obj; },
+            setFontWeight: (value: Refable<FontWeight>) => { this.fontWeight = alwaysRef(value); return obj; },
             addClass: <stringy extends string | undefined>(classToken: Refable<stringy>, ...classes: string[]) => {
                 this.classList.add(...classes);
                 const token = alwaysRef(classToken);
                 this.useListener(token, (newValue, oldValue) => {
-                    console.log(newValue, oldValue);
                     if (oldValue !== undefined && oldValue !== newValue)
                         this.cssClassList.removeItem(oldValue);
                     if (newValue !== undefined)
