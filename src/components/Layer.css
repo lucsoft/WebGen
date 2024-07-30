@@ -34,15 +34,12 @@
     --layer-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
 }
 
-.wlayer:is(.shadow) {
-    box-shadow: var(--layer-shadow, none);
-}
-
-
 [data-theme="light"] .wlayer {
     color: black;
+    box-shadow: var(--layer-shadow, none);
 }
 
 [data-theme="dark"] .wlayer {
     --layer-shadow: none;
+    background-color: color-mix(in srgb, white var(--color-overlay), transparent);
 }

@@ -23,10 +23,11 @@ const dropDownPopover = Popover(Layer(
     .addClass("shadow-4")
     .addClass("wdropdown-outer-layer"))
     .pullingAnchorPositioning("--wdropdown-default", (rect, style) => {
-        style.top = `max(0px, ${rect.bottom}px)`;
+        style.top = `max(15px, ${rect.bottom}px)`;
         style.left = `${rect.left}px`;
         style.minWidth = `${rect.width}px`;
-        style.bottom = "var(--gap)";
+        style.height = "100%";
+        style.maxHeight = "min(100%, calc(100% - 37px))";
     });
 
 

@@ -31,9 +31,8 @@ export class EntryComponent extends Component {
         this.wrapper = Layer(content instanceof Component
             ? content
             : BasicLabel(content),
-            2,
-            "shadow"
-        ).addClass("wentry").setBorderRadius("large").draw();
+            2
+        ).addClass("wentry", "overlay").setBorderRadius("large").draw();
         this.wrapper.setAttribute("aria-role", "button");
         this.prefix.classList.add("prefix");
         this.wrapper.prepend(this.prefix);
