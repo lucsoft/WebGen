@@ -27,7 +27,7 @@ const dropDownPopover = Popover(Layer(
         style.left = `${rect.left}px`;
         style.minWidth = `${rect.width}px`;
         style.height = "100%";
-        style.maxHeight = "min(100%, calc(100% - 37px))";
+        style.maxHeight = `calc(100% - ${rect.bottom}px - var(gap))`;
     });
 
 
