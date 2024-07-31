@@ -1,8 +1,13 @@
+.wdropdown-popover {
+    pointer-events: none;
+}
+
 .wdropdown-content {
     box-sizing: border-box;
     max-height: 100%;
     width: 100%;
     overflow: auto;
+    pointer-events: auto;
 }
 
 .wdropdown-outer-layer {

@@ -1,4 +1,3 @@
-import { Color } from "../Color.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
 import { MIcon } from "../icons/MaterialIcons.ts";
@@ -22,12 +21,12 @@ const dropDownPopover = Popover(Layer(
     .setBorderRadius("mid")
     .addClass("shadow-4")
     .addClass("wdropdown-outer-layer"))
+    .addClass("wdropdown-popover")
     .pullingAnchorPositioning("--wdropdown-default", (rect, style) => {
-        style.top = `max(15px, ${rect.bottom}px)`;
+        style.top = `max(15px, ${rect.bottom.toFixed(2)}px)`;
         style.left = `${rect.left}px`;
         style.minWidth = `${rect.width}px`;
-        style.height = "100%";
-        style.maxHeight = `calc(100% - ${rect.bottom}px - var(gap))`;
+        style.bottom = "var(--gap)";
     });
 
 
@@ -52,10 +51,9 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
         this.button = Button(text)
             .setWidth("100%")
             .setJustifyContent("space-between")
+            .setColor(this.color)
             .addSuffix(icon);
 
-        this.wrapper.innerHTML = "";
-        this.color.setValue(Color.Disabled);
         this.wrapper.append(this.button.draw());
         this.wrapper.classList.add("wdropdown");
 
@@ -139,11 +137,6 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
 
     addAction(icon: Component, title: Refable<string>, onClick: (env: MouseEvent, e: ButtonComponent) => void) {
         this.#actions.addItem({ icon, title, onClick });
-        return this;
-    }
-
-    setStyle(style: ButtonStyle, progress?: number) {
-        this.button.setStyle(style, progress);
         return this;
     }
 }
