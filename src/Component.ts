@@ -1,6 +1,6 @@
+import { FontWeight, TextSize } from "../core/types.ts";
 import { createElement } from "./Components.ts";
 import { Refable, asRef, ref } from "./State.ts";
-import { FontWeight, TextSize } from "./types.ts";
 
 export type ContentDistribution = 'space-between' | 'space-around' | 'space-evenly' | 'stretch';
 export type ContentPosition = 'center' | 'start' | 'end' | 'flex-start' | 'flex-end';
