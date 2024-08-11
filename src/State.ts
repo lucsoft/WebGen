@@ -53,8 +53,8 @@ export type DataSourceArray<T> = Array<unknown> & T;
 export type ProxyDataSource<T> = {
     [ K in keyof T ]: StateHandler<T[ K ]> | T[ K ]
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<StateHandler<T[ K ]> | T[ K ]>;
-    };
+    readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<StateHandler<T[ K ]> | T[ K ]>;
+};
 
 /**
  * An callback for an observer.
@@ -203,8 +203,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             if (!Array.isArray(_val)) {
                 throw new Error("addItem called on a non array Ref.");
             }
+            const oldVal = _val[ index ];
             _val.push(item);
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal));
         },
         removeItem: (item: T) => {
             if (!Array.isArray(_val)) {
@@ -212,8 +213,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             }
             const index = _val.indexOf(item);
             if (index === -1) return;
+            const oldVal = _val[ index ];
             _val.splice(index, 1);
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal));
         },
         updateItem: (item: T, newItem: T) => {
             if (!Array.isArray(_val)) {
@@ -221,8 +223,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             }
             const index = _val.indexOf(item);
             if (index === -1) return;
+            const oldVal = _val[ index ];
             _val[ index ] = newItem;
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal));
         },
         toggle: () => {
             if (typeof _val !== "boolean") {
@@ -259,8 +262,8 @@ export type Refable<T> = T | Reference<T>;
 export type StateHandler<T> = {
     [ K in keyof T ]: T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ];
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
-    } & DependencyProps;
+    readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
+} & DependencyProps;
 
 type ReactiveProxyParent = [
     property: DataSourceKey,
