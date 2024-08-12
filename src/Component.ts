@@ -166,7 +166,6 @@ export abstract class Component extends EventTarget {
         this.wrapper.addEventListener('click', func);
         this.wrapper.addEventListener('keydown', (me) => {
             if (me.key == 'Enter' || me.key == ' ') {
-                me.preventDefault();
                 func(me);
             }
         });
