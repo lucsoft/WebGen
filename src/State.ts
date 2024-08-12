@@ -53,8 +53,8 @@ export type DataSourceArray<T> = Array<unknown> & T;
 export type ProxyDataSource<T> = {
     [ K in keyof T ]: StateHandler<T[ K ]> | T[ K ]
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<StateHandler<T[ K ]> | T[ K ]>;
-    };
+    readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<StateHandler<T[ K ]> | T[ K ]>;
+};
 
 /**
  * An callback for an observer.
@@ -146,7 +146,7 @@ export type Reference<T> = {
     readonly updateItem: (item: G, newItem: G) => void;
     // deno-lint-ignore ban-types
 } : {}) & (T extends boolean ? {
-    readonly toggle: () => void
+    readonly toggle: () => void;
     // deno-lint-ignore ban-types
 } : {});
 
@@ -259,8 +259,8 @@ export type Refable<T> = T | Reference<T>;
 export type StateHandler<T> = {
     [ K in keyof T ]: T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ];
 } & {
-        readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
-    } & DependencyProps;
+    readonly [ K in keyof T as `$${Extract<K, string>}` ]: Reference<T[ K ] extends StateData ? StateHandler<T[ K ]> : T[ K ]>;
+} & DependencyProps;
 
 type ReactiveProxyParent = [
     property: DataSourceKey,
@@ -437,6 +437,8 @@ function _state<T>(
                     if (index === -1) return;
                     // @ts-ignore TODO: fix typing
                     proxy[ p.replace("$", "") as keyof typeof proxy ][ index ] = newItem;
+                    // @ts-ignore TODO: Remove this code
+                    proxy[ p.replace("$", "") as keyof typeof proxy ] = [ ...proxy[ p.replace("$", "") as keyof typeof proxy ] ];
                 }
             };
             const value = Reflect.get(...args);
