@@ -40,7 +40,7 @@ export class DropDownInputComponent<Value extends string> extends InputForm<Valu
     #searchEngine = asRef<(search: Reference<string>) => Refable<string[]>>((search) => {
         // we just implement a client side search here.
         return refMerge({ source: asRef(this.dropdown), search })
-            .map(({ search, source }) => source.filter(item => item.toLowerCase().includes(search.toLowerCase())));
+            .map(({ search, source }) => source.filter(item => this.valueRender(item as Value).toLowerCase().includes(search.toLowerCase())));
     });
     static showSearchAtCount = 15;
 

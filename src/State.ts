@@ -203,8 +203,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             if (!Array.isArray(_val)) {
                 throw new Error("addItem called on a non array Ref.");
             }
+            const oldVal = [ ..._val ];
             _val.push(item);
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal as T));
         },
         removeItem: (item: T) => {
             if (!Array.isArray(_val)) {
@@ -212,8 +213,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             }
             const index = _val.indexOf(item);
             if (index === -1) return;
+            const oldVal = [ ..._val ];
             _val.splice(index, 1);
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal as T));
         },
         updateItem: (item: T, newItem: T) => {
             if (!Array.isArray(_val)) {
@@ -221,8 +223,9 @@ export function asRef<T>(value: T | Reference<T>): Reference<T> {
             }
             const index = _val.indexOf(item);
             if (index === -1) return;
+            const oldVal = [ ..._val ];
             _val[ index ] = newItem;
-            list.forEach(it => it(_val));
+            list.forEach(it => it(_val, oldVal as T));
         },
         toggle: () => {
             if (typeof _val !== "boolean") {
