@@ -35,12 +35,12 @@ export class SheetComponent extends Component {
 }
 
 export class SheetsStackComponent extends Component {
-    private readonly sheets = asRef<SheetComponent[]>([]);
+    readonly #sheets = asRef<SheetComponent[]>([]);
 
     constructor(private readonly mobileTrigger: Reference<boolean>) {
         super();
         this.onClick(() => {
-            const sheet = this.sheets.getValue().at(-1)!;
+            const sheet = this.#sheets.getValue().at(-1)!;
             if (!sheet.canClose.getValue())
                 return;
             sheet.onClose.getValue()();
@@ -51,19 +51,19 @@ export class SheetsStackComponent extends Component {
     }
 
     add(sheet: SheetComponent) {
-        this.sheets.addItem(sheet);
-        const index = this.sheets.getValue().length - 1;
+        this.#sheets.addItem(sheet);
+        const index = this.#sheets.getValue().length - 1;
 
         const element = sheet.draw();
         element.style.zIndex = `${(index) + 10}`;
 
-        const sheetVisible = this.sheets.map(it => it.includes(sheet));
-        const sheetOnTop = this.sheets.map(it => it.at(-1) === sheet);
+        const sheetVisible = this.#sheets.map(it => it.includes(sheet));
+        const sheetOnTop = this.#sheets.map(it => it.at(-1) === sheet);
 
         sheet.addClass(sheetVisible.map(it => it ? "shown" : "hidden"));
         sheet.addClass(sheetOnTop.map(it => it ? "on-top" : "not-on-top"));
 
-        sheet.addClass(this.sheets.map((sheets) => (sheets.length - 1) > 0 ? "background" : "no-background"));
+        sheet.addClass(this.#sheets.map((sheets) => (sheets.length - 1) > 0 ? "background" : "no-background"));
 
         this.mobileTrigger.map(mobile => {
             element.style.setProperty("--sheet-index", `${index > 0 && !mobile ? index - 1 : index}`);
@@ -73,7 +73,7 @@ export class SheetsStackComponent extends Component {
             ev.stopPropagation();
         });
 
-        this.sheets.map(it => it.length).listen(it => {
+        this.#sheets.map(it => it.length).listen(it => {
             if (it && it > 0) {
                 element.style.setProperty("--sheet-reverse-index", `${it - index - 1}`);
             }
@@ -90,12 +90,12 @@ export class SheetsStackComponent extends Component {
     }
 
     async remove(sheet: SheetComponent) {
-        const index = this.sheets.getValue().indexOf(sheet);
+        const index = this.#sheets.getValue().indexOf(sheet);
         const animationEnded = Promise.withResolvers<void>();
 
         this.wrapper.children[ index ].addEventListener("animationend", () => animationEnded.resolve());
 
-        this.sheets.setValue(this.sheets.getValue().filter(it => it !== sheet));
+        this.#sheets.setValue(this.#sheets.getValue().filter(it => it !== sheet));
 
         await animationEnded.promise;
 
