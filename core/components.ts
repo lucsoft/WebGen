@@ -35,6 +35,12 @@ export class HTMLComponent extends HTMLElement {
     protected useListener<T>(ref: Reference<T>, callback: (newValue: T, oldValue?: T) => void) {
         this.#addWatch(() => ref.listen(callback));
     }
+    protected useEventListener(target: EventTarget, type: string, listener: EventListenerOrEventListenerObject) {
+        this.#listener.add({
+            listen: () => target.addEventListener(type, listener),
+            unlisten: () => target.removeEventListener(type, listener)
+        });
+    }
     protected addListen<T>(obj: (oldValue?: T) => T) {
         let oldValue: T | undefined = undefined;
         this.#addWatch(() => listen(() => {
@@ -193,17 +199,11 @@ export class HTMLComponent extends HTMLElement {
 
             // Events
             onClick: (action: () => void) => {
-                this.#listener.add({
-                    listen: () => this.addEventListener("click", action),
-                    unlisten: () => this.removeEventListener("click", action)
-                });
+                this.useEventListener(this, "click", action);
                 return obj;
             },
             onRightClick: (action: () => void) => {
-                this.#listener.add({
-                    listen: () => this.addEventListener("contextmenu", action),
-                    unlisten: () => this.removeEventListener("contextmenu", action)
-                });
+                this.useEventListener(this, "contextmenu", action);
                 return obj;
             }
         };
