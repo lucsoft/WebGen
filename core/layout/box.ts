@@ -16,7 +16,7 @@ export class BoxComponent extends HTMLComponent {
             }
 
             if (Array.isArray(current))
-                current.map(component => component.draw()).forEach(component => this.prepend(component));
+                current.toReversed().map(component => component.draw()).forEach(component => this.prepend(component));
             else
                 this.prepend(current.draw());
         });
