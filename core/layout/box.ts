@@ -16,9 +16,9 @@ export class BoxComponent extends HTMLComponent {
             }
 
             if (Array.isArray(current))
-                current.map(component => component.draw()).forEach(component => this.append(component));
+                current.map(component => component.draw()).forEach(component => this.prepend(component));
             else
-                this.append(current.draw());
+                this.prepend(current.draw());
         });
     }
 }
