@@ -154,6 +154,20 @@ export function asRefArray<T>(initValue: T[], options?: Signal.Options<T[]>): Ar
     return new ArrayWriteSignal(initValue, options);
 }
 
+// deno-lint-ignore no-explicit-any
+export function asRefRecord<T extends object>(initValue: T, options?: Signal.Options<any>): { [ Key in keyof T ]: WriteSignal<T[ Key ]> } {
+    const keys = Object.keys(initValue) as (keyof T)[];
+    const result = {} as { [ Key in keyof T ]: WriteSignal<T[ Key ]> };
+    for (const key of keys) {
+        result[ key ] = asRef(initValue[ key ], options);
+    }
+    return result;
+}
+
+export function asDeepRef<T extends object>(initValue: T, options?: Signal.Options<T>): DeepWriteSignal<T> {
+    return new DeepWriteSignal(initValue, options);
+}
+
 export function alwaysRef<T>(value: Refable<T>): Reference<T> {
     if (isRef(value))
         return value;
@@ -196,6 +210,9 @@ function nestedProxy<T extends object>(object: T, callback: () => void) {
 }
 
 export class DeepWriteSignal<T extends object> extends WriteSignal<T> {
+    set value(value: T) {
+        super.setValue(value);
+    }
     get value(): T {
         return nestedProxy(super.value, () => this.set(this.value));
     }
