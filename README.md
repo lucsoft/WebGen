@@ -2,7 +2,7 @@
 
 # WebGen 2.0
 
-A SwiftUI-like Webframework
+A SwiftUI-like Web library
 
 ## Getting Started
 
@@ -32,3 +32,12 @@ deno run -A serve.ts
 ```
 
 Done! Have fun! More docs will follow
+
+## Architecture
+
+WebGen is build around the 4 main components:
+
+- **Core API**: Bringing layouting, the webgen component pattern and state management.
+- **Navigation API**: Build Applications with multiple pages and navigation based on the global URL and the Navigation API.
+- **Components API**: A set of prebuild components like Button, Checkbox, Image, List, Sheets.
+- **Extended API**: Provides additional features like a scheduler, a network issue resilient fetch/websocket API.
