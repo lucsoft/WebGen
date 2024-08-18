@@ -1,8 +1,8 @@
 import { assert } from "jsr:@std/assert@0.226";
 import { delay, pooledMap } from "jsr:@std/async@0.224.2";
 import { MINUTE } from "jsr:@std/datetime@0.224.1";
-import { Reference, asRef } from "../src/State.ts";
-import { SchedulerPriority, createScheduler } from "./scheduler.ts";
+import { asRef, Reference } from "../core/mod.ts";
+import { createScheduler, SchedulerPriority } from "./scheduler.ts";
 
 export interface PaginationObject<T> {
     reset: () => void;
