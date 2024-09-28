@@ -1,4 +1,5 @@
 export * from "./iterableWeakMap.ts";
+export * from "./keyValueStore.ts";
 export * from "./network.ts";
 export * from "./scheduler.ts";
 export * from "./stableRequests.ts";

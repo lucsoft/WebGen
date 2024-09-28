@@ -1,6 +1,6 @@
 import { Component } from "../Component.ts";
 import { Reference, asRef } from "../State.ts";
-import { isMobile } from "../mobileQuery.ts";
+import { isMobile } from "../../components/misc/mobileQuery.ts";
 import './Sheet.css';
 
 export class SheetComponent extends Component {

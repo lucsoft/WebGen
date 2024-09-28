@@ -111,6 +111,7 @@ export interface RefEvent<Type> {
 
 /**
  * Interface representing a Ref.
+ * @deprecated
  */
 export type Reference<T> = {
     /**
@@ -158,6 +159,7 @@ export type Reference<T> = {
  * functionality to convert and listen for value changes.
  * @param value The value or Ref to be converted.
  * @returns The converted Ref.
+ * @deprecated
  */
 export function asRef<T>(value: T | Reference<T>): Reference<T> {
     if (isRef(value))
@@ -614,6 +616,7 @@ export const asState = <T>(data: T) => _state<T>(data) as StateHandler<T>;
  *    date: data.$date
  * });
  * ```
+ * @deprecated
  */
 export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Reference<T> {
     const keys = Object.keys(data);
@@ -628,6 +631,7 @@ export function listenOnInitalStateKeys<T>(data: StateHandler<T>): Reference<T> 
  * ref\`Hello ${state.user}\` => a Reference of Hello and the static value of user
  *
  * ref\`Hello ${state.$user}\` => a Reference of Hello and the current value of user (Reference reacts on Reference)
+ * @deprecated
  */
 export function ref(data: TemplateStringsArray, ...expr: Refable<any>[]) {
     const empty = Symbol("empty");
