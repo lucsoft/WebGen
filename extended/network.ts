@@ -1,4 +1,4 @@
-import { assert } from "jsr:@std/assert@^0.226";
+import { assert } from "jsr:@std/assert@^1.0.0";
 import { delay, pooledMap } from "jsr:@std/async@^0.224.2";
 import { MINUTE } from "jsr:@std/datetime@^0.224.1";
 import { asRef, Reference } from "../core/mod.ts";

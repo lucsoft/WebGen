@@ -1,4 +1,4 @@
-import { assert } from "jsr:@std/assert@^0.226.0";
+import { assert } from "jsr:@std/assert@^1.0.0";
 import { retry } from "jsr:@std/async@^0.224.2";
 
 export type StableRequest = {
