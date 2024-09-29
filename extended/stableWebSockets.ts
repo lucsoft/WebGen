@@ -1,4 +1,4 @@
-import { retry } from "jsr:@std/async@^0.224.1";
+import { retry } from "jsr:@std/async@^1.0.0";
 
 export type WebSocketContext = {
     send: (data: string | ArrayBufferLike | Blob | ArrayBufferView) => void;
