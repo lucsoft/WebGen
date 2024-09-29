@@ -1,5 +1,6 @@
 export * from './entry.ts';
 export * from './form/button.ts';
+export * from './form/input.ts';
 export * from "./icons.ts";
 export * from "./misc/mediaQueryRef.ts";
 export * from "./misc/mobileQuery.ts";

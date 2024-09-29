@@ -3,7 +3,7 @@ import { MaterialIcon } from "./icons.ts";
 import { Spinner } from "./spinner.ts";
 
 @asWebGenComponent("entry")
-class EntryComponent extends HTMLComponent {
+export class EntryComponent extends HTMLComponent {
     #button = document.createElement("button");
     #loading = asRef(false);
     #canClick = asRef(false);
@@ -86,6 +86,6 @@ class EntryComponent extends HTMLComponent {
     }
 }
 
-function Entry(content: Component) {
+export function Entry(content: Component) {
     return new EntryComponent(content).make();
 }
