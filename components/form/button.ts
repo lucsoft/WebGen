@@ -3,6 +3,7 @@ import { asWebGenComponent, Component, HTMLComponent } from "../../core/componen
 import { css } from "../../core/cssTemplate.ts";
 import { Label } from "../../core/mod.ts";
 import { alwaysRef, asRef, Refable, Reference } from "../../core/state.ts";
+import { Spinner } from "../spinner.ts";
 
 export enum ButtonMode {
     Primary = "primary",
@@ -18,6 +19,7 @@ export class ButtonComponent extends HTMLComponent {
     #buttonBg = new Color("var(--wg-button-background-color, var(--wg-primary))");
     #buttonFg = new Color("var(--wg-button-text-color, var(--wg-primary-text))");
     #button = document.createElement("button");
+    #loading = asRef(false);
 
     constructor(label: Refable<string>, mode: Reference<ButtonMode> = asRef(ButtonMode.Primary)) {
         super();
@@ -35,6 +37,18 @@ export class ButtonComponent extends HTMLComponent {
 
         this.useListener(this.#disabled, (disabled) => {
             this.#button.disabled = disabled;
+        });
+
+        const spinner = Spinner().draw();
+        this.useListener(this.#loading, (loading) => {
+            if (loading) {
+                this.#button.append(spinner);
+                this.#button.classList.add("loading");
+            }
+            else {
+                spinner.remove();
+                this.#button.classList.remove("loading");
+            }
         });
 
         this.shadowRoot?.adoptedStyleSheets.push(css`
@@ -95,6 +109,13 @@ export class ButtonComponent extends HTMLComponent {
                 --wg-internal-button-bg: var(--wg-button-disabled-color, hsl(0deg 0% 20%));
                 --wg-internal-button-fg: var(--wg-button-disabled-text-color, hsl(0deg 0% 40%));
             }
+            button.loading > :not(wg-spinner) {
+                opacity: 0;
+            }
+            wg-spinner {
+                position: absolute;
+                scale: .8;
+            }
         `);
     }
 
@@ -103,10 +124,23 @@ export class ButtonComponent extends HTMLComponent {
             ...super.make(),
             addPrefix: (component: Component) => { this.#button.prepend(component.draw()); return obj; },
             addSuffix: (component: Component) => { this.#button.append(component.draw()); return obj; },
-            setDisabled: (disabled: Refable<boolean> = true) => {
+            setDisabled: (disabled: Refable<boolean>) => {
                 this.useListener(alwaysRef(disabled), (newDisabled) => {
                     this.#disabled.value = newDisabled;
                 });
+                return obj;
+            },
+            onPromiseClick: (callback: () => Promise<void>) => {
+                super.make().onClick(() => {
+                    if (this.#loading.value) return;
+                    this.#loading.value = true;
+                    callback()
+                        .catch(() => { })
+                        .finally(() => {
+                            this.#loading.value = false;
+                        });
+                });
+
                 return obj;
             }
         };
