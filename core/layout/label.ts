@@ -5,7 +5,7 @@ import { alwaysRef, Refable } from "../state.ts";
 export class LabelComponent extends HTMLComponent {
     constructor(label: Refable<string>) {
         super();
-        this.useListener(alwaysRef(label), label => this.textContent = label);
+        this.useListener(alwaysRef(label), label => this.shadowRoot!.textContent = label);
     }
 }
 

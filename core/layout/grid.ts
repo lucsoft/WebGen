@@ -13,7 +13,7 @@ export class GridComponent extends BoxComponent {
         const obj = {
             ...super.make(),
 
-            setGap(gap: Refable<string> = "var(--gap)") {
+            setGap(gap: Refable<string> = "var(--wg-gap)") {
                 obj.setCssStyle('gap', gap);
                 return obj;
             },

@@ -1,6 +1,6 @@
+import { asRef } from "../../core/state.ts";
 import { Component } from "../Component.ts";
 import { createElement } from "../Components.ts";
-import { asRef } from "../State.ts";
 import { Custom } from "./Custom.ts";
 
 export function MediaQuery(query: string, view: (matches: boolean) => Component) {

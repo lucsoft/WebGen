@@ -21,7 +21,7 @@ export class HTMLComponent extends HTMLElement {
     #listener = new Set<{ listen: () => void, unlisten: () => void; }>();
     private cssClassList = asRefArray<string>([]);
 
-    #addWatch(obj: () => { unlisten: () => void; }) {
+    addWatch(obj: () => { unlisten: () => void; }) {
         let unlisten = () => { };
         this.#listener.add({
             listen: () => {
@@ -33,7 +33,7 @@ export class HTMLComponent extends HTMLElement {
         });
     }
     protected useListener<T>(ref: Reference<T>, callback: (newValue: T, oldValue?: T) => void) {
-        this.#addWatch(() => ref.listen(callback));
+        this.addWatch(() => ref.listen(callback));
     }
     protected useEventListener(target: EventTarget, type: string, listener: EventListenerOrEventListenerObject) {
         this.#listener.add({
@@ -43,7 +43,7 @@ export class HTMLComponent extends HTMLElement {
     }
     protected addListen<T>(obj: (oldValue?: T) => T) {
         let oldValue: T | undefined = undefined;
-        this.#addWatch(() => listen(() => {
+        this.addWatch(() => listen(() => {
             oldValue = obj(oldValue);
         }));
     }
@@ -61,6 +61,7 @@ export class HTMLComponent extends HTMLElement {
             this.classList.remove(...deletedItems);
             this.classList.add(...addedItems);
         });
+        this.attachShadow({ mode: "open" });
     }
     make() {
         const obj = {
@@ -80,6 +81,10 @@ export class HTMLComponent extends HTMLElement {
                     if (newValue !== undefined)
                         this.cssClassList.addItem(newValue);
                 });
+                return obj;
+            },
+            addStyle: (style: CSSStyleSheet) => {
+                this.shadowRoot!.adoptedStyleSheets.push(style);
                 return obj;
             },
             setAttribute: (key: string, value: Refable<string | undefined>) => {
@@ -182,18 +187,20 @@ export class HTMLComponent extends HTMLElement {
 
             // Specialized
             setShadow: (value: Refable<'0' | '1' | '2' | '3' | '4' | '5'>) => {
-                obj.addClass(alwaysRef(value).map(it => it === '0' ? undefined : `shadow-${it}`));
+                obj.setCssStyle("boxShadow", ref`var(--wg-shadow-${value})`);
+                return obj;
             },
             setTextSize: (value: Refable<TextSize>) => {
-                obj.addClass(ref`text-${value}`);
+                obj.setCssStyle("fontSize", ref`var(--wg-fontsize-${value})`);
+                obj.setCssStyle("lineHeight", ref`var(--wg-lineheight-${value}`);
                 return obj;
             },
             setFontWeight: (value: Refable<FontWeight>) => {
-                obj.addClass(ref`font-${value}`);
+                obj.setCssStyle("fontWeight", ref`var(--wg-fontweight-${value})`);
                 return obj;
             },
             setRadius: (value: Refable<Radius>) => {
-                obj.addClass(ref`radius-${value}`);
+                obj.setCssStyle("borderRadius", ref`var(--wg-radius-${value})`);
                 return obj;
             },
 

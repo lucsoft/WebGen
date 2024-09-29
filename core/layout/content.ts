@@ -38,6 +38,7 @@ export class ContentComponent extends HTMLComponent {
             "minmax(var(--content-padding), 1fr)",
             "[full-width-end]",
         ].join(" ");
+        this.style.alignContent = "start";
 
         this.useListener(alwaysRef(component), (current, oldValue) => {
             if (oldValue) {
@@ -49,10 +50,10 @@ export class ContentComponent extends HTMLComponent {
             for (const iterator of Array.isArray(current) ? current : [ current ]) {
                 const item = iterator.draw();
                 if (item instanceof FullWidthSectionComponent) {
-                    this.prepend(...Array.from(item.children));
+                    this.shadowRoot!.prepend(...Array.from(item.children));
                 } else {
                     item.style.gridColumn = "content";
-                    this.prepend(item);
+                    this.shadowRoot!.prepend(item);
                 }
             }
         });
@@ -60,10 +61,10 @@ export class ContentComponent extends HTMLComponent {
         for (const iterator of components) {
             const item = iterator.draw();
             if (item instanceof FullWidthSectionComponent) {
-                this.append(...Array.from(item.children));
+                this.shadowRoot!.append(...Array.from(item.children));
             } else {
                 item.style.gridColumn = "content";
-                this.append(item);
+                this.shadowRoot!.append(item);
             }
         }
     }
@@ -77,6 +78,10 @@ export class ContentComponent extends HTMLComponent {
             },
             setContentPadding: (size: string) => {
                 this.style.setProperty("--content-padding", size);
+                return obj;
+            },
+            fillHeight: () => {
+                this.style.marginBlockEnd = "auto";
                 return obj;
             }
         };
