@@ -68,8 +68,8 @@ export class HTMLComponent extends HTMLElement {
             draw: () => this,
 
             // Layout Additions
-            addPrefix: (component: Component) => { this.prepend(component.draw()); return obj; },
-            addSuffix: (component: Component) => { this.append(component.draw()); return obj; },
+            addPrefix: (component: Component) => { this.shadowRoot!.prepend(component.draw()); return obj; },
+            addSuffix: (component: Component) => { this.shadowRoot!.append(component.draw()); return obj; },
 
             // Common HTML
             addClass: <stringy extends string | undefined>(classToken: Refable<stringy>, ...classes: string[]) => {

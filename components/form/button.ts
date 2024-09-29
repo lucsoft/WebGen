@@ -1,6 +1,7 @@
 import { Color } from "../../core/color.ts";
-import { asWebGenComponent, HTMLComponent } from "../../core/components.ts";
+import { asWebGenComponent, Component, HTMLComponent } from "../../core/components.ts";
 import { css } from "../../core/cssTemplate.ts";
+import { Label } from "../../core/mod.ts";
 import { alwaysRef, asRef, Refable, Reference } from "../../core/state.ts";
 
 export enum ButtonMode {
@@ -16,27 +17,24 @@ export class ButtonComponent extends HTMLComponent {
     #buttonInternalFg = new Color("var(--wg-internal-button-fg)");
     #buttonBg = new Color("var(--wg-button-background-color, var(--wg-primary))");
     #buttonFg = new Color("var(--wg-button-text-color, var(--wg-primary-text))");
+    #button = document.createElement("button");
 
     constructor(label: Refable<string>, mode: Reference<ButtonMode> = asRef(ButtonMode.Primary)) {
         super();
 
-        const button = document.createElement("button");
-
-        this.shadowRoot?.append(button);
+        this.shadowRoot?.append(this.#button);
 
         this.useListener(mode, (newMode, oldMode) => {
             if (oldMode) {
-                button.classList.remove(oldMode);
+                this.#button.classList.remove(oldMode);
             }
-            button.setAttribute("mode", newMode);
+            this.#button.setAttribute("mode", newMode);
         });
 
-        this.useListener(alwaysRef(label), (newLabel) => {
-            button.textContent = newLabel;
-        });
+        this.#button.append(Label(alwaysRef(label)).addClass("content").draw());
 
         this.useListener(this.#disabled, (disabled) => {
-            button.disabled = disabled;
+            this.#button.disabled = disabled;
         });
 
         this.shadowRoot?.adoptedStyleSheets.push(css`
@@ -44,16 +42,21 @@ export class ButtonComponent extends HTMLComponent {
                 all: unset;
                 display: grid;
                 place-items: center;
+                grid-auto-flow: column;
+                gap: var(--wg-gap);
                 --wg-internal-button-bg: ${this.#buttonBg.toString()};
                 --wg-internal-button-fg: ${this.#buttonFg.toString()};
                 background-color: var(--wg-internal-button-bg);
                 color: ${this.#buttonInternalFg.toString()};
-                padding: var(--wg-button-padding, 0 18px);
+                padding: var(--wg-button-padding, 0 14px);
                 height: var(--wg-button-height, 36px);
                 border-radius: var(--wg-button-box-shadow, var(--wg-radius-tiny));
                 outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
                 transition: all 250ms ease;
                 user-select: none;
+            }
+            button>.content {
+                padding: var(--wg-button-text-padding, 0 3px);
             }
             button:not(:disabled) {
                 cursor: pointer;
@@ -97,6 +100,8 @@ export class ButtonComponent extends HTMLComponent {
     make() {
         const obj = {
             ...super.make(),
+            addPrefix: (component: Component) => { this.#button.prepend(component.draw()); return obj; },
+            addSuffix: (component: Component) => { this.#button.append(component.draw()); return obj; },
             setDisabled: (disabled: Refable<boolean>) => {
                 this.useListener(alwaysRef(disabled), (newDisabled) => {
                     this.#disabled.value = newDisabled;
