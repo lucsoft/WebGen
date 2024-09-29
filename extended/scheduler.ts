@@ -1,4 +1,4 @@
-import { sortBy } from "jsr:@std/collections@0.224.2";
+import { sortBy } from "jsr:@std/collections@^0.224.2";
 
 export enum SchedulerPriority {
     Low = 2,
