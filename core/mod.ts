@@ -1,3 +1,4 @@
+export * from "./color.ts";
 export * from "./components.ts";
 export * from "./cssTemplate.ts";
 export * from "./layout/mod.ts";

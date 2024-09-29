@@ -1,3 +1,4 @@
+import { Color } from "../../core/color.ts";
 import { asWebGenComponent, HTMLComponent } from "../../core/components.ts";
 import { css } from "../../core/cssTemplate.ts";
 import { alwaysRef, asRef, Refable, Reference } from "../../core/state.ts";
@@ -11,6 +12,11 @@ export enum ButtonMode {
 @asWebGenComponent("button")
 export class ButtonComponent extends HTMLComponent {
     #disabled = asRef(false);
+    #buttonInternalBg = new Color("var(--wg-internal-button-bg)");
+    #buttonInternalFg = new Color("var(--wg-internal-button-fg)");
+    #buttonBg = new Color("var(--wg-button-background-color, var(--wg-primary))");
+    #buttonFg = new Color("var(--wg-button-text-color, var(--wg-primary-text))");
+
     constructor(label: Refable<string>, mode: Reference<ButtonMode> = asRef(ButtonMode.Primary)) {
         super();
 
@@ -38,14 +44,14 @@ export class ButtonComponent extends HTMLComponent {
                 all: unset;
                 display: grid;
                 place-items: center;
-                --wg-internal-button-bg: var(--wg-button-background-color, var(--wg-primary));
-                --wg-internal-button-fg: var(--wg-button-text-color, var(--wg-primary-text));
+                --wg-internal-button-bg: ${this.#buttonBg.toString()};
+                --wg-internal-button-fg: ${this.#buttonFg.toString()};
                 background-color: var(--wg-internal-button-bg);
-                color: var(--wg-internal-button-fg);
+                color: ${this.#buttonInternalFg.toString()};
                 padding: var(--wg-button-padding, 0 18px);
                 height: var(--wg-button-height, 36px);
                 border-radius: var(--wg-button-box-shadow, var(--wg-radius-tiny));
-                outline: 0px solid color-mix(in srgb, var(--wg-internal-button-bg), transparent 50%);
+                outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
                 transition: all 250ms ease;
                 user-select: none;
             }
@@ -58,32 +64,32 @@ export class ButtonComponent extends HTMLComponent {
             }
             button:not(:disabled):hover,
             button:not(:disabled):focus-visible {
-                outline: 5px solid color-mix(in srgb, var(--wg-internal-button-bg), transparent 50%);
+                outline: 5px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
             }
             button:not(:disabled):active {
-                outline: 3px solid color-mix(in srgb, var(--wg-internal-button-bg), transparent 50%);
+                outline: 3px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
                 transform: translate(0, 2px);
             }
 
             button[mode="secondary"] {
-                --wg-internal-button-bg: color-mix(in srgb, var(--wg-button-background-color, var(--wg-primary)), transparent 90%);
-                --wg-internal-button-fg: var(--wg-button-background-color, var(--wg-primary));
+                --wg-internal-button-bg: ${this.#buttonBg.mix(Color.transparent, 90)};
+                --wg-internal-button-fg: ${this.#buttonBg.toString()};
             }
             button[mode="secondary"]:hover,
             button[mode="secondary"]:focus-visible {
-                --wg-internal-button-bg: color-mix(in srgb, var(--wg-button-background-color, var(--wg-primary)), transparent 80%);
-                outline: 0px solid color-mix(in srgb, var(--wg-internal-button-bg), transparent 50%);
+                --wg-internal-button-bg: ${this.#buttonBg.mix(Color.transparent, 80)};
+                outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
             }
 
             button[mode="text"] {
                 --wg-internal-button-bg: transparent;
-                --wg-internal-button-fg: var(--wg-button-text-color, var(--wg-primary));
+                --wg-internal-button-fg: ${this.#buttonBg.toString()};
             }
 
             button[mode="text"]:hover,
             button[mode="text"]:focus-visible {
-                --wg-internal-button-bg: color-mix(in srgb, var(--wg-button-background-color, var(--wg-primary)), transparent 80%);
-                outline: 0px solid color-mix(in srgb, var(--wg-internal-button-bg), transparent 50%);
+                --wg-internal-button-bg: ${this.#buttonBg.mix(Color.transparent, 80)};
+                outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
             }
         `);
     }
