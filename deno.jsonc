@@ -12,5 +12,9 @@
             "dom.asynciterable",
             "deno.ns"
         ]
-    }
+    },
+    "tasks": {
+        "update": "deno run -A jsr:@molt/cli **/*.ts",
+        "update:commit": "deno task -q update --commit"
+      }
 }

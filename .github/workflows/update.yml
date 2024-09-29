@@ -14,12 +14,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
-      - uses: denoland/setup-deno@main
-        with:
-          deno-version: v1.x
-      - name: Update dependencies
-        run: deno run -A https://deno.land/x/update/mod.ts -b
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Update dependencies
-          branch: master
+      - uses: hasundue/molt-action@v1
