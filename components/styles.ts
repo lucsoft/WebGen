@@ -1,4 +1,4 @@
-import { css } from "../core/cssTemplate.ts";
+import { css } from "../core/mod.ts";
 
 export const wgStyleValues = css`
     :root {

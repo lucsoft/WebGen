@@ -1,4 +1,4 @@
-import { asWebGenComponent, HTMLComponent } from "../core/components.ts";
+import { asWebGenComponent, HTMLComponent } from "../core/mod.ts";
 
 @asWebGenComponent("spinner")
 export class SpinnerComponent extends HTMLComponent {

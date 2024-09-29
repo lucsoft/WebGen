@@ -1,6 +1,4 @@
-import { asWebGenComponent, HTMLComponent } from "../core/components.ts";
-import { css } from "../core/cssTemplate.ts";
-import { lazy } from "../core/lazy.ts";
+import { asWebGenComponent, css, HTMLComponent, lazy } from "../core/mod.ts";
 import { asRef, listen } from "../core/state.ts";
 
 export const IconType = {

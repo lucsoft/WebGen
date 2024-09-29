@@ -1,7 +1,4 @@
-import { Color } from "../core/color.ts";
-import { asWebGenComponent, Component } from "../core/components.ts";
-import { BoxComponent } from "../core/layout/box.ts";
-import { alwaysRef, asRef, listen, Refable, Reference } from "../core/state.ts";
+import { alwaysRef, asRef, asWebGenComponent, BoxComponent, Color, Component, listen, Refable, Reference } from "../core/mod.ts";
 import { isDarkModePreferred } from "./misc/themeQuery.ts";
 import { wgStyleValues } from "./styles.ts";
 

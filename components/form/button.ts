@@ -1,8 +1,4 @@
-import { Color } from "../../core/color.ts";
-import { asWebGenComponent, Component, HTMLComponent } from "../../core/components.ts";
-import { css } from "../../core/cssTemplate.ts";
-import { Label } from "../../core/mod.ts";
-import { alwaysRef, asRef, Refable, Reference } from "../../core/state.ts";
+import { alwaysRef, asRef, asWebGenComponent, Color, Component, css, HTMLComponent, Label, Refable, Reference } from "../../core/mod.ts";
 import { Spinner } from "../spinner.ts";
 
 export enum ButtonMode {
