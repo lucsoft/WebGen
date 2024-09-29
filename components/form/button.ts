@@ -68,10 +68,11 @@ export class ButtonComponent extends HTMLComponent {
             button:not(:disabled):hover,
             button:not(:disabled):focus-visible {
                 outline: 5px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
+                transform: translate(0, -2px);
             }
             button:not(:disabled):active {
                 outline: 3px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
-                transform: translate(0, 2px);
+                transform: translate(0, 0px);
             }
 
             button[mode="secondary"] {
