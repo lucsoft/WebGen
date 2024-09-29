@@ -51,7 +51,6 @@ export class ListComponent<Data> extends HTMLComponent {
 
         this.addWatch(() => {
             const res = new ResizeObserver(() => {
-                console.log(this.clientHeight);
                 windowHeight.setValue(this.clientHeight);
             });
 
