@@ -1,10 +1,10 @@
 import { asWebGenComponent, Component, HTMLComponent } from "../components.ts";
-import { asRef, Reference } from "../state.ts";
+import { alwaysRef, asRef, Refable, Reference } from "../state.ts";
 import { Box } from "./box.ts";
 
 @asWebGenComponent("list")
 export class ListComponent<Data> extends HTMLComponent {
-
+    #gap = asRef(0);
     constructor(source: Reference<Data[]>, itemHeight: number, renderItem: (data: Data, index: number) => Component) {
         super();
 
@@ -13,11 +13,12 @@ export class ListComponent<Data> extends HTMLComponent {
 
         const windowHeight = asRef(300);
         const scrollTop = asRef(0);
-        const innerHeight = source.map(it => it.length * itemHeight);
-        const startIndex = scrollTop.map(scrollTop => Math.floor(scrollTop / itemHeight));
+        const realItemHeight = this.#gap.map(gap => itemHeight + gap);
+        const innerHeight = source.map(it => it.length * realItemHeight.value + this.#gap.value);
+        const startIndex = scrollTop.map(scrollTop => Math.floor(scrollTop / realItemHeight.value));
         const endIndex = scrollTop.map(scrollTop => Math.min(
             source.value.length - 1, // don't render past the end of the list
-            Math.floor((scrollTop + windowHeight.value) / itemHeight)
+            Math.floor((scrollTop + windowHeight.value) / realItemHeight.value)
         ));
 
         const renderingItem = asRef<Component>(Box(asRef([])));
@@ -27,7 +28,7 @@ export class ListComponent<Data> extends HTMLComponent {
             for (let i = startIndex.value; i <= endIndex.value; i++) {
                 const item = renderItem(source.value[ i ], i).draw();
                 item.style.position = "absolute";
-                item.style.top = `${i * itemHeight}px`;
+                item.style.top = `${i * realItemHeight.value + (this.#gap.value / 2)}px`;
                 item.style.width = "100%";
                 item.style.boxSizing = "border-box";
                 item.style.height = `${itemHeight}px`;
@@ -70,6 +71,21 @@ export class ListComponent<Data> extends HTMLComponent {
             }
             this.shadowRoot!.append(newValue.draw());
         });
+    }
+
+    make() {
+        const obj = {
+            ...super.make(),
+            setGap: (gap: Refable<number>) => {
+                this.useListener(alwaysRef(gap), (newValue) => {
+                    this.#gap.value = newValue;
+                    this.style.margin = `0 calc(0px - ${newValue}px)`;
+                    this.style.padding = `0 ${newValue}px`;
+                });
+                return obj;
+            }
+        };
+        return obj;
     }
 }
 
