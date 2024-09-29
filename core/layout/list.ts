@@ -44,7 +44,6 @@ export class ListComponent<Data> extends HTMLComponent {
 
 
         this.style.overflowY = "auto";
-        this.style.height = "100%";
 
         this.useEventListener(this, "scroll", () => {
             scrollTop.setValue(this.scrollTop);

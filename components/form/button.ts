@@ -61,10 +61,6 @@ export class ButtonComponent extends HTMLComponent {
             button:not(:disabled) {
                 cursor: pointer;
             }
-            button:disabled {
-                --wg-internal-button-bg: var(--wg-button-disabled-color, hsl(0deg 0% 20%));
-                --wg-internal-button-fg: var(--wg-button-disabled-text-color, hsl(0deg 0% 40%));
-            }
             button:not(:disabled):hover,
             button:not(:disabled):focus-visible {
                 outline: 5px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
@@ -95,6 +91,10 @@ export class ButtonComponent extends HTMLComponent {
                 --wg-internal-button-bg: ${this.#buttonBg.mix(Color.transparent, 80)};
                 outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
             }
+            button:disabled {
+                --wg-internal-button-bg: var(--wg-button-disabled-color, hsl(0deg 0% 20%));
+                --wg-internal-button-fg: var(--wg-button-disabled-text-color, hsl(0deg 0% 40%));
+            }
         `);
     }
 
@@ -103,7 +103,7 @@ export class ButtonComponent extends HTMLComponent {
             ...super.make(),
             addPrefix: (component: Component) => { this.#button.prepend(component.draw()); return obj; },
             addSuffix: (component: Component) => { this.#button.append(component.draw()); return obj; },
-            setDisabled: (disabled: Refable<boolean>) => {
+            setDisabled: (disabled: Refable<boolean> = true) => {
                 this.useListener(alwaysRef(disabled), (newDisabled) => {
                     this.#disabled.value = newDisabled;
                 });
