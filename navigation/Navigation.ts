@@ -1,5 +1,5 @@
-import 'https://esm.sh/v135/@types/dom-navigation@1.0.3/index.d.ts';
-import { sortBy } from "jsr:@std/collections@^0.224.2";
+import 'https://esm.sh/v135/@types/dom-navigation@1.0.4/index.d.ts';
+import { sortBy } from "jsr:@std/collections@^1.0.0";
 import { asRef, asRefArray } from "../core/mod.ts";
 
 export const PageIsLoading = asRef(false);

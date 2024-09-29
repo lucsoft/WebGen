@@ -1,4 +1,4 @@
-import { sortBy } from "jsr:@std/collections@^0.224.2";
+import { sortBy } from "jsr:@std/collections@^1.0.0";
 import { asDeepRef, asRef, lazy, Refable, Reference } from "../core/mod.ts";
 import { asRefArray } from "../core/state.ts";
 import { zod } from "../zod.ts";
