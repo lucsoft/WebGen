@@ -1,3 +1,4 @@
+import { Color } from "../core/color.ts";
 import { asWebGenComponent, Component } from "../core/components.ts";
 import { BoxComponent } from "../core/layout/box.ts";
 import { alwaysRef, asRef, listen, Refable, Reference } from "../core/state.ts";
@@ -13,7 +14,7 @@ export enum ThemeMode {
 @asWebGenComponent("theme")
 export class WebGenThemeComponent extends BoxComponent {
     #themeMode = asRef(ThemeMode.Auto);
-    #primaryColor = asRef<string | undefined>(undefined);
+    #primaryColor = asRef<Color | undefined>(undefined);
     #fontFamily = asRef("system-ui,sans-serif");
 
     constructor(component: Reference<Component[] | Component> | Component, components: Component[]) {
@@ -76,7 +77,7 @@ export class WebGenThemeComponent extends BoxComponent {
         this.useListener(this.#primaryColor, (current) => {
             if (current) {
                 defaultColor.textContent = `:root {
-                    --wg-override-primary: ${current};
+                    --wg-override-primary: ${current.toString()};
                 }`;
             }
         });
@@ -90,11 +91,11 @@ export class WebGenThemeComponent extends BoxComponent {
                 this.addWatch(() => listen(() => {
                     const theme = this.#themeMode.value === ThemeMode.Auto ? (isDarkModePreferred.value ? ThemeMode.Dark : ThemeMode.Light) : this.#themeMode.value;
 
-                    this.#primaryColor.value = theme === ThemeMode.Dark ? "hsl(0, 0%, 90%)" : "hsl(0, 0%, 0%)";
+                    this.#primaryColor.value = new Color(theme === ThemeMode.Dark ? "hsl(0, 0%, 90%)" : "hsl(0, 0%, 0%)");
                 }));
                 return obj;
             },
-            setPrimaryColor: (color: Refable<string>) => {
+            setPrimaryColor: (color: Refable<Color>) => {
                 this.useListener(alwaysRef(color), (current) => {
                     this.#primaryColor.value = current;
                 });
