@@ -192,7 +192,7 @@ export class HTMLComponent extends HTMLElement {
             },
             setTextSize: (value: Refable<TextSize>) => {
                 obj.setCssStyle("fontSize", ref`var(--wg-fontsize-${value})`);
-                obj.setCssStyle("lineHeight", ref`var(--wg-lineheight-${value}`);
+                obj.setCssStyle("lineHeight", ref`var(--wg-lineheight-${value})`);
                 return obj;
             },
             setFontWeight: (value: Refable<FontWeight>) => {

@@ -53,20 +53,27 @@ export class ButtonComponent extends HTMLComponent {
                 display: grid;
                 place-items: center;
                 grid-auto-flow: column;
-                gap: var(--wg-gap);
                 --wg-internal-button-bg: ${this.#buttonBg.toString()};
                 --wg-internal-button-fg: ${this.#buttonFg.toString()};
                 background-color: var(--wg-internal-button-bg);
                 color: ${this.#buttonInternalFg.toString()};
-                padding: var(--wg-button-padding, 0 14px);
+                padding: var(--wg-button-padding, 0 10px);
                 height: var(--wg-button-height, 36px);
+                font-weight: var(--wg-button-font-weight, var(--wg-fontweight-semibold));
                 border-radius: var(--wg-button-box-shadow, var(--wg-radius-tiny));
                 outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
                 transition: all 250ms ease;
                 user-select: none;
             }
             button>.content {
-                padding: var(--wg-button-text-padding, 0 3px);
+                padding: var(--wg-button-text-padding, 0 7px);
+                line-height: 0.9;
+            }
+            @supports (text-box: trim-both cap alphabetic) {
+                button>.content {
+                    line-height: unset;
+                    text-box: trim-both cap alphabetic;
+                }
             }
             button:not(:disabled) {
                 cursor: pointer;
