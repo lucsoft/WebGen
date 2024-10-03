@@ -136,6 +136,10 @@ export class ButtonComponent extends HTMLComponent {
                 });
                 return obj;
             },
+            setCustomColor: (color: Color) => {
+                this.style.setProperty("--wg-primary", color.toString());
+                return obj;
+            },
             onPromiseClick: (callback: () => Promise<void>) => {
                 super.make().onClick(() => {
                     if (this.#loading.value) return;
