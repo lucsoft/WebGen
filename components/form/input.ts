@@ -43,11 +43,10 @@ class InputComponent extends HTMLComponent {
             :host {
                 display: grid;
                 height: var(--wg-input-height, 36px);
-                border-radius: var(--wg-input-box-shadow, var(--wg-radius-tiny));
                 background-color: ${this.#inputBg.mix(Color.transparent, 95)};
                 color: ${this.#inputBg.toString()};
                 padding: var(--wg-button-padding, 0 10px);
-                border: 2px solid;
+                border-bottom: 1px solid;
                 align-items: center;
             }
             :host > * {

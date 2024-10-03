@@ -64,6 +64,9 @@ export class ButtonComponent extends HTMLComponent {
                 outline: 0px solid ${this.#buttonInternalBg.mix(Color.transparent, 50)};
                 transition: all 250ms ease;
                 user-select: none;
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
             }
             button>.content {
                 padding: var(--wg-button-text-padding, 0 7px);
