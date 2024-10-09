@@ -1,4 +1,4 @@
-import * as zod from 'https://deno.land/x/zod@v3.23.8/mod.ts';
+import { zod } from '../zod.ts';
 import { StateData, StateHandler, asRef, listenOnInitalStateKeys } from "./State.ts";
 
 export function getErrorMessage(state: zod.ZodError): string {
