@@ -3,3 +3,4 @@ export * from "./content.ts";
 export * from "./grid.ts";
 export * from "./label.ts";
 export * from "./list.ts";
+export * from "./popover.ts";
