@@ -12,7 +12,7 @@ export enum ThemeMode {
 export class WebGenThemeComponent extends BoxComponent {
     #themeMode = asRef(ThemeMode.Auto);
     #primaryColor = asRef<Color | undefined>(undefined);
-    #fontFamily = asRef("system-ui,sans-serif");
+    #fontFamily = asRef("Red Hat Display,Roboto,system-ui,sans-serif");
 
     constructor(component: Reference<Component[] | Component> | Component, components: Component[]) {
         super(component, components);

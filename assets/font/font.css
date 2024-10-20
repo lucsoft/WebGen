@@ -2,6 +2,5 @@
     font-family: "Red Hat Display";
     src: url(./RedHatDisplay.woff2) format("woff2-variations");
     font-weight: 300 900;
-    size-adjust: 90%;
     font-display: swap;
 }
