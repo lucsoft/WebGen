@@ -15,10 +15,16 @@ export class DialogContainerComponent extends HTMLComponent {
             }
             dialog {
                 border: none;
+                padding: unset;
                 max-width: 100%;
                 max-height: 100%;
                 background: transparent;
                 outline: none;
+                box-sizing: border-box;
+            }
+            :host([full-screen]) dialog {
+                width: unset;
+                height: unset;
             }
             dialog::backdrop {
                 background: rgba(0, 0, 0, 30%);
