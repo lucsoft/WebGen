@@ -21,7 +21,6 @@ export class SheetsComponent extends HTMLComponent {
                 border-radius: var(--wg-padding-radius, var(--wg-radius-large));
                 overflow: auto;
                 margin: calc(0px - var(--sheet-depth) * 8px) calc(var(--sheet-depth) * 8px) 0;
-                opacity: 1;
                 transition: background-color 250ms ease, margin 250ms ease;
 
                 z-index: 1;
@@ -31,7 +30,6 @@ export class SheetsComponent extends HTMLComponent {
             @keyframes fadeIn {
                 from {
                     translate: 0 30px;
-                    opacity: 0.4;
                 }
             }
         `);
@@ -39,7 +37,7 @@ export class SheetsComponent extends HTMLComponent {
 
     private calculateDepth() {
         for (const [ index, element ] of Array.from(this.shadowRoot!.children).toReversed().entries()) {
-            (element as HTMLElement).style.opacity = index > 2 ? "0" : "1";
+            (element as HTMLElement).style.opacity = index > 2 ? "0" : "";
             (element as HTMLElement).style.setProperty("--sheet-depth", `${index}`);
         }
 
