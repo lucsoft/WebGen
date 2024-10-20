@@ -9,7 +9,6 @@ export class SheetsComponent extends HTMLComponent {
             :host {
                 display: grid;
                 grid-template: 1fr / 1fr;
-                width: var(--wg-sheet-width, 50rem);
                 max-width: 100dvw;
                 max-height: 100dvh;
                 padding-top: 20px;
