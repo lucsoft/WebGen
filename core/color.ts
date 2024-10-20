@@ -9,8 +9,8 @@ export class Color {
     static reverseNeutral = new Color("var(--wg-reverse-neutral)");
     static transparent = new Color("transparent");
 
-    mix(color: Color, percentage: number) {
-        return `color-mix(in oklab, ${this.value}, ${color.value} ${percentage}%)`;
+    mix(color: Color, percentage: number | string) {
+        return `color-mix(in oklab, ${this.value}, ${color.value} ${typeof percentage == "number" ? `${percentage}%` : percentage})`;
     }
 
     toString() {

@@ -26,6 +26,9 @@ export class DialogContainerComponent extends HTMLComponent {
                 width: unset;
                 height: unset;
             }
+            :host([no-overflow]) dialog {
+                overflow: unset;
+            }
             dialog::backdrop {
                 background: rgba(0, 0, 0, 30%);
             }
