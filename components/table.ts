@@ -88,7 +88,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                                     this.#selectionActive.value?.();
                                 })
                         ] : []),
-                        Label(item[ column as keyof object ])
+                        typeDef[ column ]?.cellRenderer?.(item[ column as keyof object ]) ?? Label(item[ column as keyof object ])
                     )
                         .setGap(this.#selectionActive.value && columnIndex === 0 ? "10px" : "8px")
                         .setAutoFlow("column")
