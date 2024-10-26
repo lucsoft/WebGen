@@ -11,4 +11,5 @@ export * from './spinner.ts';
 export * from "./stacking/dialogContainer.ts";
 export * from "./stacking/sheetHeader.ts";
 export * from "./stacking/sheets.ts";
+export * from "./table.ts";
 export * from './theme.ts';
