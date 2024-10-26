@@ -174,6 +174,6 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
     }
 }
 
-export function Table<T extends object[]>(data: Reference<T>, typeDefRef: Reference<TableDefinition<T>>) {
+export function Table<T extends object[]>(data: Reference<T>, typeDefRef: Reference<TableDefinition<T>> = alwaysRef({})) {
     return new TableComponent(data, typeDefRef).make();
 }
