@@ -83,3 +83,7 @@ export function EmailInput(value: WriteSignal<string>, label: Refable<string | u
 export function PasswordInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("password", value, label, valueChangeMode).make();
 }
+
+export function DateInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+    return new InputComponent("date", value, label, valueChangeMode).make();
+}

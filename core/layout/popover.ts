@@ -14,7 +14,7 @@ export class PopoverComponent extends HTMLComponent {
         });
     }
 
-    make() {
+    override make() {
         const obj = {
             ...super.make(),
             showPopover: () => {

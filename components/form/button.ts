@@ -126,7 +126,7 @@ export class ButtonComponent extends HTMLComponent {
         `);
     }
 
-    make() {
+    override make() {
         const obj = {
             ...super.make(),
             addPrefix: (component: Component) => { this.#button.prepend(component.draw()); return obj; },
