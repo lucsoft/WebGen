@@ -1,5 +1,5 @@
 import { asWebGenComponent, css, HTMLComponent, lazy } from "../core/mod.ts";
-import { asRef, listen } from "../core/state.ts";
+import { alwaysRef, asRef, listen, Refable, Reference } from "../core/state.ts";
 
 export const IconType = {
     bootstrap: await import("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/bootstrap-icons.svg").then(x => 'default' in x ? x.default as string : undefined!),
@@ -13,15 +13,15 @@ export class IconComponent extends HTMLComponent {
     static size = asRef(24);
     static fill = asRef<0 | 1>(0);
 
-    constructor(type: keyof typeof IconType, icon: string) {
+    constructor(type: keyof typeof IconType, icon: Reference<string>) {
         super();
 
         if (type === "bootstrap") {
             const data = IconType[ type ];
             this.addWatch(() => listen(() => {
-                this.shadowRoot!.innerHTML += `
+                this.shadowRoot!.innerHTML = `
                     <svg width="${IconComponent.size.value - 4}" height="${IconComponent.size.value - 4}" style="box-sizing: border-box;margin-top: 1px;" fill="currentColor">
-                        <use xlink:href="${data.replace("./", "/")}#${icon}"/>
+                        <use xlink:href="${data.replace("./", "/")}#${icon.value}"/>
                     </svg>
                 `;
             }));
@@ -49,7 +49,9 @@ export class IconComponent extends HTMLComponent {
                 }
             `);
 
-            this.shadowRoot?.append(icon);
+            this.useListener(icon, value => {
+                this.shadowRoot!.textContent = value;
+            });
         }
 
         const style = new CSSStyleSheet();
@@ -68,10 +70,10 @@ export class IconComponent extends HTMLComponent {
     }
 }
 
-export function MaterialIcon(icon: string) {
-    return new IconComponent("materialSymbol", icon).make();
+export function MaterialIcon(icon: Refable<string>) {
+    return new IconComponent("materialSymbol", alwaysRef(icon)).make();
 }
 
-export function BootstrapIcon(icon: string) {
-    return new IconComponent("bootstrap", icon).make();
+export function BootstrapIcon(icon: Refable<string>) {
+    return new IconComponent("bootstrap", alwaysRef(icon)).make();
 }
