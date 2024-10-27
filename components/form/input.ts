@@ -10,7 +10,13 @@ class InputComponent extends HTMLComponent {
 
     constructor(type: string, value: WriteSignal<string>, label: Refable<string | undefined>, valueChangeMode: "change" | "input" = "input") {
         super();
-        this.#input.type = type;
+        if (type === "text-area") {
+            this.#input = document.createElement("textarea") as HTMLElement as HTMLInputElement;
+            this.setAttribute("text-area", "");
+        } else {
+            this.#input.type = type;
+        }
+        this.#input.classList.add("input");
         this.shadowRoot!.append(Box(alwaysRef(label).map(placeholder => placeholder ? Label(placeholder) : [])).addClass("label").draw(), this.#input);
 
         this.useListener(alwaysRef(label), (text) => {
@@ -64,7 +70,7 @@ class InputComponent extends HTMLComponent {
         this.shadowRoot!.adoptedStyleSheets.push(css`
             :host {
                 display: grid;
-                height: var(--wg-input-height, 50px);
+                min-height: var(--wg-input-height, 50px);
                 background-color: ${this.#inputBg.mix(Color.transparent, 95)};
                 color: ${this.#inputBg.toString()};
                 padding: var(--wg-button-padding, 0 10px);
@@ -72,14 +78,18 @@ class InputComponent extends HTMLComponent {
                 border-bottom: 1px solid;
                 align-items: center;
             }
+            .input {
+                all: unset;
+                font-size: var(--wg-input-font-size, 15px);
+            }
+            textarea.input {
+                height: 120px;
+                margin-top: 12px;
+            }
             :host > * {
                 grid-row: 1;
                 grid-column: 1;
                 transition: all 200ms ease;
-            }
-            input {
-                all: unset;
-                font-size: var(--wg-input-font-size, 15px);
             }
             :host([has-value]) .label,
             :host(:focus-within) .label {
@@ -87,9 +97,16 @@ class InputComponent extends HTMLComponent {
                 font-weight: var(--wg-input-font-weight, bold);
                 margin-bottom: 20px;
             }
-            :host([has-value][aria-label]) input,
-            :host([aria-label]) input:focus-within {
+            :host([text-area]) .label {
+                margin-bottom: 110px;
+            }
+            :host([has-value][aria-label]) .input,
+            :host([aria-label]) .input:focus-within {
                 margin-top: 14px;
+            }
+
+            :host([text-area][aria-label]) textarea.input {
+                margin-top: 25px;
             }
 
             :host([has-value]:focus-within) {
@@ -154,4 +171,8 @@ export function DateTimeInput(value: WriteSignal<string>, label: Refable<string 
 
 export function TimeInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("time", value, label, valueChangeMode).make();
+}
+
+export function TextAreaInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+    return new InputComponent("text-area", value, label, valueChangeMode).make();
 }
