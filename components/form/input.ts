@@ -1,9 +1,13 @@
 import { alwaysRef, asWebGenComponent, Box, Color, css, HTMLComponent, Label, Refable, WriteSignal } from "../../core/mod.ts";
+import { asRef } from "../../core/state.ts";
 
 @asWebGenComponent("input")
 class InputComponent extends HTMLComponent {
     #inputBg = new Color("var(--wg-input-background-color, var(--wg-primary))");
     #input = document.createElement("input");
+    #disabled = asRef(false);
+    #invalid = asRef(false);
+
     constructor(type: string, value: WriteSignal<string>, label: Refable<string | undefined>, valueChangeMode: "change" | "input" = "input") {
         super();
         this.#input.type = type;
@@ -17,6 +21,24 @@ class InputComponent extends HTMLComponent {
             }
         });
 
+        this.useListener(this.#disabled, (disabled) => {
+            this.#input.disabled = disabled;
+            if (disabled) {
+                this.setAttribute("disabled", "");
+            } else {
+                this.removeAttribute("disabled");
+            }
+        });
+
+        this.useListener(this.#invalid, (invalid) => {
+            if (invalid) {
+                this.#input.setCustomValidity("Invalid");
+                this.setAttribute("invalid", "");
+            } else {
+                this.#input.setCustomValidity("");
+                this.removeAttribute("invalid");
+            }
+        });
 
         this.useEventListener(this.#input, "input", () => {
             if (this.#input.value === "") {
@@ -69,7 +91,44 @@ class InputComponent extends HTMLComponent {
             :host([aria-label]) input:focus-within {
                 margin-top: 14px;
             }
+
+            :host([has-value]:focus-within) {
+                background-color: ${this.#inputBg.mix(Color.transparent, 90)};
+                border-bottom: 2px solid;
+                margin-bottom: -1px;
+            }
+
+            :host([invalid]) {
+                background: var(--wg-button-invalid-color, hsl(0deg 40% 18%));
+                color: var(--wg-button-invalid-color, hsl(0deg 90% 70%));
+            }
+
+            :host([disabled]) {
+                background: var(--wg-button-disabled-color, hsl(0deg 0% 18%));
+                color: var(--wg-button-disabled-text-color, hsl(0deg 0% 50%));
+                border-bottom: 0px solid;
+                margin-bottom: 1px;
+            }
         `);
+    }
+
+    override make() {
+        const obj = {
+            ...super.make(),
+            setDisabled: (disabled: Refable<boolean> = true) => {
+                this.useListener(alwaysRef(disabled), (disabled) => {
+                    this.#disabled.value = disabled;
+                });
+                return obj;
+            },
+            setInvalid: (invalid: Refable<boolean> = true) => {
+                this.useListener(alwaysRef(invalid), (invalid) => {
+                    this.#invalid.value = invalid;
+                });
+                return obj;
+            }
+        };
+        return obj;
     }
 }
 
