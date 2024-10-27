@@ -5,7 +5,8 @@ import { alwaysRef, Reference } from "../state.ts";
 export class BoxComponent extends HTMLComponent {
     constructor(component: Reference<Component[] | Component> | Component, components: Component[]) {
         super();
-        components.forEach(component => this.shadowRoot!.append(component.draw()));
+        this.shadowRoot?.append(document.createElement("slot"));
+        components.forEach(component => this.append(component.draw()));
         const refComponent = alwaysRef(component);
         this.useListener(refComponent, (current, oldValue) => {
             if (Array.isArray(oldValue)) {
@@ -16,9 +17,9 @@ export class BoxComponent extends HTMLComponent {
             }
 
             if (Array.isArray(current))
-                current.toReversed().map(component => component.draw()).forEach(component => this.shadowRoot!.prepend(component));
+                current.toReversed().map(component => component.draw()).forEach(component => this.prepend(component));
             else
-                this.shadowRoot!.prepend(current.draw());
+                this.prepend(current.draw());
         });
     }
 }
