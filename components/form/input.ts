@@ -42,10 +42,11 @@ class InputComponent extends HTMLComponent {
         this.shadowRoot!.adoptedStyleSheets.push(css`
             :host {
                 display: grid;
-                height: var(--wg-input-height, 36px);
+                height: var(--wg-input-height, 50px);
                 background-color: ${this.#inputBg.mix(Color.transparent, 95)};
                 color: ${this.#inputBg.toString()};
                 padding: var(--wg-button-padding, 0 10px);
+                border-radius: var(--wg-input-border-radius, var(--wg-radius-tiny));
                 border-bottom: 1px solid;
                 align-items: center;
             }
@@ -56,17 +57,17 @@ class InputComponent extends HTMLComponent {
             }
             input {
                 all: unset;
-                font-size: var(--wg-input-font-size, 12px);
+                font-size: var(--wg-input-font-size, 15px);
             }
             :host([has-value]) .label,
             :host(:focus-within) .label {
-                font-size: var(--wg-label-font-size, 8px);
+                font-size: var(--wg-label-font-size, 10px);
                 font-weight: var(--wg-input-font-weight, bold);
-                margin-bottom: 17px;
+                margin-bottom: 20px;
             }
             :host([has-value][aria-label]) input,
             :host([aria-label]) input:focus-within {
-                margin-top: 11px;
+                margin-top: 14px;
             }
         `);
     }
@@ -86,4 +87,12 @@ export function PasswordInput(value: WriteSignal<string>, label: Refable<string 
 
 export function DateInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("date", value, label, valueChangeMode).make();
+}
+
+export function DateTimeInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+    return new InputComponent("datetime-local", value, label, valueChangeMode).make();
+}
+
+export function TimeInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+    return new InputComponent("time", value, label, valueChangeMode).make();
 }
