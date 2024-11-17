@@ -11,7 +11,7 @@ export class SheetsComponent extends HTMLComponent {
                 grid-template: 1fr / 1fr;
                 max-width: 100dvw;
                 max-height: 100dvh;
-                padding-top: 20px;
+                padding-top: var(--wg-sheets-padding-top, 20px);
                 box-sizing: border-box;
             }
             .sheet {

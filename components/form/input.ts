@@ -6,6 +6,7 @@ class InputComponent extends HTMLComponent {
     #inputBg = new Color("var(--wg-input-background-color, var(--wg-primary))");
     #input = document.createElement("input");
     #disabled = asRef(false);
+    #readOnly = asRef(false);
     #invalid = asRef(false);
 
     constructor(type: string, value: WriteSignal<string>, label: Refable<string | undefined>, valueChangeMode: "change" | "input" = "input") {
@@ -43,6 +44,15 @@ class InputComponent extends HTMLComponent {
             } else {
                 this.#input.setCustomValidity("");
                 this.removeAttribute("invalid");
+            }
+        });
+
+        this.useListener(this.#readOnly, (readOnly) => {
+            this.#input.readOnly = readOnly;
+            if (readOnly) {
+                this.setAttribute("readonly", "");
+            } else {
+                this.removeAttribute("readonly");
             }
         });
 
@@ -109,6 +119,7 @@ class InputComponent extends HTMLComponent {
                 margin-top: 25px;
             }
 
+            :host([readonly]:focus-within),
             :host([has-value]:focus-within) {
                 background-color: ${this.#inputBg.mix(Color.transparent, 90)};
                 border-bottom: 2px solid;
@@ -135,6 +146,12 @@ class InputComponent extends HTMLComponent {
             setDisabled: (disabled: Refable<boolean> = true) => {
                 this.useListener(alwaysRef(disabled), (disabled) => {
                     this.#disabled.value = disabled;
+                });
+                return obj;
+            },
+            setReadOnly: (readOnly: Refable<boolean> = true) => {
+                this.useListener(alwaysRef(readOnly), (readOnly) => {
+                    this.#readOnly.value = readOnly;
                 });
                 return obj;
             },
