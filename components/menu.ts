@@ -12,7 +12,7 @@ class MenuComponent extends HTMLComponent {
     #searchValue = asRef("");
     #actions = asRef<{ title: Refable<string>, icon: Component, onClick: () => void; }[]>([]);
     #searchInput = InlineInput(this.#searchValue, this.#searchLabel);
-    #onItemClicked = asRef((_index: number) => { });
+    #onItemClicked = asRef((_item: string) => { });
 
     #searchEngine: (search: string) => Reference<string[]> = ((search) => {
         const items = this.items.value;
@@ -50,7 +50,7 @@ class MenuComponent extends HTMLComponent {
 
         this.shadowRoot!.append(
             Box(
-                activeItems.map(items => items.map((item, index) => Box(
+                activeItems.map(items => items.map((item) => Box(
                     TextButton(this.#valueRender.value(item))
                         .addStyle(css`
                             button {
@@ -59,7 +59,7 @@ class MenuComponent extends HTMLComponent {
                         `)
                         .addClass("item")
                         .onClick(() => {
-                            this.#onItemClicked.value(index);
+                            this.#onItemClicked.value(item);
                         })
                 )))
             )
@@ -119,7 +119,7 @@ class MenuComponent extends HTMLComponent {
             focusedState: () => {
                 return this.#searchInput.focusedState();
             },
-            onItemClick: (callback: (index: number) => void) => {
+            onItemClick: (callback: (item: string) => void) => {
                 this.#onItemClicked.value = callback;
                 return obj;
             },

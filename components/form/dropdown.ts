@@ -10,20 +10,20 @@ class DropDownComponent extends HTMLComponent {
     #valueRender = asRef((value: string) => value);
     #menu: ReturnType<typeof Menu>;
 
-    constructor(private dropdown: Reference<string[]>, selectedItemIndex: Reference<number>, label: Reference<string>) {
+    constructor(private dropdown: Reference<string[]>, selectedItem: Reference<string | undefined>, label: Reference<string>) {
         super();
 
         this.#menu = Menu(dropdown)
             .setValueRenderer(this.#valueRender)
-            .onItemClick((index) => {
-                selectedItemIndex.value = index;
+            .onItemClick((item) => {
+                selectedItem.value = item;
                 this.#menu.draw().hidePopover();
             });
 
         this.#menu.setAttribute("popover", "");
 
         this.shadowRoot!.append(
-            TextInput(selectedItemIndex.map(it => it === -1 ? label.value : this.#valueRender.value(this.dropdown.value[ it ])) as WriteSignal<string>, selectedItemIndex.map(it => it === -1 ? "" : label.value))
+            TextInput(selectedItem.map(item => item === undefined ? label.value : this.#valueRender.value(item)) as WriteSignal<string>, selectedItem.map(item => item === undefined ? "" : label.value))
                 .setReadOnly()
                 .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "2"))
                 .onClick(() => {
@@ -92,6 +92,6 @@ class DropDownComponent extends HTMLComponent {
     }
 }
 
-export function DropDown(dropdown: Refable<string[]>, selectedItemIndex: Reference<number>, label: Refable<string> = "") {
-    return new DropDownComponent(alwaysRef(dropdown), selectedItemIndex, alwaysRef(label)).make();
+export function DropDown(dropdown: Refable<string[]>, selectedItem: Reference<string | undefined>, label: Refable<string> = "") {
+    return new DropDownComponent(alwaysRef(dropdown), selectedItem, alwaysRef(label)).make();
 }
