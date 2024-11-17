@@ -15,6 +15,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
     #headerSelection = asRef<CheckboxValue>(false);
     #inputBg = new Color("var(--wg-table-background-color, var(--wg-primary))");
     #currentlyHoveredRow = asRef<number | undefined>(undefined);
+    #innerScroll = asRef(false);
 
     constructor(data: Reference<T>, typeDefRef: Reference<TableDefinition<T>>) {
         super();
@@ -52,7 +53,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                         .addStyle(css`
                             :host {
                                 position: sticky;
-                                top: 10px;
+                                top: ${this.#innerScroll.value ? "0" : "10px"};
                                 background-color: ${this.#inputBg.mix(Color.transparent, 85)};
                                 padding: 0 ${this.#selectionActive.value && index === 0 ? "6px" : "14px"};
                                 border-radius: ${index === 0 ? "9px 0 0 9px" : index === columns.length - 1 ? "0 9px 9px 0" : "0"};
@@ -106,6 +107,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                                 box-sizing: border-box;
                                 ${rowIndex % 2 === 1 ? `background-color: ${this.#inputBg.mix(Color.transparent, 95)}` : ""};
                                 transition: translate 250ms ease;
+                                min-width: max-content;
                             }
                             :host([hover]) {
                                 background-color: ${this.#inputBg.mix(Color.transparent, 90)};
@@ -128,6 +130,14 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
         )
             .setTemplateColumns(columSizes)
             .draw();
+
+        this.shadowRoot?.adoptedStyleSheets.push(css`
+            :host([inner-scroll]) {
+                overflow: auto;
+            }
+        `);
+
+        this.make().setAttribute("inner-scroll", this.#innerScroll.map(inner => inner ? "" : undefined));
 
         // mouse move
         this.useEventListener(table, "mousemove", (event) => {
@@ -161,6 +171,10 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
             onRowClick: (action: (rowId: number) => void) => {
                 this.#hoveringActive.value = true;
                 this.#rowClickActive.value = () => action(this.#currentlyHoveredRow.value!);
+                return obj;
+            },
+            makeScrollable: () => {
+                this.#innerScroll.value = true;
                 return obj;
             },
             onSelection: (action: (selectedIndexes: number[]) => void) => {
