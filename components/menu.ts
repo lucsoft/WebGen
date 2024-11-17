@@ -11,6 +11,8 @@ class MenuComponent extends HTMLComponent {
     #searchLabel = asRef("Search");
     #searchValue = asRef("");
     #actions = asRef<{ title: Refable<string>, icon: Component, onClick: () => void; }[]>([]);
+    #searchInput = InlineInput(this.#searchValue, this.#searchLabel);
+    #onItemClicked = asRef((_index: number) => { });
 
     #searchEngine: (search: string) => Reference<string[]> = ((search) => {
         const items = this.items.value;
@@ -24,7 +26,7 @@ class MenuComponent extends HTMLComponent {
 
         const searchBox = Box(
             MaterialIcon("search").setTextSize("base"),
-            InlineInput(this.#searchValue, this.#searchLabel)
+            this.#searchInput
         )
             .setRadius("tiny")
             .addStyle(css`
@@ -48,11 +50,18 @@ class MenuComponent extends HTMLComponent {
 
         this.shadowRoot!.append(
             Box(
-                activeItems.map(items => items.map(item => Box(TextButton(item).addStyle(css`
-                    button {
-                        justify-content: start;
-                    }
-                `).addClass("item"))))
+                activeItems.map(items => items.map((item, index) => Box(
+                    TextButton(item)
+                        .addStyle(css`
+                            button {
+                                justify-content: start;
+                            }
+                        `)
+                        .addClass("item")
+                        .onClick(() => {
+                            this.#onItemClicked.value(index);
+                        })
+                )))
             )
                 .addPrefix(Box(
                     this.#showSearch.map(showSearch => showSearch ? searchBox : [])
@@ -105,6 +114,17 @@ class MenuComponent extends HTMLComponent {
                 alwaysRef(renderer).listen((value) => {
                     this.#valueRender.value = value;
                 });
+                return obj;
+            },
+            focusedState: () => {
+                return this.#searchInput.focusedState();
+            },
+            onItemClick: (callback: (index: number) => void) => {
+                this.#onItemClicked.value = callback;
+                return obj;
+            },
+            clearSearch: () => {
+                this.#searchValue.value = "";
                 return obj;
             },
             addAction: (title: Refable<string>, icon: Component, onClick: () => void) => {

@@ -2,6 +2,7 @@ export * from './appendBody.ts';
 export * from './entry.ts';
 export * from './form/button.ts';
 export * from './form/checkbox.ts';
+export * from './form/dropdown.ts';
 export * from './form/inlineInput.ts';
 export * from './form/input.ts';
 export * from "./icons.ts";

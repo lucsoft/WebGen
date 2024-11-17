@@ -1,18 +1,19 @@
 import { asWebGenComponent, css, HTMLComponent, Reference, WriteSignal } from "../../core/mod.ts";
-import { alwaysRef, Refable } from "../../core/state.ts";
+import { alwaysRef, asRef, Refable } from "../../core/state.ts";
 
 @asWebGenComponent("inline-input")
 class InlineInputComponent extends HTMLComponent {
+    input = document.createElement("input");
+    #focused = asRef(false);
+
     constructor(value: WriteSignal<string>, placeholder: Reference<string>) {
         super();
-        const input = document.createElement("input");
-        this.shadowRoot!.append(input);
+        this.shadowRoot!.append(this.input);
 
-        input.value = value.value;
-        input.placeholder = placeholder.value;
+        this.input.placeholder = placeholder.value;
 
-        input.addEventListener("input", () => {
-            value.value = input.value;
+        this.input.addEventListener("input", () => {
+            value.value = this.input.value;
         });
 
         this.shadowRoot!.adoptedStyleSheets.push(css`
@@ -28,6 +29,30 @@ class InlineInputComponent extends HTMLComponent {
                 color: inherit;
             }
         `);
+
+        this.useListener(this.#focused, focused => {
+            if (focused) {
+                this.input.focus();
+            }
+        });
+
+        this.useListener(value, value => {
+            this.input.value = value;
+        });
+        this.addEventListener("blur", () => {
+            this.#focused.value = false;
+        });
+
+    }
+
+    override make() {
+        const obj = {
+            ...super.make(),
+            focusedState: () => {
+                return this.#focused;
+            }
+        };
+        return obj;
     }
 }
 
