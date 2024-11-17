@@ -1,8 +1,27 @@
-import { asRef, asWebGenComponent, Box, Color, Component, css, HTMLComponent, listen, Refable, Reference } from "../core/mod.ts";
+import { asRef, asWebGenComponent, Box, Color, Component, css, HTMLComponent, Refable, Reference } from "../core/mod.ts";
 import { alwaysRef } from "../core/state.ts";
 import { InlineInput } from "./form/inlineInput.ts";
 import { MaterialIcon } from "./icons.ts";
 import { PrimaryButton, TextButton } from "./mod.ts";
+
+export type SearchEngine = (search: Reference<string>) => Reference<string[]>;
+
+export function createSimpleSearchEngine(request: (search: string) => Promise<string[]>): SearchEngine {
+    const activeItems = asRef<string[]>([]);
+    const activeSearches: Promise<string[]>[] = [];
+
+    return (activeSearch) => {
+        activeSearch.listen(async (search) => {
+            const promise = request(search);
+            activeSearches.push(promise);
+            activeItems.value = [];
+            await promise;
+            if (activeSearches.at(-1) !== promise) return;
+            activeItems.value = await promise;
+        });
+        return activeItems;
+    };
+}
 
 @asWebGenComponent("menu")
 class MenuComponent extends HTMLComponent {
@@ -14,11 +33,11 @@ class MenuComponent extends HTMLComponent {
     #searchInput = InlineInput(this.#searchValue, this.#searchLabel);
     #onItemClicked = asRef((_item: string) => { });
 
-    #searchEngine: (search: string) => Reference<string[]> = ((search) => {
+    #searchEngine: Reference<SearchEngine> = asRef(((search) => {
         const items = this.items.value;
         const valueRender = this.#valueRender.value;
-        return asRef(items.filter(item => valueRender(item).toLowerCase().includes(search.toLowerCase())));
-    });
+        return search.map(search => items.filter(item => valueRender(item).toLowerCase().includes(search.toLowerCase())));
+    }));
 
     constructor(private items: Reference<string[]>) {
         super();
@@ -42,53 +61,52 @@ class MenuComponent extends HTMLComponent {
                 }
             `);
 
-        const activeItems = asRef<string[]>([]);
-
-        this.addWatch(() => listen(() => {
-            activeItems.value = this.#searchEngine(this.#searchValue.value).value;
-        }));
-
         this.shadowRoot!.append(
             Box(
-                activeItems.map(items => items.map((item) => Box(
-                    TextButton(this.#valueRender.value(item))
-                        .addStyle(css`
-                            button {
-                                justify-content: start;
-                            }
-                        `)
-                        .addClass("item")
-                        .onClick(() => {
-                            this.#onItemClicked.value(item);
-                        })
-                )))
-            )
-                .addPrefix(Box(
-                    this.#showSearch.map(showSearch => showSearch ? searchBox : [])
-                ))
-                .addSuffix(Box(
-                    this.#actions.map(actions => actions.map(action =>
-                        PrimaryButton(action.title)
-                            .addPrefix(action.icon)
-                            .onClick(action.onClick)
+                this.#searchEngine.map(engine => {
+                    const activeItems = engine(this.#searchValue);
+
+                    return Box(activeItems.map(items => items.map((item) => Box(
+                        TextButton(this.#valueRender.value(item))
                             .addStyle(css`
                                 button {
                                     justify-content: start;
-                                    --wg-button-font-size: 13.8px;
-                                    --wg-button-height: 28px;
-                                    --wg-button-text-padding: 0 2px;
-                                    padding: 0 8px;
-                                    --wg-button-background-color: ${Color.reverseNeutral.mix(Color.primary, `5%`)};
-                                    --wg-button-text-color: var(--wg-neutral);
-                                }
-                                button>wg-icon {
-                                    font-size: 19px;
                                 }
                             `)
-                    ))
-                ))
-                .addClass("list")
-                .setRadius("mid")
+                            .addClass("item")
+                            .onClick(() => {
+                                this.#onItemClicked.value(item);
+                            })
+                    ))))
+                        .addPrefix(Box(
+                            this.#showSearch.map(showSearch => showSearch ? searchBox : [])
+                        ))
+                        .addSuffix(Box(
+                            this.#actions.map(actions => actions.map(action =>
+                                PrimaryButton(action.title)
+                                    .addPrefix(action.icon)
+                                    .onClick(action.onClick)
+                                    .addStyle(css`
+                                    button {
+                                        justify-content: start;
+                                        --wg-button-font-size: 13.8px;
+                                        --wg-button-height: 28px;
+                                        --wg-button-text-padding: 0 2px;
+                                        padding: 0 8px;
+                                        --wg-button-background-color: ${Color.reverseNeutral.mix(Color.primary, `5%`)};
+                                        --wg-button-text-color: var(--wg-neutral);
+                                    }
+                                    button>wg-icon {
+                                        font-size: 19px;
+                                    }
+                                `)
+                            ))
+                        ))
+                        .addClass("list")
+                        .setRadius("mid")
+                        ;
+                })
+            )
                 .draw()
         );
 
@@ -116,8 +134,8 @@ class MenuComponent extends HTMLComponent {
                 });
                 return obj;
             },
-            setSearchEngine: (searchEngine: (search: string) => Reference<string[]>) => {
-                this.#searchEngine = searchEngine;
+            setSearchEngine: (searchEngine: SearchEngine) => {
+                this.#searchEngine.value = searchEngine;
                 return obj;
             },
             focusedState: () => {

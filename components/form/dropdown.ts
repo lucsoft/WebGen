@@ -1,5 +1,6 @@
 import { alwaysRef, asRef, asWebGenComponent, Component, css, HTMLComponent, Refable, Reference, WriteSignal } from "../../core/mod.ts";
 import { MaterialIcon } from "../icons.ts";
+import { SearchEngine } from "../menu.ts";
 import { Menu } from "../mod.ts";
 import { TextInput } from "./input.ts";
 
@@ -75,7 +76,7 @@ class DropDownComponent extends HTMLComponent {
                 this.#valueRender.value = valueRender;
                 return obj;
             },
-            setSearchEngine: (searchEngine: (search: string) => Reference<string[]>) => {
+            setSearchEngine: (searchEngine: SearchEngine) => {
                 this.#menu.setSearchEngine(searchEngine);
                 return obj;
             },
