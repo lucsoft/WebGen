@@ -51,7 +51,7 @@ class MenuComponent extends HTMLComponent {
         this.shadowRoot!.append(
             Box(
                 activeItems.map(items => items.map((item, index) => Box(
-                    TextButton(item)
+                    TextButton(this.#valueRender.value(item))
                         .addStyle(css`
                             button {
                                 justify-content: start;
@@ -111,7 +111,7 @@ class MenuComponent extends HTMLComponent {
         const obj = {
             ...super.make(),
             setValueRenderer: (renderer: Refable<(value: string) => string>) => {
-                alwaysRef(renderer).listen((value) => {
+                this.useListener(alwaysRef(renderer), value => {
                     this.#valueRender.value = value;
                 });
                 return obj;

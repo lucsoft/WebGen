@@ -8,22 +8,22 @@ class DropDownComponent extends HTMLComponent {
     #disabled = asRef(false);
     #invalid = asRef(false);
     #valueRender = asRef((value: string) => value);
-    #valueIndex = asRef(-1);
     #menu: ReturnType<typeof Menu>;
 
-    constructor(private dropdown: Reference<string[]>, label: Reference<string>) {
+    constructor(private dropdown: Reference<string[]>, selectedItemIndex: Reference<number>, label: Reference<string>) {
         super();
 
         this.#menu = Menu(dropdown)
+            .setValueRenderer(this.#valueRender)
             .onItemClick((index) => {
-                this.#valueIndex.value = index;
+                selectedItemIndex.value = index;
                 this.#menu.draw().hidePopover();
             });
 
         this.#menu.setAttribute("popover", "");
 
         this.shadowRoot!.append(
-            TextInput(this.#valueIndex.map(it => it === -1 ? label.value : this.dropdown.value[ it ]) as WriteSignal<string>, this.#valueIndex.map(it => it === -1 ? "" : label.value))
+            TextInput(selectedItemIndex.map(it => it === -1 ? label.value : this.#valueRender.value(this.dropdown.value[ it ])) as WriteSignal<string>, selectedItemIndex.map(it => it === -1 ? "" : label.value))
                 .setReadOnly()
                 .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "2"))
                 .onClick(() => {
@@ -71,6 +71,7 @@ class DropDownComponent extends HTMLComponent {
         const obj = {
             ...super.make(),
             setValueRender: (valueRender: (value: string) => string) => {
+                console.log(valueRender);
                 this.#valueRender.value = valueRender;
                 return obj;
             },
@@ -91,6 +92,6 @@ class DropDownComponent extends HTMLComponent {
     }
 }
 
-export function DropDown(dropdown: Refable<string[]>, label: Refable<string> = "") {
-    return new DropDownComponent(alwaysRef(dropdown), alwaysRef(label)).make();
+export function DropDown(dropdown: Refable<string[]>, selectedItemIndex: Reference<number>, label: Refable<string> = "") {
+    return new DropDownComponent(alwaysRef(dropdown), selectedItemIndex, alwaysRef(label)).make();
 }
