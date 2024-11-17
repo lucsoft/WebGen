@@ -116,6 +116,10 @@ class MenuComponent extends HTMLComponent {
                 });
                 return obj;
             },
+            setSearchEngine: (searchEngine: (search: string) => Reference<string[]>) => {
+                this.#searchEngine = searchEngine;
+                return obj;
+            },
             focusedState: () => {
                 return this.#searchInput.focusedState();
             },

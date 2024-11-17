@@ -75,6 +75,10 @@ class DropDownComponent extends HTMLComponent {
                 this.#valueRender.value = valueRender;
                 return obj;
             },
+            setSearchEngine: (searchEngine: (search: string) => Reference<string[]>) => {
+                this.#menu.setSearchEngine(searchEngine);
+                return obj;
+            },
             setDisabled: (disabled: boolean) => {
                 this.#disabled.value = disabled;
                 return obj;
