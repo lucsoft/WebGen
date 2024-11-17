@@ -101,6 +101,12 @@ class MenuComponent extends HTMLComponent {
     override make() {
         const obj = {
             ...super.make(),
+            setValueRenderer: (renderer: Refable<(value: string) => string>) => {
+                alwaysRef(renderer).listen((value) => {
+                    this.#valueRender.value = value;
+                });
+                return obj;
+            },
             addAction: (title: Refable<string>, icon: Component, onClick: () => void) => {
                 this.#actions.value.push({ title, icon, onClick });
                 return obj;
