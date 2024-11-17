@@ -6,6 +6,7 @@ export * from './form/dropdown.ts';
 export * from './form/inlineInput.ts';
 export * from './form/input.ts';
 export * from "./icons.ts";
+export * from "./image.ts";
 export * from './menu.ts';
 export * from "./misc/mediaQueryRef.ts";
 export * from "./misc/mobileQuery.ts";
