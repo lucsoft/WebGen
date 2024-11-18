@@ -32,7 +32,8 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                     Grid(
                         alwaysRef(index === 0 && this.#selectionActive.value ? [
                             Checkbox(this.#headerSelection)
-                                .onClick(() => {
+                                .onClick((event: Event) => {
+                                    event.stopPropagation();
                                     if (this.#headerSelection.value === false) {
                                         this.#headerSelection.value = true;
                                         this.#selectedIndexes.value = data.value.map((_, index) => index);
@@ -73,7 +74,8 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                     Grid(
                         alwaysRef(columnIndex === 0 && this.#selectionActive.value ? [
                             Checkbox(this.#selectedIndexes.map(indexes => indexes.includes(rowIndex) as CheckboxValue) as WriteSignal<CheckboxValue>)
-                                .onClick(() => {
+                                .onClick((event) => {
+                                    event.stopPropagation();
                                     if (this.#selectedIndexes.value.includes(rowIndex)) {
                                         this.#selectedIndexes.value = this.#selectedIndexes.value.filter(i => i !== rowIndex);
                                     } else {
@@ -155,6 +157,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
         });
 
         this.useEventListener(table, "click", () => {
+            if (this.#currentlyHoveredRow.value === undefined) return;
             this.#rowClickActive.value?.();
         });
 

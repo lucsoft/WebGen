@@ -32,7 +32,7 @@ export class CheckboxComponent extends HTMLComponent {
             return "";
         })).draw());
 
-        this.useEventListener(this.#input, "value", () => {
+        this.useEventListener(this.#input, "change", () => {
             mode.value = this.#input.checked;
         });
 
@@ -107,7 +107,7 @@ export class CheckboxComponent extends HTMLComponent {
     override make() {
         const obj = {
             ...super.make(),
-            onClick: (action: () => void) => {
+            onClick: (action: (event: Event) => void) => {
                 this.useEventListener(this.#input, "click", action);
                 return obj;
             },
