@@ -11,25 +11,24 @@ export class BoxComponent extends HTMLComponent {
         staticElements.name = "static";
         this.shadowRoot!.append(dynamicElement, staticElements);
 
-        for (const element of components.map(component => component.draw())) {
-            element.slot = "static";
-            this.append(element);
-        }
-
         this.addListen(() => {
-            const refComponent = alwaysRef(component);
-
-            for (const component of this.children)
-                if (component.slot === "dynamic")
-                    component.remove();
-
-            const current = refComponent.value;
+            const current = alwaysRef(component).value;
             const alwaysList = Array.isArray(current) ? current : [ current ];
 
-            for (const element of alwaysList.map(component => component.draw())) {
-                element.slot = "dynamic";
-                this.append(element);
-            }
+            this.replaceChildren(
+                ...alwaysList
+                    .map(component => component.draw())
+                    .map(element => {
+                        element.slot = "dynamic";
+                        return element;
+                    }),
+                ...components
+                    .map(component => component.draw())
+                    .map(element => {
+                        element.slot = "static";
+                        return element;
+                    })
+            );
         });
     }
 }
