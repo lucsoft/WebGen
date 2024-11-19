@@ -5,21 +5,31 @@ import { alwaysRef, Reference } from "../state.ts";
 export class BoxComponent extends HTMLComponent {
     constructor(component: Reference<Component[] | Component> | Component, components: Component[]) {
         super();
-        this.shadowRoot?.append(document.createElement("slot"));
-        components.forEach(component => this.append(component.draw()));
-        const refComponent = alwaysRef(component);
-        this.useListener(refComponent, (current, oldValue) => {
-            if (Array.isArray(oldValue)) {
-                oldValue.forEach(component => component.draw().remove());
-            }
-            else if (oldValue) {
-                oldValue.draw().remove();
-            }
+        const dynamicElement = document.createElement("slot");
+        dynamicElement.name = "dynamic";
+        const staticElements = document.createElement("slot");
+        staticElements.name = "static";
+        this.shadowRoot!.append(dynamicElement, staticElements);
 
-            if (Array.isArray(current))
-                current.toReversed().map(component => component.draw()).forEach(component => this.prepend(component));
-            else
-                this.prepend(current.draw());
+        for (const element of components.map(component => component.draw())) {
+            element.slot = "static";
+            this.append(element);
+        }
+
+        this.addListen(() => {
+            const refComponent = alwaysRef(component);
+
+            for (const component of this.children)
+                if (component.slot === "dynamic")
+                    component.remove();
+
+            const current = refComponent.value;
+            const alwaysList = Array.isArray(current) ? current : [ current ];
+
+            for (const element of alwaysList.map(component => component.draw())) {
+                element.slot = "dynamic";
+                this.append(element);
+            }
         });
     }
 }
