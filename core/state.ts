@@ -1,4 +1,4 @@
-import { Signal } from "https://esm.sh/signal-polyfill@0.1.2";
+import { Signal } from "https://esm.sh/signal-polyfill@0.2.1";
 
 export function isRef<T>(obj: unknown): obj is Reference<T> {
     return (
