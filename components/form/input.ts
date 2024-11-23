@@ -101,6 +101,9 @@ class InputComponent extends HTMLComponent {
                 grid-column: 1;
                 transition: all 200ms ease;
             }
+            .label {
+                user-select: none;
+            }
             :host([has-value]) .label,
             :host(:focus-within) .label {
                 font-size: var(--wg-label-font-size, 10px);
