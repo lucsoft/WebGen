@@ -7,6 +7,7 @@ export const wgStyleValues = css`
         --wg-radius-tiny: 0.3rem;
         --wg-radius-mid: 0.5rem;
         --wg-radius-large: 0.8rem;
+        --wg-radius-extra: 1.8rem;
         --wg-radius-complete: 100rem;
         --wg-radius-none: 0;
 
