@@ -46,6 +46,7 @@ type ListOfParamsToOnlyNamedParams<T extends string[]> = {
 export type UrlPath = `/${string}`;
 
 export type Route<Path extends UrlPath, Search extends zod.ZodRawShape, BaseSearch extends zod.ZodRawShape, Base extends string = ""> = {
+    entry: RouteEntry,
     active: Reference<boolean>,
     groups: Prettify<Record<ListOfParamsToOnlyNamedParams<Split<TrimLeadingSlash<`${Base}${TrimTrailingSlash<Path>}`>, "/">>, string>>,
     search: zod.infer<zod.ZodObject<BaseSearch & Search>>,
@@ -167,6 +168,7 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
     });
 
     return {
+        entry: routeEntry,
         active,
         groups: groups as unknown,
         search,
