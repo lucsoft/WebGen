@@ -28,12 +28,11 @@ export class ContentComponent extends HTMLComponent {
         this.style.display = "grid";
 
         this.style.setProperty("--content-padding", "16px");
-        this.style.setProperty("--content-max-width", "900px");
         this.style.gridTemplateColumns = [
             "[full-width-start]",
             "minmax(var(--content-padding), 1fr)",
             "[content-start]",
-            "min(100% - (var(--content-padding) * 2), var(--content-max-width))",
+            "min(100% - (var(--content-padding) * 2), var(--content-max-width, 900px))",
             "[content-end]",
             "minmax(var(--content-padding), 1fr)",
             "[full-width-end]",
