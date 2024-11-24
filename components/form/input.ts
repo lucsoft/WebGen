@@ -91,6 +91,7 @@ class InputComponent extends HTMLComponent {
             .input {
                 all: unset;
                 font-size: var(--wg-input-font-size, 15px);
+                z-index: 1;
             }
             textarea.input {
                 height: 120px;
@@ -100,10 +101,6 @@ class InputComponent extends HTMLComponent {
                 grid-row: 1;
                 grid-column: 1;
                 transition: all 200ms ease;
-            }
-            .label {
-                -webkit-user-select: none;
-                user-select: none;
             }
             :host([has-value]) .label,
             :host(:focus-within) .label {
