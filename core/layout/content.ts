@@ -69,7 +69,7 @@ export class ContentComponent extends HTMLComponent {
         }
     }
 
-    make() {
+    override make() {
         const obj = {
             ...super.make(),
             setContentMaxWidth: (size: string) => {
