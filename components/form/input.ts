@@ -102,6 +102,7 @@ class InputComponent extends HTMLComponent {
                 transition: all 200ms ease;
             }
             .label {
+                -webkit-user-select: none;
                 user-select: none;
             }
             :host([has-value]) .label,
