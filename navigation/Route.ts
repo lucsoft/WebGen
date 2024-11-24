@@ -1,7 +1,8 @@
+import zod from "https://deno.land/x/zod@v3.23.8/mod.ts";
+
 import { sortBy } from "jsr:@std/collections@^1.0.0";
 import { asDeepRef, asRef, lazy, Refable, Reference } from "../core/mod.ts";
 import { asRefArray } from "../core/state.ts";
-import { zod } from "../zod.ts";
 import { NavigationRegistry } from "./Navigation.ts";
 
 type Split<S extends string, D extends string> =
@@ -59,7 +60,7 @@ type EmptyObject = {};
 
 export const RouteRegistry = asRefArray<RouteEntry>([]);
 export const activeRouteUrl = asRef<string>(location.href);
-export const getRouteList = () => sortBy(RouteRegistry.getValue(), it => it.pattern.pathname).reverse();
+export const getRouteList = () => sortBy(RouteRegistry.getValue(), it => it.patternUrl.length).toReversed();
 export const getBestRouteFromUrl = (url: string | URL) => getRouteList().filter(x => x.inAccessible?.getValue() !== false).find(route => route.pattern.test(url));
 export const activeRoute = activeRouteUrl.map(url => getBestRouteFromUrl(url));
 
