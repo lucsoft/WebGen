@@ -96,6 +96,7 @@ export class CheckboxComponent extends HTMLComponent {
             div {
                 display: grid;
                 place-items: center;
+                pointer-events: none;
             }
 
             :host(:not([disabled])) input {
