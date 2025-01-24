@@ -92,10 +92,12 @@ class InputComponent extends HTMLComponent {
                 all: unset;
                 font-size: var(--wg-input-font-size, 15px);
                 z-index: 1;
+                opacity: 0;
             }
             textarea.input {
                 height: 120px;
                 margin-top: 12px;
+                opacity: 1;
             }
             :host > * {
                 grid-row: 1;
@@ -114,6 +116,7 @@ class InputComponent extends HTMLComponent {
             :host([has-value][aria-label]) .input,
             :host([aria-label]) .input:focus-within {
                 margin-top: 14px;
+                opacity: 1;
             }
 
             :host([text-area][aria-label]) textarea.input {
