@@ -8,11 +8,12 @@ A SwiftUI-like Web library
 
 ```ts
 // Create a mod.ts file
-import { Label, Body, WebGen } from "https://deno.land/x/webgen/mod.ts";
+import { appendBody, Label, WebGenTheme } from "https://deno.land/x/webgen/mod.ts";
 
-WebGen();
-Body(
-    Label("Hello World!")
+appendBody(
+    WebGenTheme(
+        Label("Hello World!")
+    )
 );
 ```
 
