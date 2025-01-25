@@ -3,7 +3,7 @@ import { Checkbox, type CheckboxValue } from "./form/checkbox.ts";
 
 
 export type TableDefinition<T extends object[]> = {
-    [ K in keyof T[ number ] ]?: { titleRenderer?: () => Component, cellRenderer?: (data: Readonly<T[ number ][ K ]>) => Component, columnWidth?: string; }
+    [ K in keyof T[ number ] ]?: { titleRenderer?: () => Component, cellRenderer?: (data: Readonly<T[ number ][ K ]>, row: Readonly<T[ number ]>) => Component, columnWidth?: string; }
 };
 
 @asWebGenComponent("table")
@@ -91,7 +91,7 @@ export class TableComponent<T extends object[]> extends HTMLComponent {
                                     this.#selectionActive.value?.();
                                 })
                         ] : []),
-                        typeDef[ column ]?.cellRenderer?.(item[ column as keyof object ]) ?? Label(item[ column as keyof object ])
+                        typeDef[ column ]?.cellRenderer?.(item[ column as keyof object ], item as T) ?? Label(item[ column as keyof object ])
                     )
                         .setGap(this.#selectionActive.value && columnIndex === 0 ? "10px" : "8px")
                         .setAutoFlow("column")

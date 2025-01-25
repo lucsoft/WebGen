@@ -97,6 +97,6 @@ class DropDownComponent extends HTMLComponent {
     }
 }
 
-export function DropDown(dropdown: Refable<string[]>, selectedItem: Reference<string | undefined>, label: Refable<string> = "") {
+export function DropDown(dropdown: Refable<string[]>, selectedItem: Reference<string | undefined>, label: Refable<string>) {
     return new DropDownComponent(alwaysRef(dropdown), selectedItem, alwaysRef(label)).make();
 }

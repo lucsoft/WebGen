@@ -80,6 +80,8 @@ class InputComponent extends HTMLComponent {
         this.shadowRoot!.adoptedStyleSheets.push(css`
             :host {
                 display: grid;
+                grid-template-columns: auto;
+                grid-auto-columns: max-content;
                 min-height: var(--wg-input-height, 50px);
                 background-color: ${this.#inputBg.mix(Color.transparent, 95)};
                 color: ${this.#inputBg.toString()};
@@ -93,6 +95,10 @@ class InputComponent extends HTMLComponent {
                 font-size: var(--wg-input-font-size, 15px);
                 z-index: 1;
                 opacity: 0;
+                min-width: 0px;
+            }
+            :host(:not([aria-label])) .input {
+                opacity: unset;
             }
             textarea.input {
                 height: 120px;
@@ -103,6 +109,13 @@ class InputComponent extends HTMLComponent {
                 grid-row: 1;
                 grid-column: 1;
                 transition: all 200ms ease;
+                width: 100%;
+            }
+            .label {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                display: block;
             }
             :host([has-value]) .label,
             :host(:focus-within) .label {
