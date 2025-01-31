@@ -9,7 +9,7 @@ class InputComponent extends HTMLComponent {
     #readOnly = asRef(false);
     #invalid = asRef(false);
 
-    constructor(type: string, value: WriteSignal<string>, label: Refable<string | undefined>, valueChangeMode: "change" | "input" = "input") {
+    constructor(type: string, value: WriteSignal<string | undefined>, label: Refable<string | undefined>, valueChangeMode: "change" | "input" = "input") {
         super();
         if (type === "text-area") {
             this.#input = document.createElement("textarea") as HTMLElement as HTMLInputElement;
@@ -65,11 +65,11 @@ class InputComponent extends HTMLComponent {
         });
 
         this.useEventListener(this.#input, valueChangeMode, () => {
-            value.value = this.#input.value;
+            value.value = this.#input.value || undefined;
         });
 
         this.useListener(value, (newValue) => {
-            this.#input.value = newValue;
+            this.#input.value = newValue ?? "";
             if (newValue) {
                 this.setAttribute("has-value", "");
             } else {
@@ -183,30 +183,30 @@ class InputComponent extends HTMLComponent {
     }
 }
 
-export function TextInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function TextInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("text", value, label, valueChangeMode).make();
 }
 
-export function EmailInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function EmailInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("email", value, label, valueChangeMode).make();
 }
 
-export function PasswordInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function PasswordInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("password", value, label, valueChangeMode).make();
 }
 
-export function DateInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function DateInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("date", value, label, valueChangeMode).make();
 }
 
-export function DateTimeInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function DateTimeInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("datetime-local", value, label, valueChangeMode).make();
 }
 
-export function TimeInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function TimeInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("time", value, label, valueChangeMode).make();
 }
 
-export function TextAreaInput(value: WriteSignal<string>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
+export function TextAreaInput(value: WriteSignal<string | undefined>, label: Refable<string | undefined> = undefined, valueChangeMode: "change" | "input" = "input") {
     return new InputComponent("text-area", value, label, valueChangeMode).make();
 }
