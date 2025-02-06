@@ -49,10 +49,10 @@ export class ContentComponent extends HTMLComponent {
             for (const iterator of Array.isArray(current) ? current : [ current ]) {
                 const item = iterator.draw();
                 if (item instanceof FullWidthSectionComponent) {
-                    this.shadowRoot!.prepend(...Array.from(item.children));
+                    this.shadowRoot!.append(...Array.from(item.children));
                 } else {
                     item.style.gridColumn = "content";
-                    this.shadowRoot!.prepend(item);
+                    this.shadowRoot!.append(item);
                 }
             }
         });
