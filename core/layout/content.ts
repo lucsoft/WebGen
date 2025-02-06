@@ -46,13 +46,13 @@ export class ContentComponent extends HTMLComponent {
                     item.remove();
                 }
             }
-            for (const iterator of Array.isArray(current) ? current : [ current ]) {
+            for (const iterator of Array.isArray(current) ? current.reverse() : [ current ]) {
                 const item = iterator.draw();
                 if (item instanceof FullWidthSectionComponent) {
-                    this.shadowRoot!.append(...Array.from(item.children));
+                    this.shadowRoot!.prepend(...Array.from(item.children));
                 } else {
                     item.style.gridColumn = "content";
-                    this.shadowRoot!.append(item);
+                    this.shadowRoot!.prepend(item);
                 }
             }
         });
