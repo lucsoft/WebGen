@@ -170,8 +170,8 @@ export function createRoute<Path extends UrlPath, Search extends zod.ZodRawShape
     return {
         entry: routeEntry,
         active,
-        groups: groups as unknown,
-        search,
+        groups: groups.value as unknown,
+        search: search.value as unknown,
         navigate: (groups, options) => {
             const filledRoute = createURLFromGroups(cleanedUpPath, groups);
             return navigation.navigate(filledRoute, options);
