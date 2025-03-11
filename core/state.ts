@@ -154,8 +154,10 @@ export function asRefArray<T>(initValue: T[], options?: Signal.Options<T[]>): Ar
     return new ArrayWriteSignal(initValue, options);
 }
 
+export type RefRecord<T> = { [ Key in keyof T ]: WriteSignal<T[ Key ]> }
+
 // deno-lint-ignore no-explicit-any
-export function asRefRecord<T extends object>(initValue: T, options?: Signal.Options<any>): { [ Key in keyof T ]: WriteSignal<T[ Key ]> } {
+export function asRefRecord<T extends object>(initValue: T, options?: Signal.Options<any>): RefRecord<T> {
     const keys = Object.keys(initValue) as (keyof T)[];
     const result = {} as { [ Key in keyof T ]: WriteSignal<T[ Key ]> };
     for (const key of keys) {
