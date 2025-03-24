@@ -35,9 +35,9 @@ export class HTMLComponent extends HTMLElement {
     protected useListener<T>(ref: Reference<T>, callback: (newValue: T, oldValue?: T) => void) {
         this.addWatch(() => ref.listen(callback));
     }
-    protected useEventListener(target: EventTarget, type: string, listener: EventListenerOrEventListenerObject) {
+    protected useEventListener(target: EventTarget, type: string, listener: EventListenerOrEventListenerObject, options?: AddEventListenerOptions) {
         this.#listener.add({
-            listen: () => target.addEventListener(type, listener),
+            listen: () => target.addEventListener(type, listener, options),
             unlisten: () => target.removeEventListener(type, listener)
         });
     }
@@ -205,7 +205,7 @@ export class HTMLComponent extends HTMLElement {
             },
 
             // Events
-            onClick: (action: () => void) => {
+            onClick: (action: (event: Event) => void) => {
                 this.useEventListener(this, "click", action);
                 return obj;
             },

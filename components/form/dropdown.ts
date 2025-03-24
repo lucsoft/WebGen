@@ -13,7 +13,7 @@ class DropDownComponent extends HTMLComponent {
 
     constructor(dropdown: Reference<string[]>, selectedItem: Reference<string | undefined>, label: Reference<string>) {
         super();
-        const isOpen = asRef(false);
+        let isOpen = false;
         this.#menu = Menu(dropdown)
             .setValueRenderer(this.#valueRender)
             .onItemClick((item) => {
@@ -21,32 +21,38 @@ class DropDownComponent extends HTMLComponent {
                 this.#menu.draw().hidePopover();
             });
         this.useEventListener(this.#menu.draw(), "toggle", (event) => {
-            isOpen.value = (<ToggleEvent>event).newState === "open";
+            isOpen = (<ToggleEvent>event).newState === "open";
         });
         this.#menu.setAttribute("popover", "");
 
+        const texbox = TextInput(selectedItem.map(item => item === undefined ? label.value : this.#valueRender.value(item)) as WriteSignal<string>, selectedItem.map(item => item === undefined ? "" : label.value))
+            .setReadOnly()
+            .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "3"))
+            .onClick(() => {
+                if (this.#disabled.value) return;
+                if (isOpen)
+                    return this.#menu.draw().hidePopover();
+                this.#menu.clearSearch();
+                this.#menu.draw().showPopover();
+                this.#menu.focusedState().value = true;
+            })
+            .draw();
+
+        this.useEventListener(texbox, "keyup", (event) => {
+            if (this.#disabled.value) return;
+            if ((event as KeyboardEvent).key === "Enter") {
+                if (isOpen)
+                    return this.#menu.draw().hidePopover();
+                this.#menu.clearSearch();
+                this.#menu.draw().showPopover();
+                this.#menu.focusedState().value = true;
+            }
+        });
+
         this.shadowRoot!.append(
-            TextInput(selectedItem.map(item => item === undefined ? label.value : this.#valueRender.value(item)) as WriteSignal<string>, selectedItem.map(item => item === undefined ? "" : label.value))
-                .setReadOnly()
-                .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "3"))
-                .onClick(() => {
-                    if (this.#disabled.value) return;
-                    if (isOpen.value)
-                        return this.#menu.draw().hidePopover();
-                    this.#menu.clearSearch();
-                    this.#menu.draw().showPopover();
-                    this.#menu.focusedState().value = true;
-                })
-                .draw(),
+            texbox,
             this.#menu.draw()
         );
-
-        this.useEventListener(this.shadowRoot!, "focusin", () => {
-            if (this.#disabled.value) return;
-            this.#menu.clearSearch();
-            this.#menu.draw().showPopover();
-            this.#menu.focusedState().value = true;
-        });
 
         this.shadowRoot!.adoptedStyleSheets.push(css`
             :host {

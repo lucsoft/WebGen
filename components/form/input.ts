@@ -166,6 +166,10 @@ class InputComponent extends HTMLComponent {
                 });
                 return obj;
             },
+            onFocus: (callback: () => void) => {
+                this.useEventListener(this.#input, "focus", callback);
+                return obj;
+            },
             setReadOnly: (readOnly: Refable<boolean> = true) => {
                 this.useListener(alwaysRef(readOnly), (readOnly) => {
                     this.#readOnly.value = readOnly;
