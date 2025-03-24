@@ -11,24 +11,28 @@ class DropDownComponent extends HTMLComponent {
     #valueRender = asRef((value: string) => value);
     #menu: ReturnType<typeof Menu>;
 
-    constructor(private dropdown: Reference<string[]>, selectedItem: Reference<string | undefined>, label: Reference<string>) {
+    constructor(dropdown: Reference<string[]>, selectedItem: Reference<string | undefined>, label: Reference<string>) {
         super();
-
+        const isOpen = asRef(false);
         this.#menu = Menu(dropdown)
             .setValueRenderer(this.#valueRender)
             .onItemClick((item) => {
                 selectedItem.value = item;
                 this.#menu.draw().hidePopover();
             });
-
+        this.useEventListener(this.#menu.draw(), "toggle", (event) => {
+            isOpen.value = (<ToggleEvent>event).newState === "open";
+        });
         this.#menu.setAttribute("popover", "");
 
         this.shadowRoot!.append(
             TextInput(selectedItem.map(item => item === undefined ? label.value : this.#valueRender.value(item)) as WriteSignal<string>, selectedItem.map(item => item === undefined ? "" : label.value))
                 .setReadOnly()
-                .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "2"))
+                .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "3"))
                 .onClick(() => {
                     if (this.#disabled.value) return;
+                    if (isOpen.value)
+                        return this.#menu.draw().hidePopover();
                     this.#menu.clearSearch();
                     this.#menu.draw().showPopover();
                     this.#menu.focusedState().value = true;
@@ -72,7 +76,6 @@ class DropDownComponent extends HTMLComponent {
         const obj = {
             ...super.make(),
             setValueRender: (valueRender: (value: string) => string) => {
-                console.log(valueRender);
                 this.#valueRender.value = valueRender;
                 return obj;
             },
@@ -97,6 +100,6 @@ class DropDownComponent extends HTMLComponent {
     }
 }
 
-export function DropDown(dropdown: Refable<string[]>, selectedItem: Reference<string | undefined>, label: Refable<string>) {
+export function DropDown(dropdown: Refable<string[]>, selectedItem: Reference<string | undefined>, label: Refable<string> = "") {
     return new DropDownComponent(alwaysRef(dropdown), selectedItem, alwaysRef(label)).make();
 }
