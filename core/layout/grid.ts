@@ -9,7 +9,7 @@ export class GridComponent extends BoxComponent {
         this.style.display = "grid";
     }
 
-    make() {
+    override make() {
         const obj = {
             ...super.make(),
 

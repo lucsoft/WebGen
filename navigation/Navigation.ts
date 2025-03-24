@@ -1,6 +1,6 @@
-import 'https://esm.sh/v135/@types/dom-navigation@1.0.4/index.d.ts';
+import "https://esm.sh/v135/@types/dom-navigation@1.0.4/index.d.ts";
 import { sortBy } from "jsr:@std/collections@^1.0.0";
-import { asRef, asRefArray } from "../core/mod.ts";
+import { asRef, asRefArray } from "../core/state.ts";
 
 export const PageIsLoading = asRef(false);
 
@@ -26,6 +26,11 @@ function shouldNotIntercept(navigationEvent: NavigateEvent) {
         // let the browser handle it.
         navigationEvent.navigationType === "reload"
     );
+}
+
+declare global {
+    // deno-lint-ignore no-var
+    var navigation: Navigation;
 }
 
 navigation.addEventListener('navigate', navigateEvent => {
