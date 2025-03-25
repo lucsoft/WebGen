@@ -39,33 +39,45 @@ export class ContentComponent extends HTMLComponent {
         ].join(" ");
         this.style.alignContent = "start";
 
-        this.useListener(alwaysRef(component), (current, oldValue) => {
-            if (oldValue) {
-                for (const iterator of Array.isArray(oldValue) ? oldValue : [ oldValue ]) {
-                    const item = iterator.draw();
-                    item.remove();
-                }
-            }
-            for (const iterator of Array.isArray(current) ? current.toReversed() : [ current ]) {
-                const item = iterator.draw();
-                if (item instanceof FullWidthSectionComponent) {
-                    this.shadowRoot!.prepend(...Array.from(item.children));
-                } else {
-                    item.style.gridColumn = "content";
-                    this.shadowRoot!.prepend(item);
-                }
-            }
-        });
+        const dynamicElement = document.createElement("slot");
+        dynamicElement.name = "dynamic";
+        const staticElements = document.createElement("slot");
+        staticElements.name = "static";
+        this.shadowRoot!.append(dynamicElement, staticElements);
 
-        for (const iterator of components) {
-            const item = iterator.draw();
-            if (item instanceof FullWidthSectionComponent) {
-                this.shadowRoot!.append(...Array.from(item.children));
-            } else {
-                item.style.gridColumn = "content";
-                this.shadowRoot!.append(item);
-            }
-        }
+        this.addListen(() => {
+            const current = alwaysRef(component).value;
+            const alwaysList = Array.isArray(current) ? current : [ current ];
+
+            this.replaceChildren(
+                ...alwaysList
+                    .map(component => component.draw())
+                    .map(element => {
+                        if (element instanceof FullWidthSectionComponent) {
+                            return Array.from(element.children)
+                        } else {
+                            element.style.gridColumn = "content";
+                            return [element];
+                        }
+                    }).flat().map(element => {
+                        element.slot = "dynamic";
+                        return element;
+                    }),
+                ...components
+                    .map(component => component.draw())
+                    .map(element => {
+                        if (element instanceof FullWidthSectionComponent) {
+                            return Array.from(element.children)
+                        } else {
+                            element.style.gridColumn = "content";
+                            return [element];
+                        }
+                    }).flat().map(element => {
+                        element.slot = "static";
+                        return element;
+                    })
+            );
+        });
     }
 
     override make() {
