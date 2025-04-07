@@ -11,10 +11,16 @@ export class ImageComponent extends HTMLComponent {
         image.src = source;
         image.alt = alt;
 
-        this.useEventListener(image, "load", () => {
+        const loadEvent = () => {
             this.loaded.value = true;
             image.setAttribute("loaded", "");
+        };
+
+        image.addEventListener("load", loadEvent, { once: true });
+        this.useDisconnect(() => {
+            image.removeEventListener("load", loadEvent);
         });
+
         const spinner = Spinner().setCssStyle("placeSelf", "center");
         this.shadowRoot!.append(Box(
             this.loaded.map(loaded => loaded ? [] : spinner),

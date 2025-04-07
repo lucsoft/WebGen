@@ -32,6 +32,14 @@ export class HTMLComponent extends HTMLElement {
             }
         });
     }
+    protected useDisconnect(hook: () => void) {
+        this.#listener.add({
+            listen: () => { },
+            unlisten: () => {
+                hook();
+            }
+        });
+    }
     protected useListener<T>(ref: Reference<T>, callback: (newValue: T, oldValue?: T) => void) {
         this.addWatch(() => ref.listen(callback));
     }
