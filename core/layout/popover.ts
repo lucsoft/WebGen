@@ -10,7 +10,7 @@ export class PopoverComponent extends HTMLComponent {
         this.setAttribute("popover", "");
         this.shadowRoot!.append(content.draw());
         this.addEventListener("toggle", (event) => {
-            this.#open.setValue((<CustomEvent>event).detail.newState === "open");
+            this.#open.setValue((<ToggleEvent>event).newState === "open");
         });
     }
 
