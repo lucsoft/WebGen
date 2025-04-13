@@ -27,6 +27,7 @@ class DropDownComponent extends HTMLComponent {
 
         const texbox = TextInput(selectedItem.map(item => item === undefined ? label.value : this.#valueRender.value(item)) as WriteSignal<string>, selectedItem.map(item => item === undefined ? "" : label.value))
             .setReadOnly()
+            .setDisabled(this.#disabled)
             .addSuffix(MaterialIcon(this.#menu.focusedState().map(open => open ? "arrow_drop_up" : "arrow_drop_down")).setCssStyle("gridColumn", "3"))
             .onClick(() => {
                 if (this.#disabled.value) return;
