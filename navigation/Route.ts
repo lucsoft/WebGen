@@ -1,4 +1,4 @@
-import zod from "https://deno.land/x/zod@v3.23.8/mod.ts";
+import zod from "https://deno.land/x/zod@v3.24.3/mod.ts";
 
 import { sortBy } from "jsr:@std/collections@^1.0.0";
 import { asDeepRef, asRef, lazy, Refable, Reference } from "../core/mod.ts";
