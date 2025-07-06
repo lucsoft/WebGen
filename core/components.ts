@@ -220,7 +220,11 @@ export class HTMLComponent extends HTMLElement {
             onRightClick: (action: () => void) => {
                 this.useEventListener(this, "contextmenu", action);
                 return obj;
-            }
+            },
+            onMouseOver: (action: (event: Event) => void) => {
+                this.useEventListener(this, "mouseover", action);
+                return obj;
+            },
         };
         return obj;
     }
