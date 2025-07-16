@@ -17,18 +17,10 @@ export class ProgressbarComponent extends HTMLComponent {
         this.value = value;
         let valueString = alwaysRef(this.value).map(v => v.toString() + unit);
         this.shadowRoot!.appendChild(this.#outer);
-        this.style.height = 20 + "px";
-        this.style.width = "100px";
         this.#inner.id = "inner";
         this.#outer.appendChild(this.#inner);
         this.shadowRoot!.appendChild(Label(valueString).draw());
 
-        this.shadowRoot!.adoptedStyleSheets.push(css`
-            div{
-                height: ${this.style.height};
-                width: ${this.style.width};
-            }
-        `)
         this.useListener(alwaysRef(this.value), value => {
             const inner = this.shadowRoot!.getElementById("inner");
             if (inner && value >= 0 && value <= max) {
@@ -43,10 +35,14 @@ export class ProgressbarComponent extends HTMLComponent {
             ...super.make(),
             setWidth: (width: string) => {
                 this.style.width = width;
+                this.#outer.style.width = width;
+                this.#inner.style.width = width;
                 return obj;
             },
             setHeight: (height: string) => {
                 this.style.height = height;
+                this.#outer.style.height = height;
+                this.#inner.style.height = height;
                 return obj;
             },
             setBarColor: (color: Color) => {
