@@ -24,17 +24,9 @@ export class ProgressbarComponent extends HTMLComponent {
         this.shadowRoot!.appendChild(Label(valueString).draw());
 
         this.shadowRoot!.adoptedStyleSheets.push(css`
-            :host {
-                border-radius: 20px;
-            }
             div{
-                border-radius: 10px;
                 height: ${this.style.height};
                 width: ${this.style.width};
-                background-color: ${Color.neutral.toString()};
-            }
-            #inner{
-                background-color: ${Color.primary.toString()};
             }
         `)
         this.useListener(alwaysRef(this.value), value => {
