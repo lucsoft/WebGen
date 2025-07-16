@@ -39,6 +39,48 @@ export class ProgressbarComponent extends HTMLComponent {
                 inner.style.width = (value) + "%";
             }
         });
+    };
+
+
+    override make() {
+        const obj = {
+            ...super.make(),
+            setWidth: (width: string) => {
+                this.style.width = width;
+                return obj;
+            },
+            setHeight: (height: string) => {
+                this.style.height = height;
+                return obj;
+            },
+            setBarColor: (color: Color) => {
+                this.#inner.style.backgroundColor = color.toString();
+                return obj;
+            },
+            setBackgroundColor: (color: Color) => {
+                this.#outer.style.backgroundColor = color.toString();
+                return obj;
+            },
+            setBorderRadius: (radius: string) => {
+                this.#outer.style.borderRadius = radius;
+                this.#inner.style.borderRadius = radius;
+                return obj;
+            },
+            setValue: (value: Refable<number>) => {
+                this.value = value;
+                this.useListener(alwaysRef(value), val => {
+                    const inner = this.shadowRoot!.getElementById("inner");
+                    if (inner) {
+                        inner.style.width = (val / max * 100) + "%";
+                    }
+                });
+                return obj;
+            },
+            getValue: () => {
+                return this.value;
+            }
+        };
+        return obj;
     }
 }
 
