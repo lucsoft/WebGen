@@ -11,18 +11,20 @@ export class ProgressbarComponent extends HTMLComponent {
 
     constructor(value: Refable<number>) {
         super();
+        let valueString = alwaysRef(value).map(v => v.toString());
         this.shadowRoot!.appendChild(this.#outer);
         this.style.height = 20 + "px";
         this.style.width = "100px";
         this.#inner.id = "inner";
         this.#outer.appendChild(this.#inner);
-        this.shadowRoot!.appendChild(Label(value.toString()).draw());
+        this.shadowRoot!.appendChild(Label(valueString).draw());
+
         this.shadowRoot!.adoptedStyleSheets.push(css`
             :host {
                 border-radius: 20px;
             }
             div{
-                border-radius: 20px;
+                border-radius: 10px;
                 height: ${this.style.height};
                 width: ${this.style.width};
                 background-color: ${Color.neutral.toString()};
@@ -33,13 +35,13 @@ export class ProgressbarComponent extends HTMLComponent {
         `)
         this.useListener(alwaysRef(value), value => {
             const inner = this.shadowRoot!.getElementById("inner");
-            if (inner) {
-                inner.style.width = value + "%";
+            if (inner && value >= 0 && value <= 100) {
+                inner.style.width = (value) + "%";
             }
         });
     }
 }
 
-export function Progressbar(value: Refable<number>) {
+export function Progressbar(value: Refable<number>): ProgressbarComponent {
     return new ProgressbarComponent(value).make().setWidth("200px").setHeight("20px");
 }
