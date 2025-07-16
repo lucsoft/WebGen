@@ -1,6 +1,5 @@
 import {asWebGenComponent, HTMLComponent} from "../core/components.ts";
 import {alwaysRef, Refable} from "../core/state.ts";
-import {css} from "../core/cssTemplate.ts";
 import {Color} from "../core/color.ts";
 import {Label} from "../core/layout/label.ts";
 
@@ -61,6 +60,10 @@ export class ProgressbarComponent extends HTMLComponent {
             }
         };
         return obj;
+    }
+
+    draw(): HTMLComponent{
+        return this.shadowRoot!.host as HTMLComponent;
     }
 }
 
