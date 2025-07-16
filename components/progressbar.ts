@@ -6,22 +6,23 @@ import {Label} from "../core/layout/label.ts";
 
 @asWebGenComponent("progress-bar")
 export class ProgressbarComponent extends HTMLComponent {
-    #outer = document.createElement("div");
-    #inner = document.createElement("div");
-    value: Refable<number>;
+    #frame = document.createElement("div");
+    #bar = document.createElement("div");
+    progress: Refable<number>;
     max: number;
 
-    constructor(value: Refable<number>, max: number = 100, unit: string = "%") {
+    constructor(progress: Refable<number>, max: number = 100, unit: string = "%") {
         super();
         this.max = max;
-        this.value = value;
-        let valueString = alwaysRef(this.value).map(v => v.toString() + unit);
-        this.shadowRoot!.appendChild(this.#outer);
-        this.#inner.id = "inner";
-        this.#outer.appendChild(this.#inner);
+        this.progress = progress;
+        let valueString = alwaysRef(this.progress).map(v => v.toString() + unit);
+
+        this.shadowRoot!.appendChild(this.#frame);
+        this.#bar.id = "inner";
+        this.#frame.appendChild(this.#bar);
         this.shadowRoot!.appendChild(Label(valueString).draw());
 
-        this.useListener(alwaysRef(this.value), value => {
+        this.useListener(alwaysRef(this.progress), value => {
             const inner = this.shadowRoot!.getElementById("inner");
             if (inner && value >= 0 && value <= max) {
                 inner.style.width = (value / max * 100) + "%";
@@ -35,27 +36,27 @@ export class ProgressbarComponent extends HTMLComponent {
             ...super.make(),
             setWidth: (width: string) => {
                 this.style.width = width;
-                this.#outer.style.width = width;
-                this.#inner.style.width = width;
+                this.#frame.style.width = width;
+                this.#bar.style.width = width;
                 return obj;
             },
             setHeight: (height: string) => {
                 this.style.height = height;
-                this.#outer.style.height = height;
-                this.#inner.style.height = height;
+                this.#frame.style.height = height;
+                this.#bar.style.height = height;
                 return obj;
             },
             setBarColor: (color: Color) => {
-                this.#inner.style.backgroundColor = color.toString();
+                this.#bar.style.backgroundColor = color.toString();
                 return obj;
             },
             setBackgroundColor: (color: Color) => {
-                this.#outer.style.backgroundColor = color.toString();
+                this.#frame.style.backgroundColor = color.toString();
                 return obj;
             },
             setBorderRadius: (radius: string) => {
-                this.#outer.style.borderRadius = radius;
-                this.#inner.style.borderRadius = radius;
+                this.#frame.style.borderRadius = radius;
+                this.#bar.style.borderRadius = radius;
                 return obj;
             }
         };
@@ -64,7 +65,7 @@ export class ProgressbarComponent extends HTMLComponent {
 }
 
 export function Progressbar(value: Refable<number>, max: number = 100, unit: string = "%"): ProgressbarComponent {
-    return new ProgressbarComponent(10, max, unit).make()
+    return new ProgressbarComponent(value, max, unit).make()
         .setWidth("200px")
         .setHeight("20px")
         .setBarColor(Color.primary)
