@@ -61,19 +61,6 @@ export class ProgressbarComponent extends HTMLComponent {
                 this.#outer.style.borderRadius = radius;
                 this.#inner.style.borderRadius = radius;
                 return obj;
-            },
-            setValue: (value: Refable<number>) => {
-                this.value = value;
-                this.useListener(alwaysRef(value), val => {
-                    const inner = this.shadowRoot!.getElementById("inner");
-                    if (inner) {
-                        inner.style.width = (val / this.max * 100) + "%";
-                    }
-                });
-                return obj;
-            },
-            getValue: () => {
-                return this.value;
             }
         };
         return obj;
@@ -87,5 +74,4 @@ export function Progressbar(value: Refable<number>, max: number = 100, unit: str
         .setBarColor(Color.primary)
         .setBackgroundColor(Color.neutral)
         .setBorderRadius("10px")
-        .setValue(value);
 }
