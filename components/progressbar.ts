@@ -9,9 +9,11 @@ export class ProgressbarComponent extends HTMLComponent {
     #outer = document.createElement("div");
     #inner = document.createElement("div");
     value: Refable<number>;
+    max: number;
 
     constructor(value: Refable<number>, max: number = 100, unit: string = "%") {
         super();
+        this.max = max;
         this.value = value;
         let valueString = alwaysRef(this.value).map(v => v.toString() + unit);
         this.shadowRoot!.appendChild(this.#outer);
@@ -73,7 +75,7 @@ export class ProgressbarComponent extends HTMLComponent {
                 this.useListener(alwaysRef(value), val => {
                     const inner = this.shadowRoot!.getElementById("inner");
                     if (inner) {
-                        inner.style.width = (val / max * 100) + "%";
+                        inner.style.width = (val / this.max * 100) + "%";
                     }
                 });
                 return obj;
