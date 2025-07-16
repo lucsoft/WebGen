@@ -84,6 +84,12 @@ export class ProgressbarComponent extends HTMLComponent {
     }
 }
 
-export function Progressbar(value: Refable<number>): ProgressbarComponent {
-    return new ProgressbarComponent(value).make().setWidth("200px").setHeight("20px");
+export function Progressbar(value: Refable<number>, max: number = 100, unit: string = "%"): ProgressbarComponent {
+    return new ProgressbarComponent(10, max, unit).make()
+        .setWidth("200px")
+        .setHeight("20px")
+        .setBarColor(Color.primary)
+        .setBackgroundColor(Color.neutral)
+        .setBorderRadius("10px")
+        .setValue(value);
 }
