@@ -8,10 +8,12 @@ import {Label} from "../core/layout/label.ts";
 export class ProgressbarComponent extends HTMLComponent {
     #outer = document.createElement("div");
     #inner = document.createElement("div");
+    value: Refable<number>;
 
-    constructor(value: Refable<number>) {
+    constructor(value: Refable<number>, max: number = 100, unit: string = "%") {
         super();
-        let valueString = alwaysRef(value).map(v => v.toString());
+        this.value = value;
+        let valueString = alwaysRef(this.value).map(v => v.toString() + unit);
         this.shadowRoot!.appendChild(this.#outer);
         this.style.height = 20 + "px";
         this.style.width = "100px";
@@ -33,10 +35,10 @@ export class ProgressbarComponent extends HTMLComponent {
                 background-color: ${Color.primary.toString()};
             }
         `)
-        this.useListener(alwaysRef(value), value => {
+        this.useListener(alwaysRef(this.value), value => {
             const inner = this.shadowRoot!.getElementById("inner");
-            if (inner && value >= 0 && value <= 100) {
-                inner.style.width = (value) + "%";
+            if (inner && value >= 0 && value <= max) {
+                inner.style.width = (value / max * 100) + "%";
             }
         });
     };
